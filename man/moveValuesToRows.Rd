@@ -29,7 +29,7 @@ moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
 new data.frame with values moved to rows.
 }
 \description{
-Move values from columns to rows (wrapper for \code{tidyr::gather}, or anti-pivot).
+For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 }
 \examples{
 
@@ -39,4 +39,7 @@ moveValuesToRows(d,
                  nameForNewValueColumn= 'val',
                  columnsToTakeFrom= c('AUC', 'R2'))
 
+}
+\seealso{
+\code{\link{moveValuesToColumns}}
 }

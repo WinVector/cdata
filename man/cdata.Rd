@@ -4,7 +4,7 @@
 \name{cdata}
 \alias{cdata}
 \alias{cdata-package}
-\title{\code{cdata}d: Wrappers for \code{tidyr::gather()} and \code{tidyr::spread()}}
+\title{\code{cdata}: Wrappers for \code{tidyr::gather()} and \code{tidyr::spread()}}
 \description{
 cdata supplies deliberately verbose wrappers for \code{tidyr::gather()} and \code{tidyr::spread()}, and an explanatory vignette.
 Useful for training and for enforcing preconditions.

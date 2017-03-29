@@ -12,6 +12,7 @@ NULL
 #' @param allowNAKeys logical if FALSE throw if there are NAs in the key columns.
 #' @return logical TRUE if the rows of data are unique addressable by the columns named in keyColNames.
 #'
+#'
 #' @examples
 #'
 #' d <- data.frame(key= c('a','a', 'b'))
@@ -58,7 +59,9 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 
 #' Move values from columns to rows (wrapper for \code{tidyr::gather}, or anti-pivot).
 #'
+#' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
+#' @seealso \code{\link{moveValuesToColumns}}
 #'
 #' @param data data.frame to work with.
 #' @param nameForNewKeyColumn character name of column to write new keys in.
@@ -141,6 +144,10 @@ moveValuesToRows <- function(data,
 }
 
 #' Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).
+#'
+#' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
+#'
+#' @seealso \code{\link{moveValuesToRows}}
 #'
 #' @param data data.frame to work with.
 #' @param columnToTakeKeysFrom character name of column build new column names from.

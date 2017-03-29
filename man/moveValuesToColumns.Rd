@@ -31,7 +31,7 @@ moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 new data.frame with values moved to columns.
 }
 \description{
-Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).
+For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 }
 \examples{
 
@@ -41,4 +41,7 @@ moveValuesToColumns(d,
                     columnToTakeValuesFrom= 'val',
                     rowKeyColumns= c())
 
+}
+\seealso{
+\code{\link{moveValuesToRows}}
 }
