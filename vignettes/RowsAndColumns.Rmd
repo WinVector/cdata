@@ -268,7 +268,7 @@ Many students are initially surprised that row/column conversions are considered
 
 ### Moving From Columns to Rows ("Thinifying data")
 
-![](gather.png)
+![](Gather.png)
 
 Moving data from columns to rows (i.e., from Scientist 1 to Scientist 3) is easy to demonstrate and explain.
 
@@ -314,7 +314,7 @@ Moving data from rows to columns (i.e., from Scientist 3 to Scientist 1) is a bi
 
 In moving from rows to columns we group a set of rows that go together (match on keys) and then combine them into one row by adding additional columns.
 
-![](spread.png)
+![](Spread.png)
 
 Note: to move data from rows to columns *we must know which set of rows go together*. That means some set of columns is working as keys, even though this is not emphasized in the `spread()` calling interface or explanations. For invertible data transforms, we want a set of columns (`rowKeyColumns`) that define a composite key that uniquely identifies each row of the result. For this to be true, the `rowKeyColumns` plus the column we are taking value keys from must uniquely identify each row of the input.
 
