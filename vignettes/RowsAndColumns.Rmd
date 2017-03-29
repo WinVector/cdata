@@ -275,7 +275,7 @@ Moving data from columns to rows (i.e., from Scientist 1 to Scientist 3) is easy
 The only thing hard about this operation is remembering the name of the operation ("`gather()`") and the arguments.  We can remove this inessential difficulty by bringing in a verbose wrapper function:
 
 ```{r moveValuesToRows}
-library("cdata") # https://github.com/WinVector/zmPDSwR/cdata
+library("cdata")
 ```
 
 In this notation moving from Data Scientist 1's records to Data Scientist 3's looks like the following.
