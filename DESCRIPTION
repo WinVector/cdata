@@ -4,6 +4,8 @@ Title: Wrappers for 'tidyr::gather()' and 'tidyr::spread()'
 Version: 0.1.0
 Author: John Mount, Nina Zumel
 Maintainer: John Mount <jmount@win-vector.com>
+URL: https://github.com/WinVector/cdata
+BugReports: https://github.com/WinVector/cdata/issues
 Description: Supplies deliberately verbose wrappers for \code{tidyr::gather()} and \code{tidyr::spread()}, and an explanatory vignette.  Useful for training and for enforcing preconditions.
 License: GPL-3
 Encoding: UTF-8
