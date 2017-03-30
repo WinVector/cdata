@@ -1,6 +1,10 @@
 
 #' @importFrom dplyr %>%
 #' @importFrom stats complete.cases
+#' @importFrom tibble frame_data
+#' @importFrom tidyr gather spread
+#' @importFrom wrapr let
+#' @importFrom replyr replyr_nrow
 NULL
 
 
