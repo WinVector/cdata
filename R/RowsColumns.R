@@ -4,7 +4,6 @@
 #' @importFrom tibble frame_data
 #' @importFrom tidyr gather spread
 #' @importFrom wrapr let
-#' @importFrom replyr replyr_nrow
 NULL
 
 
@@ -43,8 +42,11 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   if(length(setdiff(keyColNames,cn))>0) {
     stop("cdata:checkColsFormUniqueKeys all keyColNames must be columns of data")
   }
-  # count the number of rows
-  ndata <- replyr::replyr_nrow(data)
+  # count the number of rows (threat 0-column frames as 0-row frames)
+  ndata <- 0
+  if(ncol(data)>0) {
+    ndata <- nrow(data)
+  }
   if(ndata<=1) {
     return(TRUE)
   }
@@ -55,7 +57,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
       data %>%
       dplyr::select(dplyr::one_of(keyColNames)) %>%
       dplyr::distinct() %>%
-      replyr::replyr_nrow()
+      nrow()
   }
   # compare
   return(nunique==ndata)

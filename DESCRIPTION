@@ -15,7 +15,6 @@ Imports:
   dplyr,
   tidyr,
   wrapr,
-  replyr,
   tibble
 Suggests: testthat,
     knitr,
