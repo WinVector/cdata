@@ -5,8 +5,7 @@
 \title{Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).}
 \usage{
 moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  rowKeyColumns, allowNAKeys = FALSE, fill = NA, convert = FALSE,
-  drop = TRUE, sep = NULL)
+  rowKeyColumns, fill = NA, convert = FALSE, drop = TRUE, sep = NULL)
 }
 \arguments{
 \item{data}{data.frame to work with.}
@@ -16,8 +15,6 @@ moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 \item{columnToTakeValuesFrom}{character name of column to get values from.}
 
 \item{rowKeyColumns}{character array names columns that should be table keys.}
-
-\item{allowNAKeys}{logical if FALSE throw if there are NAs in the key columns.}
 
 \item{fill}{passed to \code{tidyr::spread}}
 

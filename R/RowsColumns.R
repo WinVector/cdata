@@ -73,7 +73,6 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.
-#' @param allowNAKeys logical if FALSE throw if there are NAs in the key columns.
 #' @param na.rm passed to \code{tidyr::gather}
 #' @param convert passed to \code{tidyr::gather}
 #' @param factor_key passed to \code{tidyr::gather}
@@ -94,7 +93,6 @@ moveValuesToRows <- function(data,
                              nameForNewKeyColumn,
                              nameForNewValueColumn,
                              columnsToTakeFrom,
-                             allowNAKeys = FALSE,
                              na.rm = FALSE,
                              convert = FALSE,
                              factor_key = FALSE) {
@@ -115,6 +113,15 @@ moveValuesToRows <- function(data,
     if(!is.character(columnsToTakeFrom)) {
       stop("cdata:moveValuesToRows columnsToTakeFrom must be character")
     }
+    if(any(is.na(columnsToTakeFrom))) {
+      stop("cdata:moveValuesToRows columnsToTakeFrom must not contain NA")
+    }
+    if(any(nchar(columnsToTakeFrom)<=0)) {
+      stop("cdata:moveValuesToRows columnsToTakeFrom must not contain ''")
+    }
+    if(length(unique(columnsToTakeFrom))!=length(columnsToTakeFrom)) {
+      stop("cdata:moveValuesToRows columnsToTakeFrom must be unique values")
+    }
   }
   if(nameForNewKeyColumn %in% cn) {
     stop("cdata:moveValuesToRows nameForNewKeyColumn must not be a column name")
@@ -132,7 +139,7 @@ moveValuesToRows <- function(data,
   if(!checkColsFormUniqueKeys(dplyr::select(data,
                                             dplyr::one_of(dcols)),
                               dcols,
-                              allowNAKeys = allowNAKeys)) {
+                              allowNAKeys = FALSE)) {
     stop("cdata:moveValuesToRows rows were not uniquely keyed")
   }
   NAMEFORNEWKEYCOLUMM <- NULL # signal not an unbound variable
@@ -159,7 +166,6 @@ moveValuesToRows <- function(data,
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
-#' @param allowNAKeys logical if FALSE throw if there are NAs in the key columns.
 #' @param fill passed to \code{tidyr::spread}
 #' @param convert passed to \code{tidyr::spread}
 #' @param drop passed to \code{tidyr::spread}
@@ -180,7 +186,6 @@ moveValuesToColumns <- function(data,
                                 columnToTakeKeysFrom,
                                 columnToTakeValuesFrom,
                                 rowKeyColumns,
-                                allowNAKeys = FALSE,
                                 fill = NA,
                                 convert = FALSE,
                                 drop = TRUE,
@@ -226,7 +231,7 @@ moveValuesToColumns <- function(data,
   if(!checkColsFormUniqueKeys(data,
                               c(rowKeyColumns,
                                 columnToTakeKeysFrom),
-                              allowNAKeys = allowNAKeys)) {
+                              allowNAKeys = FALSE)) {
     stop(paste0("\n moveValeusToColumns: specified",
                 "\n rowKeyColumns plus columnToTakeKeysFrom",
                 "\n isn't unique across rows"))
@@ -240,7 +245,7 @@ moveValuesToColumns <- function(data,
     dplyr::distinct()
   if(!checkColsFormUniqueKeys(dsub,
                               rowKeyColumns,
-                              allowNAKeys = allowNAKeys)) {
+                              allowNAKeys = FALSE)) {
     stop(paste0("\n some columns not in",
                 "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
                 "\n are splitting up row groups"))

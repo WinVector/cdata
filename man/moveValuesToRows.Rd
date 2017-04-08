@@ -5,8 +5,7 @@
 \title{Move values from columns to rows (wrapper for \code{tidyr::gather}, or anti-pivot).}
 \usage{
 moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
-  columnsToTakeFrom, allowNAKeys = FALSE, na.rm = FALSE, convert = FALSE,
-  factor_key = FALSE)
+  columnsToTakeFrom, na.rm = FALSE, convert = FALSE, factor_key = FALSE)
 }
 \arguments{
 \item{data}{data.frame to work with.}
@@ -16,8 +15,6 @@ moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{nameForNewValueColumn}{character name of column to write new values in.}
 
 \item{columnsToTakeFrom}{character array names of columns to take values from.}
-
-\item{allowNAKeys}{logical if FALSE throw if there are NAs in the key columns.}
 
 \item{na.rm}{passed to \code{tidyr::gather}}
 
