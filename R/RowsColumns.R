@@ -25,6 +25,7 @@ NULL
 #'
 checkColsFormUniqueKeys <- function(data, keyColNames,
                                     allowNAKeys = FALSE) {
+  data <- dplyr::ungroup(data)
   # check for NA keys
   if((!allowNAKeys) && (length(keyColNames)>0)) {
     allGood <- data %>%
@@ -55,9 +56,9 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   if(length(keyColNames)>0) {
     nunique <-
       data %>%
-      dplyr::select(dplyr::one_of(keyColNames)) %>%
-      dplyr::distinct() %>%
-      nrow()
+        dplyr::select(dplyr::one_of(keyColNames)) %>%
+        dplyr::distinct() %>%
+        nrow()
   }
   # compare
   return(nunique==ndata)
@@ -96,6 +97,7 @@ moveValuesToRows <- function(data,
                              na.rm = FALSE,
                              convert = FALSE,
                              factor_key = FALSE) {
+  data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(nameForNewKeyColumn)!=1) {
     stop("cdata:moveValuesToRows nameForNewKeyColumn must be length 1")
@@ -190,6 +192,7 @@ moveValuesToColumns <- function(data,
                                 convert = FALSE,
                                 drop = TRUE,
                                 sep = NULL) {
+  data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(columnToTakeKeysFrom)!=1) {
     stop("cdata:moveValuesToColumns columnToTakeKeysFrom must be length 1")
