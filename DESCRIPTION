@@ -15,8 +15,8 @@ RoxygenNote: 6.0.1
 Imports:
   dplyr,
   tidyr,
-  wrapr,
-  tibble
+  tibble,
+  wrapr
 Suggests: testthat,
     knitr,
     rmarkdown
