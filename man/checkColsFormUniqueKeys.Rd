@@ -4,7 +4,7 @@
 \alias{checkColsFormUniqueKeys}
 \title{Check that a set of columns form unique keys}
 \usage{
-checkColsFormUniqueKeys(data, keyColNames, allowNAKeys = FALSE)
+checkColsFormUniqueKeys(data, keyColNames, allowNAKeys = TRUE)
 }
 \arguments{
 \item{data}{data.frame to work with.}

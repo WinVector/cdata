@@ -24,20 +24,20 @@ NULL
 #' @export
 #'
 checkColsFormUniqueKeys <- function(data, keyColNames,
-                                    allowNAKeys = FALSE) {
+                                    allowNAKeys = TRUE) {
   data <- dplyr::ungroup(data)
-  # # check for NA keys
-  # if((!allowNAKeys) && (length(keyColNames)>0)) {
-  #   allGood <- data %>%
-  #     dplyr::select(dplyr::one_of(keyColNames)) %>%
-  #     complete.cases() %>%
-  #     all()
-  #   if(!allGood) {
-  #     stop("saw NA in keys")
-  #   }
-  # }
+  # check for NA keys
+  if((!allowNAKeys) && (length(keyColNames)>0)) {
+    allGood <- data %>%
+      dplyr::select(dplyr::one_of(keyColNames)) %>%
+      complete.cases() %>%
+      all()
+    if(!allGood) {
+      stop("saw NA in keys")
+    }
+  }
   cn <- colnames(data)
-  if(length(keyColNames)!=length(unique(keyColNames))) {
+  if(length(keyColNames)!=length(unique(keyColNames, allowNAKeys=TRUE))) {
     stop("cdata:checkColsFormUniqueKeys keyColNames must not have duplicates")
   }
   if(length(setdiff(keyColNames,cn))>0) {
@@ -141,7 +141,7 @@ moveValuesToRows <- function(data,
   if(!checkColsFormUniqueKeys(dplyr::select(data,
                                             dplyr::one_of(dcols)),
                               dcols,
-                              allowNAKeys = FALSE)) {
+                              allowNAKeys = TRUE)) {
     stop("cdata:moveValuesToRows rows were not uniquely keyed")
   }
   NAMEFORNEWKEYCOLUMM <- NULL # signal not an unbound variable
@@ -234,7 +234,7 @@ moveValuesToColumns <- function(data,
   if(!checkColsFormUniqueKeys(data,
                               c(rowKeyColumns,
                                 columnToTakeKeysFrom),
-                              allowNAKeys = FALSE)) {
+                              allowNAKeys = TRUE)) {
     stop(paste0("\n moveValeusToColumns: specified",
                 "\n rowKeyColumns plus columnToTakeKeysFrom",
                 "\n isn't unique across rows"))
@@ -248,7 +248,7 @@ moveValuesToColumns <- function(data,
     dplyr::distinct()
   if(!checkColsFormUniqueKeys(dsub,
                               rowKeyColumns,
-                              allowNAKeys = FALSE)) {
+                              allowNAKeys = TRUE)) {
     stop(paste0("\n some columns not in",
                 "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
                 "\n are splitting up row groups"))
