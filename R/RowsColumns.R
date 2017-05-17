@@ -26,16 +26,16 @@ NULL
 checkColsFormUniqueKeys <- function(data, keyColNames,
                                     allowNAKeys = FALSE) {
   data <- dplyr::ungroup(data)
-  # check for NA keys
-  if((!allowNAKeys) && (length(keyColNames)>0)) {
-    allGood <- data %>%
-      dplyr::select(dplyr::one_of(keyColNames)) %>%
-      complete.cases() %>%
-      all()
-    if(!allGood) {
-      stop("saw NA in keys")
-    }
-  }
+  # # check for NA keys
+  # if((!allowNAKeys) && (length(keyColNames)>0)) {
+  #   allGood <- data %>%
+  #     dplyr::select(dplyr::one_of(keyColNames)) %>%
+  #     complete.cases() %>%
+  #     all()
+  #   if(!allGood) {
+  #     stop("saw NA in keys")
+  #   }
+  # }
   cn <- colnames(data)
   if(length(keyColNames)!=length(unique(keyColNames))) {
     stop("cdata:checkColsFormUniqueKeys keyColNames must not have duplicates")

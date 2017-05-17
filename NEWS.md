@@ -1,8 +1,12 @@
 
-'cdata' 0.1.1 2017/04.17
+'cdata' 0.1.5 2017/05/17
 
-- ungroup before calculating distinct.
+ * Allow NA in key columns.
+
+'cdata' 0.1.1 2017/04/17
+
+ * ungroup before calculating distinct.
 
 'cdata' 0.1.0 2017/03/28
 
-- First release.
+ * First release.
