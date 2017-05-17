@@ -74,6 +74,8 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.
+#' @param ... force later argumets to bind by name.
+#' @param nameForNewClassColumn optional name to land original cell classes to.
 #' @param na.rm passed to \code{tidyr::gather}
 #' @param convert passed to \code{tidyr::gather}
 #' @param factor_key passed to \code{tidyr::gather}
@@ -94,11 +96,16 @@ moveValuesToRows <- function(data,
                              nameForNewKeyColumn,
                              nameForNewValueColumn,
                              columnsToTakeFrom,
+                             ...,
+                             nameForNewClassColumn = NULL,
                              na.rm = FALSE,
                              convert = FALSE,
                              factor_key = FALSE) {
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
+  if(length(list(...))) {
+    stop("cdata::moveValuesToRows unexpected arguments")
+  }
   if(length(nameForNewKeyColumn)!=1) {
     stop("cdata:moveValuesToRows nameForNewKeyColumn must be length 1")
   }
@@ -137,6 +144,11 @@ moveValuesToRows <- function(data,
   if(length(setdiff(columnsToTakeFrom,cn))>0) {
     stop("cdata:moveValuesToRows columnsToTakeFrom must all be column names")
   }
+  if(length(nameForNewClassColumn)!=0) {
+    if((length(nameForNewClassColumn)!=1) || (!is.character(nameForNewClassColumn))) {
+      stop("cdata:moveValuesToRows nameForNewClassColumn must be length 1 character")
+    }
+  }
   dcols <- setdiff(cn, columnsToTakeFrom)
   if(!checkColsFormUniqueKeys(dplyr::select(data,
                                             dplyr::one_of(dcols)),
@@ -146,16 +158,22 @@ moveValuesToRows <- function(data,
   }
   NAMEFORNEWKEYCOLUMM <- NULL # signal not an unbound variable
   NAMEFORNEWVALUECOLUMN <- NULL # signal not an unbound variable
-  wrapr::let(c(NAMEFORNEWKEYCOLUMM= nameForNewKeyColumn,
-               NAMEFORNEWVALUECOLUMN= nameForNewValueColumn),
-             tidyr::gather(data,
-                           key= NAMEFORNEWKEYCOLUMM,
-                           value= NAMEFORNEWVALUECOLUMN,
-                           dplyr::one_of(columnsToTakeFrom),
-                           na.rm = na.rm,
-                           convert = convert,
-                           factor_key = factor_key)
+  res <- wrapr::let(c(NAMEFORNEWKEYCOLUMM= nameForNewKeyColumn,
+                      NAMEFORNEWVALUECOLUMN= nameForNewValueColumn),
+                    tidyr::gather(data,
+                                  key= NAMEFORNEWKEYCOLUMM,
+                                  value= NAMEFORNEWVALUECOLUMN,
+                                  dplyr::one_of(columnsToTakeFrom),
+                                  na.rm = na.rm,
+                                  convert = convert,
+                                  factor_key = factor_key)
   )
+  if(!is.null(nameForNewClassColumn)) {
+    classMap <- vapply(data, class, character(1))
+    names(classMap) <- colnames(data)
+    res[[nameForNewClassColumn]] <- classMap[res[[nameForNewKeyColumn]]]
+  }
+  res
 }
 
 #' Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).
@@ -168,6 +186,7 @@ moveValuesToRows <- function(data,
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
+#' @param ... force later arguments to bind by name.
 #' @param fill passed to \code{tidyr::spread}
 #' @param convert passed to \code{tidyr::spread}
 #' @param drop passed to \code{tidyr::spread}
@@ -188,12 +207,16 @@ moveValuesToColumns <- function(data,
                                 columnToTakeKeysFrom,
                                 columnToTakeValuesFrom,
                                 rowKeyColumns,
+                                ...,
                                 fill = NA,
                                 convert = FALSE,
                                 drop = TRUE,
                                 sep = NULL) {
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
+  if(length(list(...))) {
+    stop("cdata::moveValuesToRows unexpected arguments")
+  }
   if(length(columnToTakeKeysFrom)!=1) {
     stop("cdata:moveValuesToColumns columnToTakeKeysFrom must be length 1")
   }

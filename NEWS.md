@@ -2,6 +2,7 @@
 'cdata' 0.1.5 2017/05/17
 
  * Allow NA in key columns.
+ * Add optional class annotation when moving values to columns.
 
 'cdata' 0.1.1 2017/04/17
 
