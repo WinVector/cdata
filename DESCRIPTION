@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Wrappers for 'tidyr::gather()' and 'tidyr::spread()'
 Version: 0.1.5
-Date: 2017-05-17
+Date: 2017-07-04
 Author: John Mount, Nina Zumel
 Maintainer: John Mount <jmount@win-vector.com>
 URL: https://github.com/WinVector/cdata
