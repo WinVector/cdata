@@ -6,3 +6,6 @@
 #' @docType package
 #' @name cdata
 NULL
+
+# make sure dot doesn't look like an unbound ref
+. <- NULL

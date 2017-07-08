@@ -13,12 +13,13 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Imports:
-  dplyr,
+  dplyr (>= 0.5.0),
   tidyr,
   tibble,
-  wrapr
+  wrapr (>= 0.3.0)
 Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 ByteCompile: true
+Remotes: WinVector/wrapr

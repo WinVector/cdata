@@ -1,5 +1,5 @@
 
-#' @importFrom dplyr %>%
+#' @importFrom wrapr %.>%
 #' @importFrom stats complete.cases
 #' @importFrom tibble frame_data
 #' @importFrom tidyr gather spread
@@ -28,10 +28,10 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   data <- dplyr::ungroup(data)
   # check for NA keys
   if((!allowNAKeys) && (length(keyColNames)>0)) {
-    allGood <- data %>%
-      dplyr::select(dplyr::one_of(keyColNames)) %>%
-      complete.cases() %>%
-      all()
+    allGood <- data %.>%
+      dplyr::select(., dplyr::one_of(keyColNames)) %.>%
+      complete.cases(.) %.>%
+      all(.)
     if(!allGood) {
       stop("saw NA in keys")
     }
@@ -55,10 +55,10 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   nunique <- min(1, ndata)
   if(length(keyColNames)>0) {
     nunique <-
-      data %>%
-        dplyr::select(dplyr::one_of(keyColNames)) %>%
-        dplyr::distinct() %>%
-        nrow()
+      data %.>%
+        dplyr::select(., dplyr::one_of(keyColNames)) %.>%
+        dplyr::distinct(.) %.>%
+        nrow(.)
   }
   # compare
   return(nunique==ndata)
@@ -266,9 +266,9 @@ moveValuesToColumns <- function(data,
   # the distinct rows data frame without columnToTakeKeysFrom and columnToTakeValuesFrom
   dcols <- setdiff(colnames(data),
                    c(columnToTakeKeysFrom, columnToTakeValuesFrom))
-  dsub <- data %>%
-    dplyr::select(dplyr::one_of(dcols)) %>%
-    dplyr::distinct()
+  dsub <- data %.>%
+    dplyr::select(.,dplyr::one_of(dcols)) %.>%
+    dplyr::distinct(.)
   if(!checkColsFormUniqueKeys(dsub,
                               rowKeyColumns,
                               allowNAKeys = TRUE)) {

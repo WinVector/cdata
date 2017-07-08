@@ -81,7 +81,7 @@ The idea is: since `depth` is a function of the model name, it should not be rec
 Data Scientist 2 is not concerned about any difficulty that might arise by this format as they know they can convert to Data Scientist 1's format by using a `join` command:
 
 ```{r sc2to1}
-library("dplyr", warn.conflicts= FALSE)
+suppressPackageStartupMessages(library("dplyr"))
 
 d1_2 <- left_join(d2, models2, by='model') %>%
   select(model, depth, testset, AUC, pR2) %>%
