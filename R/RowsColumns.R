@@ -43,23 +43,20 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   if(length(setdiff(keyColNames,cn))>0) {
     stop("cdata::checkColsFormUniqueKeys all keyColNames must be columns of data")
   }
-  # count the number of rows (threat 0-column frames as 0-row frames)
-  ndata <- 0
-  if(ncol(data)>0) {
-    ndata <- nrow(data)
-  }
+  # count the number of rows (treat 0-column frames as 0-row frames)
+  ndata <- nrow(data)
   if(ndata<=1) {
     return(TRUE)
   }
-  # count the number of rows identifiable by keys
-  nunique <- min(1, ndata)
-  if(length(keyColNames)>0) {
-    nunique <-
-      data %.>%
-        dplyr::select(., dplyr::one_of(keyColNames)) %.>%
-        dplyr::distinct(.) %.>%
-        nrow(.)
+  if(length(keyColNames) <= 0) {
+    return(FALSE)
   }
+  # count the number of rows identifiable by keys
+  nunique <-
+    data %.>%
+    dplyr::select(., dplyr::one_of(keyColNames)) %.>%
+    dplyr::distinct(.) %.>%
+    nrow(.)
   # compare
   return(nunique==ndata)
 }
@@ -266,15 +263,17 @@ moveValuesToColumns <- function(data,
   # the distinct rows data frame without columnToTakeKeysFrom and columnToTakeValuesFrom
   dcols <- setdiff(colnames(data),
                    c(columnToTakeKeysFrom, columnToTakeValuesFrom))
-  dsub <- data %.>%
-    dplyr::select(.,dplyr::one_of(dcols)) %.>%
-    dplyr::distinct(.)
-  if(!checkColsFormUniqueKeys(dsub,
-                              rowKeyColumns,
-                              allowNAKeys = TRUE)) {
-    stop(paste0("\n some columns not in",
-                "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
-                "\n are splitting up row groups"))
+  if(length(dcols)>0) { # work around https://github.com/tidyverse/dplyr/issues/2954
+    dsub <- data %.>%
+      dplyr::select(.,dplyr::one_of(dcols)) %.>%
+      dplyr::distinct(.)
+    if(!checkColsFormUniqueKeys(dsub,
+                                rowKeyColumns,
+                                allowNAKeys = TRUE)) {
+      stop(paste0("\n some columns not in",
+                  "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
+                  "\n are splitting up row groups"))
+    }
   }
   COLUMNTOTAKEKEYSFROM <- NULL # signal not an unbound variable
   COLUMNTOTAKEVALUESFROM <- NULL # signal not an unbound variable
