@@ -1,4 +1,7 @@
 
+'cdata' 0.1.6 2017/07/09
+
+ * work around empty keyset issues.
 
 'cdata' 0.1.5 2017/07/04
 
