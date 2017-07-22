@@ -22,4 +22,4 @@ Suggests: testthat,
     rmarkdown
 VignetteBuilder: knitr
 ByteCompile: true
-Remotes: WinVector/wrapr
+
