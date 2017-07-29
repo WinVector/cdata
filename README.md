@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 `cdata` is an explanation of "coordinatized data" and includes deliberately verbose wrappers for `tidyr::gather()` and `tidyr::spread()`. Useful for training and for checking extra invariants.
 
@@ -37,7 +38,7 @@ In each case the data scientist was asked to test two decision tree regression m
 
 #### Data Scientist 1
 
-![](vignettes/ML.png)
+![](https://github.com/WinVector/cdata/raw/master/vignettes/cdata.png)
 
 Data scientist 1 is an experienced modeler, and records their data as follows:
 
