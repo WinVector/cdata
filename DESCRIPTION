@@ -8,7 +8,7 @@ Authors@R: c(
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
     person(family = "Win-Vector LLC", role = c("cph"))
     )
-URL: http://winvector.github.io/cdata/
+URL:  https://github.com/WinVector/cdata/, https://winvector.github.io/cdata/
 Maintainer: John Mount <jmount@win-vector.com>
 BugReports: https://github.com/WinVector/cdata/issues
 Description: Supplies deliberately verbose wrappers for 'tidyr::gather()' and 'tidyr::spread()', and an explanatory vignette.  Useful for training and for enforcing preconditions.
