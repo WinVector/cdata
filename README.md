@@ -114,11 +114,7 @@ Data Scientist 2 is not concerned about any difficulty that might arise by this 
 
 ``` r
 suppressPackageStartupMessages(library("dplyr"))
-```
 
-    ## Warning: package 'dplyr' was built under R version 3.4.2
-
-``` r
 d1_2 <- left_join(d2, models2, by='model') %>%
   select(model, depth, testset, AUC, pR2) %>%
   arrange(model, testset)
