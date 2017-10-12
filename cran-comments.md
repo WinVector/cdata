@@ -4,7 +4,10 @@
 * using R version 3.4.2 (2017-09-28)
 * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 
-* win-builder (devel and release)
+* win-builder 
+* using R Under development (unstable) (2017-09-12 r73242)
+* using platform: x86_64-w64-mingw32 (64-bit)
+
 
 ## R CMD check --as-cran cdata_0.1.6.tar.gz 
 
@@ -19,6 +22,8 @@ R CMD check results
 
 * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
 Maintainer: ‘John Mount <jmount@win-vector.com>’
+
+Status: OK
 
 ## Downstream dependencies
 
