@@ -158,7 +158,8 @@
 <span class='co'># ends with</span>
 <span class='fu'>grepdf</span>(<span class='st'>'b$'</span>, <span class='no'>d</span>)</div><div class='output co'>#&gt; [1] "yb"</div><div class='input'>
 <span class='co'># very useful in pipelines</span>
-<span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='st'>"dplyr"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘dplyr’ was built under R version 3.4.2</span></div><div class='input'><span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>val1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>val2</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='st'>"dplyr"</span>))
+<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>val1</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>val2</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='no'>d2</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='moveValuesToRows.html'>moveValuesToRows</a></span>(<span class='no'>.</span> ,
                    <span class='kw'>nameForNewKeyColumn</span> <span class='kw'>=</span> <span class='st'>'measureName'</span>,

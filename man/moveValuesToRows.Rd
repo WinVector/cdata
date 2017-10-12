@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColumns.R
 \name{moveValuesToRows}
 \alias{moveValuesToRows}
-\title{Move values from columns to rows (wrapper for \code{tidyr::gather}, or anti-pivot).}
+\title{Move values from columns to rows (wrapper for \code{\link[tidyr]{gather}}, or anti-pivot).}
 \usage{
 moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL, na.rm = FALSE,
@@ -21,11 +21,11 @@ moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
 
-\item{na.rm}{passed to \code{tidyr::gather}}
+\item{na.rm}{passed to \code{\link[tidyr]{gather}}}
 
-\item{convert}{passed to \code{tidyr::gather}}
+\item{convert}{passed to \code{\link[tidyr]{gather}}}
 
-\item{factor_key}{passed to \code{tidyr::gather}}
+\item{factor_key}{passed to \code{\link[tidyr]{gather}}}
 }
 \value{
 new data.frame with values moved to rows.

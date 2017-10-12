@@ -61,7 +61,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
   return(nunique==ndata)
 }
 
-#' Move values from columns to rows (wrapper for \code{tidyr::gather}, or anti-pivot).
+#' Move values from columns to rows (wrapper for \code{\link[tidyr]{gather}}, or anti-pivot).
 #'
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
@@ -73,9 +73,9 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #' @param columnsToTakeFrom character array names of columns to take values from.
 #' @param ... force later argumets to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
-#' @param na.rm passed to \code{tidyr::gather}
-#' @param convert passed to \code{tidyr::gather}
-#' @param factor_key passed to \code{tidyr::gather}
+#' @param na.rm passed to \code{\link[tidyr]{gather}}
+#' @param convert passed to \code{\link[tidyr]{gather}}
+#' @param factor_key passed to \code{\link[tidyr]{gather}}
 #' @return new data.frame with values moved to rows.
 #'
 #' @examples
@@ -173,7 +173,7 @@ moveValuesToRows <- function(data,
   res
 }
 
-#' Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).
+#' Move values from rows to columns (wrapper for \code{\link[tidyr]{spread}} or pivot).
 #'
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
@@ -184,10 +184,10 @@ moveValuesToRows <- function(data,
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
 #' @param ... force later arguments to bind by name.
-#' @param fill passed to \code{tidyr::spread}
-#' @param convert passed to \code{tidyr::spread}
-#' @param drop passed to \code{tidyr::spread}
-#' @param sep passed to \code{tidyr::spread}
+#' @param fill passed to \code{\link[tidyr]{spread}}
+#' @param convert passed to \code{\link[tidyr]{spread}}
+#' @param drop passed to \code{\link[tidyr]{spread}}
+#' @param sep passed to \code{\link[tidyr]{spread}}
 #' @return new data.frame with values moved to columns.
 #'
 #' @examples

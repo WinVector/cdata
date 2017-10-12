@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColumns.R
 \name{moveValuesToColumns}
 \alias{moveValuesToColumns}
-\title{Move values from rows to columns (wrapper for \code{tidyr::spread} or pivot).}
+\title{Move values from rows to columns (wrapper for \code{\link[tidyr]{spread}} or pivot).}
 \usage{
 moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., fill = NA, convert = FALSE, drop = TRUE,
@@ -19,13 +19,13 @@ moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 
 \item{...}{force later arguments to bind by name.}
 
-\item{fill}{passed to \code{tidyr::spread}}
+\item{fill}{passed to \code{\link[tidyr]{spread}}}
 
-\item{convert}{passed to \code{tidyr::spread}}
+\item{convert}{passed to \code{\link[tidyr]{spread}}}
 
-\item{drop}{passed to \code{tidyr::spread}}
+\item{drop}{passed to \code{\link[tidyr]{spread}}}
 
-\item{sep}{passed to \code{tidyr::spread}}
+\item{sep}{passed to \code{\link[tidyr]{spread}}}
 }
 \value{
 new data.frame with values moved to columns.
