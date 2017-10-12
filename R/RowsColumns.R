@@ -100,7 +100,7 @@ moveValuesToRows <- function(data,
                              factor_key = FALSE) {
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
-  if(length(list(...))) {
+  if(length(list(...))>0) {
     stop("cdata::moveValuesToRows unexpected arguments")
   }
   if(length(nameForNewKeyColumn)!=1) {
@@ -211,8 +211,8 @@ moveValuesToColumns <- function(data,
                                 sep = NULL) {
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
-  if(length(list(...))) {
-    stop("cdata::moveValuesToRows unexpected arguments")
+  if(length(list(...))>0) {
+    stop("cdata::moveValuesToColumns unexpected arguments")
   }
   if(length(columnToTakeKeysFrom)!=1) {
     stop("cdata::moveValuesToColumns columnToTakeKeysFrom must be length 1")

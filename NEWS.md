@@ -1,7 +1,8 @@
 
-# cdata 0.1.6 2017/07/09
+# cdata 0.1.6 2017/10/12
 
  * work around empty keyset issues.
+ * add column control.
 
 # cdata 0.1.5 2017/07/04
 
