@@ -67,7 +67,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #'
 #' @seealso \code{\link{moveValuesToColumns}}
 #'
-#' @param data data.frame to work with.
+#' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToRowsQ}}).
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.
@@ -98,6 +98,9 @@ moveValuesToRows <- function(data,
                              na.rm = FALSE,
                              convert = FALSE,
                              factor_key = FALSE) {
+  if(!is.data.frame(data)) {
+    stop("cdata::moveValuesToRows data must be a local data.frame")
+  }
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(list(...))>0) {
@@ -179,7 +182,7 @@ moveValuesToRows <- function(data,
 #'
 #' @seealso \code{\link{moveValuesToRows}}
 #'
-#' @param data data.frame to work with.
+#' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToColumnsQ}}).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
@@ -209,6 +212,9 @@ moveValuesToColumns <- function(data,
                                 convert = FALSE,
                                 drop = TRUE,
                                 sep = NULL) {
+  if(!is.data.frame(data)) {
+    stop("cdata::moveValuesToColumns data must be a local data.frame")
+  }
   data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(list(...))>0) {

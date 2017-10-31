@@ -1,4 +1,8 @@
 
+# cdata 0.1.7 2017/10/31
+
+ * Better error msgs.
+
 # cdata 0.1.6 2017/10/12
 
  * work around empty keyset issues.

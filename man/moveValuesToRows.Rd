@@ -9,7 +9,7 @@ moveValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
   convert = FALSE, factor_key = FALSE)
 }
 \arguments{
-\item{data}{data.frame to work with.}
+\item{data}{data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToRowsQ}}).}
 
 \item{nameForNewKeyColumn}{character name of column to write new keys in.}
 

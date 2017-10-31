@@ -9,7 +9,7 @@ moveValuesToColumns(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   sep = NULL)
 }
 \arguments{
-\item{data}{data.frame to work with.}
+\item{data}{data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToColumnsQ}}).}
 
 \item{columnToTakeKeysFrom}{character name of column build new column names from.}
 

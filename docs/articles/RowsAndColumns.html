@@ -72,7 +72,7 @@
       <h1>Coordinatized Data: A Fluid Data Specification</h1>
                         <h4 class="author">John Mount and Nina Zumel</h4>
             
-            <h4 class="date">2017-10-12</h4>
+            <h4 class="date">2017-10-31</h4>
           </div>
 
     
@@ -103,7 +103,7 @@
 <p>Data scientist 1 is an experienced modeler, and records their data as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"tibble"</span>)
 d1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tribble</a></span>(
-  ~model, ~depth, ~testset, ~AUC, ~pR2,
+  <span class="op">~</span>model, <span class="op">~</span>depth, <span class="op">~</span>testset, <span class="op">~</span>AUC, <span class="op">~</span>pR2,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="st">'x'</span>,      <span class="fl">0.4</span>,  <span class="fl">0.2</span>,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="st">'y'</span>,      <span class="fl">0.6</span>,  <span class="fl">0.3</span>,
   <span class="st">'b'</span>,    <span class="dv">3</span>,      <span class="st">'x'</span>,      <span class="fl">0.5</span>,  <span class="fl">0.25</span>,
@@ -128,13 +128,13 @@ d1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumenta
 </div>
 <p>Data Scientist 2 has data warehousing experience and records their data in a <a href="https://en.wikipedia.org/wiki/Database_normalization#Normal_forms">normal form</a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">models2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tribble</a></span>(
-  ~model, ~depth,
+  <span class="op">~</span>model, <span class="op">~</span>depth,
   <span class="st">'a'</span>,    <span class="dv">5</span>,
   <span class="st">'b'</span>,    <span class="dv">3</span>
 )
 
 d2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tribble</a></span>(
-  ~model, ~testset, ~AUC, ~pR2,
+  <span class="op">~</span>model, <span class="op">~</span>testset, <span class="op">~</span>AUC, <span class="op">~</span>pR2,
   <span class="st">'a'</span>,   <span class="st">'x'</span>,      <span class="fl">0.4</span>,  <span class="fl">0.2</span>,
   <span class="st">'a'</span>,   <span class="st">'y'</span>,      <span class="fl">0.6</span>,  <span class="fl">0.3</span>,
   <span class="st">'b'</span>,   <span class="st">'x'</span>,      <span class="fl">0.5</span>,  <span class="fl">0.25</span>,
@@ -159,10 +159,10 @@ d2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumenta
 <p>Data Scientist 2 is not concerned about any difficulty that might arise by this format as they know they can convert to Data Scientist 1’s format by using a <code>join</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(<span class="st">"dplyr"</span>))
 
-d1_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(d2, models2, <span class="dt">by=</span><span class="st">'model'</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) %&gt;%
+d1_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(d2, models2, <span class="dt">by=</span><span class="st">'model'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset)
-<span class="kw">print</span>(d1_2)</code></pre></div>
+<span class="kw">print</span>(d1_<span class="dv">2</span>)</code></pre></div>
 <pre><code>## # A tibble: 4 x 5
 ##   model depth testset   AUC   pR2
 ##   &lt;chr&gt; &lt;dbl&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -170,7 +170,7 @@ d1_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyve
 ## 2     a     5       y   0.6  0.30
 ## 3     b     3       x   0.5  0.25
 ## 4     b     3       y   0.5  0.25</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d1, d1_2)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d1, d1_<span class="dv">2</span>)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p><a href="https://en.wikipedia.org/wiki/Relational_algebra">Relational</a> data theory (the science of joins) is the basis of Structured Query Language (<code>SQL</code>) and a topic any data scientist <em>must</em> master.</p>
 </div>
@@ -182,7 +182,7 @@ d1_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyve
 </div>
 <p>Data Scientist 3 has a lot of field experience, and prefers an <a href="https://en.wikipedia.org/wiki/Entity%E2%80%93attribute%E2%80%93value_model">entity/attribute/value</a> notation. They log each measurement as a separate row:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">tribble</a></span>(
-  ~model, ~depth, ~testset, ~measurement, ~value,
+  <span class="op">~</span>model, <span class="op">~</span>depth, <span class="op">~</span>testset, <span class="op">~</span>measurement, <span class="op">~</span>value,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="st">'x'</span>,      <span class="st">'AUC'</span>,        <span class="fl">0.4</span>,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="st">'x'</span>,      <span class="st">'pR2'</span>,        <span class="fl">0.2</span>,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="st">'y'</span>,      <span class="st">'AUC'</span>,        <span class="fl">0.6</span>,
@@ -208,11 +208,11 @@ d1_2 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyve
 <p>Data Scientist 3 is not worried about their form causing problems as they know how to convert into Data Scientist 1’s format with an <code>R</code> command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"tidyr"</span>)
 
-d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread</a></span>(<span class="st">'measurement'</span>, <span class="st">'value'</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) %&gt;%<span class="st">  </span><span class="co"># to guarantee column order</span>
+d1_<span class="dv">3</span> &lt;-<span class="st"> </span>d3 <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread</a></span>(<span class="st">'measurement'</span>, <span class="st">'value'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># to guarantee column order</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset)  <span class="co"># to guarantee row order</span>
-<span class="kw">print</span>(d1_3)</code></pre></div>
+<span class="kw">print</span>(d1_<span class="dv">3</span>)</code></pre></div>
 <pre><code>## # A tibble: 4 x 5
 ##   model depth testset   AUC   pR2
 ##   &lt;chr&gt; &lt;dbl&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -220,7 +220,7 @@ d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
 ## 2     a     5       y   0.6  0.30
 ## 3     b     3       x   0.5  0.25
 ## 4     b     3       y   0.5  0.25</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d1, d1_3)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d1, d1_<span class="dv">3</span>)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>You can read a bit on <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread()</a></code> <a href="http://r4ds.had.co.nz/tidy-data.html#spreading-and-gathering">here</a>.</p>
 <p>We will use the term <code><a href="../reference/moveValuesToColumns.html">moveValuesToColumns()</a></code> for this operation later. The <code><a href="http://www.rdocumentation.org/packages/tidyr/topics/spread">spread()</a></code> will be replaced with the following.</p>
@@ -257,7 +257,7 @@ d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
 </div>
 <p>Data Scientist 4 picks a form that makes models unique keys, and records the results as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d4 &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">tribble</a></span>(
-  ~model, ~depth, ~x_AUC, ~x_pR2, ~y_AUC, ~y_pR2,
+  <span class="op">~</span>model, <span class="op">~</span>depth, <span class="op">~</span>x_AUC, <span class="op">~</span>x_pR2, <span class="op">~</span>y_AUC, <span class="op">~</span>y_pR2,
   <span class="st">'a'</span>,    <span class="dv">5</span>,      <span class="fl">0.4</span>,    <span class="fl">0.2</span>,   <span class="fl">0.6</span>,    <span class="fl">0.3</span>,
   <span class="st">'b'</span>,    <span class="dv">3</span>,      <span class="fl">0.5</span>,    <span class="fl">0.25</span>,  <span class="fl">0.5</span>,    <span class="fl">0.25</span>
 )
@@ -269,12 +269,12 @@ d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
 ## 1     a     5   0.4  0.20   0.6  0.30
 ## 2     b     3   0.5  0.25   0.5  0.25</code></pre>
 <p>This is not a problem as it is possible to convert to Data Scientist 3’s format.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3_4 &lt;-<span class="st"> </span>d4 %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="st">'meas'</span>, <span class="st">'value'</span>, x_AUC, y_AUC, x_pR2, y_pR2) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/separate">separate</a></span>(meas, <span class="kw">c</span>(<span class="st">'testset'</span>, <span class="st">'measurement'</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3_<span class="dv">4</span> &lt;-<span class="st"> </span>d4 <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(<span class="st">'meas'</span>, <span class="st">'value'</span>, x_AUC, y_AUC, x_pR2, y_pR2) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/separate">separate</a></span>(meas, <span class="kw">c</span>(<span class="st">'testset'</span>, <span class="st">'measurement'</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset, measurement)
-<span class="kw">print</span>(d3_4)</code></pre></div>
+<span class="kw">print</span>(d3_<span class="dv">4</span>)</code></pre></div>
 <pre><code>## # A tibble: 8 x 5
 ##   model depth testset measurement value
 ##   &lt;chr&gt; &lt;dbl&gt;   &lt;chr&gt;       &lt;chr&gt; &lt;dbl&gt;
@@ -286,7 +286,7 @@ d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
 ## 6     b     3       x         pR2  0.25
 ## 7     b     3       y         AUC  0.50
 ## 8     b     3       y         pR2  0.25</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d3, d3_4)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(d3, d3_<span class="dv">4</span>)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>We will replace the <code>gather</code> operation with <code><a href="../reference/moveValuesToRows.html">moveValuesToRows()</a></code> and the call will look like the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw"><a href="../reference/moveValuesToRows.html">moveValuesToRows</a></span>(<span class="dt">data =</span> d4,
@@ -321,13 +321,13 @@ d1_3 &lt;-<span class="st"> </span>d3 %&gt;%
 <p>From our point of view these keys all name the same data item. The fact that we are interpreting one position as a table name and another as a column name is just convention. We can even write <code>R</code> code that uses these keys on all our scientists’ data without performing any reformatting:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># take a map from names to scalar conditions and return a value.</span>
 <span class="co"># inefficient method; notional only</span>
-lookup &lt;-<span class="st"> </span>function(key) {
+lookup &lt;-<span class="st"> </span><span class="cf">function</span>(key) {
   table &lt;-<span class="st"> </span><span class="kw">get</span>(key[[<span class="st">'Table'</span>]])
   col &lt;-<span class="st"> </span>key[[<span class="st">'ValueColumn'</span>]]
   conditions &lt;-<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/setops.html">setdiff</a></span>(<span class="kw">names</span>(key), 
                         <span class="kw">c</span>(<span class="st">'Table'</span>, <span class="st">'ValueColumn'</span>))
-  for(ci in conditions) {
-    table &lt;-<span class="st"> </span>table[table[[ci]]==key[[ci]], ,
+  <span class="cf">for</span>(ci <span class="cf">in</span> conditions) {
+    table &lt;-<span class="st"> </span>table[table[[ci]]<span class="op">==</span>key[[ci]], ,
                    drop=<span class="st"> </span><span class="ot">FALSE</span>]
   }
   table[[col]][[<span class="dv">1</span>]]
@@ -375,8 +375,8 @@ k4 =<span class="st"> </span><span class="kw">c</span>(<span class="dt">Table=</
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3from1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/moveValuesToRows.html">moveValuesToRows</a></span>(<span class="dt">data=</span>d1,
                             <span class="dt">nameForNewKeyColumn=</span> <span class="st">'measurement'</span>,
                             <span class="dt">nameForNewValueColumn=</span> <span class="st">'value'</span>,
-                            <span class="dt">columnsToTakeFrom =</span> <span class="kw">c</span>(<span class="st">'AUC'</span>, <span class="st">'pR2'</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) %&gt;%
+                            <span class="dt">columnsToTakeFrom =</span> <span class="kw">c</span>(<span class="st">'AUC'</span>, <span class="st">'pR2'</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset, measurement)
 <span class="kw">print</span>(d3from1)</code></pre></div>
 <pre><code>## # A tibble: 8 x 5
@@ -403,8 +403,8 @@ k4 =<span class="st"> </span><span class="kw">c</span>(<span class="dt">Table=</
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/moveValuesToRows.html">moveValuesToRows</a></span>(<span class="dt">data=</span>row,
                  <span class="dt">nameForNewKeyColumn=</span> <span class="st">'measurement'</span>,
                  <span class="dt">nameForNewValueColumn=</span> <span class="st">'value'</span>,
-                 <span class="dt">columnsToTakeFrom =</span> <span class="kw">c</span>(<span class="st">'AUC'</span>, <span class="st">'pR2'</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) %&gt;%
+                 <span class="dt">columnsToTakeFrom =</span> <span class="kw">c</span>(<span class="st">'AUC'</span>, <span class="st">'pR2'</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, measurement, value) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset, measurement)</code></pre></div>
 <pre><code>## # A tibble: 2 x 5
 ##   model depth testset measurement value
@@ -426,8 +426,8 @@ k4 =<span class="st"> </span><span class="kw">c</span>(<span class="dt">Table=</
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d1from3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/moveValuesToColumns.html">moveValuesToColumns</a></span>(<span class="dt">data=</span> d3,
                     <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'measurement'</span>,
                     <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'value'</span>,
-                    <span class="dt">rowKeyColumns=</span> <span class="kw">c</span>(<span class="st">'model'</span>, <span class="st">'testset'</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) %&gt;%
+                    <span class="dt">rowKeyColumns=</span> <span class="kw">c</span>(<span class="st">'model'</span>, <span class="st">'testset'</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(model, depth, testset, AUC, pR2) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(model, testset)
 <span class="kw">print</span>(d1from3)</code></pre></div>
 <pre><code>## # A tibble: 4 x 5
@@ -445,7 +445,7 @@ k4 =<span class="st"> </span><span class="kw">c</span>(<span class="dt">Table=</
 <a href="#too-little-keying" class="anchor"></a>Too little keying</h5>
 <p>If our keys don’t contain enough information to match rows together we can have a problem. Suppose our <code>testset</code> record was damaged or not present and look how a direct call to <code>spread</code> works:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3damaged &lt;-<span class="st"> </span>d3
-d3damaged$testset &lt;-<span class="st"> 'z'</span>
+d3damaged<span class="op">$</span>testset &lt;-<span class="st"> 'z'</span>
 <span class="kw">print</span>(d3damaged)</code></pre></div>
 <pre><code>## # A tibble: 8 x 5
 ##   model depth testset measurement value
@@ -476,7 +476,7 @@ d3damaged$testset &lt;-<span class="st"> 'z'</span>
 <a href="#too-much-keying" class="anchor"></a>Too much keying</h5>
 <p>Columns can also contain too fine a key structure. For example, suppose our data was damaged and <code>depth</code> is no longer a function of the model id, but contains extra detail. In this case a direct call to <code>spread</code> produces a way too large result because the extra detail prevents it from matching rows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d3damaged &lt;-<span class="st"> </span>d3
-d3damaged$depth &lt;-<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">nrow</span>(d3damaged))
+d3damaged<span class="op">$</span>depth &lt;-<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">nrow</span>(d3damaged))
 <span class="kw">print</span>(d3damaged)</code></pre></div>
 <pre><code>## # A tibble: 8 x 5
 ##   model depth testset measurement value
