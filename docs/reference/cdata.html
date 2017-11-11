@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><code>cdata</code>: Wrappers for fluid data transform operators. — cdata • cdata</title>
+<title><code>cdata</code>: Fluid Data Transformations. — cdata • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -80,11 +80,18 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1><code>cdata</code>: Wrappers for fluid data transform operators.</h1>
+    <h1><code>cdata</code>: Fluid Data Transformations.</h1>
     </div>
 
     
-    <p><code>cdata</code>: Wrappers for fluid data transform operators.</p>
+    <p>Supplies implementations of higher order "fluid data" transforms.  These'
+transforms move data between rows and columns, are controlled by a graphical
+transformation specification, and have pivot and un-pivot as special cases.
+Implementation is based on 'DBI' and 'RSQLite', so should be usable on
+'DBI' compliant data sources (include large systems such as 'PostgreSQL' and
+'Spark').  Convenience adapters are provided for in-memory 'data.frame's.
+A theory of fluid data transforms can be found in the following articles:
+<a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/cdata</a> and <a href='https://winvector.github.io/replyr/articles/FluidData.html'>https://winvector.github.io/replyr/articles/FluidData.html</a>.</p>
     
 
         

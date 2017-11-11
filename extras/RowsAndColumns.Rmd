@@ -146,7 +146,8 @@ The above operation is a bit exotic and it (and its inverse) already go under nu
   * `cast` / `melt` (`reshape`, `reshape2`)
   * `spread` / `gather` (`tidyr`)
   * "widen" / "narrow"  (colloquial)
-  * `pivotValuesToColumns()` and `unpivotValuesToRows()` (this writeup)
+  * `pivotValuesToColumns()` and `unpivotValuesToRows()` (this writeup, basic "coordinatized data")
+  * `moveValuesToColums*()` and `moveValuesToRow*()` (the more genaral "fluid data" operators)
 
 And we are certainly neglecting other namings of the concept.  We find none of these particularly evocative (though [cheatsheets help](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)), so one purpose of this note will be to teach these concepts in terms of the deliberately verbose ad-hoc terms: `pivotValuesToColumns()` and `unpivotValuesToRows()`.
 
@@ -194,7 +195,7 @@ We will replace the `gather` operation with `unpivotValuesToRows()` and the call
 
 ![](gather_spread.png)
 
-Although we implement `unpivotValuesToRows()` and `moveValuesToColums()` as thin wrappers of `tidyr`'s `gather` and `spread`, we find the more verbose naming (and calling interface) more intuitive. So we encourage you to think directly in terms of `unpivotValuesToRows()` as moving values to different rows (in the same column), and `moveValuesToColums()` as moving values to different columns (in the same row).  It will usually be apparent from your problem which of these operations you want to use.
+We find the more verbose naming (and calling interface) more intuitive. So we encourage you to think directly in terms of `unpivotValuesToRows()` as moving values to different rows (in the same column), and `moveValuesToColums()` as moving values to different columns (in the same row).  It will usually be apparent from your problem which of these operations you want to use.
 
 ## The Theory of Coordinatized Data
 
@@ -268,7 +269,7 @@ Many students are initially surprised that row/column conversions are considered
 
 Moving data from columns to rows (i.e., from Scientist 1 to Scientist 3) is easy to demonstrate and explain.
 
-The only thing hard about this operation is remembering the name of the operation ("`gather()`") and the arguments.  We can remove this inessential difficulty by bringing in a verbose wrapper function:
+The only thing hard about this operation is remembering the name of the operation ("`gather()`") and the arguments.  We can remove this inessential difficulty by bringing in a new notation (on top of a very powerful theory and implementation):
 
 ```{r unpivotValuesToRows}
 library("cdata")
@@ -314,7 +315,7 @@ In moving from rows to columns we group a set of rows that go together (match on
 
 Note: to move data from rows to columns *we must know which set of rows go together*. That means some set of columns is working as keys, even though this is not emphasized in the `spread()` calling interface or explanations. For invertible data transforms, we want a set of columns (`rowKeyColumns`) that define a composite key that uniquely identifies each row of the result. For this to be true, the `rowKeyColumns` plus the column we are taking value keys from must uniquely identify each row of the input.
 
-To make things easier to understand and remember, we introduce another wrapping function: `pivotValuesToColumns()`.
+To make things easier to understand and remember, we introduce another function: `pivotValuesToColumns()`.
 
 This lets us rework the example of moving from Data Scientist 3's format to Data Scientist 1's:
 
@@ -343,7 +344,7 @@ print(d3damaged)
 spread(d3damaged, 'measurement', 'value')
 ```
 
-This happens because the precondition is not met: the columns `(model, testset, measurement)` don't uniquely represent each row of the input. Catching the error is good, and we emphasize that in our wrapper.
+This happens because the precondition is not met: the columns `(model, testset, measurement)` don't uniquely represent each row of the input. Catching the error is good, and we emphasize that in our function.
 
 ```{r spreaddam2, error=TRUE}
 pivotValuesToColumns(data= d3damaged,
