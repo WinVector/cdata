@@ -62,7 +62,7 @@ checkControlTable <- function(controlTable, strict) {
 #' @param ... not used, force later args to be by name
 #' @return control table
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{moveValuesToRowsQ}}
+#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{moveValuesToRows.character}}
 #'
 #' @examples
 #'
@@ -74,7 +74,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
                                      columnsToTakeFrom,
                                      ...) {
   if(length(list(...))>0) {
-    stop("replyr::buildUnPivotControlTable unexpected arguments.")
+    stop("cdata::buildUnPivotControlTable unexpected arguments.")
   }
   controlTable <- data.frame(x = as.character(columnsToTakeFrom),
                              y = as.character(columnsToTakeFrom),
@@ -82,6 +82,9 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
   colnames(controlTable) <- c(nameForNewKeyColumn, nameForNewValueColumn)
   controlTable
 }
+
+
+
 
 
 
@@ -114,12 +117,12 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param controlTable table specifying mapping (local data frame)
 #' @param wideTableName name of table containing data to be mapped (db/Spark data)
+#' @param controlTable table specifying mapping (local data frame)
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
-#' @param tempNameGenerator a tempNameGenerator from replyr::makeTempNameGenerator()
+#' @param tempNameGenerator a tempNameGenerator from cdata::makeTempNameGenerator()
 #' @param strict logical, if TRUE check control table contents for uniqueness
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
@@ -132,64 +135,63 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #'
 #' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'
-#' #' # un-pivot/tidyr::gather example
-#' d <- data.frame(AUC= 0.6, R2= 0.2)
-#' # cdata version
-#' cdata::moveValuesToRows(d,
-#'                         nameForNewKeyColumn= 'meas',
-#'                         nameForNewValueColumn= 'val',
-#'                         columnsToTakeFrom= c('AUC', 'R2'))
-#' # tidyr version: tidyr::gather(d, key= 'meas', value = 'val')
-#' # replyr moveValuesToRowsQ() version
-#' dR <- replyr_copy_to(my_db, d, 'dR',
-#'                      overwrite = TRUE, temporary = TRUE)
-#' cT <- replyr::buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
-#'                                        nameForNewValueColumn= 'val',
-#'                                        columnsToTakeFrom= c('AUC', 'R2'))
-#' replyr::moveValuesToRowsQ(cT, 'dR', my_db)
+#' # un-pivot example
+#' d <- data.frame(AUC = 0.6, R2 = 0.2)
+#' DBI::dbWriteTable(my_db,
+#'                   'd',
+#'                   d,
+#'                   overwrite = TRUE,
+#'                   temporary = TRUE)
+#' cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
+#'                                nameForNewValueColumn= 'val',
+#'                                columnsToTakeFrom= c('AUC', 'R2'))
+#' tab <- moveValuesToRows.character('d', cT, my_db = my_db)
+#' DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
 #'
 #'
 #' @export
 #'
-moveValuesToRowsQ <- function(controlTable,
-                              wideTableName,
-                              my_db,
-                              ...,
-                              columnsToCopy = NULL,
-                              tempNameGenerator = replyr::makeTempNameGenerator('mvtrq'),
-                              strict = FALSE,
-                              checkNames = TRUE,
-                              showQuery = FALSE,
-                              defaultValue = NULL) {
+moveValuesToRows.character <- function(wideTableName,
+                                       controlTable,
+                                       my_db,
+                                       ...,
+                                       columnsToCopy = NULL,
+                                       tempNameGenerator = makeTempNameGenerator('mvtrq'),
+                                       strict = FALSE,
+                                       checkNames = TRUE,
+                                       showQuery = FALSE,
+                                       defaultValue = NULL) {
   if(length(list(...))>0) {
-    stop("replyr::moveValuesToRowsQ unexpected arguments.")
+    stop("cdata::moveValuesToRows.character unexpected arguments.")
   }
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
-      stop("moveValuesToRowsQ: columnsToCopy must be character")
+      stop("moveValuesToRows.character: columnsToCopy must be character")
     }
   }
   if((!is.character(wideTableName))||(length(wideTableName)!=1)) {
-    stop("moveValuesToRowsQ: wideTableName must be the name of a remote table")
+    stop("moveValuesToRows.character: wideTableName must be the name of a remote table")
   }
   controlTable <- as.data.frame(controlTable)
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
-    stop(paste("replyr::moveValuesToRowsQ", cCheck))
+    stop(paste("cdata::moveValuesToRows.character", cCheck))
   }
   if(checkNames) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- colnames(dplyr::tbl(my_db, wideTableName))
+    wideTableColnames <- DBI::dbListFields(my_db, wideTableName)
     badCells <- setdiff(interiorCells, wideTableColnames)
     if(length(badCells)>0) {
-      stop(paste("replyr::moveValuesToRowsQ: control table entries that are not wideTable column names:",
+      stop(paste("cdata::moveValuesToRows.character: control table entries that are not wideTable column names:",
                  paste(badCells, collapse = ', ')))
     }
   }
   ctabName <- tempNameGenerator()
-  ctab <- copy_to(my_db, controlTable, ctabName,
-                  overwrite = TRUE, temporary=TRUE)
+  DBI::dbWriteTable(my_db,
+                    ctabName,
+                    controlTable,
+                    temporary = TRUE)
   resName <- tempNameGenerator()
   missingCaseTerm = "NULL"
   if(!is.null(defaultValue)) {
@@ -250,10 +252,10 @@ moveValuesToRowsQ <- function(controlTable,
     print(q)
   }
   tryCatch(
+    # sparklyr didn't implement dbExecute(), so using dbGetQuery()
     DBI::dbGetQuery(my_db, q),
     warning = function(w) { NULL })
-  res <- tbl(my_db, resName)
-  res
+  resName
 }
 
 #' Build a moveValuesToColumnsQ() control table that specifies a pivot.
@@ -268,7 +270,7 @@ moveValuesToRowsQ <- function(controlTable,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsQ}}, \code{\link{moveValuesToColumnsQ}}
+#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRows.character}}, \code{\link{moveValuesToColumnsQ}}
 #'
 #' @examples
 #'
@@ -285,7 +287,7 @@ buildPivotControlTable <- function(d,
                                    prefix = columnToTakeKeysFrom,
                                    sep = NULL) {
   if(length(list(...))>0) {
-    stop("replyr::buildPivotControlTable unexpected arguments.")
+    stop("cdata::buildPivotControlTable unexpected arguments.")
   }
   # don't let n() look like unboudn fn
   n <- function(...) { NULL }
@@ -348,7 +350,7 @@ buildPivotControlTable <- function(d,
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
-#' @param tempNameGenerator a tempNameGenerator from replyr::makeTempNameGenerator()
+#' @param tempNameGenerator a tempNameGenerator from cdata::makeTempNameGenerator()
 #' @param strict logical, if TRUE check control table contents for uniqueness
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
@@ -356,7 +358,7 @@ buildPivotControlTable <- function(d,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsQ}}, \code{\link{buildPivotControlTable}}
+#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRows.character}}, \code{\link{buildPivotControlTable}}
 #'
 #' @examples
 #'
@@ -389,14 +391,14 @@ moveValuesToColumnsQ <- function(keyColumns,
                                  my_db,
                                  ...,
                                  columnsToCopy = NULL,
-                                 tempNameGenerator = replyr::makeTempNameGenerator('mvtcq'),
+                                 tempNameGenerator = makeTempNameGenerator('mvtcq'),
                                  strict = FALSE,
                                  checkNames = TRUE,
                                  showQuery = FALSE,
                                  defaultValue = NULL,
                                  dropDups = FALSE) {
   if(length(list(...))>0) {
-    stop("replyr::moveValuesToColumnsQ unexpected arguments.")
+    stop("cdata::moveValuesToColumnsQ unexpected arguments.")
   }
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
@@ -414,19 +416,21 @@ moveValuesToColumnsQ <- function(keyColumns,
   controlTable <- as.data.frame(controlTable)
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
-    stop(paste("replyr::moveValuesToColumnsQ", cCheck))
+    stop(paste("cdata::moveValuesToColumnsQ", cCheck))
   }
   if(checkNames) {
-    tallTableColnames <- colnames(dplyr::tbl(my_db, tallTableName))
+    tallTableColnames <- DBI::dbListFields(my_db, tallTableName)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
-      stop(paste("replyr::moveValuesToColumnsQ: control table column names that are not tallTableName column names:",
+      stop(paste("cdata::moveValuesToColumnsQ: control table column names that are not tallTableName column names:",
                  paste(badCells, collapse = ', ')))
     }
   }
   ctabName <- tempNameGenerator()
-  ctab <- copy_to(my_db, controlTable, ctabName,
-                  overwrite = TRUE, temporary=TRUE)
+  DBI::dbWriteTable(my_db,
+                    ctabName,
+                    controlTable,
+                    temporary = TRUE)
   resName <- tempNameGenerator()
   missingCaseTerm = "NULL"
   if(!is.null(defaultValue)) {
@@ -506,10 +510,10 @@ moveValuesToColumnsQ <- function(keyColumns,
     print(q)
   }
   tryCatch(
+    # sparklyr didn't implement dbExecute(), so using dbGetQuery()
     DBI::dbGetQuery(my_db, q),
     warning = function(w) { NULL })
-  res <- tbl(my_db, resName)
-  res
+  resName
 }
 
 
