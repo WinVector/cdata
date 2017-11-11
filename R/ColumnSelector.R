@@ -28,7 +28,7 @@
 #' # very useful in pipelines
 #' d2 <- data.frame(x = 1, val1 = 1, val2 = 2)
 #' d2 %.>%
-#'   moveValuesToRows(. ,
+#'   unpivotValuesToRows(. ,
 #'                    nameForNewKeyColumn = 'measureName',
 #'                    nameForNewValueColumn = 'measureValue',
 #'                    columnsToTakeFrom = grepdf('^val', .))

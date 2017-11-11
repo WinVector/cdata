@@ -62,7 +62,7 @@ checkControlTable <- function(controlTable, strict) {
 #' @param ... not used, force later args to be by name
 #' @return control table
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{moveValuesToRowsN}}
+#' @seealso \code{{moveValuesToRows}}, \code{\link{moveValuesToRowsN}}
 #'
 #' @examples
 #'
@@ -126,7 +126,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -294,7 +294,7 @@ moveValuesToRowsN <- function(wideTable,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -303,7 +303,7 @@ moveValuesToRowsN <- function(wideTable,
 #' cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
 #'                                nameForNewValueColumn= 'val',
 #'                                columnsToTakeFrom= c('AUC', 'R2'))
-#' tab <- moveValuesToRowsD(d, cT, my_db = my_db)
+#' tab <- moveValuesToRowsD(d, cT)
 #'
 #'
 #' @export
@@ -354,7 +354,7 @@ moveValuesToRowsD <- function(wideTable,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \url{https://github.com/WinVector/cdata}, \code{{moveValuesToRows}}, \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -413,7 +413,7 @@ buildPivotControlTableN <- function(tableName,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \url{https://github.com/WinVector/cdata}, \code{{moveValuesToRows}}, \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -428,7 +428,6 @@ buildPivotControlTableN <- function(tableName,
 buildPivotControlTableD <- function(table,
                                     columnToTakeKeysFrom,
                                     columnToTakeValuesFrom,
-                                    my_db,
                                     ...,
                                     prefix = columnToTakeKeysFrom,
                                     sep = NULL) {
@@ -495,7 +494,7 @@ buildPivotControlTableD <- function(table,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTable}}
+#' @seealso \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
 #'
 #' @examples
 #'
@@ -691,7 +690,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTable}}
+#' @seealso \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
 #'
 #' @examples
 #'
@@ -700,8 +699,7 @@ moveValuesToColumnsN <- function(tallTable,
 #'
 #' cT <- buildPivotControlTableD(d,
 #'                               columnToTakeKeysFrom= 'meas',
-#'                               columnToTakeValuesFrom= 'val',
-#'                               my_db = my_db)
+#'                               columnToTakeValuesFrom= 'val')
 #' moveValuesToColumnsD(d,
 #'                      keyColumns = NULL,
 #'                      controlTable = cT)
