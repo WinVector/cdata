@@ -62,7 +62,7 @@ checkControlTable <- function(controlTable, strict) {
 #' @param ... not used, force later args to be by name
 #' @return control table
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{moveValuesToRows.character}}
+#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{moveValuesToRowsN}}
 #'
 #' @examples
 #'
@@ -82,9 +82,6 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
   colnames(controlTable) <- c(nameForNewKeyColumn, nameForNewValueColumn)
   controlTable
 }
-
-
-
 
 
 
@@ -117,7 +114,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param wideTableName name of table containing data to be mapped (db/Spark data)
+#' @param wideTable name of table containing data to be mapped (db/Spark data)
 #' @param controlTable table specifying mapping (local data frame)
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
@@ -129,7 +126,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsQ}}
+#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -145,45 +142,45 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
 #'                                nameForNewValueColumn= 'val',
 #'                                columnsToTakeFrom= c('AUC', 'R2'))
-#' tab <- moveValuesToRows.character('d', cT, my_db = my_db)
+#' tab <- moveValuesToRowsN('d', cT, my_db = my_db)
 #' DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
 #'
 #'
 #' @export
 #'
-moveValuesToRows.character <- function(wideTableName,
-                                       controlTable,
-                                       my_db,
-                                       ...,
-                                       columnsToCopy = NULL,
-                                       tempNameGenerator = makeTempNameGenerator('mvtrq'),
-                                       strict = FALSE,
-                                       checkNames = TRUE,
-                                       showQuery = FALSE,
-                                       defaultValue = NULL) {
+moveValuesToRowsN <- function(wideTable,
+                              controlTable,
+                              my_db,
+                              ...,
+                              columnsToCopy = NULL,
+                              tempNameGenerator = makeTempNameGenerator('mvtrq'),
+                              strict = FALSE,
+                              checkNames = TRUE,
+                              showQuery = FALSE,
+                              defaultValue = NULL) {
   if(length(list(...))>0) {
-    stop("cdata::moveValuesToRows.character unexpected arguments.")
+    stop("cdata::moveValuesToRowsN unexpected arguments.")
   }
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
-      stop("moveValuesToRows.character: columnsToCopy must be character")
+      stop("moveValuesToRowsN: columnsToCopy must be character")
     }
   }
-  if((!is.character(wideTableName))||(length(wideTableName)!=1)) {
-    stop("moveValuesToRows.character: wideTableName must be the name of a remote table")
+  if((!is.character(wideTable))||(length(wideTable)!=1)) {
+    stop("moveValuesToRowsN: wideTable must be the name of a remote table")
   }
   controlTable <- as.data.frame(controlTable)
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
-    stop(paste("cdata::moveValuesToRows.character", cCheck))
+    stop(paste("cdata::moveValuesToRowsN", cCheck))
   }
   if(checkNames) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- DBI::dbListFields(my_db, wideTableName)
+    wideTableColnames <- DBI::dbListFields(my_db, wideTable)
     badCells <- setdiff(interiorCells, wideTableColnames)
     if(length(badCells)>0) {
-      stop(paste("cdata::moveValuesToRows.character: control table entries that are not wideTable column names:",
+      stop(paste("cdata::moveValuesToRowsN: control table entries that are not wideTable column names:",
                  paste(badCells, collapse = ', ')))
     }
   }
@@ -240,7 +237,7 @@ moveValuesToRows.character <- function(wideTableName,
   qs <-  paste0(" SELECT ",
                 paste(c(copystmts, groupstmt, casestmts), collapse = ', '),
                 ' FROM ',
-                DBI::dbQuoteIdentifier(my_db, wideTableName),
+                DBI::dbQuoteIdentifier(my_db, wideTable),
                 ' a CROSS JOIN ',
                 DBI::dbQuoteIdentifier(my_db, ctabName),
                 ' b ')
@@ -259,21 +256,105 @@ moveValuesToRows.character <- function(wideTableName,
 }
 
 
+#' Map a set of columns to rows (query based).
+#'
+#' Transform data facts from columns into additional rows using SQL
+#' and controlTable.
+#'
+#' This is using the theory of "fluid data"n
+#' (\url{https://github.com/WinVector/cdata}), which includes the
+#' principle that each data cell has coordinates independent of the
+#' storage details and storage detail dependent coordinates (usually
+#' row-id, column-id, and group-id) can be re-derived at will (the
+#' other principle is that there may not be "one true preferred data
+#' shape" and many re-shapings of data may be needed to match data to
+#' different algorithms and methods).
+#'
+#' The controlTable defines the names of each data element in the two notations:
+#' the notation of the tall table (which is row oriented)
+#' and the notation of the wide table (which is column oriented).
+#' controlTable[ , 1] (the group label) cross colnames(controlTable)
+#' (the column labels) are names of data cells in the long form.
+#' controlTable[ , 2:ncol(controlTable)] (column labels)
+#' are names of data cells in the wide form.
+#' To get behavior similar to tidyr::gather/spread one builds the control table
+#' by running an appropiate query over the data.
+#'
+#' Some discussion and examples can be found here:
+#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' here \url{https://github.com/WinVector/cdata}.
+#'
+#' @param wideTable data.frame containing data to be mapped (db/Spark data)
+#' @param controlTable table specifying mapping (local data frame)
+#' @param ... force later arguments to be by name.
+#' @param columnsToCopy character list of column names to copy
+#' @param strict logical, if TRUE check control table contents for uniqueness
+#' @param checkNames logical, if TRUE check names
+#' @param showQuery if TRUE print query
+#' @param defaultValue if not NULL literal to use for non-match values.
+#' @return long table built by mapping wideTable to one row per group
+#'
+#' @seealso \code{\link[cdata]{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+#'
+#' @examples
+#'
+#' # un-pivot example
+#' d <- data.frame(AUC = 0.6, R2 = 0.2)
+#' cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
+#'                                nameForNewValueColumn= 'val',
+#'                                columnsToTakeFrom= c('AUC', 'R2'))
+#' tab <- moveValuesToRowsD(d, cT, my_db = my_db)
+#'
+#'
+#' @export
+#'
+moveValuesToRowsD <- function(wideTable,
+                              controlTable,
+                              ...,
+                              columnsToCopy = NULL,
+                              strict = FALSE,
+                              checkNames = TRUE,
+                              showQuery = FALSE,
+                              defaultValue = NULL) {
+  if(length(list(...))>0) {
+    stop("cdata::moveValuesToRowsD unexpected arguments.")
+  }
+  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(my_db,
+                    'wideTable',
+                    wideTable,
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  resName <- moveValuesToRowsN(wideTable = 'wideTable',
+                               controlTable = controlTable,
+                               my_db = my_db,
+                               columnsToCopy = columnsToCopy,
+                               tempNameGenerator = makeTempNameGenerator('mvtrq'),
+                               strict = strict,
+                               checkNames = checkNames,
+                               showQuery = showQuery,
+                               defaultValue = defaultValue)
+  resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
+  DBI::dbDisconnect(my_db)
+  resData
+}
+
+
 
 #' Build a moveValuesToColumnsQ() control table that specifies a pivot.
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
 #'
-#' @param d data to scan for new column names
+#' @param tableName Name of table to scan for new column names.
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
-#' @param ... not used, force later args to be by name
 #' @param my_db db handle
+#' @param ... not used, force later args to be by name
 #' @param prefix column name prefix (only used when sep is not NULL)
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRows.character}}, \code{\link{moveValuesToColumnsQ}}
+#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -286,20 +367,20 @@ moveValuesToRows.character <- function(wideTableName,
 #'                   d,
 #'                   overwrite = TRUE,
 #'                   temporary = TRUE)
-#' buildPivotControlTable.character('d', 'measType', 'measValue',
-#'                                  my_db= my_db,
+#' buildPivotControlTableN('d', 'measType', 'measValue',
+#'                                  my_db = my_db,
 #'                                  sep = '_')
 #'
 #' @export
-buildPivotControlTable.character <- function(tableName,
-                                             columnToTakeKeysFrom,
-                                             columnToTakeValuesFrom,
-                                             my_db,
-                                             ...,
-                                             prefix = columnToTakeKeysFrom,
-                                             sep = NULL) {
+buildPivotControlTableN <- function(tableName,
+                                    columnToTakeKeysFrom,
+                                    columnToTakeValuesFrom,
+                                    my_db,
+                                    ...,
+                                    prefix = columnToTakeKeysFrom,
+                                    sep = NULL) {
   if(length(list(...))>0) {
-    stop("cdata::buildPivotControlTable unexpected arguments.")
+    stop("cdata::buildPivotControlTableN unexpected arguments.")
   }
   q <- paste0("SELECT ",
               DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom),
@@ -319,6 +400,56 @@ buildPivotControlTable.character <- function(tableName,
 }
 
 
+
+#' Build a moveValuesToColumnsQ() control table that specifies a pivot.
+#'
+#' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
+#'
+#' @param table data.frame to scan for new column names
+#' @param columnToTakeKeysFrom character name of column build new column names from.
+#' @param columnToTakeValuesFrom character name of column to get values from.
+#' @param ... not used, force later args to be by name
+#' @param prefix column name prefix (only used when sep is not NULL)
+#' @param sep separator to build complex column names.
+#' @return control table
+#'
+#' @seealso \url{https://github.com/WinVector/cdata}, \code{\link[cdata]{moveValuesToRows}}, \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+#'
+#' @examples
+#'
+#' d <- data.frame(measType = c("wt", "ht"),
+#'                 measValue = c(150, 6),
+#'                 stringsAsFactors = FALSE)
+#' buildPivotControlTableD(d,
+#'                         'measType', 'measValue',
+#'                         sep = '_')
+#'
+#' @export
+buildPivotControlTableD <- function(table,
+                                    columnToTakeKeysFrom,
+                                    columnToTakeValuesFrom,
+                                    my_db,
+                                    ...,
+                                    prefix = columnToTakeKeysFrom,
+                                    sep = NULL) {
+  if(length(list(...))>0) {
+    stop("cdata::buildPivotControlTableD unexpected arguments.")
+  }
+  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(my_db,
+                    'table',
+                    table,
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  res <- buildPivotControlTableN(tableName = 'table',
+                                 columnToTakeKeysFrom = columnToTakeKeysFrom,
+                                 columnToTakeValuesFrom = columnToTakeValuesFrom,
+                                 my_db = my_db,
+                                 prefix = prefix,
+                                 sep = sep)
+  DBI::dbDisconnect(my_db)
+  res
+}
 
 
 
@@ -350,7 +481,7 @@ buildPivotControlTable.character <- function(tableName,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param tallTableName name of table containing data to be mapped (db/Spark data)
+#' @param tallTable name of table containing data to be mapped (db/Spark data)
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param my_db db handle
@@ -364,21 +495,22 @@ buildPivotControlTable.character <- function(tableName,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRows.character}}, \code{\link{buildPivotControlTable}}
+#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTable}}
 #'
 #' @examples
 #'
+#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #' # pivot example
 #' d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
 #' DBI::dbWriteTable(my_db,
 #'                   'd',
 #'                   d,
 #'                   temporary = TRUE)
-#' cT <- buildPivotControlTable.character('d',
+#' cT <- buildPivotControlTableN('d',
 #'                                        columnToTakeKeysFrom= 'meas',
 #'                                        columnToTakeValuesFrom= 'val',
 #'                                        my_db = my_db)
-#' tab <- moveValuesToColumns.character('d',
+#' tab <- moveValuesToColumnsN('d',
 #'                                      keyColumns = NULL,
 #'                                      controlTable = cT,
 #'                                      my_db = my_db)
@@ -387,44 +519,44 @@ buildPivotControlTable.character <- function(tableName,
 #'
 #' @export
 #'
-moveValuesToColumns.character <- function(tallTableName,
-                                          keyColumns,
-                                          controlTable,
-                                          my_db,
-                                          ...,
-                                          columnsToCopy = NULL,
-                                          tempNameGenerator = makeTempNameGenerator('mvtcq'),
-                                          strict = FALSE,
-                                          checkNames = TRUE,
-                                          showQuery = FALSE,
-                                          defaultValue = NULL,
-                                          dropDups = FALSE) {
+moveValuesToColumnsN <- function(tallTable,
+                                 keyColumns,
+                                 controlTable,
+                                 my_db,
+                                 ...,
+                                 columnsToCopy = NULL,
+                                 tempNameGenerator = makeTempNameGenerator('mvtcq'),
+                                 strict = FALSE,
+                                 checkNames = TRUE,
+                                 showQuery = FALSE,
+                                 defaultValue = NULL,
+                                 dropDups = FALSE) {
   if(length(list(...))>0) {
-    stop("cdata::moveValuesToColumnsQ unexpected arguments.")
+    stop("cdata::moveValuesToColumnsN unexpected arguments.")
   }
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
-      stop("moveValuesToColumnsQ: keyColumns must be character")
+      stop("moveValuesToColumnsN: keyColumns must be character")
     }
   }
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
-      stop("moveValuesToColumnsQ: columnsToCopy must be character")
+      stop("moveValuesToColumnsN: columnsToCopy must be character")
     }
   }
-  if((!is.character(tallTableName))||(length(tallTableName)!=1)) {
-    stop("moveValuesToColumnsQ: tallTableName must be the name of a remote table")
+  if((!is.character(tallTable))||(length(tallTable)!=1)) {
+    stop("moveValuesToColumnsN: tallTable must be the name of a remote table")
   }
   controlTable <- as.data.frame(controlTable)
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
-    stop(paste("cdata::moveValuesToColumnsQ", cCheck))
+    stop(paste("cdata::moveValuesToColumnsN", cCheck))
   }
   if(checkNames) {
-    tallTableColnames <- DBI::dbListFields(my_db, tallTableName)
+    tallTableColnames <- DBI::dbListFields(my_db, tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
-      stop(paste("cdata::moveValuesToColumnsQ: control table column names that are not tallTableName column names:",
+      stop(paste("cdata::moveValuesToColumnsN: control table column names that are not tallTable column names:",
                  paste(badCells, collapse = ', ')))
     }
   }
@@ -497,7 +629,7 @@ moveValuesToColumns.character <- function(tallTableName,
   qs <-  paste0(" SELECT ",
                 paste(c(groupstmts, copystmts, collectstmts), collapse = ', '),
                 ' FROM ',
-                DBI::dbQuoteIdentifier(my_db, tallTableName),
+                DBI::dbQuoteIdentifier(my_db, tallTable),
                 ' a ')
   if(length(groupstmts)>0) {
     qs <- paste0(qs,
@@ -519,7 +651,97 @@ moveValuesToColumns.character <- function(tallTableName,
 }
 
 
-
+#' Map sets rows to columns (query based).
+#'
+#' Transform data facts from rows into additional columns using SQL
+#' and controlTable.
+#'
+#' This is using the theory of "fluid data"n
+#' (\url{https://github.com/WinVector/cdata}), which includes the
+#' principle that each data cell has coordinates independent of the
+#' storage details and storage detail dependent coordinates (usually
+#' row-id, column-id, and group-id) can be re-derived at will (the
+#' other principle is that there may not be "one true preferred data
+#' shape" and many re-shapings of data may be needed to match data to
+#' different algorithms and methods).
+#'
+#' The controlTable defines the names of each data element in the two notations:
+#' the notation of the tall table (which is row oriented)
+#' and the notation of the wide table (which is column oriented).
+#' controlTable[ , 1] (the group label) cross colnames(controlTable)
+#' (the column labels) are names of data cells in the long form.
+#' controlTable[ , 2:ncol(controlTable)] (column labels)
+#' are names of data cells in the wide form.
+#' To get behavior similar to tidyr::gather/spread one builds the control table
+#' by running an appropiate query over the data.
+#'
+#' Some discussion and examples can be found here:
+#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' here \url{https://github.com/WinVector/cdata}.
+#'
+#' @param tallTable data,frame containing data to be mapped (db/Spark data)
+#' @param keyColumns character list of column defining row groups
+#' @param controlTable table specifying mapping (local data frame)
+#' @param ... force later arguments to be by name.
+#' @param columnsToCopy character list of column names to copy
+#' @param strict logical, if TRUE check control table contents for uniqueness
+#' @param checkNames logical, if TRUE check names
+#' @param showQuery if TRUE print query
+#' @param defaultValue if not NULL literal to use for non-match values.
+#' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
+#' @return wide table built by mapping key-grouped tallTable rows to one row per group
+#'
+#' @seealso \code{\link[cdata]{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTable}}
+#'
+#' @examples
+#'
+#' # pivot example
+#' d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+#'
+#' cT <- buildPivotControlTableD(d,
+#'                               columnToTakeKeysFrom= 'meas',
+#'                               columnToTakeValuesFrom= 'val',
+#'                               my_db = my_db)
+#' moveValuesToColumnsD(d,
+#'                      keyColumns = NULL,
+#'                      controlTable = cT)
+#'
+#' @export
+#'
+moveValuesToColumnsD <- function(tallTable,
+                                 keyColumns,
+                                 controlTable,
+                                 ...,
+                                 columnsToCopy = NULL,
+                                 strict = FALSE,
+                                 checkNames = TRUE,
+                                 showQuery = FALSE,
+                                 defaultValue = NULL,
+                                 dropDups = FALSE) {
+  if(length(list(...))>0) {
+    stop("cdata::moveValuesToColumnsD unexpected arguments.")
+  }
+  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(my_db,
+                    'tallTable',
+                    tallTable,
+                    temporary = TRUE,
+                    overwrite = TRUE)
+  resName <- moveValuesToColumnsN(tallTable = 'tallTable',
+                                  keyColumns = keyColumns,
+                                  controlTable = controlTable,
+                                  my_db = my_db,
+                                  columnsToCopy = columnsToCopy,
+                                  tempNameGenerator = makeTempNameGenerator('mvtcq'),
+                                  strict = strict,
+                                  checkNames = checkNames,
+                                  showQuery = showQuery,
+                                  defaultValue = defaultValue,
+                                  dropDups = dropDups)
+  resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
+  DBI::dbDisconnect(my_db)
+  resData
+}
 
 
 

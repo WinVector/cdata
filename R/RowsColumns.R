@@ -1,41 +1,29 @@
 
 #' @importFrom wrapr %.>%
 #' @importFrom stats complete.cases
-#' @importFrom tibble frame_data
-#' @importFrom tidyr gather spread
 #' @importFrom wrapr let
 NULL
 
 
 
-#' Check that a set of columns form unique keys
+#' Check that a set of columns form unique keys.
+#'
+#' For local data.frame only.
 #'
 #' @param data data.frame to work with.
 #' @param keyColNames character array of column names to check.
-#' @param allowNAKeys logical if FALSE throw if there are NAs in the key columns.
 #' @return logical TRUE if the rows of data are unique addressable by the columns named in keyColNames.
 #'
 #'
 #' @examples
 #'
-#' d <- data.frame(key= c('a','a', 'b'))
+#' d <- data.frame(key = c('a','a', 'b'))
 #' checkColsFormUniqueKeys(d, 'key')
-#'
+#' d <- data.frame(key = c('a','a', 'b'), k2 = c(1 ,2, 2))
+#' checkColsFormUniqueKeys(d, c('key', 'k2'))
 #' @export
 #'
-checkColsFormUniqueKeys <- function(data, keyColNames,
-                                    allowNAKeys = TRUE) {
-  data <- dplyr::ungroup(data)
-  # check for NA keys
-  if((!allowNAKeys) && (length(keyColNames)>0)) {
-    allGood <- data %.>%
-      dplyr::select(., dplyr::one_of(keyColNames)) %.>%
-      complete.cases(.) %.>%
-      all(.)
-    if(!allGood) {
-      stop("saw NA in keys")
-    }
-  }
+checkColsFormUniqueKeys <- function(data, keyColNames) {
   cn <- colnames(data)
   if(length(keyColNames)!=length(unique(keyColNames, allowNAKeys=TRUE))) {
     stop("cdata::checkColsFormUniqueKeys keyColNames must not have duplicates")
@@ -52,20 +40,15 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
     return(FALSE)
   }
   # count the number of rows identifiable by keys
-  nunique <-
-    data %.>%
-    dplyr::select(., dplyr::one_of(keyColNames)) %.>%
-    dplyr::distinct(.) %.>%
-    nrow(.)
-  # compare
-  return(nunique==ndata)
+  data <- data[, keyColNames, drop=FALSE]
+  return(anyDuplicated(data)<=0)
 }
 
-#' Move values from columns to rows (wrapper for \code{\link[tidyr]{gather}}, or anti-pivot).
+#' Move values from columns to rows (anti-pivot).
 #'
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
-#' @seealso \code{\link{moveValuesToColumns}}
+#' @seealso \code{\link{pivotValuesToColumns}}
 #'
 #' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToRowsQ}}).
 #' @param nameForNewKeyColumn character name of column to write new keys in.
@@ -73,15 +56,12 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #' @param columnsToTakeFrom character array names of columns to take values from.
 #' @param ... force later argumets to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
-#' @param na.rm passed to \code{\link[tidyr]{gather}}
-#' @param convert passed to \code{\link[tidyr]{gather}}
-#' @param factor_key passed to \code{\link[tidyr]{gather}}
 #' @return new data.frame with values moved to rows.
 #'
 #' @examples
 #'
 #' d <- data.frame(AUC= 0.6, R2= 0.2)
-#' moveValuesToRows(d,
+#' unpivotValuesToRows(d,
 #'                  nameForNewKeyColumn= 'meas',
 #'                  nameForNewValueColumn= 'val',
 #'                  columnsToTakeFrom= c('AUC', 'R2'))
@@ -89,85 +69,71 @@ checkColsFormUniqueKeys <- function(data, keyColNames,
 #' @export
 #'
 #'
-moveValuesToRows <- function(data,
+unpivotValuesToRows <- function(data,
                              nameForNewKeyColumn,
                              nameForNewValueColumn,
                              columnsToTakeFrom,
                              ...,
-                             nameForNewClassColumn = NULL,
-                             na.rm = FALSE,
-                             convert = FALSE,
-                             factor_key = FALSE) {
+                             nameForNewClassColumn = NULL) {
   if(!is.data.frame(data)) {
-    stop("cdata::moveValuesToRows data must be a local data.frame")
+    stop("cdata::unpivotValuesToRows data must be a local data.frame")
   }
-  data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(list(...))>0) {
-    stop("cdata::moveValuesToRows unexpected arguments")
+    stop("cdata::unpivotValuesToRows unexpected arguments")
   }
   if(length(nameForNewKeyColumn)!=1) {
-    stop("cdata::moveValuesToRows nameForNewKeyColumn must be length 1")
+    stop("cdata::unpivotValuesToRows nameForNewKeyColumn must be length 1")
   }
   if(length(nameForNewValueColumn)!=1) {
-    stop("cdata::moveValuesToRows nameForNewValueColumn must be length 1")
+    stop("cdata::unpivotValuesToRows nameForNewValueColumn must be length 1")
   }
   if(!is.character(nameForNewKeyColumn)) {
-    stop("cdata::moveValuesToRows nameForNewKeyColumn must be character")
+    stop("cdata::unpivotValuesToRows nameForNewKeyColumn must be character")
   }
   if(!is.character(nameForNewValueColumn)) {
-    stop("cdata::moveValuesToRows nameForNewValueColumn must be character")
+    stop("cdata::unpivotValuesToRows nameForNewValueColumn must be character")
   }
   if(length(columnsToTakeFrom)>0) {
     if(!is.character(columnsToTakeFrom)) {
-      stop("cdata::moveValuesToRows columnsToTakeFrom must be character")
+      stop("cdata::unpivotValuesToRows columnsToTakeFrom must be character")
     }
     if(any(is.na(columnsToTakeFrom))) {
-      stop("cdata::moveValuesToRows columnsToTakeFrom must not contain NA")
+      stop("cdata::unpivotValuesToRows columnsToTakeFrom must not contain NA")
     }
     if(any(nchar(columnsToTakeFrom)<=0)) {
-      stop("cdata::moveValuesToRows columnsToTakeFrom must not contain ''")
+      stop("cdata::unpivotValuesToRows columnsToTakeFrom must not contain ''")
     }
     if(length(unique(columnsToTakeFrom))!=length(columnsToTakeFrom)) {
-      stop("cdata::moveValuesToRows columnsToTakeFrom must be unique values")
+      stop("cdata::unpivotValuesToRows columnsToTakeFrom must be unique values")
     }
   }
   if(nameForNewKeyColumn %in% cn) {
-    stop("cdata::moveValuesToRows nameForNewKeyColumn must not be a column name")
+    stop("cdata::unpivotValuesToRows nameForNewKeyColumn must not be a column name")
   }
   if(nameForNewValueColumn %in% cn) {
-    stop("cdata::moveValuesToRows nameForNewValueColumn must not be a column name")
+    stop("cdata::unpivotValuesToRows nameForNewValueColumn must not be a column name")
   }
   if(nameForNewKeyColumn==nameForNewValueColumn) {
-    stop("cdata::moveValuesToRows nameForNewKeyColumn must not equal nameForNewValueColumn")
+    stop("cdata::unpivotValuesToRows nameForNewKeyColumn must not equal nameForNewValueColumn")
   }
   if(length(setdiff(columnsToTakeFrom,cn))>0) {
-    stop("cdata::moveValuesToRows columnsToTakeFrom must all be column names")
+    stop("cdata::unpivotValuesToRows columnsToTakeFrom must all be column names")
   }
   if(length(nameForNewClassColumn)!=0) {
     if((length(nameForNewClassColumn)!=1) || (!is.character(nameForNewClassColumn))) {
-      stop("cdata::moveValuesToRows nameForNewClassColumn must be length 1 character")
+      stop("cdata::unpivotValuesToRows nameForNewClassColumn must be length 1 character")
     }
   }
   dcols <- setdiff(cn, columnsToTakeFrom)
-  if(!checkColsFormUniqueKeys(dplyr::select(data,
-                                            dplyr::one_of(dcols)),
-                              dcols,
-                              allowNAKeys = TRUE)) {
-    stop("cdata::moveValuesToRows rows were not uniquely keyed")
+  if(!checkColsFormUniqueKeys(data, dcols)) {
+    stop("cdata::unpivotValuesToRows rows were not uniquely keyed")
   }
-  NAMEFORNEWKEYCOLUMM <- NULL # signal not an unbound variable
-  NAMEFORNEWVALUECOLUMN <- NULL # signal not an unbound variable
-  res <- wrapr::let(c(NAMEFORNEWKEYCOLUMM= nameForNewKeyColumn,
-                      NAMEFORNEWVALUECOLUMN= nameForNewValueColumn),
-                    tidyr::gather(data,
-                                  key= NAMEFORNEWKEYCOLUMM,
-                                  value= NAMEFORNEWVALUECOLUMN,
-                                  dplyr::one_of(columnsToTakeFrom),
-                                  na.rm = na.rm,
-                                  convert = convert,
-                                  factor_key = factor_key)
-  )
+  cT <- buildUnPivotControlTable(nameForNewKeyColumn = nameForNewKeyColumn,
+                                 nameForNewValueColumn = nameForNewValueColumn,
+                                 columnsToTakeFrom = columnsToTakeFrom)
+  res <- moveValuesToRowsD(data,
+                           controlTable = cT)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -176,91 +142,83 @@ moveValuesToRows <- function(data,
   res
 }
 
-#' Move values from rows to columns (wrapper for \code{\link[tidyr]{spread}} or pivot).
+#' Move values from rows to columns (pivot).
 #'
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
-#' @seealso \code{\link{moveValuesToRows}}
+#' @seealso \code{\link{unpivotValuesToRows}}
 #'
 #' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToColumnsQ}}).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
 #' @param ... force later arguments to bind by name.
-#' @param fill passed to \code{\link[tidyr]{spread}}
-#' @param convert passed to \code{\link[tidyr]{spread}}
-#' @param drop passed to \code{\link[tidyr]{spread}}
-#' @param sep passed to \code{\link[tidyr]{spread}}
+#' @param sep character if not null build more detailed column names.
 #' @return new data.frame with values moved to columns.
 #'
 #' @examples
 #'
 #' d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
-#' moveValuesToColumns(d,
+#' pivotValuesToColumns(d,
 #'                     columnToTakeKeysFrom= 'meas',
 #'                     columnToTakeValuesFrom= 'val',
 #'                     rowKeyColumns= c())
 #'
 #' @export
 #'
-moveValuesToColumns <- function(data,
+pivotValuesToColumns <- function(data,
                                 columnToTakeKeysFrom,
                                 columnToTakeValuesFrom,
                                 rowKeyColumns,
                                 ...,
-                                fill = NA,
-                                convert = FALSE,
-                                drop = TRUE,
                                 sep = NULL) {
   if(!is.data.frame(data)) {
-    stop("cdata::moveValuesToColumns data must be a local data.frame")
+    stop("cdata::pivotValuesToColumns data must be a local data.frame")
   }
-  data <- dplyr::ungroup(data)
   cn <- colnames(data)
   if(length(list(...))>0) {
-    stop("cdata::moveValuesToColumns unexpected arguments")
+    stop("cdata::pivotValuesToColumns unexpected arguments")
   }
   if(length(columnToTakeKeysFrom)!=1) {
-    stop("cdata::moveValuesToColumns columnToTakeKeysFrom must be length 1")
+    stop("cdata::pivotValuesToColumns columnToTakeKeysFrom must be length 1")
   }
   if(length(columnToTakeValuesFrom)!=1) {
-    stop("cdata::moveValuesToColumns columnToTakeValuesFrom must be length 1")
+    stop("cdata::pivotValuesToColumns columnToTakeValuesFrom must be length 1")
   }
   if(!is.character(columnToTakeKeysFrom)) {
-    stop("cdata::moveValuesToColumns columnToTakeKeysFrom must be character")
+    stop("cdata::pivotValuesToColumns columnToTakeKeysFrom must be character")
   }
   if(!is.character(columnToTakeValuesFrom)) {
-    stop("cdata::moveValuesToColumns columnToTakeValuesFrom must be character")
+    stop("cdata::pivotValuesToColumns columnToTakeValuesFrom must be character")
   }
   if(length(rowKeyColumns)>0) {
     if(!is.character(rowKeyColumns)) {
-      stop("cdata::moveValuesToColumns rowKeyColumns must be character")
+      stop("cdata::pivotValuesToColumns rowKeyColumns must be character")
     }
   }
   if(!(columnToTakeKeysFrom %in% cn)) {
-    stop("cdata::moveValuesToColumns columnToTakeKeysFrom must be a column name")
+    stop("cdata::pivotValuesToColumns columnToTakeKeysFrom must be a column name")
   }
   if(!(columnToTakeValuesFrom %in% cn)) {
-    stop("cdata::moveValuesToColumns columnToTakeValuesFrom must be a column name")
+    stop("cdata::pivotValuesToColumns columnToTakeValuesFrom must be a column name")
   }
   # if(columnToTakeKeysFrom==columnToTakeValuesFrom) {
-  #   stop("cdata::moveValuesToColumns columnToTakeKeysFrom must not equal columnToTakeValuesFrom")
+  #   stop("cdata::pivotValuesToColumns columnToTakeKeysFrom must not equal columnToTakeValuesFrom")
   # }
   if(length(setdiff(rowKeyColumns,cn))>0) {
-    stop("cdata::moveValuesToColumns rowKeyColumns must all be column names")
+    stop("cdata::pivotValuesToColumns rowKeyColumns must all be column names")
   }
   if(columnToTakeKeysFrom %in% rowKeyColumns) {
-    stop("cdata::moveValuesToColumns columnToTakeKeysFrom not be in rowKeyColumns")
+    stop("cdata::pivotValuesToColumns columnToTakeKeysFrom not be in rowKeyColumns")
   }
   if(columnToTakeValuesFrom %in% rowKeyColumns) {
-    stop("cdata::moveValuesToColumns columnToTakeValuesFrom not be in rowKeyColumns")
+    stop("cdata::pivotValuesToColumns columnToTakeValuesFrom not be in rowKeyColumns")
   }
   # we insist that the rowKeyColumns plus
   # columnToTakeKeysFrom are unique keys
   if(!checkColsFormUniqueKeys(data,
                               c(rowKeyColumns,
-                                columnToTakeKeysFrom),
-                              allowNAKeys = TRUE)) {
+                                columnToTakeKeysFrom))) {
     stop(paste0("\n moveValeusToColumns: specified",
                 "\n rowKeyColumns plus columnToTakeKeysFrom",
                 "\n isn't unique across rows"))
@@ -269,29 +227,23 @@ moveValuesToColumns <- function(data,
   # the distinct rows data frame without columnToTakeKeysFrom and columnToTakeValuesFrom
   dcols <- setdiff(colnames(data),
                    c(columnToTakeKeysFrom, columnToTakeValuesFrom))
-  if(length(dcols)>0) { # work around https://github.com/tidyverse/dplyr/issues/2954
-    dsub <- data %.>%
-      dplyr::select(.,dplyr::one_of(dcols)) %.>%
-      dplyr::distinct(.)
+  if(length(dcols)>0) {
+    dsub <- data[, dcols, drop=FALSE]
+    dups <- duplicated(dsub)
+    dsub <- dsub[!dups, , drop=FALSE]
     if(!checkColsFormUniqueKeys(dsub,
-                                rowKeyColumns,
-                                allowNAKeys = TRUE)) {
+                                rowKeyColumns)) {
       stop(paste0("\n some columns not in",
                   "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
                   "\n are splitting up row groups"))
     }
   }
-  COLUMNTOTAKEKEYSFROM <- NULL # signal not an unbound variable
-  COLUMNTOTAKEVALUESFROM <- NULL # signal not an unbound variable
-  wrapr::let(c(COLUMNTOTAKEKEYSFROM= columnToTakeKeysFrom,
-               COLUMNTOTAKEVALUESFROM= columnToTakeValuesFrom),
-             tidyr::spread(data,
-                           key= COLUMNTOTAKEKEYSFROM,
-                           value= COLUMNTOTAKEVALUESFROM,
-                           fill = fill,
-                           convert = convert,
-                           drop = drop,
-                           sep = sep)
-  )
+  cT <- buildPivotControlTableD(data,
+                                columnToTakeKeysFrom = columnToTakeKeysFrom,
+                                columnToTakeValuesFrom = columnToTakeValuesFrom,
+                                sep = sep)
+  moveValuesToColumnsD(data,
+                       keyColumns = keyColumns,
+                       controlTable = cT)
 }
 
