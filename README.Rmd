@@ -6,7 +6,7 @@ output: github_document
 
 `cdata` is an explanation of "coordinatized data" and includes deliberately verbose wrappers for `tidyr::gather()` and `tidyr::spread()`.  Useful for training and for checking extra invariants.
 
-![](vignettes/cdata.png)
+![](extras/cdata.png)
 
 Install via CRAN:
 
@@ -24,7 +24,7 @@ devtools::install_github("WinVector/cdata")
 
 It has been our experience when teaching the data wrangling part of data science that students often have difficulty understanding the conversion to and from row-oriented and column-oriented data formats (what is commonly called pivoting and un-pivoting).
 
-![](vignettes/wireLoom.png)
+![](extras/wireLoom.png)
 
 [Boris Artzybasheff illustration](http://www.darkroastedblend.com/2014/01/machines-alive-whimsical-art-of-boris.html)
 
@@ -40,7 +40,7 @@ In each case the data scientist was asked to test two decision tree regression m
 
 #### Data Scientist 1
 
-![](https://github.com/WinVector/cdata/raw/master/vignettes/cdata.png)
+![](https://github.com/WinVector/cdata/raw/master/extras/cdata.png)
 
 Data scientist 1 is an experienced modeler, and records their data as follows:
 
@@ -62,7 +62,7 @@ Denormalized forms are the most ready for tasks that reason across columns, such
 
 #### Data Scientist 2
 
-![](vignettes/DW.png)
+![](extras/DW.png)
 
 Data Scientist 2 has data warehousing experience and records their data in a [normal form](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms):
 
@@ -103,7 +103,7 @@ all.equal(d1, d1_2)
 
 #### Data Scientist 3
 
-![](vignettes/SC.png)
+![](extras/SC.png)
 
 Data Scientist 3 has a lot of field experience, and prefers an [entity/attribute/value](https://en.wikipedia.org/wiki/Entity–attribute–value_model) notation. They log each measurement as a separate row:
 
@@ -141,10 +141,10 @@ all.equal(d1, d1_3)
 
 You can read a bit on `spread()` [here](http://r4ds.had.co.nz/tidy-data.html#spreading-and-gathering).
 
-We will use the term `moveValuesToColumns()` for this operation later.  The `spread()` will be replaced with the following.
+We will use the term `pivotValuesToColumns()` for this operation later.  The `spread()` will be replaced with the following.
 
 ```{r eval=FALSE}
-  moveValuesToColumns(data = d3,
+  pivotValuesToColumns(data = d3,
                       columnToTakeKeysFrom = 'measurement',
                       columnToTakeValuesFrom = 'value',
                       rowKeyColumns = c('model', 'testset'))
@@ -159,16 +159,16 @@ The above operation is a bit exotic and it (and its inverse) already go under nu
   * `cast` / `melt` (`reshape`, `reshape2`)
   * `spread` / `gather` (`tidyr`)
   * "widen" / "narrow"  (colloquial)
-  * `moveValuesToColumns()` and `moveValuesToRows()` (this writeup)
+  * `pivotValuesToColumns()` and `unpivotValuesToRows()` (this writeup)
 
-And we are certainly neglecting other namings of the concept.  We find none of these particularly evocative (though [cheatsheets help](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)), so one purpose of this note will be to teach these concepts in terms of the deliberately verbose ad-hoc terms: `moveValuesToColumns()` and `moveValuesToRows()`.
+And we are certainly neglecting other namings of the concept.  We find none of these particularly evocative (though [cheatsheets help](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)), so one purpose of this note will be to teach these concepts in terms of the deliberately verbose ad-hoc terms: `pivotValuesToColumns()` and `unpivotValuesToRows()`.
 
-Note: often the data re-arrangement operation is only exposed as part of a larger aggregating or tabulating operation.  Also `moveValuesToColumns()` is considered the harder transform direction (as it has to group rows to work), so it is often supplied in packages, whereas analysts often use ad-hoc methods for the simpler `moveValuesToRows()` operation (to be defined next).
+Note: often the data re-arrangement operation is only exposed as part of a larger aggregating or tabulating operation.  Also `pivotValuesToColumns()` is considered the harder transform direction (as it has to group rows to work), so it is often supplied in packages, whereas analysts often use ad-hoc methods for the simpler `unpivotValuesToRows()` operation (to be defined next).
 
 
 #### Data Scientist 4
 
-![](vignettes/BA.png)
+![](extras/BA.png)
 
 Data Scientist 4 picks a form that makes models unique keys, and records the results as:
 
@@ -194,20 +194,20 @@ print(d3_4)
 all.equal(d3, d3_4)
 ```
 
-We will replace the `gather` operation with `moveValuesToRows()` and the call will look like the following.
+We will replace the `gather` operation with `unpivotValuesToRows()` and the call will look like the following.
 
 ```{r eval=FALSE}
- moveValuesToRows(data = d4,
+ unpivotValuesToRows(data = d4,
                   nameForNewKeyColumn = 'meas', 
                   nameForNewValueColumn = 'value', 
                   columnsToTakeFrom = c('x_AUC', 'y_AUC', 'x_pR2', 'y_pR2'))
 ```
 
-` moveValuesToRows()` is (under some restrictions) an inverse of `moveValuesToColumns()`.
+` unpivotValuesToRows()` is (under some restrictions) an inverse of `pivotValuesToColumns()`.
 
-![](vignettes/gather_spread.png)
+![](extras/gather_spread.png)
 
-Although we implement `moveValuesToRows()` and `moveValuesToColums()` as thin wrappers of `tidyr`'s `gather` and `spread`, we find the more verbose naming (and calling interface) more intuitive. So we encourage you to think directly in terms of `moveValuesToRows()` as moving values to different rows (in the same column), and `moveValuesToColums()` as moving values to different columns (in the same row).  It will usually be apparent from your problem which of these operations you want to use.
+Although we implement `unpivotValuesToRows()` and `moveValuesToColums()` as thin wrappers of `tidyr`'s `gather` and `spread`, we find the more verbose naming (and calling interface) more intuitive. So we encourage you to think directly in terms of `unpivotValuesToRows()` as moving values to different rows (in the same column), and `moveValuesToColums()` as moving values to different columns (in the same row).  It will usually be apparent from your problem which of these operations you want to use.
 
 ## The Theory of Coordinatized Data
 
@@ -263,9 +263,9 @@ print(lookup(k4))
 
 The `lookup()` procedure was able to treat all these keys and key positions uniformly. This illustrates that what is in tables versus what is in rows versus what is in columns is just an implementation detail.  Once we understand that all of these data scientists recorded the same data we should not be surprised we can convert between representations.
 
-The thing to remember: coordinatized data is in cells, and every cell has unique coordinates.  We are going to use this invariant as our enforced [precondition](https://en.wikipedia.org/wiki/Precondition) before any data transform, which will guarantee our data meets this invariant as a postcondition.  I.e., if we restrict ourselves to coordinatized data and exclude wild data, the operations  `moveValuesToColumns()` and `moveValuesToRows()` become well-behaved and much easier to comprehend. In particular, *they are invertible*. (In math terms, the operators `moveValuesToColumns()` and `moveValuesToRows()` form a [groupoid](https://en.wikipedia.org/wiki/Groupoid) acting on coordinatized data.)
+The thing to remember: coordinatized data is in cells, and every cell has unique coordinates.  We are going to use this invariant as our enforced [precondition](https://en.wikipedia.org/wiki/Precondition) before any data transform, which will guarantee our data meets this invariant as a postcondition.  I.e., if we restrict ourselves to coordinatized data and exclude wild data, the operations  `pivotValuesToColumns()` and `unpivotValuesToRows()` become well-behaved and much easier to comprehend. In particular, *they are invertible*. (In math terms, the operators `pivotValuesToColumns()` and `unpivotValuesToRows()` form a [groupoid](https://en.wikipedia.org/wiki/Groupoid) acting on coordinatized data.)
 
-![](vignettes/15puzzleGroupoid.png)
+![](extras/15puzzleGroupoid.png)
 
 [The 15 puzzle: another groupoid](http://www.neverendingbooks.org/the-15-puzzle-groupoid-1)
 
@@ -277,20 +277,20 @@ Many students are initially surprised that row/column conversions are considered
 
 ### Moving From Columns to Rows ("Thinifying data")
 
-![](vignettes/Gather.png)
+![](extras/Gather.png)
 
 Moving data from columns to rows (i.e., from Scientist 1 to Scientist 3) is easy to demonstrate and explain.
 
 The only thing hard about this operation is remembering the name of the operation ("`gather()`") and the arguments.  We can remove this inessential difficulty by bringing in a verbose wrapper function:
 
-```{r moveValuesToRows}
+```{r unpivotValuesToRows}
 library("cdata")
 ```
 
 In this notation moving from Data Scientist 1's records to Data Scientist 3's looks like the following.
 
 ```{r sc1to3}
-d3from1 <- moveValuesToRows(data=d1,
+d3from1 <- unpivotValuesToRows(data=d1,
                             nameForNewKeyColumn= 'measurement',
                             nameForNewValueColumn= 'value',
                             columnsToTakeFrom = c('AUC', 'pR2')) %>%
@@ -300,7 +300,7 @@ print(d3from1)
 all.equal(d3, d3from1)
 ```
 
-In a `moveValuesToRows()` operation each row of the data frame is torn up and used to make many rows.  Each of the columns we specify that we want measurements from gives us a new row from each of the original data rows.
+In a `unpivotValuesToRows()` operation each row of the data frame is torn up and used to make many rows.  Each of the columns we specify that we want measurements from gives us a new row from each of the original data rows.
 
 The pattern is more obvious if we process any rows of `d1` independently:
 
@@ -308,7 +308,7 @@ The pattern is more obvious if we process any rows of `d1` independently:
 row <- d1[3,]
 print(row)
 
-moveValuesToRows(data=row,
+unpivotValuesToRows(data=row,
                  nameForNewKeyColumn= 'measurement',
                  nameForNewValueColumn= 'value',
                  columnsToTakeFrom = c('AUC', 'pR2')) %>%
@@ -323,16 +323,16 @@ Moving data from rows to columns (i.e., from Scientist 3 to Scientist 1) is a bi
 
 In moving from rows to columns we group a set of rows that go together (match on keys) and then combine them into one row by adding additional columns.
 
-![](vignettes/Spread.png)
+![](extras/Spread.png)
 
 Note: to move data from rows to columns *we must know which set of rows go together*. That means some set of columns is working as keys, even though this is not emphasized in the `spread()` calling interface or explanations. For invertible data transforms, we want a set of columns (`rowKeyColumns`) that define a composite key that uniquely identifies each row of the result. For this to be true, the `rowKeyColumns` plus the column we are taking value keys from must uniquely identify each row of the input.
 
-To make things easier to understand and remember, we introduce another wrapping function: `moveValuesToColumns()`.
+To make things easier to understand and remember, we introduce another wrapping function: `pivotValuesToColumns()`.
 
 This lets us rework the example of moving from Data Scientist 3's format to Data Scientist 1's:
 
 ```{r mvtce}
-d1from3 <- moveValuesToColumns(data= d3,
+d1from3 <- pivotValuesToColumns(data= d3,
                     columnToTakeKeysFrom= 'measurement',
                     columnToTakeValuesFrom= 'value',
                     rowKeyColumns= c('model', 'testset')) %>%
@@ -359,7 +359,7 @@ spread(d3damaged, 'measurement', 'value')
 This happens because the precondition is not met: the columns `(model, testset, measurement)` don't uniquely represent each row of the input. Catching the error is good, and we emphasize that in our wrapper.
 
 ```{r spreaddam2, error=TRUE}
-moveValuesToColumns(data= d3damaged,
+pivotValuesToColumns(data= d3damaged,
                     columnToTakeKeysFrom= 'measurement',
                     columnToTakeValuesFrom= 'value',
                     rowKeyColumns= c('model', 'testset'))
@@ -383,7 +383,7 @@ The frame `d3damaged` does not match the user's probable intent: that the column
 In the above case we feel it is good to allow the user to declare intent (hence the extra `rowKeyColumns` argument) and throw an exception if the data is not structured how the user expects (instead of allowing this data to possibly ruin a longer analysis in some unnoticed manner).
 
 ```{r depthprob2, error=TRUE}
-moveValuesToColumns(data= d3damaged,
+pivotValuesToColumns(data= d3damaged,
                     columnToTakeKeysFrom= 'measurement',
                     columnToTakeValuesFrom= 'value',
                     rowKeyColumns= c('model', 'testset'))
@@ -391,7 +391,7 @@ moveValuesToColumns(data= d3damaged,
 
 The above issue is usually fixed by one of two solutions (which one is appropriate depends on the situation):
 
-  1. Stricter control (via `dplyr::select()`) of which columns are in the analysis. In our example, we would `select` all the columns of `d3damaged` except `depth`.
+  1. Stricter control of which columns are in the analysis. In our example, we would `select` all the columns of `d3damaged` except `depth`.
   2. Aggregating or summing out the problematic columns. For example if the problematic column in our example were `runtime`, which could legitimately vary for the same model and dataset, we could use `dplyr::group_by/summarize` to create a data frame with columns `(model, testset, mean_runtime, measurement, value)`, so that `(model, testset)` does uniquely specify row groups.
 
 
@@ -403,5 +403,5 @@ For coordinatized data different layouts of rows and columns are demonstrably eq
 
 It pays to think fluidly in terms of coordinatized data and delay any format conversions until you actually need them.  You will eventually need transforms as most data processing steps have a preferred format.  For example, machine learning training usually requires a denormalized form.
 
-We feel the methods `moveValuesToRows()` and `moveValuesToColumns()` are easier to learn and remember than abstract terms such as "stack/unstack", "melt/cast", or "gather/spread" and thus are a good way to teach.  Perhaps they are even a good way to document (and confirm) your intent in your own projects.
+We feel the methods `unpivotValuesToRows()` and `pivotValuesToColumns()` are easier to learn and remember than abstract terms such as "stack/unstack", "melt/cast", or "gather/spread" and thus are a good way to teach.  Perhaps they are even a good way to document (and confirm) your intent in your own projects.
 

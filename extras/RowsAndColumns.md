@@ -1,27 +1,14 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-`cdata` is an explanation of "coordinatized data" and includes deliberately verbose wrappers for `tidyr::gather()` and `tidyr::spread()`. Useful for training and for checking extra invariants.
-
-![](extras/cdata.png)
-
-Install via CRAN:
-
-``` r
-install.packages("cdata")
-```
-
-Or from Github using devtools:
-
-``` r
-devtools::install_github("WinVector/cdata")
-```
+Coordinatized Data: A Fluid Data Specification
+================
+John Mount and Nina Zumel
+2017-11-11
 
 Introduction
 ------------
 
 It has been our experience when teaching the data wrangling part of data science that students often have difficulty understanding the conversion to and from row-oriented and column-oriented data formats (what is commonly called pivoting and un-pivoting).
 
-![](extras/wireLoom.png)
+![](wireLoom.png)
 
 [Boris Artzybasheff illustration](http://www.darkroastedblend.com/2014/01/machines-alive-whimsical-art-of-boris.html)
 
@@ -38,7 +25,7 @@ In each case the data scientist was asked to test two decision tree regression m
 
 #### Data Scientist 1
 
-![](https://github.com/WinVector/cdata/raw/master/extras/cdata.png)
+![](ML.png)
 
 Data scientist 1 is an experienced modeler, and records their data as follows:
 
@@ -68,7 +55,7 @@ Denormalized forms are the most ready for tasks that reason across columns, such
 
 #### Data Scientist 2
 
-![](extras/DW.png)
+![](DW.png)
 
 Data Scientist 2 has data warehousing experience and records their data in a [normal form](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms):
 
@@ -139,7 +126,7 @@ all.equal(d1, d1_2)
 
 #### Data Scientist 3
 
-![](extras/SC.png)
+![](SC.png)
 
 Data Scientist 3 has a lot of field experience, and prefers an [entity/attribute/value](https://en.wikipedia.org/wiki/Entity–attribute–value_model) notation. They log each measurement as a separate row:
 
@@ -226,7 +213,7 @@ Note: often the data re-arrangement operation is only exposed as part of a large
 
 #### Data Scientist 4
 
-![](extras/BA.png)
+![](BA.png)
 
 Data Scientist 4 picks a form that makes models unique keys, and records the results as:
 
@@ -286,7 +273,7 @@ We will replace the `gather` operation with `unpivotValuesToRows()` and the call
 
 `unpivotValuesToRows()` is (under some restrictions) an inverse of `pivotValuesToColumns()`.
 
-![](extras/gather_spread.png)
+![](gather_spread.png)
 
 Although we implement `unpivotValuesToRows()` and `moveValuesToColums()` as thin wrappers of `tidyr`'s `gather` and `spread`, we find the more verbose naming (and calling interface) more intuitive. So we encourage you to think directly in terms of `unpivotValuesToRows()` as moving values to different rows (in the same column), and `moveValuesToColums()` as moving values to different columns (in the same row). It will usually be apparent from your problem which of these operations you want to use.
 
@@ -361,7 +348,7 @@ The `lookup()` procedure was able to treat all these keys and key positions unif
 
 The thing to remember: coordinatized data is in cells, and every cell has unique coordinates. We are going to use this invariant as our enforced [precondition](https://en.wikipedia.org/wiki/Precondition) before any data transform, which will guarantee our data meets this invariant as a postcondition. I.e., if we restrict ourselves to coordinatized data and exclude wild data, the operations `pivotValuesToColumns()` and `unpivotValuesToRows()` become well-behaved and much easier to comprehend. In particular, *they are invertible*. (In math terms, the operators `pivotValuesToColumns()` and `unpivotValuesToRows()` form a [groupoid](https://en.wikipedia.org/wiki/Groupoid) acting on coordinatized data.)
 
-![](extras/15puzzleGroupoid.png)
+![](15puzzleGroupoid.png)
 
 [The 15 puzzle: another groupoid](http://www.neverendingbooks.org/the-15-puzzle-groupoid-1)
 
@@ -374,7 +361,7 @@ Many students are initially surprised that row/column conversions are considered
 
 ### Moving From Columns to Rows ("Thinifying data")
 
-![](extras/Gather.png)
+![](Gather.png)
 
 Moving data from columns to rows (i.e., from Scientist 1 to Scientist 3) is easy to demonstrate and explain.
 
@@ -447,7 +434,7 @@ Moving data from rows to columns (i.e., from Scientist 3 to Scientist 1) is a bi
 
 In moving from rows to columns we group a set of rows that go together (match on keys) and then combine them into one row by adding additional columns.
 
-![](extras/Spread.png)
+![](Spread.png)
 
 Note: to move data from rows to columns *we must know which set of rows go together*. That means some set of columns is working as keys, even though this is not emphasized in the `spread()` calling interface or explanations. For invertible data transforms, we want a set of columns (`rowKeyColumns`) that define a composite key that uniquely identifies each row of the result. For this to be true, the `rowKeyColumns` plus the column we are taking value keys from must uniquely identify each row of the input.
 
@@ -579,7 +566,7 @@ pivotValuesToColumns(data= d3damaged,
 
 The above issue is usually fixed by one of two solutions (which one is appropriate depends on the situation):
 
-1.  Stricter control of which columns are in the analysis. In our example, we would `select` all the columns of `d3damaged` except `depth`.
+1.  Stricter control (via `dplyr::select()`) of which columns are in the analysis. In our example, we would `select` all the columns of `d3damaged` except `depth`.
 2.  Aggregating or summing out the problematic columns. For example if the problematic column in our example were `runtime`, which could legitimately vary for the same model and dataset, we could use `dplyr::group_by/summarize` to create a data frame with columns `(model, testset, mean_runtime, measurement, value)`, so that `(model, testset)` does uniquely specify row groups.
 
 Conclusion

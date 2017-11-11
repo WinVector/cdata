@@ -132,8 +132,10 @@ unpivotValuesToRows <- function(data,
   cT <- buildUnPivotControlTable(nameForNewKeyColumn = nameForNewKeyColumn,
                                  nameForNewValueColumn = nameForNewValueColumn,
                                  columnsToTakeFrom = columnsToTakeFrom)
+  colsToCopy <- setdiff(colnames(data), columnsToTakeFrom)
   res <- moveValuesToRowsD(data,
-                           controlTable = cT)
+                           controlTable = cT,
+                           columnsToCopy = colsToCopy)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -242,8 +244,11 @@ pivotValuesToColumns <- function(data,
                                 columnToTakeKeysFrom = columnToTakeKeysFrom,
                                 columnToTakeValuesFrom = columnToTakeValuesFrom,
                                 sep = sep)
+  colsToCopy <- setdiff(colnames(data),
+                        c(columnToTakeKeysFrom, columnToTakeValuesFrom))
   moveValuesToColumnsD(data,
-                       keyColumns = keyColumns,
-                       controlTable = cT)
+                       keyColumns = rowKeyColumns,
+                       controlTable = cT,
+                       columnsToCopy = colsToCopy)
 }
 
