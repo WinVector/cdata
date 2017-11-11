@@ -245,7 +245,7 @@ pivotValuesToColumns <- function(data,
                                 columnToTakeValuesFrom = columnToTakeValuesFrom,
                                 sep = sep)
   colsToCopy <- setdiff(colnames(data),
-                        c(columnToTakeKeysFrom, columnToTakeValuesFrom))
+                        c(columnToTakeKeysFrom, columnToTakeValuesFrom, rowKeyColumns))
   moveValuesToColumnsD(data,
                        keyColumns = rowKeyColumns,
                        controlTable = cT,
