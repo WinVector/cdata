@@ -258,6 +258,8 @@ moveValuesToRows.character <- function(wideTableName,
   resName
 }
 
+
+
 #' Build a moveValuesToColumnsQ() control table that specifies a pivot.
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
@@ -266,6 +268,7 @@ moveValuesToRows.character <- function(wideTableName,
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param ... not used, force later args to be by name
+#' @param my_db db handle
 #' @param prefix column name prefix (only used when sep is not NULL)
 #' @param sep separator to build complex column names.
 #' @return control table
@@ -274,42 +277,45 @@ moveValuesToRows.character <- function(wideTableName,
 #'
 #' @examples
 #'
+#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #' d <- data.frame(measType = c("wt", "ht"),
 #'                 measValue = c(150, 6),
 #'                 stringsAsFactors = FALSE)
-#' buildPivotControlTable(d, 'measType', 'measValue', sep='_')
+#' DBI::dbWriteTable(my_db,
+#'                   'd',
+#'                   d,
+#'                   overwrite = TRUE,
+#'                   temporary = TRUE)
+#' buildPivotControlTable.character('d', 'measType', 'measValue',
+#'                                  my_db= my_db,
+#'                                  sep = '_')
 #'
 #' @export
-buildPivotControlTable <- function(d,
-                                   columnToTakeKeysFrom,
-                                   columnToTakeValuesFrom,
-                                   ...,
-                                   prefix = columnToTakeKeysFrom,
-                                   sep = NULL) {
+buildPivotControlTable.character <- function(tableName,
+                                             columnToTakeKeysFrom,
+                                             columnToTakeValuesFrom,
+                                             my_db,
+                                             ...,
+                                             prefix = columnToTakeKeysFrom,
+                                             sep = NULL) {
   if(length(list(...))>0) {
     stop("cdata::buildPivotControlTable unexpected arguments.")
   }
-  # don't let n() look like unboudn fn
-  n <- function(...) { NULL }
-  wrapr::let(wrapr::mapsyms(columnToTakeKeysFrom, columnToTakeValuesFrom),
-             {
-               controlTable <- d %.>%
-                 dplyr::group_by(., columnToTakeKeysFrom) %.>%
-                 dplyr::summarize(., count = n()) %.>%
-                 dplyr::ungroup(.) %.>%
-                 dplyr::select(., columnToTakeKeysFrom) %.>%
-                 dplyr::mutate(., columnToTakeKeysFrom = as.character(columnToTakeKeysFrom)) %.>%
-                 dplyr::mutate(., columnToTakeValuesFrom = columnToTakeKeysFrom) %.>%
-                 dplyr::select(., columnToTakeKeysFrom, columnToTakeValuesFrom)  %.>%
-                 dplyr::collect(.) %.>%
-                 as.data.frame(.)
-               if(!is.null(sep)) {
-                 controlTable$columnToTakeValuesFrom <- paste(prefix,
-                                                              controlTable$columnToTakeValuesFrom,
-                                                              sep=sep)
-               }
-               controlTable
-             })
+  q <- paste0("SELECT ",
+              DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom),
+              " FROM ",
+              DBI::dbQuoteIdentifier(my_db, tableName),
+              " GROUP BY ",
+              DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom))
+  controlTable <- DBI::dbGetQuery(my_db, q)
+  controlTable[[columnToTakeKeysFrom]] <- as.character(controlTable[[columnToTakeKeysFrom]])
+  controlTable[[columnToTakeValuesFrom]] <- controlTable[[columnToTakeKeysFrom]]
+  if(!is.null(sep)) {
+    controlTable[[columnToTakeValuesFrom]] <- paste(prefix,
+                                                 controlTable[[columnToTakeValuesFrom]],
+                                                 sep=sep)
+  }
+  controlTable
 }
 
 
@@ -344,9 +350,9 @@ buildPivotControlTable <- function(d,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
+#' @param tallTableName name of table containing data to be mapped (db/Spark data)
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
-#' @param tallTableName name of table containing data to be mapped (db/Spark data)
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
@@ -362,41 +368,37 @@ buildPivotControlTable <- function(d,
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#'
-#' # pivot / tidyr::spread example
-#' # cdata version
-#' d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
-#' cdata::moveValuesToColumns(d,
-#'                            columnToTakeKeysFrom= 'meas',
-#'                            columnToTakeValuesFrom= 'val',
-#'                            rowKeyColumns= c())
-#' # tidyr version: tidyr::spread(d, key = 'meas', value = 'val')
-#' # replyr moveValuesToColumnsQ() version
-#' dR <- replyr_copy_to(my_db, d, 'dR',
-#'                      overwrite = TRUE, temporary = TRUE)
-#' cT <- buildPivotControlTable(dR,
-#'                              columnToTakeKeysFrom= 'meas',
-#'                              columnToTakeValuesFrom= 'val')
-#' replyr::moveValuesToColumnsQ(keyColumns = NULL,
-#'                              cT, 'dR', my_db)
-#'
+#' # pivot example
+#' d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+#' DBI::dbWriteTable(my_db,
+#'                   'd',
+#'                   d,
+#'                   temporary = TRUE)
+#' cT <- buildPivotControlTable.character('d',
+#'                                        columnToTakeKeysFrom= 'meas',
+#'                                        columnToTakeValuesFrom= 'val',
+#'                                        my_db = my_db)
+#' tab <- moveValuesToColumns.character('d',
+#'                                      keyColumns = NULL,
+#'                                      controlTable = cT,
+#'                                      my_db = my_db)
+#' DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
 #'
 #'
 #' @export
 #'
-moveValuesToColumnsQ <- function(keyColumns,
-                                 controlTable,
-                                 tallTableName,
-                                 my_db,
-                                 ...,
-                                 columnsToCopy = NULL,
-                                 tempNameGenerator = makeTempNameGenerator('mvtcq'),
-                                 strict = FALSE,
-                                 checkNames = TRUE,
-                                 showQuery = FALSE,
-                                 defaultValue = NULL,
-                                 dropDups = FALSE) {
+moveValuesToColumns.character <- function(tallTableName,
+                                          keyColumns,
+                                          controlTable,
+                                          my_db,
+                                          ...,
+                                          columnsToCopy = NULL,
+                                          tempNameGenerator = makeTempNameGenerator('mvtcq'),
+                                          strict = FALSE,
+                                          checkNames = TRUE,
+                                          showQuery = FALSE,
+                                          defaultValue = NULL,
+                                          dropDups = FALSE) {
   if(length(list(...))>0) {
     stop("cdata::moveValuesToColumnsQ unexpected arguments.")
   }
