@@ -7,7 +7,6 @@ NULL
 
 
 
-# The use of db handles with dplyr is what is giving us a dplyr >= 0.7.0 dependency.
 
 
 # confirm control table has uniqueness
@@ -108,7 +107,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' (the column labels) are names of data cells in the long form.
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
-#' To get behavior similar to tidyr::gather/spread one build the control table
+#' To get behavior similar to tidyr::gather/spread one builds the control table
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
@@ -148,25 +147,6 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #'                                        nameForNewValueColumn= 'val',
 #'                                        columnsToTakeFrom= c('AUC', 'R2'))
 #' replyr::moveValuesToRowsQ(cT, 'dR', my_db)
-#'
-#' # non-trivial example
-#' wideTableName <- 'dat'
-#' d <- dplyr::copy_to(my_db,
-#'                     dplyr::tribble(
-#'                       ~ID,          ~c1,          ~c2,          ~c3,
-#'                       'id1', 'val_id1_c1', 'val_id1_c2', 'val_id1_c3',
-#'                       'id2', 'val_id2_c1', 'val_id2_c2', 'val_id2_c3',
-#'                       'id3', 'val_id3_c1', 'val_id3_c2', 'val_id3_c3' ),
-#'                     wideTableName, overwrite = TRUE, temporary=TRUE)
-#' controlTable <- dplyr::tribble(~group, ~col1, ~col2,
-#'                                'aa',  'c1',  'c2',
-#'                                'bb',  'c1',  'c3')
-#' columnsToCopy <- 'ID'
-#' moveValuesToRowsQ(controlTable,
-#'                   wideTableName,
-#'                   my_db,
-#'                   columnsToCopy = columnsToCopy)
-#'
 #'
 #'
 #' @export
@@ -355,7 +335,7 @@ buildPivotControlTable <- function(d,
 #' (the column labels) are names of data cells in the long form.
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
-#' To get behavior similar to tidyr::gather/spread one build the control table
+#' To get behavior similar to tidyr::gather/spread one builds the control table
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
@@ -399,28 +379,6 @@ buildPivotControlTable <- function(d,
 #' replyr::moveValuesToColumnsQ(keyColumns = NULL,
 #'                              cT, 'dR', my_db)
 #'
-#'
-#' # non-trival transform
-#' tallTableName <- 'dat'
-#' d <- dplyr::copy_to(my_db,
-#'                     dplyr::tribble(
-#'     ~ID, ~group,       ~col1,       ~col2,
-#'     'id1', 'aa', 'val_id1_c1', 'val_id1_c2',
-#'     'id1', 'bb', 'val_id1_c1', 'val_id1_c3',
-#'     'id2', 'aa', 'val_id2_c1', 'val_id2_c2',
-#'     'id2', 'bb', 'val_id2_c1', 'val_id2_c3',
-#'     'id3', 'aa', 'val_id3_c1', 'val_id3_c2',
-#'     'id3', 'bb', 'val_id3_c1', 'val_id3_c3' ),
-#'          tallTableName,
-#'          overwrite = TRUE, temporary=TRUE)
-#' controlTable <- dplyr::tribble(~group, ~col1, ~col2,
-#'                                  'aa',  'c1',  'c2',
-#'                                  'bb',  NA,    'c3')
-#' keyColumns <- 'ID'
-#' moveValuesToColumnsQ(keyColumns,
-#'                      controlTable,
-#'                      tallTableName,
-#'                      my_db)
 #'
 #'
 #' @export
