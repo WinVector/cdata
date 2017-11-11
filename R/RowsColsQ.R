@@ -7,6 +7,18 @@ NULL
 
 
 
+listFields <- function(my_db, tableName) {
+  tryCatch(
+    return(DBI::dbListFields(my_db, tableName)), # fails on PostgreSQL
+    error = function(e) { NULL })
+  # below is going to have issues to to R-column name conversion!
+  q <- paste0("SELECT * FROM ",
+              DBI::dbQuoteIdentifier(my_db, tableName),
+              " LIMIT 1")
+  v <- DBI::dbGetQuery(my_db, q)
+  colnames(v)
+}
+
 
 
 # confirm control table has uniqueness
@@ -177,7 +189,7 @@ moveValuesToRowsN <- function(wideTable,
   if(checkNames) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- DBI::dbListFields(my_db, wideTable)
+    wideTableColnames <- listFields(my_db, wideTable)
     badCells <- setdiff(interiorCells, wideTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::moveValuesToRowsN: control table entries that are not wideTable column names:",
@@ -552,7 +564,7 @@ moveValuesToColumnsN <- function(tallTable,
     stop(paste("cdata::moveValuesToColumnsN", cCheck))
   }
   if(checkNames) {
-    tallTableColnames <- DBI::dbListFields(my_db, tallTable)
+    tallTableColnames <- listFields(my_db, tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::moveValuesToColumnsN: control table column names that are not tallTable column names:",

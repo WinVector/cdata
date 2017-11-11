@@ -50,7 +50,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #'
 #' @seealso \code{\link{pivotValuesToColumns}}
 #'
-#' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToRowsQ}}).
+#' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToRows*}).
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.
@@ -150,7 +150,7 @@ unpivotValuesToRows <- function(data,
 #'
 #' @seealso \code{\link{unpivotValuesToRows}}
 #'
-#' @param data data.frame to work with (must be local, for remote please try \code{\link[replyr]{moveValuesToColumnsQ}}).
+#' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param rowKeyColumns character array names columns that should be table keys.
