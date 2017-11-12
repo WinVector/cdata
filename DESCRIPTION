@@ -11,7 +11,7 @@ Authors@R: c(
 URL:  https://github.com/WinVector/cdata/, https://winvector.github.io/cdata/
 Maintainer: John Mount <jmount@win-vector.com>
 BugReports: https://github.com/WinVector/cdata/issues
-Description: Supplies higher-order fluid data transform operators that include pivot and un-pivot as special cases. Based the `DBI` database interface.
+Description: Supplies higher-order fluid data transform operators that include pivot and anti-pivot as special cases. Based the 'DBI' database interface.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
