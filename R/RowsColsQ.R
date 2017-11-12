@@ -21,6 +21,52 @@ listFields <- function(my_db, tableName) {
   colnames(v)
 }
 
+#' Quick look at remote data
+#'
+#' @param my_db DBI database handle
+#' @param tableName name of table to look at
+#' @param displayRows number of rows to sample
+#' @param countRows logical, if TRUE return row count.
+#' @return str-line view of data
+#'
+#' @examples
+#'
+#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#' DBI::dbWriteTable(my_db,
+#'                   'd',
+#'                   data.frame(AUC = 0.6, R2 = 0.2),
+#'                   overwrite = TRUE,
+#'                   temporary = TRUE)
+#' qlook(my_db, 'd')
+#'
+#' @export
+#'
+qlook <- function(my_db, tableName,
+                  displayRows = 10,
+                  countRows = TRUE) {
+  h <- DBI::dbGetQuery(my_db,
+                       paste0("SELECT * FROM ",
+                              DBI::dbQuoteIdentifier(my_db, tableName),
+                              " LIMIT ", displayRows))
+  cat(paste('table',
+            DBI::dbQuoteIdentifier(my_db, tableName),
+            paste(class(my_db), collapse = ' '),
+            '\n'))
+  if(countRows) {
+    nrow <- DBI::dbGetQuery(my_db,
+                            paste0("SELECT COUNT(1) FROM ",
+                                   DBI::dbQuoteIdentifier(my_db, tableName)))[1,1, drop=TRUE]
+    cat(paste(" nrow:", nrow, '\n'))
+    if(nrow>displayRows) {
+      cat(" NOTE: \"obs\" below is count of sample, not number of rows of data.\n")
+    }
+  } else {
+    cat(" NOTE: \"obs\" below is count of sample, not number of rows of data.\n")
+  }
+  utils::str(h)
+  invisible(NULL)
+}
+
 
 
 # confirm control table has uniqueness
@@ -76,7 +122,7 @@ checkControlTable <- function(controlTable, strict) {
 #' @param ... not used, force later args to be by name
 #' @return control table
 #'
-#' @seealso \code{{moveValuesToRows}}, \code{\link{moveValuesToRowsN}}
+#' @seealso \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToRowsD}}
 #'
 #' @examples
 #'
@@ -140,7 +186,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -157,7 +203,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #'                                nameForNewValueColumn= 'val',
 #'                                columnsToTakeFrom= c('AUC', 'R2'))
 #' tab <- moveValuesToRowsN('d', cT, my_db = my_db)
-#' DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
+#' qlook(my_db, tab)
 #'
 #'
 #' @export
@@ -309,7 +355,7 @@ moveValuesToRowsN <- function(wideTable,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -370,7 +416,7 @@ moveValuesToRowsD <- function(wideTable,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{{moveValuesToRows}}, \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -429,7 +475,7 @@ buildPivotControlTableN <- function(tableName,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \url{https://github.com/WinVector/cdata}, \code{{moveValuesToRows}}, \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+#' @seealso \code{\link{moveValuesToColumnsN}}
 #'
 #' @examples
 #'
@@ -511,7 +557,7 @@ buildPivotControlTableD <- function(table,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
+#' @seealso \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
 #'
 #' @examples
 #'
@@ -530,7 +576,7 @@ buildPivotControlTableD <- function(table,
 #'                                      keyColumns = NULL,
 #'                                      controlTable = cT,
 #'                                      my_db = my_db)
-#' DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
+#' qlook(my_db, tab)
 #'
 #'
 #' @export
@@ -708,7 +754,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
+#' @seealso \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
 #'
 #' @examples
 #'

@@ -74,5 +74,5 @@ moveValuesToColumnsD(d,
 
 }
 \seealso{
-\code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
+\code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
 }

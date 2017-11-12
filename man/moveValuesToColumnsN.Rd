@@ -82,10 +82,10 @@ tab <- moveValuesToColumnsN('d',
                                      keyColumns = NULL,
                                      controlTable = cT,
                                      my_db = my_db)
-DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
+qlook(my_db, tab)
 
 
 }
 \seealso{
-\code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
+\code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
 }

@@ -37,5 +37,5 @@ buildPivotControlTableD(d,
 
 }
 \seealso{
-\url{https://github.com/WinVector/cdata}, \code{{moveValuesToRows}}, \code{{moveValuesToColumns}}, \code{\link{moveValuesToRowsN}}, \code{\link{moveValuesToColumnsN}}
+\code{\link{moveValuesToColumnsN}}
 }

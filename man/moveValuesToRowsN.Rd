@@ -75,10 +75,10 @@ cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
                                nameForNewValueColumn= 'val',
                                columnsToTakeFrom= c('AUC', 'R2'))
 tab <- moveValuesToRowsN('d', cT, my_db = my_db)
-DBI::dbGetQuery(my_db, paste("SELECT * FROM", tab))
+qlook(my_db, tab)
 
 
 }
 \seealso{
-\code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+\code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 }

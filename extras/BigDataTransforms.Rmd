@@ -34,7 +34,7 @@ replacement implementations in the `replyr` package.
 
 For example:
 
-```{r dbex1, error=TRUE}
+```{r dbex1}
 library("RPostgreSQL")
 suppressPackageStartupMessages(library("dplyr"))
 isSpark <- FALSE
@@ -56,7 +56,9 @@ d <- dplyr::copy_to(my_db, data.frame(x =  c(1,5),
                                       stringsAsFactors = FALSE), 
                     'd')
 print(d)
+```
 
+```{r dbd1, error=TRUE}
 # show dplyr::bind_rows() fails.
 dplyr::bind_rows(list(d, d))
 ```

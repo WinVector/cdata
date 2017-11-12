@@ -68,5 +68,5 @@ tab <- moveValuesToRowsD(d, cT)
 
 }
 \seealso{
-\code{{moveValuesToRows}}, \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
+\code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
 }
