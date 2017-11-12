@@ -69,6 +69,7 @@ d <- data.frame(AUC = 0.6, R2 = 0.2)
 DBI::dbWriteTable(my_db,
                   'd',
                   d,
+                  row.names = FALSE,
                   overwrite = TRUE,
                   temporary = TRUE)
 cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
