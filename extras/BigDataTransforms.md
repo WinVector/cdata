@@ -89,7 +89,7 @@ library("replyr")
 packageVersion("replyr")
 ```
 
-    ## [1] '0.9.0'
+    ## [1] '0.9.1'
 
 ``` r
 # binding rows
@@ -97,7 +97,7 @@ dB <- replyr_bind_rows(list(d, d))
 print(dB)
 ```
 
-    ## # Source:   table<replyr_bind_rows_kdvt6z16mjfkqub6wwvq_0000000002> [?? x
+    ## # Source:   table<replyr_bind_rows_6ldifq8bi4rhfhh0whxn_0000000002> [?? x
     ## #   2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
@@ -113,7 +113,7 @@ replyr_split(dB, 'group')
 ```
 
     ## $g2
-    ## # Source:   table<replyr_gapply_8bnxrytoojvygrrtp5bi_0000000001> [?? x 2]
+    ## # Source:   table<replyr_gapply_bbgkczrdr8adebfmhuuu_0000000001> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -121,7 +121,7 @@ replyr_split(dB, 'group')
     ## 2     5    g2
     ## 
     ## $g1
-    ## # Source:   table<replyr_gapply_8bnxrytoojvygrrtp5bi_0000000003> [?? x 2]
+    ## # Source:   table<replyr_gapply_bbgkczrdr8adebfmhuuu_0000000003> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -130,20 +130,22 @@ replyr_split(dB, 'group')
 
 ``` r
 # pivoting
-pivotControl <-  buildPivotControlTableN('d', 
-                                        columnToTakeKeysFrom = 'group', 
-                                        columnToTakeValuesFrom = 'x',
-                                        sep = '_',
-                                        my_db = my_db)
-dWname <- moveValuesToColumnsN(keyColumns = NULL,
-                           controlTable = pivotControl,
-                           tallTable = 'd',
-                           my_db = my_db, strict = FALSE) 
+pivotControl <- 
+  cdata::buildPivotControlTableN('d', 
+                                 columnToTakeKeysFrom = 'group', 
+                                 columnToTakeValuesFrom = 'x',
+                                 sep = '_',
+                                 my_db = my_db)
+dWname <- 
+  cdata::moveValuesToColumnsN(keyColumns = NULL,
+                              controlTable = pivotControl,
+                              tallTable = 'd',
+                              my_db = my_db, strict = FALSE) 
 dW <- dplyr::tbl(my_db, dWname)
 print(dW)
 ```
 
-    ## # Source:   table<mvtcq_qtrzhnnkzf4igsjps4nz_0000000001> [?? x 2]
+    ## # Source:   table<mvtcq_cwbpqcsls6qhmqxsmrnm_0000000001> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##   group_g1 group_g2
     ##      <dbl>    <dbl>
@@ -151,17 +153,19 @@ print(dW)
 
 ``` r
 # un-pivoting
-unpivotControl <- buildUnPivotControlTable(nameForNewKeyColumn = 'group',
-                                           nameForNewValueColumn = 'x',
-                                           columnsToTakeFrom = colnames(dW))
-dXname <- moveValuesToRowsN(controlTable = unpivotControl,
-                            wideTable = dWname,
-                            my_db = my_db)
+unpivotControl <- 
+  cdata::buildUnPivotControlTable(nameForNewKeyColumn = 'group',
+                                  nameForNewValueColumn = 'x',
+                                  columnsToTakeFrom = colnames(dW))
+dXname <- 
+  cdata::moveValuesToRowsN(controlTable = unpivotControl,
+                           wideTable = dWname,
+                           my_db = my_db)
 dX <- dplyr::tbl(my_db, dXname)
 print(dX)
 ```
 
-    ## # Source:   table<mvtrq_d97glez6to03xhyvuluv_0000000001> [?? x 2]
+    ## # Source:   table<mvtrq_loboxfuhc59u2dkv5qyq_0000000001> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##      group     x
     ##      <chr> <dbl>
@@ -172,8 +176,8 @@ The point is: using the `replyr` package you *can* design in terms of higher-ord
 
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following two articles:
 
--   [Theory of coordinatized data](https://winvector.github.io/cdata/).
--   [Fluid data transforms](https://winvector.github.io/replyr/articles/FluidData.html).
+-   [Theory of coordinatized data](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md).
+-   [Fluid data transforms](https://github.com/WinVector/cdata/blob/master/extras/FluidData.md).
 
 ``` r
 if(isSpark) {

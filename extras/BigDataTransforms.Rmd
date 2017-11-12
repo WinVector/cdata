@@ -80,26 +80,30 @@ print(dB)
 replyr_split(dB, 'group')
 
 # pivoting
-pivotControl <-  buildPivotControlTableN('d', 
-                                        columnToTakeKeysFrom = 'group', 
-                                        columnToTakeValuesFrom = 'x',
-                                        sep = '_',
-                                        my_db = my_db)
-dWname <- moveValuesToColumnsN(keyColumns = NULL,
-                           controlTable = pivotControl,
-                           tallTable = 'd',
-                           my_db = my_db, strict = FALSE) 
+pivotControl <- 
+  cdata::buildPivotControlTableN('d', 
+                                 columnToTakeKeysFrom = 'group', 
+                                 columnToTakeValuesFrom = 'x',
+                                 sep = '_',
+                                 my_db = my_db)
+dWname <- 
+  cdata::moveValuesToColumnsN(keyColumns = NULL,
+                              controlTable = pivotControl,
+                              tallTable = 'd',
+                              my_db = my_db, strict = FALSE) 
 dW <- dplyr::tbl(my_db, dWname)
 print(dW)
                      
 
 # un-pivoting
-unpivotControl <- buildUnPivotControlTable(nameForNewKeyColumn = 'group',
-                                           nameForNewValueColumn = 'x',
-                                           columnsToTakeFrom = colnames(dW))
-dXname <- moveValuesToRowsN(controlTable = unpivotControl,
-                            wideTable = dWname,
-                            my_db = my_db)
+unpivotControl <- 
+  cdata::buildUnPivotControlTable(nameForNewKeyColumn = 'group',
+                                  nameForNewValueColumn = 'x',
+                                  columnsToTakeFrom = colnames(dW))
+dXname <- 
+  cdata::moveValuesToRowsN(controlTable = unpivotControl,
+                           wideTable = dWname,
+                           my_db = my_db)
 dX <- dplyr::tbl(my_db, dXname)
 print(dX)
 ```
@@ -111,8 +115,8 @@ be succinct, powerful, performant, and maintainable.
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following
 two articles:
 
-  * [Theory of coordinatized data](https://winvector.github.io/cdata/).
-  * [Fluid data transforms](https://winvector.github.io/replyr/articles/FluidData.html).
+  * [Theory of coordinatized data](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md).
+  * [Fluid data transforms](https://github.com/WinVector/cdata/blob/master/extras/FluidData.md).
 
 ```{r cleanup}
 if(isSpark) {

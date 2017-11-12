@@ -1,22 +1,22 @@
 Fluid Data
 ================
 John Mount, Win-Vector LLC
-2017-11-11
+2017-11-12
 
 Introduction
 ============
 
-The [`replyr`](https://winvector.github.io/replyr/) [R](https://www.r-project.org) package provides a powerful extension of the "fluid data" (or "coordinatized data") concept (please see [here](http://www.win-vector.com/blog/2017/03/coordinatized-data-a-fluid-data-specification/) for some notes ) that goes way beyond the concepts of pivot/un-pivot.
+The [`cdata`](https://github.com/WinVector/cdata) [R](https://www.r-project.org) package provides a powerful extension of the "fluid data" (or "coordinatized data") concept (please see [here](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md) for some notes ) that goes way beyond the concepts of pivot/un-pivot.
 
 The fluid data concept is:
 
 1.  Data cells have coordinates, and the dependence of these coordinates on a given data representation (a table or map) is an inessential detail to be abstracted out.
 2.  There may not be one "preferred" shape (or frame of reference) for data: you have to anticipate changing data shape many times to adapt to the tasks and tools (data relativity).
 
-`replyr` supplies two general operators for fluid data work at database scale (and `Spark` big data scale):
+`cdata` supplies two general operators for fluid data work at database scale (and `Spark` big data scale):
 
-1.  [`moveValuesToRowsQ()`](https://winvector.github.io/replyr/reference/moveValuesToRowsQ.html): an operator centered around `SQL` `cross-join` semantics. un-pivot, `tidyr::gather()`, and [`cdata::unpivotValuesToRows()`](https://winvector.github.io/cdata/reference/unpivotValuesToRows.html) are special cases of this general operator.
-2.  [`moveValuesToColumnsQ()`](https://winvector.github.io/replyr/reference/moveValuesToColumnsQ.html): an operator centered around `SQL` `group by` semantics. pivot, `tidyr::spread()`, [`cdata::pivotValuesToColumns()`](https://winvector.github.io/cdata/reference/pivotValuesToColumns.html), and one-hot-encode are special cases of this general operator.
+1.  [`moveValuesToRows*()`](https://winvector.github.io/cdata/reference/moveValuesToRowsN.html): operators centered around `SQL` `cross-join` semantics. un-pivot, `tidyr::gather()`, and [`cdata::unpivotValuesToRows()`](https://winvector.github.io/cdata/reference/unpivotValuesToRows.html) are special cases of this general operator.
+2.  [`moveValuesToColumns*()`](https://winvector.github.io/cdata/reference/moveValuesToColumnsN.html): an operator centered around `SQL` `group by` semantics. pivot, `tidyr::spread()`, [`cdata::pivotValuesToColumns()`](https://winvector.github.io/cdata/reference/pivotValuesToColumns.html), and one-hot-encoding are special cases of this general operator.
 
 Because these operators are powerful, they are fairly general, and at first hard to mentally model (especially if you insist on think of them in only in terms of more a specialized operator such as pivot, instead of more general relational concepts such as "cross join" and "group by"). These operators are thin wrappers populating and enforcing a few invariants over a large `SQL` statement. That does not mean that these operators are trivial, they are thin because `SQL` is powerful and we have a good abstraction.
 
@@ -31,10 +31,15 @@ Consider the following table that we call a "control table":
 
 ``` r
 suppressPackageStartupMessages(library("cdata"))
-suppressPackageStartupMessages(library("replyr"))
+packageVersion("cdata")
+```
+
+    ## [1] '0.5.0'
+
+``` r
 suppressPackageStartupMessages(library("dplyr"))
 options(width = 160) 
-tng <- replyr::makeTempNameGenerator('fdexample')
+tng <- cdata::makeTempNameGenerator('fdexample')
 ```
 
 ``` r
@@ -111,16 +116,17 @@ The idea is the control table is a very succinct description of the pairing of t
 ``` r
 my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 dat1db <- dplyr::copy_to(my_db, dat1, 'dat1db')
-dat2 <- replyr::moveValuesToRowsQ(controlTable = controlTable,
-                                  wideTableName = 'dat1db',
-                                  my_db = my_db,
-                                  columnsToCopy = "ID",
-                                  tempNameGenerator = tng) %>%
+dat2 <- cdata::moveValuesToRowsN(wideTable = 'dat1db',
+                                 controlTable = controlTable,
+                                 my_db = my_db,
+                                 columnsToCopy = "ID",
+                                 tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .) %>%
   arrange(ID, group)
 print(dat2)
 ```
 
-    ## # Source:     table<fdexample_rbunntrca7pimhxiy9to_0000000001> [?? x 4]
+    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000001> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -139,16 +145,16 @@ So essentially the two readings of `controlTable` are a succinct representation 
 The Operators
 =============
 
-In terms of the above notation/theory our two operators `moveValuesToRowsQ()` and `moveValuesToColumnsQ()` are (in principle) easy to describe:
+In terms of the above notation/theory our two operators `moveValuesToRows*()` and `moveValuesToColumns*()` are (in principle) easy to describe:
 
--   `moveValuesToRowsQ()` reshapes data from style 1 to style 2
--   `moveValuesToColumnsQ()` reshapes data from style 2 to style 1.
+-   `moveValuesToRows*()` reshapes data from style 1 to style 2
+-   `moveValuesToColumns*()` reshapes data from style 2 to style 1.
 
 The above is certainly succinct, but carries a lot of information and allows for a lot of different possible applications. Many important applications are derived from how these two operators interact with row-operations and column-operations.
 
 We give simple examples of each of the operators below.
 
-`moveValuesToRowsQ()`
+`moveValuesToRows*()`
 ---------------------
 
 ``` r
@@ -164,15 +170,16 @@ controlTable <- dplyr::tribble(~group, ~col1, ~col2,
                                  'aa',  'c1',  'c2',
                                  'bb',  'c3',  'c4')
 columnsToCopy <- 'ID'
-replyr::moveValuesToRowsQ(controlTable,
-                          wideTableName,
-                          my_db,
-                          columnsToCopy = columnsToCopy,
-                          tempNameGenerator = tng) %>%
+cdata::moveValuesToRowsN(wideTable = wideTableName,
+                         controlTable =  controlTable,
+                         my_db = my_db,
+                         columnsToCopy = columnsToCopy,
+                         tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .) %>%
   arrange(ID, group)
 ```
 
-    ## # Source:     table<fdexample_rbunntrca7pimhxiy9to_0000000003> [?? x 4]
+    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000003> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -184,7 +191,7 @@ replyr::moveValuesToRowsQ(controlTable,
     ## 5   id3    aa val_id3_c1 val_id3_c2
     ## 6   id3    bb val_id3_c3 val_id3_c4
 
-`moveValuesToColumnsQ()`
+`moveValuesToColumns*()`
 ------------------------
 
 ``` r
@@ -204,15 +211,16 @@ controlTable <- dplyr::tribble(~group, ~col1, ~col2,
                                  'aa',  'c1',  'c2',
                                  'bb',  'c3',  'c4')
 keyColumns <- 'ID'
-replyr::moveValuesToColumnsQ(keyColumns,
-                             controlTable,
-                             tallTableName,
-                             my_db,
-                             tempNameGenerator = tng) %>%
+cdata::moveValuesToColumnsN(tallTable = tallTableName,
+                            controlTable = controlTable,
+                            keyColumns = keyColumns,
+                            my_db = my_db,
+                            tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .) %>%
   arrange(ID)
 ```
 
-    ## # Source:     table<fdexample_rbunntrca7pimhxiy9to_0000000005> [?? x 5]
+    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000005> [?? x 5]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID
     ##      ID               c1               c2               c3               c4
@@ -224,7 +232,7 @@ replyr::moveValuesToColumnsQ(keyColumns,
 Pivot/Un-Pivot
 ==============
 
-Pivot and un-pivot (or `tidyr::spread()` and `tidyr::gather()`) are special cases of the `moveValuesToColumnsQ()` and `moveValuesToRowsQ()` operators. Pivot/un-pivot are the cases where the control table has two columns.
+Pivot and un-pivot (or `tidyr::spread()` and `tidyr::gather()`) are special cases of the `moveValuesToColumns*()` and `moveValuesToRows*()` operators. Pivot/un-pivot are the cases where the control table has two columns.
 
 Pivot
 -----
@@ -263,10 +271,12 @@ cdata::pivotValuesToColumns(d,
     ## 3     3           m1_3           m2_3
 
 ``` r
-# the replyr::moveValuesToColumnsQ() version
-controlTable <- replyr::buildPivotControlTable(d,
+# the cdata::moveValuesToColumns*() version
+dtall <- dplyr::copy_to(my_db, d, "dtall")
+controlTable <- cdata::buildPivotControlTableN(tableName = "dtall",
                                                columnToTakeKeysFrom = 'meastype',
                                                columnToTakeValuesFrom = 'meas',
+                                               my_db = my_db,
                                                sep = "_")
 print(controlTable)
 ```
@@ -276,16 +286,16 @@ print(controlTable)
     ## 2    meas2 meastype_meas2
 
 ``` r
-dtall <- dplyr::copy_to(my_db, d, "dtall")
-moveValuesToColumnsQ(keyColumns = "index",
+moveValuesToColumnsN(tallTable = "dtall",
                      controlTable = controlTable,
-                     tallTableName = "dtall",
+                     keyColumns = "index",
                      my_db = my_db,
                      tempNameGenerator = tng) %>% 
+  dplyr::tbl(my_db, .) %>%
   arrange(index)
 ```
 
-    ## # Source:     table<fdexample_rbunntrca7pimhxiy9to_0000000007> [?? x 3]
+    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000007> [?? x 3]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index
     ##   index meastype_meas1 meastype_meas2
@@ -331,7 +341,8 @@ cdata::unpivotValuesToRows(d,
     ## 6     3    c    meas2  2.3
 
 ``` r
-# the replyr::cdata::unpivotValuesToRows() version
+# the cdata::cdata::unpivotValuesToRows() version
+dwide <- dplyr::copy_to(my_db, d, "dwide")
 controlTable <- buildUnPivotControlTable(nameForNewKeyColumn= 'meastype',
                                          nameForNewValueColumn= 'meas',
                                          columnsToTakeFrom= c('meas1','meas2'))
@@ -344,16 +355,16 @@ print(controlTable)
 
 ``` r
 keyColumns = c('index', 'info')
-dwide <- dplyr::copy_to(my_db, d, "dwide")
-moveValuesToRowsQ(controlTable = controlTable,
-                  wideTableName = "dwide",
+moveValuesToRowsN(wideTable = "dwide",
+                  controlTable = controlTable,
                   my_db = my_db,
                   columnsToCopy = keyColumns,
                   tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .) %>%
   arrange(index, info)
 ```
 
-    ## # Source:     table<fdexample_rbunntrca7pimhxiy9to_0000000009> [?? x 4]
+    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000009> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index, info
     ##   index  info meastype  meas
@@ -368,7 +379,7 @@ moveValuesToRowsQ(controlTable = controlTable,
 Additional Interesting Applications
 ===================================
 
-Interesting applications of `replyr::moveValuesToRowsQ()` and `replyr::moveValuesToColumnsQ()` include situations where `tidyr` is not available (databases and `Spark`) and also when the data transformation is not obviously a single pivot or un-pivot.
+Interesting applications of `cdata::moveValuesToRows*()` and `cdata::moveValuesToColumns*()` include situations where `tidyr` is not available (databases and `Spark`) and also when the data transformation is not obviously a single pivot or un-pivot.
 
 Row-parallel dispatch
 ---------------------
@@ -411,15 +422,16 @@ print(controlTable)
     ## 2    Q2 Q2purchases Q2rebates
 
 ``` r
-purchasesTall <- moveValuesToRowsQ(columnsToCopy = "ID", 
+purchasesTall <- moveValuesToRowsN(wideTable = "purchaseDat",
+                                   columnsToCopy = "ID", 
                                    controlTable = controlTable, 
-                                   wideTableName = "purchaseDat",
                                    my_db = my_db,
-                                   tempNameGenerator = tng)
+                                   tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .)
 print(purchasesTall)
 ```
 
-    ## # Source:   table<fdexample_rbunntrca7pimhxiy9to_0000000011> [?? x 4]
+    ## # Source:   table<fdexample_b0ac880pkbuajhzmpmdz_0000000011> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID group purchases rebates
     ##   <dbl> <chr>     <dbl>   <dbl>
@@ -464,15 +476,16 @@ print(controlTable)
 # pivot or un-pivot
 # due to the larger controlTable
 # (especially if there were more quarters)
-result <- moveValuesToColumnsQ(keyColumns = "ID",
+result <- moveValuesToColumnsN(tallTable = "purchasesTallC",
+                               keyColumns = "ID",
                                controlTable = controlTable,
-                               tallTableName = "purchasesTallC",
                                my_db = my_db,
-                               tempNameGenerator = tng)
+                               tempNameGenerator = tng) %>%
+  dplyr::tbl(my_db, .)
 print(result)
 ```
 
-    ## # Source:   table<fdexample_rbunntrca7pimhxiy9to_0000000013> [?? x 7]
+    ## # Source:   table<fdexample_b0ac880pkbuajhzmpmdz_0000000013> [?? x 7]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID Q1purchases Q1rebates Q1purchasesPerRebate Q2purchases Q2rebates Q2purchasesPerRebate
     ##   <dbl>       <dbl>     <dbl>                <dbl>       <dbl>     <dbl>                <dbl>
@@ -484,7 +497,7 @@ The point is: the above can work on a large number of rows and columns (especial
 One-hot encoding
 ----------------
 
-Adding indicators or dummy variables (by one-hot encoding, or other methods) are essentially special cases of the pivot flavor of `replyr::moveValuesToColumnsQ()`.
+Adding indicators or dummy variables (by one-hot encoding, or other methods) are essentially special cases of the pivot flavor of `cdata::moveValuesToColumns*()`.
 
 group\_by/aggregate
 -------------------
@@ -494,7 +507,7 @@ Many operations that look like a complicated pivot in column format are in fact 
 Some fun
 --------
 
-The structure of the control table is so similar to the data expected by `moveValuesToColumnsQ()` that you can actually send the control table through `moveValuesToColumnsQ()` to illustrate the kernel of the transformation.
+The structure of the control table is so similar to the data expected by `moveValuesToColumns*()` that you can actually send the control table through `moveValuesToColumns*()` to illustrate the kernel of the transformation.
 
 ``` r
 controlTable <- dplyr::tribble(~group, ~col1, ~col2,
@@ -503,16 +516,15 @@ controlTable <- dplyr::tribble(~group, ~col1, ~col2,
 tallTableName <- 'dc'
 d <- dplyr::copy_to(my_db, controlTable, tallTableName)
 keyColumns <- NULL
-wideTableName <- 'dw'
-dw <- moveValuesToColumnsQ(keyColumns,
-                           controlTable,
-                           tallTableName,
-                           my_db) %>%
-  compute(name = wideTableName)
+wideTableName <- moveValuesToColumnsN(tallTable = tallTableName,
+                           controlTable = controlTable,
+                           keyColumns = keyColumns,
+                           my_db = my_db) 
+dw <- dplyr::tbl(my_db, wideTableName)
 print(dw)
 ```
 
-    ## # Source:   table<dw> [?? x 4]
+    ## # Source:   table<mvtcq_5tk0owgykgpbpbrjpe9l_0000000001> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      c1    c2    c3    c4
     ##   <chr> <chr> <chr> <chr>
@@ -523,13 +535,16 @@ The transformed table is essentially an example row of the wide-form.
 And we can, of course, map back.
 
 ``` r
-moveValuesToRowsQ(controlTable,
-                  wideTableName,
-                  my_db)
+moveValuesToRowsN(wideTable = wideTableName,
+                  controlTable = controlTable,
+                  my_db = my_db) %>%
+  dplyr::tbl(my_db, .) %>%
+  arrange(group)
 ```
 
-    ## # Source:   table<mvtrq_wnjimeyzgqyyqz4r5dpt_0000000001> [?? x 3]
-    ## # Database: sqlite 3.19.3 [:memory:]
+    ## # Source:     table<mvtrq_qwskzzg2dytf7ux7nkrv_0000000001> [?? x 3]
+    ## # Database:   sqlite 3.19.3 [:memory:]
+    ## # Ordered by: group
     ##   group  col1  col2
     ##   <chr> <chr> <chr>
     ## 1    aa    c1    c2
@@ -538,7 +553,7 @@ moveValuesToRowsQ(controlTable,
 Conclusion
 ==========
 
-`replyr::moveValuesToRowsQ()` and `replyr::moveValuesToColumnsQ()` represent two very general "fluid data" or "coordinatized data" operators that have database scale (via `DBI/dbplyr/dplyr`) and big data scale implementations (via `Sparklyr`). Some very powerful data transformations can be translated into the above explicit control table terminology. The extra details explicitly managed in the control table notation makes for clear calling interfaces.
+`cdata::moveValuesToRows*()` and `cdata::moveValuesToColumns*()` represent two very general "fluid data" or "coordinatized data" operators that have database scale (via `DBI/dbplyr/dplyr`) and big data scale implementations (via `Sparklyr`). Some very powerful data transformations can be translated into the above explicit control table terminology. The extra details explicitly managed in the control table notation makes for clear calling interfaces.
 
 ``` r
 for(ti in tng(dumpList = TRUE)) {

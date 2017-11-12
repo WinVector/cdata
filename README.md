@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 `cdata` is a running explanation of the ["coordinatized data" theory](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md) and includes an implementation of the ["fluid data" methodology](https://github.com/WinVector/cdata/blob/master/extras/FluidData.md).
 
-![](tools/cdata.png)
+![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
 Install via CRAN:
 
