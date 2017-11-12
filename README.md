@@ -47,7 +47,7 @@ tab <- moveValuesToColumnsN('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_lchtpcfpsvycaafc9zlu_0000000001` SQLiteConnection 
+    ## table `mvtcq_h9kaugjr5abfellibihs_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6

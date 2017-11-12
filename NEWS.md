@@ -1,6 +1,10 @@
 
 # cdata 0.5.0 2017/11/11
 
+ * Typo correction.
+
+# cdata 0.5.0 2017/11/11
+
  * query-based re-implementation
  * fluid data workflow.
  * remove dplyr and tidyr dependence
