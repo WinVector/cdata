@@ -8,9 +8,11 @@ NULL
 
 
 listFields <- function(my_db, tableName) {
-  tryCatch(
-    return(DBI::dbListFields(my_db, tableName)), # fails on PostgreSQL
-    error = function(e) { NULL })
+  # fails intermitnently, and sometimes gives wrong results
+  # filed as: https://github.com/tidyverse/dplyr/issues/3204
+  # tryCatch(
+  #   return(DBI::dbListFields(my_db, tableName)),
+  #   error = function(e) { NULL })
   # below is going to have issues to to R-column name conversion!
   q <- paste0("SELECT * FROM ",
               DBI::dbQuoteIdentifier(my_db, tableName),
