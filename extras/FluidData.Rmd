@@ -336,6 +336,9 @@ print(result)
 The point is: the above can work on a large number of rows and columns (especially
 on a system such as `Spark` where row operations are performed in parallel).
 
+The above work pattern is particularly powerful on big data systems when the tall table
+is built up in pieces by appending data (so only the pivot style step is required).
+
 ## One-hot encoding
 
 Adding indicators or dummy variables (by one-hot encoding, or other methods) are

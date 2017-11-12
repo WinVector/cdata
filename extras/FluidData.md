@@ -126,7 +126,7 @@ dat2 <- cdata::moveValuesToRowsN(wideTable = 'dat1db',
 print(dat2)
 ```
 
-    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000001> [?? x 4]
+    ## # Source:     table<fdexample_orlkgbrhmtrf1xgimbb6_0000000001> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -179,7 +179,7 @@ cdata::moveValuesToRowsN(wideTable = wideTableName,
   arrange(ID, group)
 ```
 
-    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000003> [?? x 4]
+    ## # Source:     table<fdexample_orlkgbrhmtrf1xgimbb6_0000000003> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -220,7 +220,7 @@ cdata::moveValuesToColumnsN(tallTable = tallTableName,
   arrange(ID)
 ```
 
-    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000005> [?? x 5]
+    ## # Source:     table<fdexample_orlkgbrhmtrf1xgimbb6_0000000005> [?? x 5]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID
     ##      ID               c1               c2               c3               c4
@@ -295,7 +295,7 @@ moveValuesToColumnsN(tallTable = "dtall",
   arrange(index)
 ```
 
-    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000007> [?? x 3]
+    ## # Source:     table<fdexample_orlkgbrhmtrf1xgimbb6_0000000007> [?? x 3]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index
     ##   index meastype_meas1 meastype_meas2
@@ -364,7 +364,7 @@ moveValuesToRowsN(wideTable = "dwide",
   arrange(index, info)
 ```
 
-    ## # Source:     table<fdexample_b0ac880pkbuajhzmpmdz_0000000009> [?? x 4]
+    ## # Source:     table<fdexample_orlkgbrhmtrf1xgimbb6_0000000009> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index, info
     ##   index  info meastype  meas
@@ -431,7 +431,7 @@ purchasesTall <- moveValuesToRowsN(wideTable = "purchaseDat",
 print(purchasesTall)
 ```
 
-    ## # Source:   table<fdexample_b0ac880pkbuajhzmpmdz_0000000011> [?? x 4]
+    ## # Source:   table<fdexample_orlkgbrhmtrf1xgimbb6_0000000011> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID group purchases rebates
     ##   <dbl> <chr>     <dbl>   <dbl>
@@ -485,7 +485,7 @@ result <- moveValuesToColumnsN(tallTable = "purchasesTallC",
 print(result)
 ```
 
-    ## # Source:   table<fdexample_b0ac880pkbuajhzmpmdz_0000000013> [?? x 7]
+    ## # Source:   table<fdexample_orlkgbrhmtrf1xgimbb6_0000000013> [?? x 7]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID Q1purchases Q1rebates Q1purchasesPerRebate Q2purchases Q2rebates Q2purchasesPerRebate
     ##   <dbl>       <dbl>     <dbl>                <dbl>       <dbl>     <dbl>                <dbl>
@@ -493,6 +493,8 @@ print(result)
     ## 2     2           5        10                  0.5           6        12             0.500000
 
 The point is: the above can work on a large number of rows and columns (especially on a system such as `Spark` where row operations are performed in parallel).
+
+The above work pattern is particularly powerful on big data systems when the tall table is built up in pieces by appending data (so only the pivot style step is required).
 
 One-hot encoding
 ----------------
@@ -524,7 +526,7 @@ dw <- dplyr::tbl(my_db, wideTableName)
 print(dw)
 ```
 
-    ## # Source:   table<mvtcq_5tk0owgykgpbpbrjpe9l_0000000001> [?? x 4]
+    ## # Source:   table<mvtcq_lgqygpcau7xhmjxalmxw_0000000001> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      c1    c2    c3    c4
     ##   <chr> <chr> <chr> <chr>
@@ -542,7 +544,7 @@ moveValuesToRowsN(wideTable = wideTableName,
   arrange(group)
 ```
 
-    ## # Source:     table<mvtrq_qwskzzg2dytf7ux7nkrv_0000000001> [?? x 3]
+    ## # Source:     table<mvtrq_gcoe0mbxrpn8azesden1_0000000001> [?? x 3]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: group
     ##   group  col1  col2
