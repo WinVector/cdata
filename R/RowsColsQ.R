@@ -199,6 +199,7 @@ moveValuesToRowsN <- function(wideTable,
     }
   }
   ctabName <- tempNameGenerator()
+  rownames(controlTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
@@ -334,6 +335,7 @@ moveValuesToRowsD <- function(wideTable,
     stop("cdata::moveValuesToRowsD unexpected arguments.")
   }
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  rownames(wideTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     'wideTable',
                     wideTable,
@@ -449,6 +451,7 @@ buildPivotControlTableD <- function(table,
     stop("cdata::buildPivotControlTableD unexpected arguments.")
   }
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  rownames(table) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     'table',
                     table,
@@ -574,6 +577,7 @@ moveValuesToColumnsN <- function(tallTable,
     }
   }
   ctabName <- tempNameGenerator()
+  rownames(controlTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
@@ -734,6 +738,7 @@ moveValuesToColumnsD <- function(tallTable,
     stop("cdata::moveValuesToColumnsD unexpected arguments.")
   }
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  rownames(tallTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     'tallTable',
                     tallTable,
