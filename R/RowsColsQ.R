@@ -64,7 +64,7 @@ checkControlTable <- function(controlTable, strict) {
 
 
 
-#' Build a moveValuesToColumnsQ() control table that specifies a un-pivot.
+#' Build a moveValuesToColumns*() control table that specifies a un-pivot.
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
@@ -300,8 +300,8 @@ moveValuesToRowsN <- function(wideTable,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param wideTable data.frame containing data to be mapped (db/Spark data)
-#' @param controlTable table specifying mapping (local data frame)
+#' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
+#' @param controlTable table specifying mapping (local data frame).
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
 #' @param strict logical, if TRUE check control table contents for uniqueness
@@ -358,7 +358,7 @@ moveValuesToRowsD <- function(wideTable,
 
 
 
-#' Build a moveValuesToColumnsQ() control table that specifies a pivot.
+#' Build a moveValuesToColumns*() control table that specifies a pivot.
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
 #'
@@ -419,11 +419,11 @@ buildPivotControlTableN <- function(tableName,
 
 
 
-#' Build a moveValuesToColumnsQ() control table that specifies a pivot.
+#' Build a moveValuesToColumns*() control table that specifies a pivot.
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
 #'
-#' @param table data.frame to scan for new column names
+#' @param table data.frame to scan for new column names (in-memory data.frame).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
 #' @param columnToTakeValuesFrom character name of column to get values from.
 #' @param ... not used, force later args to be by name
@@ -699,7 +699,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param tallTable data,frame containing data to be mapped (db/Spark data)
+#' @param tallTable data,frame containing data to be mapped (in-memory data.frame).
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.

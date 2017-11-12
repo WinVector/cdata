@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{buildUnPivotControlTable}
 \alias{buildUnPivotControlTable}
-\title{Build a moveValuesToColumnsQ() control table that specifies a un-pivot.}
+\title{Build a moveValuesToColumns*() control table that specifies a un-pivot.}
 \usage{
 buildUnPivotControlTable(nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ...)

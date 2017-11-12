@@ -9,7 +9,7 @@ moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
   showQuery = FALSE, defaultValue = NULL, dropDups = FALSE)
 }
 \arguments{
-\item{tallTable}{data,frame containing data to be mapped (db/Spark data)}
+\item{tallTable}{data,frame containing data to be mapped (in-memory data.frame).}
 
 \item{keyColumns}{character list of column defining row groups}
 

@@ -9,9 +9,9 @@ moveValuesToRowsD(wideTable, controlTable, ..., columnsToCopy = NULL,
   defaultValue = NULL)
 }
 \arguments{
-\item{wideTable}{data.frame containing data to be mapped (db/Spark data)}
+\item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
 
-\item{controlTable}{table specifying mapping (local data frame)}
+\item{controlTable}{table specifying mapping (local data frame).}
 
 \item{...}{force later arguments to be by name.}
 

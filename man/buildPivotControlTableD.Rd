@@ -2,13 +2,13 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{buildPivotControlTableD}
 \alias{buildPivotControlTableD}
-\title{Build a moveValuesToColumnsQ() control table that specifies a pivot.}
+\title{Build a moveValuesToColumns*() control table that specifies a pivot.}
 \usage{
 buildPivotControlTableD(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
   ..., prefix = columnToTakeKeysFrom, sep = NULL)
 }
 \arguments{
-\item{table}{data.frame to scan for new column names}
+\item{table}{data.frame to scan for new column names (in-memory data.frame).}
 
 \item{columnToTakeKeysFrom}{character name of column build new column names from.}
 
