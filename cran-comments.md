@@ -19,18 +19,18 @@
  * this is package ‘cdata’ version ‘0.5.0’
  * package encoding: UTF-8
 
-
-R CMD check results
-0 errors | 0 warnings | 1 notes
-
 * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
 Maintainer: ‘John Mount <jmount@win-vector.com>’
+
+R CMD check results
+0 errors | 0 warnings | 0 notes
 
 Status: OK
 
 ## Downstream dependencies
 
-No declared reverse dependencies:
+Checked all declared dependencies:
 
-     devtools::revdep('cdata')
-     character(0)
+     devtools::revdep_check()
+     Checking 1 packages: replyr
+     Checked replyr: 0 errors | 0 warnings | 0 notes
