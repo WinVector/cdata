@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fluid Data Transformations • cdata</title>
+<title>cdata • cdata</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -24,24 +24,24 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">cdata</a>
+      <a class="navbar-brand" href="../index.html">cdata</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="articles/cdata.html">Get Started</a>
+  <a href="../articles/cdata.html">Get Started</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -59,16 +59,17 @@
       
       </header><div class="row">
   <div class="col-md-9">
-    
+    <div class="page-header toc-ignore">
+      <h1>cdata</h1>
+                        <h4 class="author">John Mount, Win-Vector LLC</h4>
+            
+            <h4 class="date">2017-11-12</h4>
+          </div>
 
     
     
 <div class="contents">
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-<p><code>cdata</code> is a running explanation of the <a href="https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md">“coordinatized data” theory</a> and includes an implementation of the <a href="https://github.com/WinVector/cdata/blob/master/extras/FluidData.md">“fluid data” methodology</a>.</p>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png">
-</div>
+<p><a href="https://github.com/WinVector/cdata"><code>cdata</code></a> is a demonstration of the <a href="https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md">“coordinatized data” theory</a> and includes an implementation of the <a href="https://github.com/WinVector/cdata/blob/master/extras/FluidData.md">“fluid data” methodology</a>.</p>
 <p>Briefly <code>cdata</code> supplies data transform operators that:</p>
 <ul>
 <li>Work on local data or any <code>DBI</code> data source.</li>
@@ -85,55 +86,33 @@ DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation
                   <span class="st">'d'</span>,
                   d,
                   <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
+<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
 <pre><code>## table `d` SQLiteConnection 
 ##  nrow: 2 
 ## 'data.frame':    2 obs. of  2 variables:
 ##  $ meas: chr  "AUC" "R2"
 ##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="reference/buildPivotControlTableN.html">buildPivotControlTableN</a></span>(<span class="st">'d'</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="../reference/buildPivotControlTableN.html">buildPivotControlTableN</a></span>(<span class="st">'d'</span>,
                               <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
                               <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,
                               <span class="dt">my_db =</span> my_db)
-tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/moveValuesToColumnsN.html">moveValuesToColumnsN</a></span>(<span class="st">'d'</span>,
+tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/moveValuesToColumnsN.html">moveValuesToColumnsN</a></span>(<span class="st">'d'</span>,
                             <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
-<span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_jjmywz2g5mlyxovkj3f5_0000000001` SQLiteConnection 
+<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
+<pre><code>## table `mvtcq_aslubkhhx5hzcrz32557_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
 ##  $ R2 : num 0.2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
-<p>Install via CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
-<p>Or from Github using devtools:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names”, that is column names that are valid both in databases, and as <code>R</code> variable names.</p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
-<ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=cdata">https://​cran.r-project.org/​package=cdata</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/WinVector/cdata/">https://​github.com/​WinVector/​cdata/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/WinVector/cdata/issues">https://​github.com/​WinVector/​cdata/​issues</a>
-</li>
-</ul>
-<h2>License</h2>
-<p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>John Mount <br><small class="roles"> Author, maintainer </small> </li>
-<li>Nina Zumel <br><small class="roles"> Author </small> </li>
-<li><a href="authors.html">All authors...</a></li>
-</ul>
-</div>
+      </div>
 
 </div>
 
