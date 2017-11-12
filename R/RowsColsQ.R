@@ -151,7 +151,6 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' DBI::dbWriteTable(my_db,
 #'                   'd',
 #'                   d,
-#'                   row.names = FALSE,
 #'                   overwrite = TRUE,
 #'                   temporary = TRUE)
 #' cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
@@ -203,7 +202,6 @@ moveValuesToRowsN <- function(wideTable,
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
-                    row.names = FALSE,
                     temporary = TRUE)
   resName <- tempNameGenerator()
   missingCaseTerm = "NULL"
@@ -339,7 +337,6 @@ moveValuesToRowsD <- function(wideTable,
   DBI::dbWriteTable(my_db,
                     'wideTable',
                     wideTable,
-                    row.names = FALSE,
                     overwrite = TRUE,
                     temporary = TRUE)
   resName <- moveValuesToRowsN(wideTable = 'wideTable',
@@ -382,7 +379,6 @@ moveValuesToRowsD <- function(wideTable,
 #' DBI::dbWriteTable(my_db,
 #'                   'd',
 #'                   d,
-#'                   row.names = FALSE,
 #'                   overwrite = TRUE,
 #'                   temporary = TRUE)
 #' buildPivotControlTableN('d', 'measType', 'measValue',
@@ -456,7 +452,6 @@ buildPivotControlTableD <- function(table,
   DBI::dbWriteTable(my_db,
                     'table',
                     table,
-                    row.names = FALSE,
                     overwrite = TRUE,
                     temporary = TRUE)
   res <- buildPivotControlTableN(tableName = 'table',
@@ -523,7 +518,6 @@ buildPivotControlTableD <- function(table,
 #' DBI::dbWriteTable(my_db,
 #'                   'd',
 #'                   d,
-#'                   row.names = FALSE,
 #'                   temporary = TRUE)
 #' cT <- buildPivotControlTableN('d',
 #'                                        columnToTakeKeysFrom= 'meas',
@@ -583,7 +577,6 @@ moveValuesToColumnsN <- function(tallTable,
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
-                    row.names = FALSE,
                     temporary = TRUE)
   resName <- tempNameGenerator()
   missingCaseTerm = "NULL"
@@ -744,7 +737,6 @@ moveValuesToColumnsD <- function(tallTable,
   DBI::dbWriteTable(my_db,
                     'tallTable',
                     tallTable,
-                    row.names = FALSE,
                     temporary = TRUE,
                     overwrite = TRUE)
   resName <- moveValuesToColumnsN(tallTable = 'tallTable',

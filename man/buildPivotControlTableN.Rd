@@ -37,7 +37,6 @@ d <- data.frame(measType = c("wt", "ht"),
 DBI::dbWriteTable(my_db,
                   'd',
                   d,
-                  row.names = FALSE,
                   overwrite = TRUE,
                   temporary = TRUE)
 buildPivotControlTableN('d', 'measType', 'measValue',

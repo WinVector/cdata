@@ -73,7 +73,6 @@ d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
 DBI::dbWriteTable(my_db,
                   'd',
                   d,
-                  row.names = FALSE,
                   temporary = TRUE)
 cT <- buildPivotControlTableN('d',
                                        columnToTakeKeysFrom= 'meas',
