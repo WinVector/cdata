@@ -1,7 +1,7 @@
 Coordinatized Data: A Fluid Data Specification
 ================
 John Mount and Nina Zumel
-2017-11-12
+2017-11-13
 
 Introduction
 ------------
@@ -49,7 +49,7 @@ print(d1)
     ## 3     b     3       x   0.5  0.25
     ## 4     b     3       y   0.5  0.25
 
-Data Scientist 1 uses what is called a *denormalized form*. In this form each row contains all of the facts we want ready to go. If we were thinking about "column roles" (a concept we touched on briefly in Section A.3.5 "How to Think in SQL" of [*Practical Data Science with R*, Zumel, Mount; Manning 2014](http://www.practicaldatascience.com/)), then we would say the columns `model` and `testset` are *key columns* (together they form a *composite key* that uniquely identifies rows), the `depth` column is derived (it is a function of `model`), and `AUC` and `pR2` are *payload columns* (they contain data).
+Data Scientist 1 uses what is called a *denormalized form* (we use this term out of respect for the priority of [Codd's relational model theory](https://en.wikipedia.org/wiki/Relational_model)). In this form each row contains all of the facts we want ready to go. If we were thinking about "column roles" (a concept we touched on briefly in Section A.3.5 "How to Think in SQL" of [*Practical Data Science with R*, Zumel, Mount; Manning 2014](http://www.practicaldatascience.com/)), then we would say the columns `model` and `testset` are *key columns* (together they form a *composite key* that uniquely identifies rows), the `depth` column is derived (it is a function of `model`), and `AUC` and `pR2` are *payload columns* (they contain data).
 
 Denormalized forms are the most ready for tasks that reason across columns, such as training or evaluating machine learning models.
 
@@ -296,7 +296,9 @@ For instance: the `AUC` of 0.6 is in a cell that is named as follows for each of
 -   Data Scientist 3: `c(Table='d3', model='a', testset='y', measurement='AUC', ValueColumn='value')`
 -   Data Scientist 4: `c(Table='d4', model='a', ValueColumn= paste('y', 'AUC', sep= '_'))`
 
-From our point of view these keys all name the same data item. The fact that we are interpreting one position as a table name and another as a column name is just convention. We can even write `R` code that uses these keys on all our scientists' data without performing any reformatting:
+From our point of view these keys all name the same data item. We deliberately do not call one form tidy or another form un-tidy (which can be taken as a needlessly pejorative judgement), each has advantages depending on the application.
+
+The fact that we are interpreting one position as a table name and another as a column name is just convention (one can try to take these key-based representations further, as in [RDF triples](https://en.wikipedia.org/wiki/Semantic_triple), but this usually leads to awkward data representations). We can even write `R` code that uses these keys on all our scientists' data without performing any reformatting:
 
 ``` r
 # take a map from names to scalar conditions and return a value.
@@ -579,4 +581,4 @@ For coordinatized data different layouts of rows and columns are demonstrably eq
 
 It pays to think fluidly in terms of coordinatized data and delay any format conversions until you actually need them. You will eventually need transforms as most data processing steps have a preferred format. For example, machine learning training usually requires a denormalized form.
 
-We feel the methods `unpivotValuesToRows()` and `pivotValuesToColumns()` are easier to learn and remember than abstract terms such as "stack/unstack", "melt/cast", or "gather/spread" and thus are a good way to teach. Perhaps they are even a good way to document (and confirm) your intent in your own projects.
+We feel the methods [`unpivotValuesToRows()`](https://winvector.github.io/cdata/reference/unpivotValuesToRows.html) and [`pivotValuesToColumns()`](https://winvector.github.io/cdata/reference/pivotValuesToColumns.html) are easier to learn and remember than abstract terms such as "stack/unstack", "melt/cast", or "gather/spread" and thus are a good way to teach. Perhaps they are even a good way to document (and confirm) your intent in your own projects. These terms also anticipate the more general table controlled operators [`moveValuesToRows()`](https://winvector.github.io/cdata/reference/moveValuesToRowsN.html) and [`moveValuesToColumns()`](https://winvector.github.io/cdata/reference/moveValuesToColumnsN.html).
