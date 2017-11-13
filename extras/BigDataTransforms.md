@@ -156,7 +156,7 @@ knitr::kable(dX)
 | group\_g1 |    1|
 | group\_g2 |    5|
 
-The point is: using the `replyr` and `cata` packages you *can* design in terms of higher-order data transforms, even when working with big data in `R`. Designs in terms of these operators tend to be succinct, powerful, performant, and maintainable.
+The point is: using the `replyr` and `cdata` packages you *can* design in terms of higher-order data transforms, even when working with big data in `R`. Designs in terms of these operators tend to be succinct, powerful, performant, and maintainable.
 
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following two articles:
 
