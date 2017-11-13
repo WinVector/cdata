@@ -1,7 +1,7 @@
 Coordinatized Data: A Fluid Data Specification
 ================
 John Mount and Nina Zumel
-2017-11-13
+March 29, 2017
 
 Introduction
 ------------

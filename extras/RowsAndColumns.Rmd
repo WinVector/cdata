@@ -1,7 +1,7 @@
 ---
 title: "Coordinatized Data: A Fluid Data Specification"
 author: "John Mount and Nina Zumel"
-date: "`r Sys.Date()`"
+date: "March 29, 2017"
 output: github_document
 ---
 
