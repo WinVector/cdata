@@ -373,7 +373,13 @@ print(dw)
 
 The transformed table is essentially an example row of the wide-form.
 
-And we can, of course, map back.
+And we can, of course, map back. 
+
+This "everything maps to a row" form means the control table is essentially a 
+graphical representation of the desired data transform. It also helps make clear
+that just about any even more general
+shape to shape transform can be achieved by a `moveValuesToColumnsN()` followed
+by a `moveValuesToRowsN()`.
 
 ```{r tcr}
 moveValuesToRowsN(wideTable = wideTableName,

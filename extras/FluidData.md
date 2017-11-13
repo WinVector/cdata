@@ -34,7 +34,7 @@ suppressPackageStartupMessages(library("cdata"))
 packageVersion("cdata")
 ```
 
-    ## [1] '0.5.0'
+    ## [1] '0.5.1'
 
 ``` r
 suppressPackageStartupMessages(library("dplyr"))
@@ -126,7 +126,7 @@ dat2 <- cdata::moveValuesToRowsN(wideTable = 'dat1db',
 print(dat2)
 ```
 
-    ## # Source:     table<fdexample_ucai46njdcduvlmnze1z_0000000001> [?? x 4]
+    ## # Source:     table<fdexample_oou1qlkishrjqbzou80w_0000000001> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -179,7 +179,7 @@ cdata::moveValuesToRowsN(wideTable = wideTableName,
   arrange(ID, group)
 ```
 
-    ## # Source:     table<fdexample_ucai46njdcduvlmnze1z_0000000003> [?? x 4]
+    ## # Source:     table<fdexample_oou1qlkishrjqbzou80w_0000000003> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID, group
     ##      ID group       col1       col2
@@ -220,7 +220,7 @@ cdata::moveValuesToColumnsN(tallTable = tallTableName,
   arrange(ID)
 ```
 
-    ## # Source:     table<fdexample_ucai46njdcduvlmnze1z_0000000005> [?? x 5]
+    ## # Source:     table<fdexample_oou1qlkishrjqbzou80w_0000000005> [?? x 5]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: ID
     ##      ID               c1               c2               c3               c4
@@ -295,7 +295,7 @@ moveValuesToColumnsN(tallTable = "dtall",
   arrange(index)
 ```
 
-    ## # Source:     table<fdexample_ucai46njdcduvlmnze1z_0000000007> [?? x 3]
+    ## # Source:     table<fdexample_oou1qlkishrjqbzou80w_0000000007> [?? x 3]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index
     ##   index meastype_meas1 meastype_meas2
@@ -364,7 +364,7 @@ moveValuesToRowsN(wideTable = "dwide",
   arrange(index, info)
 ```
 
-    ## # Source:     table<fdexample_ucai46njdcduvlmnze1z_0000000009> [?? x 4]
+    ## # Source:     table<fdexample_oou1qlkishrjqbzou80w_0000000009> [?? x 4]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: index, info
     ##   index  info meastype  meas
@@ -431,7 +431,7 @@ purchasesTall <- moveValuesToRowsN(wideTable = "purchaseDat",
 print(purchasesTall)
 ```
 
-    ## # Source:   table<fdexample_ucai46njdcduvlmnze1z_0000000011> [?? x 4]
+    ## # Source:   table<fdexample_oou1qlkishrjqbzou80w_0000000011> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID group purchases rebates
     ##   <dbl> <chr>     <dbl>   <dbl>
@@ -485,7 +485,7 @@ result <- moveValuesToColumnsN(tallTable = "purchasesTallC",
 print(result)
 ```
 
-    ## # Source:   table<fdexample_ucai46njdcduvlmnze1z_0000000013> [?? x 7]
+    ## # Source:   table<fdexample_oou1qlkishrjqbzou80w_0000000013> [?? x 7]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      ID Q1purchases Q1rebates Q1purchasesPerRebate Q2purchases Q2rebates Q2purchasesPerRebate
     ##   <dbl>       <dbl>     <dbl>                <dbl>       <dbl>     <dbl>                <dbl>
@@ -526,7 +526,7 @@ dw <- dplyr::tbl(my_db, wideTableName)
 print(dw)
 ```
 
-    ## # Source:   table<mvtcq_pvijoohqz8ffg970kvuz_0000000001> [?? x 4]
+    ## # Source:   table<mvtcq_cgqwprj6rozzsa1rdo9n_0000000001> [?? x 4]
     ## # Database: sqlite 3.19.3 [:memory:]
     ##      c1    c2    c3    c4
     ##   <chr> <chr> <chr> <chr>
@@ -536,6 +536,8 @@ The transformed table is essentially an example row of the wide-form.
 
 And we can, of course, map back.
 
+This "everything maps to a row" form means the control table is essentially a graphical representation of the desired data transform. It also helps make clear that just about any even more general shape to shape transform can be achieved by a `moveValuesToColumnsN()` followed by a `moveValuesToRowsN()`.
+
 ``` r
 moveValuesToRowsN(wideTable = wideTableName,
                   controlTable = controlTable,
@@ -544,7 +546,7 @@ moveValuesToRowsN(wideTable = wideTableName,
   arrange(group)
 ```
 
-    ## # Source:     table<mvtrq_l5hmqonhf9afmaru2hub_0000000001> [?? x 3]
+    ## # Source:     table<mvtrq_jpainnngyvezbjdcccvj_0000000001> [?? x 3]
     ## # Database:   sqlite 3.19.3 [:memory:]
     ## # Ordered by: group
     ##   group  col1  col2
