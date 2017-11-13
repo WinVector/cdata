@@ -16,7 +16,7 @@ But, as we point out in the [`replyr`](https://winvector.github.io/replyr/) [`RE
 -   pivot (moving row values into columns).
 -   un-pivot (moving column values to rows).
 
-I can repeat this. If you are an `R` user used to using one of `dplyr::bind_rows()` , `base::split()`, `tidyr::spread()`, or `tidyr::gather()`: you will find these functions do not work on remote data sources, but have replacement implementations in the `replyr` package.
+I can repeat this. If you are an `R` user used to using one of `dplyr::bind_rows()` , `base::split()`, `tidyr::spread()`, or `tidyr::gather()`: you will find these functions do not work on remote data sources, but have replacement implementations in the `replyr` and [`cdata`](https://winvector.github.io/cdata/) packages.
 
 For example:
 
@@ -38,7 +38,7 @@ my_db <- DBI::dbConnect(dbDriver("PostgreSQL"),
                         password = 'pg')
  
 # # Can work with Sparklyr
-# my_db <-  sparklyr::spark_connect(version='2.2.0', 
+# my_db <-  sparklyr::spark_connect(version='2.2.0',
 #                                   master = "local")
 # isSpark <- TRUE
 
@@ -61,7 +61,7 @@ dplyr::bind_rows(list(d, d))
 
     ## Error in bind_rows_(x, .id): Argument 1 must be a data frame or a named atomic vector, not a tbl_dbi/tbl_sql/tbl_lazy/tbl
 
-The `replyr` package supplies `R` accessible implementations of these missing operators for large data systems such as `PostgreSQL` and `Spark`.
+The `replyr` and `cdata` packages supply `R` accessible implementations of these missing operators for large data systems such as `PostgreSQL` and `Spark`.
 
 For example:
 
@@ -101,7 +101,7 @@ replyr_split(dB, 'group')
 ```
 
     ## $g2
-    ## # Source:   table<replyr_gapply_gljuxiyk5chaaix7jglj_0000000001> [?? x 2]
+    ## # Source:   table<replyr_gapply_h0mwllv7hdbjkzbh67f9_0000000001> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -109,7 +109,7 @@ replyr_split(dB, 'group')
     ## 2     5    g2
     ## 
     ## $g1
-    ## # Source:   table<replyr_gapply_gljuxiyk5chaaix7jglj_0000000003> [?? x 2]
+    ## # Source:   table<replyr_gapply_h0mwllv7hdbjkzbh67f9_0000000003> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -156,7 +156,7 @@ knitr::kable(dX)
 | group\_g1 |    1|
 | group\_g2 |    5|
 
-The point is: using the `replyr` package you *can* design in terms of higher-order data transforms, even when working with big data in `R`. Designs in terms of these operators tend to be succinct, powerful, performant, and maintainable.
+The point is: using the `replyr` and `cata` packages you *can* design in terms of higher-order data transforms, even when working with big data in `R`. Designs in terms of these operators tend to be succinct, powerful, performant, and maintainable.
 
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following two articles:
 
