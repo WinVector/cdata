@@ -55,7 +55,7 @@ d <- dplyr::copy_to(my_db, data.frame(x =  c(1,5),
                                       group = c('g1', 'g2'),
                                       stringsAsFactors = FALSE), 
                     'd')
-print(d)
+knitr::kable(d)
 ```
 
 ```{r dbd1, error=TRUE}
@@ -76,7 +76,7 @@ packageVersion("replyr")
 
 # binding rows
 dB <- replyr_bind_rows(list(d, d))
-print(dB)
+knitr::kable(dB)
 
 # splitting frames
 replyr_split(dB, 'group')
@@ -94,7 +94,7 @@ dWname <-
                               tallTable = 'd',
                               my_db = my_db, strict = FALSE) 
 dW <- dplyr::tbl(my_db, dWname)
-print(dW)
+knitr::kable(dW)
                      
 
 # un-pivoting
@@ -107,7 +107,7 @@ dXname <-
                            wideTable = dWname,
                            my_db = my_db)
 dX <- dplyr::tbl(my_db, dXname)
-print(dX)
+knitr::kable(dX)
 ```
 
 The point is: using the `replyr` package you *can* design in terms of higher-order data transforms, even 
@@ -117,8 +117,8 @@ be succinct, powerful, performant, and maintainable.
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following
 two articles:
 
-  * [Theory of coordinatized data](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md).
-  * [Fluid data transforms](https://github.com/WinVector/cdata/blob/master/extras/FluidData.md).
+  * [Theory of coordinatized data](http://winvector.github.io/FluidData/RowsAndColumns.html).
+  * [Fluid data transforms](http://winvector.github.io/FluidData/FluidData.html).
 
 ```{r cleanup}
 if(isSpark) {

@@ -46,15 +46,13 @@ d <- dplyr::copy_to(my_db, data.frame(x =  c(1,5),
                                       group = c('g1', 'g2'),
                                       stringsAsFactors = FALSE), 
                     'd')
-print(d)
+knitr::kable(d)
 ```
 
-    ## # Source:   table<d> [?? x 2]
-    ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
-    ##       x group
-    ##   <dbl> <chr>
-    ## 1     1    g1
-    ## 2     5    g2
+|    x| group |
+|----:|:------|
+|    1| g1    |
+|    5| g2    |
 
 ``` r
 # show dplyr::bind_rows() fails.
@@ -78,13 +76,6 @@ library("replyr")
 
     ## Loading required package: cdata
 
-    ## 
-    ## Attaching package: 'replyr'
-
-    ## The following object is masked from 'package:cdata':
-    ## 
-    ##     makeTempNameGenerator
-
 ``` r
 packageVersion("replyr")
 ```
@@ -94,18 +85,15 @@ packageVersion("replyr")
 ``` r
 # binding rows
 dB <- replyr_bind_rows(list(d, d))
-print(dB)
+knitr::kable(dB)
 ```
 
-    ## # Source:   table<replyr_bind_rows_bajecs8ytmls8hxvncbz_0000000002> [?? x
-    ## #   2]
-    ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
-    ##       x group
-    ##   <dbl> <chr>
-    ## 1     1    g1
-    ## 2     5    g2
-    ## 3     1    g1
-    ## 4     5    g2
+|    x| group |
+|----:|:------|
+|    1| g1    |
+|    5| g2    |
+|    1| g1    |
+|    5| g2    |
 
 ``` r
 # splitting frames
@@ -113,7 +101,7 @@ replyr_split(dB, 'group')
 ```
 
     ## $g2
-    ## # Source:   table<replyr_gapply_sxy7jtva2srrkbmjv7gq_0000000001> [?? x 2]
+    ## # Source:   table<replyr_gapply_gljuxiyk5chaaix7jglj_0000000001> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -121,7 +109,7 @@ replyr_split(dB, 'group')
     ## 2     5    g2
     ## 
     ## $g1
-    ## # Source:   table<replyr_gapply_sxy7jtva2srrkbmjv7gq_0000000003> [?? x 2]
+    ## # Source:   table<replyr_gapply_gljuxiyk5chaaix7jglj_0000000003> [?? x 2]
     ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
     ##       x group
     ##   <dbl> <chr>
@@ -142,14 +130,12 @@ dWname <-
                               tallTable = 'd',
                               my_db = my_db, strict = FALSE) 
 dW <- dplyr::tbl(my_db, dWname)
-print(dW)
+knitr::kable(dW)
 ```
 
-    ## # Source:   table<mvtcq_9y0npmfnr9vj5blza34u_0000000001> [?? x 2]
-    ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
-    ##   group_g1 group_g2
-    ##      <dbl>    <dbl>
-    ## 1        1        5
+|  group\_g1|  group\_g2|
+|----------:|----------:|
+|          1|          5|
 
 ``` r
 # un-pivoting
@@ -162,22 +148,20 @@ dXname <-
                            wideTable = dWname,
                            my_db = my_db)
 dX <- dplyr::tbl(my_db, dXname)
-print(dX)
+knitr::kable(dX)
 ```
 
-    ## # Source:   table<mvtrq_3eu7ternxld2q1efckko_0000000001> [?? x 2]
-    ## # Database: postgres 9.6.1 [postgres@localhost:5432/postgres]
-    ##      group     x
-    ##      <chr> <dbl>
-    ## 1 group_g1     1
-    ## 2 group_g2     5
+| group     |    x|
+|:----------|----:|
+| group\_g1 |    1|
+| group\_g2 |    5|
 
 The point is: using the `replyr` package you *can* design in terms of higher-order data transforms, even when working with big data in `R`. Designs in terms of these operators tend to be succinct, powerful, performant, and maintainable.
 
 To master the terms `moveValuesToRows` and `moveValuesToColumns` I suggest trying the following two articles:
 
--   [Theory of coordinatized data](https://github.com/WinVector/cdata/blob/master/extras/RowsAndColumns.md).
--   [Fluid data transforms](https://github.com/WinVector/cdata/blob/master/extras/FluidData.md).
+-   [Theory of coordinatized data](http://winvector.github.io/FluidData/RowsAndColumns.html).
+-   [Fluid data transforms](http://winvector.github.io/FluidData/FluidData.html).
 
 ``` r
 if(isSpark) {
