@@ -16,7 +16,7 @@ The fluid data concept is:
 `cdata` supplies two general operators for fluid data work at database scale (and `Spark` big data scale):
 
 1.  [`moveValuesToRows*()`](https://winvector.github.io/cdata/reference/moveValuesToRowsN.html): operators centered around `SQL` `cross-join` semantics. un-pivot, `tidyr::gather()`, and [`cdata::unpivotValuesToRows()`](https://winvector.github.io/cdata/reference/unpivotValuesToRows.html) are special cases of this general operator.
-2.  [`moveValuesToColumns*()`](https://winvector.github.io/cdata/reference/moveValuesToColumnsN.html): an operator centered around `SQL` `group by` semantics. pivot, `tidyr::spread()`, [`cdata::pivotValuesToColumns()`](https://winvector.github.io/cdata/reference/pivotValuesToColumns.html), and one-hot-encoding are special cases of this general operator.
+2.  [`moveValuesToColumns*()`](https://winvector.github.io/cdata/reference/moveValuesToColumnsN.html): an operator centered around `SQL` `group by` semantics. pivot, `tidyr::spread()`, [`cdata::pivotValuesToColumns()`](https://winvector.github.io/cdata/reference/pivotValuesToColumns.html), transpose, and one-hot-encoding are special cases of this general operator.
 
 Because these operators are powerful, they are fairly general, and at first hard to mentally model (especially if you insist on think of them in only in terms of more a specialized operator such as pivot, instead of more general relational concepts such as "cross join" and "group by"). These operators are thin wrappers populating and enforcing a few invariants over a large `SQL` statement. That does not mean that these operators are trivial, they are thin because `SQL` is powerful and we have a good abstraction.
 
