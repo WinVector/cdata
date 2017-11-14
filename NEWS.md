@@ -1,5 +1,5 @@
 
-# cdata 0.5.0 2017/11/11
+# cdata 0.5.01 2017/11/12
 
  * Typo correction.
 
