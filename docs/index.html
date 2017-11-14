@@ -100,7 +100,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/moveValues
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_ir9ypskaocwhjv6fvlpa_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_poji2plu2u7n5rkdkvcr_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
@@ -110,7 +110,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/moveValues
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <p>Or from Github using devtools:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
-<p>Note: <code>cdata</code> is targeted at data with “tame column names”, that is column names that are valid both in databases, and as <code>R</code> variable names.</p>
+<p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
 </div>
   </div>
 

@@ -47,7 +47,7 @@ tab <- moveValuesToColumnsN('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_s0ghlcna6qnr1aqxphmr_0000000001` SQLiteConnection 
+    ## table `mvtcq_c87durgwkiww6ua8fqmd_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
@@ -69,4 +69,4 @@ Or from Github using devtools:
 devtools::install_github("WinVector/cdata")
 ```
 
-Note: `cdata` is targeted at data with "tame column names", that is column names that are valid both in databases, and as `R` variable names.
+Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).

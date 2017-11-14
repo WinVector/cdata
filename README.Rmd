@@ -54,5 +54,6 @@ Or from Github using devtools:
 devtools::install_github("WinVector/cdata")
 ```
 
-Note: `cdata` is targeted at data with "tame column names", that is column names that are valid both in databases, and as `R` variable names.
+Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).
+
 
