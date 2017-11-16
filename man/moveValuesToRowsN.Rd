@@ -6,7 +6,8 @@
 \usage{
 moveValuesToRowsN(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
   tempNameGenerator = makeTempNameGenerator("mvtrq"), strict = FALSE,
-  checkNames = TRUE, showQuery = FALSE, defaultValue = NULL)
+  checkNames = TRUE, showQuery = FALSE, defaultValue = NULL,
+  temporary = FALSE, resultName = NULL)
 }
 \arguments{
 \item{wideTable}{name of table containing data to be mapped (db/Spark data)}
@@ -28,6 +29,10 @@ moveValuesToRowsN(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
 \item{showQuery}{if TRUE print query}
 
 \item{defaultValue}{if not NULL literal to use for non-match values.}
+
+\item{temporary}{logical, if TRUE make result temporary.}
+
+\item{resultName}{character, name for result table.}
 }
 \value{
 long table built by mapping wideTable to one row per group

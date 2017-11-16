@@ -7,7 +7,8 @@
 moveValuesToColumnsN(tallTable, keyColumns, controlTable, my_db, ...,
   columnsToCopy = NULL, tempNameGenerator = makeTempNameGenerator("mvtcq"),
   strict = FALSE, checkNames = TRUE, showQuery = FALSE,
-  defaultValue = NULL, dropDups = FALSE)
+  defaultValue = NULL, dropDups = FALSE, temporary = FALSE,
+  resultName = NULL)
 }
 \arguments{
 \item{tallTable}{name of table containing data to be mapped (db/Spark data)}
@@ -33,6 +34,10 @@ moveValuesToColumnsN(tallTable, keyColumns, controlTable, my_db, ...,
 \item{defaultValue}{if not NULL literal to use for non-match values.}
 
 \item{dropDups}{logical if TRUE supress duplicate columns (duplicate determined by name, not content).}
+
+\item{temporary}{logical, if TRUE make result temporary.}
+
+\item{resultName}{character, name for result table.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

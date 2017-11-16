@@ -184,6 +184,8 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
+#' @param temporary logical, if TRUE make result temporary.
+#' @param resultName character, name for result table.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
@@ -217,7 +219,9 @@ moveValuesToRowsN <- function(wideTable,
                               strict = FALSE,
                               checkNames = TRUE,
                               showQuery = FALSE,
-                              defaultValue = NULL) {
+                              defaultValue = NULL,
+                              temporary = FALSE,
+                              resultName = NULL) {
   if(length(list(...))>0) {
     stop("cdata::moveValuesToRowsN unexpected arguments.")
   }
@@ -250,7 +254,11 @@ moveValuesToRowsN <- function(wideTable,
                     ctabName,
                     controlTable,
                     temporary = TRUE)
-  resName <- tempNameGenerator()
+  if(is.null(resultName)) {
+    resName <- tempNameGenerator()
+  } else {
+    resName = resultName
+  }
   missingCaseTerm = "NULL"
   if(!is.null(defaultValue)) {
     if(is.numeric(defaultValue)) {
@@ -302,7 +310,9 @@ moveValuesToRowsN <- function(wideTable,
                 ' a CROSS JOIN ',
                 DBI::dbQuoteIdentifier(my_db, ctabName),
                 ' b ')
-  q <-  paste0("CREATE TABLE ",
+  q <-  paste0("CREATE ",
+               ifelse(temporary, "TEMPORARY", ""),
+               " TABLE ",
                DBI::dbQuoteIdentifier(my_db, resName),
                " AS ",
                qs)
@@ -555,6 +565,8 @@ buildPivotControlTableD <- function(table,
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
+#' @param temporary logical, if TRUE make result temporary.
+#' @param resultName character, name for result table.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableN}}
@@ -592,7 +604,9 @@ moveValuesToColumnsN <- function(tallTable,
                                  checkNames = TRUE,
                                  showQuery = FALSE,
                                  defaultValue = NULL,
-                                 dropDups = FALSE) {
+                                 dropDups = FALSE,
+                                 temporary = FALSE,
+                                 resultName = NULL) {
   if(length(list(...))>0) {
     stop("cdata::moveValuesToColumnsN unexpected arguments.")
   }
@@ -628,7 +642,11 @@ moveValuesToColumnsN <- function(tallTable,
                     ctabName,
                     controlTable,
                     temporary = TRUE)
-  resName <- tempNameGenerator()
+  if(is.null(resultName)) {
+    resName <- tempNameGenerator()
+  } else {
+    resName = resultName
+  }
   missingCaseTerm = "NULL"
   if(!is.null(defaultValue)) {
     if(is.numeric(defaultValue)) {
@@ -699,7 +717,9 @@ moveValuesToColumnsN <- function(tallTable,
                  'GROUP BY ',
                  paste(groupterms, collapse = ', '))
   }
-  q <-  paste0("CREATE TABLE ",
+  q <-  paste0("CREATE ",
+               ifelse(temporary, "TEMPORARY", ""),
+               " TABLE ",
                DBI::dbQuoteIdentifier(my_db, resName),
                " AS ",
                qs)

@@ -94,7 +94,8 @@ and controlTable.</p>
     <pre class="usage"><span class='fu'>moveValuesToColumnsN</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>my_db</span>, <span class='no'>...</span>,
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='makeTempNameGenerator.html'>makeTempNameGenerator</a></span>(<span class='st'>"mvtcq"</span>),
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +147,14 @@ and controlTable.</p>
     <tr>
       <th>dropDups</th>
       <td><p>logical if TRUE supress duplicate columns (duplicate determined by name, not content).</p></td>
+    </tr>
+    <tr>
+      <th>temporary</th>
+      <td><p>logical, if TRUE make result temporary.</p></td>
+    </tr>
+    <tr>
+      <th>resultName</th>
+      <td><p>character, name for result table.</p></td>
     </tr>
     </table>
     
