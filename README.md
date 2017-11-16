@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).
+The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). A good introductory example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
@@ -47,7 +47,7 @@ tab <- moveValuesToColumnsN('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_ifbxbnctrow9ebagcwov_0000000001` SQLiteConnection 
+    ## table `mvtcq_nc0xzwdcoqz0qjatr8qs_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6

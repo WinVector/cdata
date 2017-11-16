@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-[`cdata`](https://github.com/WinVector/cdata) is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).
+[`cdata`](https://github.com/WinVector/cdata) is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). A good introductory example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
 
 Briefly `cdata` supplies data transform operators that:
 
