@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Produce a temp name generator with a given prefix. — makeTempNameGenerator • cdata</title>
+<title>Objects exported from other packages — reexports • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,48 +83,23 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Produce a temp name generator with a given prefix.</h1>
+    <h1>Objects exported from other packages</h1>
     </div>
 
     
-    <p>Returns a function f where: f() returns a new temporary name,
-f(remove=vector) removes names in vector and returns what was removed,
-f(dumpList=TRUE) returns the list of names generated and clears the list,
-f(peek=TRUE) returns the list without altering anything.</p>
+    <p>These objects are imported from other packages. Follow the links
+below to see their documentation.</p><dl class='dl-horizontal'>
+  <dt>wrapr</dt><dd><p><code><a href='http://www.rdocumentation.org/packages/wrapr/topics/grepdf'>grepdf</a></code></p></dd>
+</dl>
     
 
-    <pre class="usage"><span class='fu'>makeTempNameGenerator</span>(<span class='no'>prefix</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>prefix</th>
-      <td><p>character, string to prefix temp names with.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
 
-    <p>name generator function.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>makeTempNameGenerator</span>(<span class='st'>'EX'</span>)
-<span class='fu'>print</span>(<span class='fu'>f</span>())</div><div class='output co'>#&gt; [1] "EX_fzljacertv2kctymzdy8_0000000000"</div><div class='input'><span class='no'>nm2</span> <span class='kw'>&lt;-</span> <span class='fu'>f</span>()
-<span class='fu'>print</span>(<span class='no'>nm2</span>)</div><div class='output co'>#&gt; [1] "EX_fzljacertv2kctymzdy8_0000000001"</div><div class='input'><span class='fu'>f</span>(<span class='kw'>remove</span><span class='kw'>=</span><span class='no'>nm2</span>)</div><div class='output co'>#&gt; [1] "EX_fzljacertv2kctymzdy8_0000000001"</div><div class='input'><span class='fu'>print</span>(<span class='fu'>f</span>(<span class='kw'>dumpList</span><span class='kw'>=</span><span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; [1] "EX_fzljacertv2kctymzdy8_0000000000"</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

@@ -16,3 +16,7 @@ NULL
 
 # make sure dot doesn't look like an unbound ref
 . <- NULL
+
+#' @importFrom wrapr grepdf
+#' @export
+wrapr::grepdf
