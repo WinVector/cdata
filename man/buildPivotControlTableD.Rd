@@ -24,7 +24,7 @@ buildPivotControlTableD(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
 control table
 }
 \description{
-Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
+Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
 }
 \examples{
 

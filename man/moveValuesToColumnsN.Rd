@@ -67,7 +67,7 @@ To get behavior similar to tidyr::gather/spread one builds the control table
 by running an appropiate query over the data.
 
 Some discussion and examples can be found here:
-\url{https://winvector.github.io/replyr/articles/FluidData.html} and
+\url{https://winvector.github.io/FluidData/FluidData.html} and
 here \url{https://github.com/WinVector/cdata}.
 }
 \examples{

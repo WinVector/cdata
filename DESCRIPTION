@@ -1,8 +1,8 @@
 Package: cdata
 Type: Package
 Title: Fluid Data Transformations
-Version: 0.5.01
-Date: 2017-11-17
+Version: 0.5.1
+Date: 2017-11-27
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),

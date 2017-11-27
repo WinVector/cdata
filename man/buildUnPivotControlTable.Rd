@@ -21,7 +21,7 @@ control table
 }
 \description{
 Some discussion and examples can be found here:
-\url{https://winvector.github.io/replyr/articles/FluidData.html} and
+\url{https://winvector.github.io/FluidData/FluidData.html} and
 here \url{https://github.com/WinVector/cdata}.
 }
 \examples{

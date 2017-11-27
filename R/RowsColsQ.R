@@ -113,7 +113,7 @@ checkControlTable <- function(controlTable, strict) {
 #' Build a moveValuesToColumns*() control table that specifies a un-pivot.
 #'
 #' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param nameForNewKeyColumn character name of column to write new keys in.
@@ -171,7 +171,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param wideTable name of table containing data to be mapped (db/Spark data)
@@ -352,7 +352,7 @@ moveValuesToRowsN <- function(wideTable,
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
@@ -415,7 +415,7 @@ moveValuesToRowsD <- function(wideTable,
 
 #' Build a moveValuesToColumns*() control table that specifies a pivot.
 #'
-#' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
+#' Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
 #' @param tableName Name of table to scan for new column names.
 #' @param columnToTakeKeysFrom character name of column build new column names from.
@@ -475,7 +475,7 @@ buildPivotControlTableN <- function(tableName,
 
 #' Build a moveValuesToColumns*() control table that specifies a pivot.
 #'
-#' Some discussion and examples can be found here: \url{https://winvector.github.io/replyr/articles/FluidData.html}.
+#' Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
 #' @param table data.frame to scan for new column names (in-memory data.frame).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
@@ -550,7 +550,7 @@ buildPivotControlTableD <- function(table,
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param tallTable name of table containing data to be mapped (db/Spark data)
@@ -759,7 +759,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' by running an appropiate query over the data.
 #'
 #' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/replyr/articles/FluidData.html} and
+#' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param tallTable data,frame containing data to be mapped (in-memory data.frame).

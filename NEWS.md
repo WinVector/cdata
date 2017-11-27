@@ -1,7 +1,7 @@
 
-# cdata 0.5.01 2017/11/17
+# cdata 0.5.1 2017/11/27
 
- * Typo correction.
+ * Doc fixes.
  * Better table lifetime controls.
  * Move to wrapr 1.0.1.
  * Move grepdf out of package.
