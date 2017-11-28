@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a moveValuesToColumns*() control table that specifies a pivot. — buildPivotControlTableN • cdata</title>
+<title>Bind rows by a query. Assumes all tables structured identically. — bind_rowsQ • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,74 +83,73 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a moveValuesToColumns*() control table that specifies a pivot.</h1>
+    <h1>Bind rows by a query. Assumes all tables structured identically.</h1>
     </div>
 
     
-    <p>Some discussion and examples can be found here: <a href='https://winvector.github.io/FluidData/FluidData.html'>https://winvector.github.io/FluidData/FluidData.html</a>.</p>
+    <p>Bind rows by a query. Assumes all tables structured identically.</p>
     
 
-    <pre class="usage"><span class='fu'>buildPivotControlTableN</span>(<span class='no'>tableName</span>, <span class='no'>columnToTakeKeysFrom</span>, <span class='no'>columnToTakeValuesFrom</span>,
-  <span class='no'>my_db</span>, <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>bind_rowsQ</span>(<span class='no'>tableNames</span>, <span class='no'>colNames</span>, <span class='no'>my_db</span>, <span class='no'>resultTableName</span>, <span class='no'>...</span>,
+  <span class='kw'>origTableColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tableName</th>
-      <td><p>Name of table to scan for new column names.</p></td>
+      <th>tableNames</th>
+      <td><p>names of tables to concatinate (not empty)</p></td>
     </tr>
     <tr>
-      <th>columnToTakeKeysFrom</th>
-      <td><p>character name of column build new column names from.</p></td>
-    </tr>
-    <tr>
-      <th>columnToTakeValuesFrom</th>
-      <td><p>character name of column to get values from.</p></td>
+      <th>colNames</th>
+      <td><p>names of columns</p></td>
     </tr>
     <tr>
       <th>my_db</th>
-      <td><p>db handle</p></td>
+      <td><p>connection to where tables live</p></td>
+    </tr>
+    <tr>
+      <th>resultTableName</th>
+      <td><p>name of result table</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>not used, force later args to be by name</p></td>
+      <td><p>force later arguments to bind by name</p></td>
     </tr>
     <tr>
-      <th>prefix</th>
-      <td><p>column name prefix (only used when sep is not NULL)</p></td>
-    </tr>
-    <tr>
-      <th>sep</th>
-      <td><p>separator to build complex column names.</p></td>
+      <th>origTableColumn</th>
+      <td><p>character, column to put original table name in.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>control table</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='moveValuesToColumnsN.html'>moveValuesToColumnsN</a></code></p>
+    <p>resultTableName</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>my_db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbConnect'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RSQLite/topics/SQLite'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>measType</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
-                <span class='kw'>measValue</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
-                <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable'>dbWriteTable</a></span>(<span class='no'>my_db</span>,
-                  <span class='st'>'d'</span>,
-                  <span class='no'>d</span>,
-                  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>buildPivotControlTableN</span>(<span class='st'>'d'</span>, <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
-                                 <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>,
-                                 <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>)</div><div class='output co'>#&gt;   measType   measValue
-#&gt; 1       ht measType_ht
-#&gt; 2       wt measType_wt</div><div class='input'>
+                  <span class='st'>'d1'</span>,
+                   <span class='fu'>data.frame</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>y</span><span class='kw'>=</span> <span class='fl'>10</span>:<span class='fl'>11</span>),
+                   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable'>dbWriteTable</a></span>(<span class='no'>my_db</span>,
+                  <span class='st'>'d2'</span>,
+                   <span class='fu'>data.frame</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='fl'>3</span>:<span class='fl'>4</span>, <span class='kw'>y</span><span class='kw'>=</span> <span class='fl'>13</span>:<span class='fl'>14</span>),
+                   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>bind_rowsQ</span>(<span class='kw'>tableNames</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'d1'</span>, <span class='st'>'d2'</span>),
+           <span class='kw'>colNames</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'x'</span>, <span class='st'>'y'</span>),
+           <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>,
+           <span class='kw'>resultTableName</span> <span class='kw'>=</span> <span class='st'>'res1'</span>,
+           <span class='kw'>origTableColumn</span> <span class='kw'>=</span> <span class='st'>'orig_table'</span>)</div><div class='output co'>#&gt; [1] "res1"</div><div class='input'><span class='kw pkg'>cdata</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/cdata/topics/qlook'>qlook</a></span>(<span class='no'>my_db</span>, <span class='st'>'res1'</span>)</div><div class='output co'>#&gt; table `res1` SQLiteConnection 
+#&gt;  nrow: 4 
+#&gt; 'data.frame':	4 obs. of  3 variables:
+#&gt;  $ x         : int  1 2 3 4
+#&gt;  $ y         : int  10 11 13 14
+#&gt;  $ orig_table: chr  "d1" "d1" "d2" "d2"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -159,8 +158,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
