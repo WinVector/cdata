@@ -22,7 +22,7 @@
 makeTempNameGenerator <- function(prefix) {
   force(prefix)
   if((length(prefix)!=1)||(!is.character(prefix))) {
-    stop("repyr::makeTempNameGenerator prefix must be a string")
+    stop("cdata::makeTempNameGenerator prefix must be a string")
   }
   alphabet <- c(letters, tolower(letters), as.character(0:9))
   suffix <- paste(base::sample(alphabet, size=20, replace= TRUE),
