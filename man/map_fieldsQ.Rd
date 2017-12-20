@@ -32,6 +32,8 @@ DBI::dbWriteTable(
   'd',
   data.frame(what = c("acc", "loss",
                       "val_acc", "val_loss"),
+             score = c(0.8, 1.2,
+                       0.7, 1.7),
              stringsAsFactors = FALSE),
   overwrite = TRUE,
   temporary = TRUE)

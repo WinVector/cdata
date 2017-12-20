@@ -118,6 +118,8 @@
     <pre class="examples"><div class='input'>
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"acc"</span>, <span class='st'>"loss"</span>,
                          <span class='st'>"val_acc"</span>, <span class='st'>"val_loss"</span>),
+                <span class='kw'>score</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.8</span>, <span class='fl'>1.2</span>,
+                       <span class='fl'>0.7</span>, <span class='fl'>1.7</span>),
                 <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"acc"</span>, <span class='st'>"loss"</span>,
                          <span class='st'>"val_acc"</span>, <span class='st'>"val_loss"</span>),
@@ -125,11 +127,11 @@
                             <span class='st'>"accuracy"</span>, <span class='st'>"log-loss"</span>),
                 <span class='kw'>dataset</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"train"</span>, <span class='st'>"train"</span>, <span class='st'>"validation"</span>, <span class='st'>"validation"</span>),
                 <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>map_fieldsD</span>(<span class='no'>d</span>, <span class='st'>'what'</span>, <span class='no'>m</span>)</div><div class='output co'>#&gt;       what  measure    dataset
-#&gt; 1      acc accuracy      train
-#&gt; 2     loss log-loss      train
-#&gt; 3  val_acc accuracy validation
-#&gt; 4 val_loss log-loss validation</div><div class='input'>
+<span class='fu'>map_fieldsD</span>(<span class='no'>d</span>, <span class='st'>'what'</span>, <span class='no'>m</span>)</div><div class='output co'>#&gt;       what score  measure    dataset
+#&gt; 1      acc   0.8 accuracy      train
+#&gt; 2     loss   1.2 log-loss      train
+#&gt; 3  val_acc   0.7 accuracy validation
+#&gt; 4 val_loss   1.7 log-loss validation</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
