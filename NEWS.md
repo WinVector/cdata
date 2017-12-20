@@ -1,13 +1,14 @@
 
-# cdata 0.5.1 2017/12/14
+# cdata 0.5.1 2017/12/20
 
  * Doc fixes.
  * Better table lifetime controls.
  * Move to wrapr 1.0.2.
  * Move grepdf out of package.
  * Add row binder.
+ * Add map_fields.
 
-# cdata 0.5.0 2017/11/11
+# cdata 0.5.0 2017/11/13
 
  * query-based re-implementation
  * fluid data workflow.
