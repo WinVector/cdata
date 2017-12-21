@@ -16,7 +16,7 @@ plot(h)
 
 d <- readRDS("metricsframe.rds")
 d$epoch <- seq_len(nrow(d))
-head(d)
+knitr::kable(head(d))
 ```
 
 ```{r firstplot}
@@ -31,7 +31,7 @@ dT <- moveValuesToRowsD(
   d,
   controlTable = cT,
   columnsToCopy = "epoch")
-head(dT)
+knitr::kable(head(dT))
 
 mp <- data.frame(
   orig_col_name = qc(val_loss, val_acc, 
@@ -41,7 +41,7 @@ mp <- data.frame(
   measure = qc("binary cross entropy", "accuracy",
                "binary cross entropy", "accuracy"),
   stringsAsFactors = FALSE)
-print(mp)
+knitr::kable(mp)
 
 
 dT <- map_fieldsD(dT, 
@@ -50,7 +50,7 @@ dT <- map_fieldsD(dT,
 dT$measure <- factor(dT$measure, 
                      levels = c("binary cross entropy",
                                 "accuracy"))
-head(dT)
+knitr::kable(head(dT))
 
 pick <- dT %.>%
   filter_se(.,
@@ -63,7 +63,7 @@ ggplot(data = dT,
            y = performance,
            color = dataset)) +
   geom_point() +
-  geom_smooth(se = FALSE) +
+  geom_smooth(se = FALSE, method = "loess") +
   facet_wrap(~measure, ncol=1, scales = "free_y") +
   geom_vline(xintercept = pick, alpha=0.7, color='darkgreen') +
   scale_color_brewer(palette = "Dark2") + 
@@ -72,14 +72,14 @@ ggplot(data = dT,
 
 
 ```{r lineplot}
-print(head(d, n=1))
+knitr::kable(head(d, n=1))
 
 cT <- dplyr::tribble(
   ~measure,               ~training, ~validation,
   "binary cross entropy", "loss",    "val_loss",
-  "accuracy",              "acc",     "val_acc"
+  "accuracy",             "acc",     "val_acc"
 )
-print(cT)
+knitr::kable(cT)
 
 dT <- moveValuesToRowsD(
   d,
@@ -89,7 +89,7 @@ dT <- moveValuesToRowsD(
 dT$measure <- factor(dT$measure, 
                      levels = c("binary cross entropy",
                                 "accuracy"))
-print(head(dT))
+knitr::kable(head(dT))
 
 pick <- dT %.>%
   filter_se(.,
@@ -107,9 +107,12 @@ ggplot(data = dT,
   geom_segment() +
   geom_point() +
   geom_point(aes(y = training), shape = 3) +
-  geom_smooth(se = FALSE) +
-  geom_ribbon(alpha=0.2) +
-  geom_vline(xintercept = pick, alpha=0.7, color='darkgreen') +
+  geom_smooth(se = FALSE, 
+              color  = "#d95f02", 
+              alpha = 0.8,
+              method = "loess") +
+  geom_ribbon(alpha=0.2, fill = "#1b9e77") +
+  geom_vline(xintercept = pick, alpha=0.7, color='#e6ab02') +
   facet_wrap(~measure, ncol=1, scales = 'free_y') +
   ylab("performance") +
   ggtitle("plotting over-fit as a function of epoch")
