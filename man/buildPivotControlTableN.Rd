@@ -42,6 +42,7 @@ DBI::dbWriteTable(my_db,
 buildPivotControlTableN('d', 'measType', 'measValue',
                                  my_db = my_db,
                                  sep = '_')
+DBI::dbDisconnect(my_db)
 
 }
 \seealso{

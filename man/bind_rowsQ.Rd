@@ -45,5 +45,6 @@ bind_rowsQ(tableNames = c('d1', 'd2'),
            resultTableName = 'res1',
            origTableColumn = 'orig_table')
 cdata::qlook(my_db, 'res1')
+DBI::dbDisconnect(my_db)
 
 }

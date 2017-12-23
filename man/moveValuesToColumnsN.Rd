@@ -88,7 +88,7 @@ tab <- moveValuesToColumnsN('d',
                                      controlTable = cT,
                                      my_db = my_db)
 qlook(my_db, tab)
-
+DBI::dbDisconnect(my_db)
 
 }
 \seealso{

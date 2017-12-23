@@ -38,6 +38,7 @@ listFields <- function(my_db, tableName) {
 #'                   overwrite = TRUE,
 #'                   temporary = TRUE)
 #' qlook(my_db, 'd')
+#' DBI::dbDisconnect(my_db)
 #'
 #' @export
 #'
@@ -206,7 +207,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 #'                                columnsToTakeFrom= c('AUC', 'R2'))
 #' tab <- moveValuesToRowsN('d', cT, my_db = my_db)
 #' qlook(my_db, tab)
-#'
+#' DBI::dbDisconnect(my_db)
 #'
 #' @export
 #'
@@ -442,6 +443,7 @@ moveValuesToRowsD <- function(wideTable,
 #' buildPivotControlTableN('d', 'measType', 'measValue',
 #'                                  my_db = my_db,
 #'                                  sep = '_')
+#' DBI::dbDisconnect(my_db)
 #'
 #' @export
 buildPivotControlTableN <- function(tableName,
@@ -589,7 +591,7 @@ buildPivotControlTableD <- function(table,
 #'                                      controlTable = cT,
 #'                                      my_db = my_db)
 #' qlook(my_db, tab)
-#'
+#' DBI::dbDisconnect(my_db)
 #'
 #' @export
 #'

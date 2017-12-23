@@ -29,6 +29,7 @@
 #'            resultTableName = 'res1',
 #'            origTableColumn = 'orig_table')
 #' cdata::qlook(my_db, 'res1')
+#' DBI::dbDisconnect(my_db)
 #'
 #' @export
 #'

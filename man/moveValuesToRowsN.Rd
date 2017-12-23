@@ -81,7 +81,7 @@ cT <- buildUnPivotControlTable(nameForNewKeyColumn= 'meas',
                                columnsToTakeFrom= c('AUC', 'R2'))
 tab <- moveValuesToRowsN('d', cT, my_db = my_db)
 qlook(my_db, tab)
-
+DBI::dbDisconnect(my_db)
 
 }
 \seealso{

@@ -1,5 +1,5 @@
 
-# cdata 0.5.1 2017/12/20
+# cdata 0.5.1 2017/12/23
 
  * Doc fixes.
  * Better table lifetime controls.

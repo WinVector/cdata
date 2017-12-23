@@ -30,5 +30,6 @@ DBI::dbWriteTable(my_db,
                   overwrite = TRUE,
                   temporary = TRUE)
 qlook(my_db, 'd')
+DBI::dbDisconnect(my_db)
 
 }
