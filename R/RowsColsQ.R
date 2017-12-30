@@ -364,6 +364,7 @@ moveValuesToRowsN <- function(wideTable,
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
+#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{buildUnPivotControlTable}}, \code{\link{moveValuesToColumnsN}}
@@ -387,16 +388,27 @@ moveValuesToRowsD <- function(wideTable,
                               strict = FALSE,
                               checkNames = TRUE,
                               showQuery = FALSE,
-                              defaultValue = NULL) {
+                              defaultValue = NULL,
+                              env = parent.frame()) {
   if(length(list(...))>0) {
     stop("cdata::moveValuesToRowsD unexpected arguments.")
   }
-  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  need_close <- FALSE
+  db_handle <- base::mget("winvector_temp_db_handle",
+                          envir = env,
+                          ifnotfound = list(NULL),
+                          inherits = TRUE)[[1]]
+  if(is.null(db_handle)) {
+    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    need_close = TRUE
+  } else {
+    my_db <- db_handle$db
+  }
   rownames(wideTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     'wideTable',
                     wideTable,
-                    overwrite = TRUE,
+                    overwrite = FALSE,
                     temporary = TRUE)
   resName <- moveValuesToRowsN(wideTable = 'wideTable',
                                controlTable = controlTable,
@@ -408,7 +420,11 @@ moveValuesToRowsD <- function(wideTable,
                                showQuery = showQuery,
                                defaultValue = defaultValue)
   resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  DBI::dbDisconnect(my_db)
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'wideTable'))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
+  if(need_close) {
+    DBI::dbDisconnect(my_db)
+  }
   resData
 }
 
@@ -485,6 +501,7 @@ buildPivotControlTableN <- function(tableName,
 #' @param ... not used, force later args to be by name
 #' @param prefix column name prefix (only used when sep is not NULL)
 #' @param sep separator to build complex column names.
+#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return control table
 #'
 #' @seealso \code{\link{moveValuesToColumnsN}}
@@ -504,24 +521,38 @@ buildPivotControlTableD <- function(table,
                                     columnToTakeValuesFrom,
                                     ...,
                                     prefix = columnToTakeKeysFrom,
-                                    sep = NULL) {
+                                    sep = NULL,
+                                    env = parent.frame()) {
   if(length(list(...))>0) {
     stop("cdata::buildPivotControlTableD unexpected arguments.")
   }
-  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  need_close <- FALSE
+  db_handle <- base::mget("winvector_temp_db_handle",
+                          envir = env,
+                          ifnotfound = list(NULL),
+                          inherits = TRUE)[[1]]
+  if(is.null(db_handle)) {
+    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    need_close = TRUE
+  } else {
+    my_db <- db_handle$db
+  }
   rownames(table) <- NULL # just in case
   DBI::dbWriteTable(my_db,
-                    'table',
+                    'stable',
                     table,
-                    overwrite = TRUE,
+                    overwrite = FALSE,
                     temporary = TRUE)
-  res <- buildPivotControlTableN(tableName = 'table',
+  res <- buildPivotControlTableN(tableName = 'stable',
                                  columnToTakeKeysFrom = columnToTakeKeysFrom,
                                  columnToTakeValuesFrom = columnToTakeValuesFrom,
                                  my_db = my_db,
                                  prefix = prefix,
                                  sep = sep)
-  DBI::dbDisconnect(my_db)
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'stable'))
+  if(need_close) {
+    DBI::dbDisconnect(my_db)
+  }
   res
 }
 
@@ -774,6 +805,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
+#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{moveValuesToRowsN}}, \code{\link{buildPivotControlTableD}}
@@ -801,17 +833,28 @@ moveValuesToColumnsD <- function(tallTable,
                                  checkNames = TRUE,
                                  showQuery = FALSE,
                                  defaultValue = NULL,
-                                 dropDups = FALSE) {
+                                 dropDups = FALSE,
+                                 env = parent.frame()) {
   if(length(list(...))>0) {
     stop("cdata::moveValuesToColumnsD unexpected arguments.")
   }
-  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  need_close <- FALSE
+  db_handle <- base::mget("winvector_temp_db_handle",
+                          envir = env,
+                          ifnotfound = list(NULL),
+                          inherits = TRUE)[[1]]
+  if(is.null(db_handle)) {
+    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    need_close = TRUE
+  } else {
+    my_db <- db_handle$db
+  }
   rownames(tallTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     'tallTable',
                     tallTable,
                     temporary = TRUE,
-                    overwrite = TRUE)
+                    overwrite = FALSE)
   resName <- moveValuesToColumnsN(tallTable = 'tallTable',
                                   keyColumns = keyColumns,
                                   controlTable = controlTable,
@@ -824,7 +867,11 @@ moveValuesToColumnsD <- function(tallTable,
                                   defaultValue = defaultValue,
                                   dropDups = dropDups)
   resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  DBI::dbDisconnect(my_db)
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'tallTable'))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
+  if(need_close) {
+    DBI::dbDisconnect(my_db)
+  }
   resData
 }
 

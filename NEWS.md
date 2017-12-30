@@ -1,5 +1,5 @@
 
-# cdata 0.5.1 2017/12/23
+# cdata 0.5.1 2017/12/30
 
  * Doc fixes.
  * Better table lifetime controls.
@@ -7,6 +7,7 @@
  * Move grepdf out of package.
  * Add row binder.
  * Add map_fields.
+ * Add winvector_temp_db_handle support.
 
 # cdata 0.5.0 2017/11/13
 

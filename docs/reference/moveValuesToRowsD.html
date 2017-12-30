@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -93,7 +93,7 @@ and controlTable.</p>
 
     <pre class="usage"><span class='fu'>moveValuesToRowsD</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -129,6 +129,10 @@ and controlTable.</p>
     <tr>
       <th>defaultValue</th>
       <td><p>if not NULL literal to use for non-match values.</p></td>
+    </tr>
+    <tr>
+      <th>env</th>
+      <td><p>environment to look for "winvector_temp_db_handle" in.</p></td>
     </tr>
     </table>
     

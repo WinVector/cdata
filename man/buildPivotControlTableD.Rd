@@ -5,7 +5,7 @@
 \title{Build a moveValuesToColumns*() control table that specifies a pivot.}
 \usage{
 buildPivotControlTableD(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  ..., prefix = columnToTakeKeysFrom, sep = NULL)
+  ..., prefix = columnToTakeKeysFrom, sep = NULL, env = parent.frame())
 }
 \arguments{
 \item{table}{data.frame to scan for new column names (in-memory data.frame).}
@@ -19,6 +19,8 @@ buildPivotControlTableD(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
 \item{prefix}{column name prefix (only used when sep is not NULL)}
 
 \item{sep}{separator to build complex column names.}
+
+\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 control table

@@ -6,7 +6,7 @@
 \usage{
 moveValuesToRowsD(wideTable, controlTable, ..., columnsToCopy = NULL,
   strict = FALSE, checkNames = TRUE, showQuery = FALSE,
-  defaultValue = NULL)
+  defaultValue = NULL, env = parent.frame())
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -24,6 +24,8 @@ moveValuesToRowsD(wideTable, controlTable, ..., columnsToCopy = NULL,
 \item{showQuery}{if TRUE print query}
 
 \item{defaultValue}{if not NULL literal to use for non-match values.}
+
+\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 long table built by mapping wideTable to one row per group

@@ -5,7 +5,8 @@
 \title{Move values from columns to rows (anti-pivot).}
 \usage{
 unpivotValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
-  columnsToTakeFrom, ..., nameForNewClassColumn = NULL)
+  columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
+  env = parent.frame())
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToRows*}).}
@@ -19,6 +20,8 @@ unpivotValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{...}{force later argumets to bind by name.}
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
+
+\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 new data.frame with values moved to rows.

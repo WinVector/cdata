@@ -6,7 +6,8 @@
 \usage{
 moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, strict = FALSE, checkNames = TRUE,
-  showQuery = FALSE, defaultValue = NULL, dropDups = FALSE)
+  showQuery = FALSE, defaultValue = NULL, dropDups = FALSE,
+  env = parent.frame())
 }
 \arguments{
 \item{tallTable}{data,frame containing data to be mapped (in-memory data.frame).}
@@ -28,6 +29,8 @@ moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
 \item{defaultValue}{if not NULL literal to use for non-match values.}
 
 \item{dropDups}{logical if TRUE supress duplicate columns (duplicate determined by name, not content).}
+
+\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

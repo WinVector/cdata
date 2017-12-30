@@ -56,6 +56,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #' @param columnsToTakeFrom character array names of columns to take values from.
 #' @param ... force later argumets to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
+#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return new data.frame with values moved to rows.
 #'
 #' @examples
@@ -74,7 +75,8 @@ unpivotValuesToRows <- function(data,
                              nameForNewValueColumn,
                              columnsToTakeFrom,
                              ...,
-                             nameForNewClassColumn = NULL) {
+                             nameForNewClassColumn = NULL,
+                             env = parent.frame()) {
   if(!is.data.frame(data)) {
     stop("cdata::unpivotValuesToRows data must be a local data.frame")
   }
@@ -135,7 +137,8 @@ unpivotValuesToRows <- function(data,
   colsToCopy <- setdiff(colnames(data), columnsToTakeFrom)
   res <- moveValuesToRowsD(data,
                            controlTable = cT,
-                           columnsToCopy = colsToCopy)
+                           columnsToCopy = colsToCopy,
+                           env = env)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -156,6 +159,7 @@ unpivotValuesToRows <- function(data,
 #' @param rowKeyColumns character array names columns that should be table keys.
 #' @param ... force later arguments to bind by name.
 #' @param sep character if not null build more detailed column names.
+#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return new data.frame with values moved to columns.
 #'
 #' @examples
@@ -173,7 +177,8 @@ pivotValuesToColumns <- function(data,
                                 columnToTakeValuesFrom,
                                 rowKeyColumns,
                                 ...,
-                                sep = NULL) {
+                                sep = NULL,
+                                env = parent.frame()) {
   if(!is.data.frame(data)) {
     stop("cdata::pivotValuesToColumns data must be a local data.frame")
   }
@@ -243,12 +248,14 @@ pivotValuesToColumns <- function(data,
   cT <- buildPivotControlTableD(data,
                                 columnToTakeKeysFrom = columnToTakeKeysFrom,
                                 columnToTakeValuesFrom = columnToTakeValuesFrom,
-                                sep = sep)
+                                sep = sep,
+                                env = env)
   colsToCopy <- setdiff(colnames(data),
                         c(columnToTakeKeysFrom, columnToTakeValuesFrom, rowKeyColumns))
   moveValuesToColumnsD(data,
                        keyColumns = rowKeyColumns,
                        controlTable = cT,
-                       columnsToCopy = colsToCopy)
+                       columnsToCopy = colsToCopy,
+                       env = env)
 }
 
