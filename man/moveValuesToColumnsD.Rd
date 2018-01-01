@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{moveValuesToColumnsD}
 \alias{moveValuesToColumnsD}
-\title{Map sets rows to columns (query based).}
+\title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, strict = FALSE, checkNames = TRUE,
@@ -10,7 +10,7 @@ moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
   env = parent.frame())
 }
 \arguments{
-\item{tallTable}{data,frame containing data to be mapped (in-memory data.frame).}
+\item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
 
 \item{keyColumns}{character list of column defining row groups}
 
@@ -36,8 +36,7 @@ moveValuesToColumnsD(tallTable, keyColumns, controlTable, ...,
 wide table built by mapping key-grouped tallTable rows to one row per group
 }
 \description{
-Transform data facts from rows into additional columns using SQL
-and controlTable.
+Transform data facts from rows into additional columns using controlTable.
 }
 \details{
 This is using the theory of "fluid data"n

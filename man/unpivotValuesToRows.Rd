@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColumns.R
 \name{unpivotValuesToRows}
 \alias{unpivotValuesToRows}
-\title{Move values from columns to rows (anti-pivot).}
+\title{Move values from columns to rows (anti-pivot, or "shred").}
 \usage{
 unpivotValuesToRows(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL,

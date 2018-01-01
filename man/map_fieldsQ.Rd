@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_fields.R
 \name{map_fieldsQ}
 \alias{map_fieldsQ}
-\title{Map field values from one column into new derived columns.}
+\title{Map field values from one column into new derived columns (query based, takes name of table).}
 \usage{
 map_fieldsQ(dname, cname, mname, my_db, rname)
 }
@@ -21,7 +21,7 @@ map_fieldsQ(dname, cname, mname, my_db, rname)
 re-mapped table
 }
 \description{
-Map field values from one column into new derived columns.
+Map field values from one column into new derived columns (query based, takes name of table).
 }
 \examples{
 

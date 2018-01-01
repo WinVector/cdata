@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{moveValuesToRowsD}
 \alias{moveValuesToRowsD}
-\title{Map a set of columns to rows (query based).}
+\title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
 moveValuesToRowsD(wideTable, controlTable, ..., columnsToCopy = NULL,
   strict = FALSE, checkNames = TRUE, showQuery = FALSE,
@@ -31,8 +31,7 @@ moveValuesToRowsD(wideTable, controlTable, ..., columnsToCopy = NULL,
 long table built by mapping wideTable to one row per group
 }
 \description{
-Transform data facts from columns into additional rows using SQL
-and controlTable.
+Transform data facts from columns into additional rows controlTable.
 }
 \details{
 This is using the theory of "fluid data"n

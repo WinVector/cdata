@@ -1,5 +1,5 @@
 
-#' Map field values from one column into new derived columns.
+#' Map field values from one column into new derived columns (query based, takes name of table).
 #'
 #' @param dname name of table to re-map.
 #' @param cname name of column to re-map.
@@ -63,7 +63,7 @@ map_fieldsQ <- function(dname, cname, mname, my_db, rname) {
   rname
 }
 
-#' Map field values from one column into new derived columns.
+#' Map field values from one column into new derived columns (takes a \code{data.frame}).
 #'
 #' @param d name of table to re-map.
 #' @param cname name of column to re-map.

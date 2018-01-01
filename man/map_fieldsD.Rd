@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_fields.R
 \name{map_fieldsD}
 \alias{map_fieldsD}
-\title{Map field values from one column into new derived columns.}
+\title{Map field values from one column into new derived columns (takes a \code{data.frame}).}
 \usage{
 map_fieldsD(d, cname, m)
 }
@@ -17,7 +17,7 @@ map_fieldsD(d, cname, m)
 re-mapped table
 }
 \description{
-Map field values from one column into new derived columns.
+Map field values from one column into new derived columns (takes a \code{data.frame}).
 }
 \examples{
 

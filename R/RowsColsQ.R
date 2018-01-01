@@ -111,7 +111,7 @@ checkControlTable <- function(controlTable, strict) {
 
 
 
-#' Build a moveValuesToColumns*() control table that specifies a un-pivot.
+#' Build a moveValuesToColumns*() control table that specifies a un-pivot (or "shred").
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
@@ -147,7 +147,7 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
 
 
 
-#' Map a set of columns to rows (query based).
+#' Map a set of columns to rows (query based, take name of table).
 #'
 #' Transform data facts from columns into additional rows using SQL
 #' and controlTable.
@@ -328,10 +328,9 @@ moveValuesToRowsN <- function(wideTable,
 }
 
 
-#' Map a set of columns to rows (query based).
+#' Map a set of columns to rows (takes a \code{data.frame}).
 #'
-#' Transform data facts from columns into additional rows using SQL
-#' and controlTable.
+#' Transform data facts from columns into additional rows controlTable.
 #'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
@@ -430,7 +429,7 @@ moveValuesToRowsD <- function(wideTable,
 
 
 
-#' Build a moveValuesToColumns*() control table that specifies a pivot.
+#' Build a moveValuesToColumns*() control table that specifies a pivot (query based, takes name of table).
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
@@ -491,7 +490,7 @@ buildPivotControlTableN <- function(tableName,
 
 
 
-#' Build a moveValuesToColumns*() control table that specifies a pivot.
+#' Build a moveValuesToColumns*() control table that specifies a pivot from a \code{data.frame}.
 #'
 #' Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
@@ -558,7 +557,7 @@ buildPivotControlTableD <- function(table,
 
 
 
-#' Map sets rows to columns (query based).
+#' Map sets rows to columns (query based, take name of table).
 #'
 #' Transform data facts from rows into additional columns using SQL
 #' and controlTable.
@@ -767,10 +766,9 @@ moveValuesToColumnsN <- function(tallTable,
 }
 
 
-#' Map sets rows to columns (query based).
+#' Map sets rows to columns (takes a \code{data.frame}).
 #'
-#' Transform data facts from rows into additional columns using SQL
-#' and controlTable.
+#' Transform data facts from rows into additional columns using controlTable.
 #'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
@@ -795,7 +793,7 @@ moveValuesToColumnsN <- function(tallTable,
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
-#' @param tallTable data,frame containing data to be mapped (in-memory data.frame).
+#' @param tallTable data.frame containing data to be mapped (in-memory data.frame).
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.

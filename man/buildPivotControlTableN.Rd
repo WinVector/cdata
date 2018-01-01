@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{buildPivotControlTableN}
 \alias{buildPivotControlTableN}
-\title{Build a moveValuesToColumns*() control table that specifies a pivot.}
+\title{Build a moveValuesToColumns*() control table that specifies a pivot (query based, takes name of table).}
 \usage{
 buildPivotControlTableN(tableName, columnToTakeKeysFrom, columnToTakeValuesFrom,
   my_db, ..., prefix = columnToTakeKeysFrom, sep = NULL)

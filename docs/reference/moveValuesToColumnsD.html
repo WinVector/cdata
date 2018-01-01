@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Map sets rows to columns (query based). — moveValuesToColumnsD • cdata</title>
+<title>Map sets rows to columns (takes a <code>data.frame</code>). — moveValuesToColumnsD • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,12 +83,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Map sets rows to columns (query based).</h1>
+    <h1>Map sets rows to columns (takes a <code>data.frame</code>).</h1>
     </div>
 
     
-    <p>Transform data facts from rows into additional columns using SQL
-and controlTable.</p>
+    <p>Transform data facts from rows into additional columns using controlTable.</p>
     
 
     <pre class="usage"><span class='fu'>moveValuesToColumnsD</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
@@ -101,7 +100,7 @@ and controlTable.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tallTable</th>
-      <td><p>data,frame containing data to be mapped (in-memory data.frame).</p></td>
+      <td><p>data.frame containing data to be mapped (in-memory data.frame).</p></td>
     </tr>
     <tr>
       <th>keyColumns</th>

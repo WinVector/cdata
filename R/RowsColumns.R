@@ -44,7 +44,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
   return(anyDuplicated(data)<=0)
 }
 
-#' Move values from columns to rows (anti-pivot).
+#' Move values from columns to rows (anti-pivot, or "shred").
 #'
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'

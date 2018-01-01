@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{buildPivotControlTableD}
 \alias{buildPivotControlTableD}
-\title{Build a moveValuesToColumns*() control table that specifies a pivot.}
+\title{Build a moveValuesToColumns*() control table that specifies a pivot from a \code{data.frame}.}
 \usage{
 buildPivotControlTableD(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
   ..., prefix = columnToTakeKeysFrom, sep = NULL, env = parent.frame())

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{moveValuesToRowsN}
 \alias{moveValuesToRowsN}
-\title{Map a set of columns to rows (query based).}
+\title{Map a set of columns to rows (query based, take name of table).}
 \usage{
 moveValuesToRowsN(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
   tempNameGenerator = makeTempNameGenerator("mvtrq"), strict = FALSE,

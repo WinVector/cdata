@@ -2,7 +2,7 @@
 % Please edit documentation in R/RowsColsQ.R
 \name{moveValuesToColumnsN}
 \alias{moveValuesToColumnsN}
-\title{Map sets rows to columns (query based).}
+\title{Map sets rows to columns (query based, take name of table).}
 \usage{
 moveValuesToColumnsN(tallTable, keyColumns, controlTable, my_db, ...,
   columnsToCopy = NULL, tempNameGenerator = makeTempNameGenerator("mvtcq"),
