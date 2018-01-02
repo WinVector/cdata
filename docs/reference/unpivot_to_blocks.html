@@ -88,9 +88,14 @@
 
     
     <p>For a tutorial please try <code>vignette('RowsAndColumns', package='cdata')</code>.</p>
+<p>unpivotValuesToRows deprecated, functionality moved to: unpivot_to_blocks</p>
     
 
     <pre class="usage"><span class='fu'>unpivot_to_blocks</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
+  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>, <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())
+
+<span class='fu'>unpivotValuesToRows</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
   <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>, <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
     

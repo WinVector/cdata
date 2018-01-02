@@ -89,9 +89,16 @@
     
     <p>Transform data facts from rows into additional columns using SQL
 and controlTable.</p>
+<p>moveValuesToColumnsN deprecated, functionality moved to: blocks_to_rowrecs_q</p>
     
 
     <pre class="usage"><span class='fu'>blocks_to_rowrecs_q</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>my_db</span>, <span class='no'>...</span>,
+  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='makeTempNameGenerator.html'>makeTempNameGenerator</a></span>(<span class='st'>"mvtcq"</span>),
+  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>moveValuesToColumnsN</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>my_db</span>, <span class='no'>...</span>,
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='makeTempNameGenerator.html'>makeTempNameGenerator</a></span>(<span class='st'>"mvtcq"</span>),
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
