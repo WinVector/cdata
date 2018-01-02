@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Map sets rows to columns (query based, take name of table). — moveValuesToColumnsN • cdata</title>
+<title>Map a set of columns to rows (takes a <code>data.frame</code>). — rowrecs_to_blocks • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -83,38 +83,27 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Map sets rows to columns (query based, take name of table).</h1>
+    <h1>Map a set of columns to rows (takes a <code>data.frame</code>).</h1>
     </div>
 
     
-    <p>Transform data facts from rows into additional columns using SQL
-and controlTable.</p>
+    <p>Transform data facts from columns into additional rows controlTable.</p>
     
 
-    <pre class="usage"><span class='fu'>moveValuesToColumnsN</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>my_db</span>, <span class='no'>...</span>,
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='makeTempNameGenerator.html'>makeTempNameGenerator</a></span>(<span class='st'>"mvtcq"</span>),
+    <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tallTable</th>
-      <td><p>name of table containing data to be mapped (db/Spark data)</p></td>
-    </tr>
-    <tr>
-      <th>keyColumns</th>
-      <td><p>character list of column defining row groups</p></td>
+      <th>wideTable</th>
+      <td><p>data.frame containing data to be mapped (in-memory data.frame).</p></td>
     </tr>
     <tr>
       <th>controlTable</th>
-      <td><p>table specifying mapping (local data frame)</p></td>
-    </tr>
-    <tr>
-      <th>my_db</th>
-      <td><p>db handle</p></td>
+      <td><p>table specifying mapping (local data frame).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -123,10 +112,6 @@ and controlTable.</p>
     <tr>
       <th>columnsToCopy</th>
       <td><p>character list of column names to copy</p></td>
-    </tr>
-    <tr>
-      <th>tempNameGenerator</th>
-      <td><p>a tempNameGenerator from cdata::makeTempNameGenerator()</p></td>
     </tr>
     <tr>
       <th>strict</th>
@@ -145,22 +130,14 @@ and controlTable.</p>
       <td><p>if not NULL literal to use for non-match values.</p></td>
     </tr>
     <tr>
-      <th>dropDups</th>
-      <td><p>logical if TRUE supress duplicate columns (duplicate determined by name, not content).</p></td>
-    </tr>
-    <tr>
-      <th>temporary</th>
-      <td><p>logical, if TRUE make result temporary.</p></td>
-    </tr>
-    <tr>
-      <th>resultName</th>
-      <td><p>character, name for result table.</p></td>
+      <th>env</th>
+      <td><p>environment to look for "winvector_temp_db_handle" in.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>wide table built by mapping key-grouped tallTable rows to one row per group</p>
+    <p>long table built by mapping wideTable to one row per group</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -187,31 +164,17 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='moveValuesToRowsN.html'>moveValuesToRowsN</a></code>, <code><a href='buildPivotControlTableN.html'>buildPivotControlTableN</a></code></p>
+    <p><code><a href='build_unpivot_control.html'>build_unpivot_control</a></code>, <code><a href='blocks_to_rowrecs_q.html'>blocks_to_rowrecs_q</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>my_db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbConnect'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RSQLite/topics/SQLite'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-<span class='co'># pivot example</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>meas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
-<span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable'>dbWriteTable</a></span>(<span class='no'>my_db</span>,
-                  <span class='st'>'d'</span>,
-                  <span class='no'>d</span>,
-                  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='buildPivotControlTableN.html'>buildPivotControlTableN</a></span>(<span class='st'>'d'</span>,
-                                       <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
-                                       <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                                       <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>)
-<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>moveValuesToColumnsN</span>(<span class='st'>'d'</span>,
-                                     <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                                     <span class='kw'>controlTable</span> <span class='kw'>=</span> <span class='no'>cT</span>,
-                                     <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>)
-<span class='fu'><a href='qlook.html'>qlook</a></span>(<span class='no'>my_db</span>, <span class='no'>tab</span>)</div><div class='output co'>#&gt; table `mvtcq_qenofvv98yctkgewmsev_0000000001` SQLiteConnection 
-#&gt;  nrow: 1 
-#&gt; 'data.frame':	1 obs. of  2 variables:
-#&gt;  $ AUC: num 0.6
-#&gt;  $ R2 : num 0.2</div><div class='input'><span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect'>dbDisconnect</a></span>(<span class='no'>my_db</span>)</div></pre>
+<span class='co'># un-pivot example</span>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
+<span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
+                               <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
+                               <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

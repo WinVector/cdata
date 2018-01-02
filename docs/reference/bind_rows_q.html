@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bind rows by a query. Assumes all tables structured identically. — bind_rowsQ • cdata</title>
+<title>Bind rows by a query. Assumes all tables structured identically. — bind_rows_q • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -90,7 +90,7 @@
     <p>Bind rows by a query. Assumes all tables structured identically.</p>
     
 
-    <pre class="usage"><span class='fu'>bind_rowsQ</span>(<span class='no'>tableNames</span>, <span class='no'>colNames</span>, <span class='no'>my_db</span>, <span class='no'>resultTableName</span>, <span class='no'>...</span>,
+    <pre class="usage"><span class='fu'>bind_rows_q</span>(<span class='no'>tableNames</span>, <span class='no'>colNames</span>, <span class='no'>my_db</span>, <span class='no'>resultTableName</span>, <span class='no'>...</span>,
   <span class='kw'>origTableColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -140,7 +140,7 @@
                    <span class='fu'>data.frame</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='fl'>3</span>:<span class='fl'>4</span>, <span class='kw'>y</span><span class='kw'>=</span> <span class='fl'>13</span>:<span class='fl'>14</span>),
                    <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
                    <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>bind_rowsQ</span>(<span class='kw'>tableNames</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'d1'</span>, <span class='st'>'d2'</span>),
+<span class='fu'>bind_rows_q</span>(<span class='kw'>tableNames</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'d1'</span>, <span class='st'>'d2'</span>),
            <span class='kw'>colNames</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'x'</span>, <span class='st'>'y'</span>),
            <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>,
            <span class='kw'>resultTableName</span> <span class='kw'>=</span> <span class='st'>'res1'</span>,

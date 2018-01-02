@@ -30,11 +30,11 @@ DBI::dbWriteTable(my_db,
                   temporary = TRUE)
 qlook(my_db, 'd')
 
-cT <- buildPivotControlTableN('d',
+cT <- build_pivot_control_q('d',
                               columnToTakeKeysFrom= 'meas',
                               columnToTakeValuesFrom= 'val',
                               my_db = my_db)
-tab <- moveValuesToColumnsN('d',
+tab <- blocks_to_rowrecs_q('d',
                             keyColumns = NULL,
                             controlTable = cT,
                             my_db = my_db)

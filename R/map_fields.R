@@ -34,13 +34,13 @@
 #'   overwrite = TRUE,
 #'   temporary = TRUE)
 #'
-#' map_fieldsQ('d', 'what', 'm', my_db, "dm")
+#' map_fields_q('d', 'what', 'm', my_db, "dm")
 #' cdata::qlook(my_db, 'dm')
 #' DBI::dbDisconnect(my_db)
 #'
 #' @export
 #'
-map_fieldsQ <- function(dname, cname, mname, my_db, rname) {
+map_fields_q <- function(dname, cname, mname, my_db, rname) {
   dests <- vapply(setdiff(listFields(my_db,mname), cname),
                   function(di) {
                     DBI::dbQuoteIdentifier(my_db, di)
@@ -83,11 +83,11 @@ map_fieldsQ <- function(dname, cname, mname, my_db, rname) {
 #'                             "accuracy", "log-loss"),
 #'                 dataset = c("train", "train", "validation", "validation"),
 #'                 stringsAsFactors = FALSE)
-#' map_fieldsD(d, 'what', m)
+#' map_fields(d, 'what', m)
 #'
 #' @export
 #'
-map_fieldsD <- function(d, cname, m) {
+map_fields <- function(d, cname, m) {
   dests <- setdiff(colnames(m), cname)
   for(ci in dests) {
     mp <- as.character(m[[ci]])

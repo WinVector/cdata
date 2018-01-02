@@ -1,4 +1,8 @@
 
+# cdata 0.6.0 2018/01/01
+
+ * New naming convention.
+
 # cdata 0.5.1 2017/12/30
 
  * Doc fixes.

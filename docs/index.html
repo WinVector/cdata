@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
+  <a href="/index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -91,16 +91,16 @@ DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation
 ## 'data.frame':    2 obs. of  2 variables:
 ##  $ meas: chr  "AUC" "R2"
 ##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="reference/buildPivotControlTableN.html">buildPivotControlTableN</a></span>(<span class="st">'d'</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="reference/build_pivot_control_q.html">build_pivot_control_q</a></span>(<span class="st">'d'</span>,
                               <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
                               <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,
                               <span class="dt">my_db =</span> my_db)
-tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/moveValuesToColumnsN.html">moveValuesToColumnsN</a></span>(<span class="st">'d'</span>,
+tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></span>(<span class="st">'d'</span>,
                             <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_ulxl9egjpnmxhgaddtrr_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_spbjklvyhy3yv1dramxa_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6

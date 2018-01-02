@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -85,7 +85,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.5.1</small>
+        <small>version&nbsp;0.6.0</small>
       </h1>
     </div>
 
@@ -107,31 +107,43 @@
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="bind_rowsQ.html">bind_rowsQ</a></code> </p>
+            <p><code><a href="bind_rows_q.html">bind_rows_q</a></code> </p>
           </td>
           <td><p>Bind rows by a query. Assumes all tables structured identically.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="buildPivotControlTableD.html">buildPivotControlTableD</a></code> </p>
+            <p><code><a href="blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></code> </p>
           </td>
-          <td><p>Build a moveValuesToColumns*() control table that specifies a pivot from a <code>data.frame</code>.</p></td>
+          <td><p>Map sets rows to columns (query based, take name of table).</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="buildPivotControlTableN.html">buildPivotControlTableN</a></code> </p>
+            <p><code><a href="blocks_to_rowrecs.html">blocks_to_rowrecs</a></code> </p>
+          </td>
+          <td><p>Map sets rows to columns (takes a <code>data.frame</code>).</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="build_pivot_control_q.html">build_pivot_control_q</a></code> </p>
           </td>
           <td><p>Build a moveValuesToColumns*() control table that specifies a pivot (query based, takes name of table).</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="buildUnPivotControlTable.html">buildUnPivotControlTable</a></code> </p>
+            <p><code><a href="build_pivot_control.html">build_pivot_control</a></code> </p>
+          </td>
+          <td><p>Build a moveValuesToColumns*() control table that specifies a pivot from a <code>data.frame</code>.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="build_unpivot_control.html">build_unpivot_control</a></code> </p>
           </td>
           <td><p>Build a moveValuesToColumns*() control table that specifies a un-pivot (or "shred").</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="cdata.html">cdata</a></code> </p>
+            <p></p>
           </td>
           <td><p><code>cdata</code>: Fluid Data Transformations.</p></td>
         </tr><tr>
@@ -143,49 +155,31 @@
         </tr><tr>
           <!--  -->
           <td>
+            <p><code><a href="define_old_cdata_functions.html">define_old_cdata_functions</a></code> </p>
+          </td>
+          <td><p>Load old (0.5.1) functions into environment, to help code that has not yet adapted.</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
             <p><code><a href="makeTempNameGenerator.html">makeTempNameGenerator</a></code> </p>
           </td>
           <td><p>Produce a temp name generator with a given prefix.</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="map_fieldsD.html">map_fieldsD</a></code> </p>
-          </td>
-          <td><p>Map field values from one column into new derived columns (takes a <code>data.frame</code>).</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="map_fieldsQ.html">map_fieldsQ</a></code> </p>
+            <p><code><a href="map_fields_q.html">map_fields_q</a></code> </p>
           </td>
           <td><p>Map field values from one column into new derived columns (query based, takes name of table).</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="moveValuesToColumnsD.html">moveValuesToColumnsD</a></code> </p>
+            <p><code><a href="map_fields.html">map_fields</a></code> </p>
           </td>
-          <td><p>Map sets rows to columns (takes a <code>data.frame</code>).</p></td>
+          <td><p>Map field values from one column into new derived columns (takes a <code>data.frame</code>).</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="moveValuesToColumnsN.html">moveValuesToColumnsN</a></code> </p>
-          </td>
-          <td><p>Map sets rows to columns (query based, take name of table).</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="moveValuesToRowsD.html">moveValuesToRowsD</a></code> </p>
-          </td>
-          <td><p>Map a set of columns to rows (takes a <code>data.frame</code>).</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="moveValuesToRowsN.html">moveValuesToRowsN</a></code> </p>
-          </td>
-          <td><p>Map a set of columns to rows (query based, take name of table).</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pivotValuesToColumns.html">pivotValuesToColumns</a></code> </p>
+            <p><code><a href="pivot_to_rowrecs.html">pivot_to_rowrecs</a></code> </p>
           </td>
           <td><p>Move values from rows to columns (pivot).</p></td>
         </tr><tr>
@@ -197,7 +191,19 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="unpivotValuesToRows.html">unpivotValuesToRows</a></code> </p>
+            <p><code><a href="rowrecs_to_blocks_q.html">rowrecs_to_blocks_q</a></code> </p>
+          </td>
+          <td><p>Map a set of columns to rows (query based, take name of table).</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="rowrecs_to_blocks.html">rowrecs_to_blocks</a></code> </p>
+          </td>
+          <td><p>Map a set of columns to rows (takes a <code>data.frame</code>).</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="unpivot_to_blocks.html">unpivot_to_blocks</a></code> </p>
           </td>
           <td><p>Move values from columns to rows (anti-pivot, or "shred").</p></td>
         </tr>

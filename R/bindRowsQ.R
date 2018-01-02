@@ -23,7 +23,7 @@
 #'                    data.frame(x=3:4, y= 13:14),
 #'                    overwrite = TRUE,
 #'                    temporary = TRUE)
-#' bind_rowsQ(tableNames = c('d1', 'd2'),
+#' bind_rows_q(tableNames = c('d1', 'd2'),
 #'            colNames = c('x', 'y'),
 #'            my_db = my_db,
 #'            resultTableName = 'res1',
@@ -33,12 +33,12 @@
 #'
 #' @export
 #'
-bind_rowsQ <- function(tableNames, colNames, my_db,
-                       resultTableName,
-                       ...,
-                       origTableColumn = NULL) {
+bind_rows_q <- function(tableNames, colNames, my_db,
+                        resultTableName,
+                        ...,
+                        origTableColumn = NULL) {
   if(length(list(...))>0) {
-    stop("replyr::bind_rowsQ unexpected arguments")
+    stop("replyr::bind_rows_q unexpected arguments")
   }
   qSel <- vapply(colNames,
                  function(ci) {
