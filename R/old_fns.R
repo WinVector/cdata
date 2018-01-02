@@ -6,8 +6,8 @@ buildUnPivotControlTable <- function(nameForNewKeyColumn,
                                      nameForNewValueColumn,
                                      columnsToTakeFrom,
                                      ...) {
-  .Deprecated(new = "build_unpivot_control",
-              old = "buildUnPivotControlTable")
+  # .Deprecated(new = "build_unpivot_control",
+  #             old = "buildUnPivotControlTable")
   build_unpivot_control(nameForNewKeyColumn,
                         nameForNewValueColumn,
                         columnsToTakeFrom,
@@ -29,8 +29,8 @@ moveValuesToRowsN <- function(wideTable,
                               defaultValue = NULL,
                               temporary = FALSE,
                               resultName = NULL) {
-  .Deprecated(new = "rowrecs_to_blocks_q",
-              old = "moveValuesToRowsN")
+  # .Deprecated(new = "rowrecs_to_blocks_q",
+  #             old = "moveValuesToRowsN")
   rowrecs_to_blocks_q(wideTable,
                       controlTable,
                       my_db,
@@ -57,8 +57,8 @@ moveValuesToRowsD <- function(wideTable,
                               showQuery = FALSE,
                               defaultValue = NULL,
                               env = parent.frame()) {
-  .Deprecated(new = "rowrecs_to_blocks",
-              old = "moveValuesToRowsD")
+  # .Deprecated(new = "rowrecs_to_blocks",
+  #             old = "moveValuesToRowsD")
   rowrecs_to_blocks(wideTable,
                     controlTable,
                     ...,
@@ -80,8 +80,8 @@ buildPivotControlTableN <- function(tableName,
                                     ...,
                                     prefix = columnToTakeKeysFrom,
                                     sep = NULL) {
-  .Deprecated(new = "build_pivot_control_q",
-              old = "buildPivotControlTableN")
+  # .Deprecated(new = "build_pivot_control_q",
+  #             old = "buildPivotControlTableN")
   build_pivot_control_q(tableName,
                         columnToTakeKeysFrom,
                         columnToTakeValuesFrom,
@@ -101,8 +101,8 @@ buildPivotControlTableD <- function(table,
                                     prefix = columnToTakeKeysFrom,
                                     sep = NULL,
                                     env = parent.frame()) {
-  .Deprecated(new = "build_pivot_control",
-              old = "buildPivotControlTableD")
+  # .Deprecated(new = "build_pivot_control",
+  #             old = "buildPivotControlTableD")
   build_pivot_control(table,
                       columnToTakeKeysFrom,
                       columnToTakeValuesFrom,
@@ -129,8 +129,8 @@ moveValuesToColumnsN <- function(tallTable,
                                  dropDups = FALSE,
                                  temporary = FALSE,
                                  resultName = NULL) {
-  .Deprecated(new = "blocks_to_rowrecs_q",
-              old = "moveValuesToColumnsN")
+  # .Deprecated(new = "blocks_to_rowrecs_q",
+  #             old = "moveValuesToColumnsN")
   blocks_to_rowrecs_q(tallTable,
                       keyColumns,
                       controlTable,
@@ -161,8 +161,8 @@ moveValuesToColumnsD <-  function(tallTable,
                                   defaultValue = NULL,
                                   dropDups = FALSE,
                                   env = parent.frame()) {
-  .Deprecated(new = "blocks_to_rowrecs",
-              old = "moveValuesToColumnsD")
+  # .Deprecated(new = "blocks_to_rowrecs",
+  #             old = "moveValuesToColumnsD")
   blocks_to_rowrecs(tallTable,
                     keyColumns,
                     controlTable,
@@ -186,8 +186,8 @@ unpivotValuesToRows <-  function(data,
                                  ...,
                                  nameForNewClassColumn = NULL,
                                  env = parent.frame()) {
-  .Deprecated(new = "unpivot_to_blocks",
-              old = "unpivotValuesToRows")
+  # .Deprecated(new = "unpivot_to_blocks",
+  #             old = "unpivotValuesToRows")
   unpivot_to_blocks(data,
                     nameForNewKeyColumn,
                     nameForNewValueColumn,
@@ -207,8 +207,8 @@ pivotValuesToColumns <- function(data,
                                  ...,
                                  sep = NULL,
                                  env = parent.frame()) {
-  .Deprecated(new = "pivot_to_rowrecs",
-              old = "pivotValuesToColumns")
+  # .Deprecated(new = "pivot_to_rowrecs",
+  #             old = "pivotValuesToColumns")
   pivot_to_rowrecs(data,
                    columnToTakeKeysFrom,
                    columnToTakeValuesFrom,
