@@ -47,7 +47,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_i35norwkbszcgrxsh6uv_0000000001` SQLiteConnection 
+    ## table `mvtcq_yusltuykeikysoeefcwa_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
