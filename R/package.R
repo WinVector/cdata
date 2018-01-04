@@ -7,6 +7,7 @@
 #' 'DBI' compliant data sources (include large systems such as 'PostgreSQL' and
 #' 'Spark').  Convenience adapters are provided for in-memory 'data.frame's.
 #' A theory of fluid data transforms can be found in the following articles:
+#' \url{http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html},
 #' \url{https://github.com/WinVector/cdata} and \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
 #'
