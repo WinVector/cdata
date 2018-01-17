@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). Another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
+The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata webcast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
@@ -47,7 +47,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_zg7rrsptqga0pcrunpx9_0000000001` SQLiteConnection 
+    ## table `mvtcq_h1jf6vdfyqyv1mvdie55_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
