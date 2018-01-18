@@ -254,6 +254,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
+                    overwrite = TRUE,
                     temporary = TRUE)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
@@ -420,8 +421,8 @@ rowrecs_to_blocks <- function(wideTable,
                                  showQuery = showQuery,
                                  defaultValue = defaultValue)
   resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE IF EXISTS", wtname))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE IF EXISTS", resName))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", wtname))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
   if(need_close) {
     DBI::dbDisconnect(my_db)
   }
@@ -537,19 +538,20 @@ build_pivot_control <- function(table,
   } else {
     my_db <- db_handle$db
   }
+  ptabtmpnam <- "cdata_build_pc_tmp"
   rownames(table) <- NULL # just in case
   DBI::dbWriteTable(my_db,
-                    'stable',
+                    ptabtmpnam,
                     table,
-                    overwrite = FALSE,
+                    overwrite = TRUE,
                     temporary = TRUE)
-  res <- build_pivot_control_q(tableName = 'stable',
+  res <- build_pivot_control_q(tableName = ptabtmpnam,
                                columnToTakeKeysFrom = columnToTakeKeysFrom,
                                columnToTakeValuesFrom = columnToTakeValuesFrom,
                                my_db = my_db,
                                prefix = prefix,
                                sep = sep)
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'stable'))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", ptabtmpnam))
   if(need_close) {
     DBI::dbDisconnect(my_db)
   }
@@ -674,6 +676,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   DBI::dbWriteTable(my_db,
                     ctabName,
                     controlTable,
+                    overwrite = TRUE,
                     temporary = TRUE)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
@@ -848,13 +851,14 @@ blocks_to_rowrecs <- function(tallTable,
   } else {
     my_db <- db_handle$db
   }
+  talltbltmpnam <- "cdata_tall_tmp"
   rownames(tallTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
-                    'tallTable',
+                    talltbltmpnam,
                     tallTable,
                     temporary = TRUE,
-                    overwrite = FALSE)
-  resName <- blocks_to_rowrecs_q(tallTable = 'tallTable',
+                    overwrite = TRUE)
+  resName <- blocks_to_rowrecs_q(tallTable = talltbltmpnam,
                                  keyColumns = keyColumns,
                                  controlTable = controlTable,
                                  my_db = my_db,
@@ -866,7 +870,7 @@ blocks_to_rowrecs <- function(tallTable,
                                  defaultValue = defaultValue,
                                  dropDups = dropDups)
   resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'tallTable'))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE", talltbltmpnam))
   x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
   if(need_close) {
     DBI::dbDisconnect(my_db)
