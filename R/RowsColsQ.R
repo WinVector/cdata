@@ -392,6 +392,7 @@ rowrecs_to_blocks <- function(wideTable,
   if(length(list(...))>0) {
     stop("cdata::rowrecs_to_blocks unexpected arguments.")
   }
+  wtname <- "cata_wide_tmp"
   need_close <- FALSE
   db_handle <- base::mget("winvector_temp_db_handle",
                           envir = env,
@@ -405,11 +406,11 @@ rowrecs_to_blocks <- function(wideTable,
   }
   rownames(wideTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
-                    'wideTable',
+                    wtname,
                     wideTable,
-                    overwrite = FALSE,
+                    overwrite = TRUE,
                     temporary = TRUE)
-  resName <- rowrecs_to_blocks_q(wideTable = 'wideTable',
+  resName <- rowrecs_to_blocks_q(wideTable = wtname,
                                  controlTable = controlTable,
                                  my_db = my_db,
                                  columnsToCopy = columnsToCopy,
@@ -419,8 +420,8 @@ rowrecs_to_blocks <- function(wideTable,
                                  showQuery = showQuery,
                                  defaultValue = defaultValue)
   resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", 'wideTable'))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE IF EXISTS", wtname))
+  x <- DBI::dbExecute(my_db, paste("DROP TABLE IF EXISTS", resName))
   if(need_close) {
     DBI::dbDisconnect(my_db)
   }
