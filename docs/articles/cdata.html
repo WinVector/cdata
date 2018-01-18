@@ -63,16 +63,19 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-01-17</h4>
+            <h4 class="date">2018-01-18</h4>
           </div>
 
     
     
 <div class="contents">
-<p><a href="https://github.com/WinVector/cdata"><code>cdata</code></a> is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The tutorial of the general methodology is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. Another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>.</p>
+<p>The <code>cdata</code> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png">
+</div>
 <p>Briefly <code>cdata</code> supplies data transform operators that:</p>
 <ul>
-<li>Work on local data or any <code>DBI</code> data source.</li>
+<li>Work on local data or with any <code>DBI</code> data source.</li>
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
 <p>A quick example:</p>
@@ -101,13 +104,17 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_av55fpypqnxd5qizet5m_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_hcb0qqx7zcfqynafd3p9_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
 ##  $ R2 : num 0.2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
-<p>Note: <code>cdata</code> is targeted at data with “tame column names”, that is column names that are valid both in databases, and as <code>R</code> variable names.</p>
+<p>Install via CRAN:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
+<p>Or from Github using devtools:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
+<p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
 </div>
   </div>
 

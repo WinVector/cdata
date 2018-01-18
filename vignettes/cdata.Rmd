@@ -9,11 +9,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-[`cdata`](https://github.com/WinVector/cdata) is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The tutorial of the general methodology is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). Another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
+The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+
+![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
 Briefly `cdata` supplies data transform operators that:
 
- * Work on local data or any `DBI` data source.
+ * Work on local data or with any `DBI` data source.
  * Are powerful generalizations of the operators commonly called `pivot` and `un-pivot`.
 
 A quick example:
@@ -43,5 +45,18 @@ qlook(my_db, tab)
 DBI::dbDisconnect(my_db)
 ```
 
-Note: `cdata` is targeted at data with "tame column names", that is column names that are valid both in databases, and as `R` variable names.
+Install via CRAN:
+
+```{r, eval=FALSE}
+install.packages("cdata")
+```
+
+Or from Github using devtools:
+
+```{r, eval=FALSE}
+devtools::install_github("WinVector/cdata")
+```
+
+Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on). 
+
 
