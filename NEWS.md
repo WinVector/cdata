@@ -2,6 +2,7 @@
 # cdata 0.5.2 2018/01/18
 
  * Remove append based row binding (seems to have some issues on Spark).
+ * Depricate old methods.
 
 # cdata 0.5.1 2018/01/03
 
