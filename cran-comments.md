@@ -6,8 +6,8 @@
  * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 
  * win-builder 
- * using R Under development (unstable) (2018-01-02 r74022)
- * using platform: x86_64-w64-mingw32 (64-bit)
+ using R Under development (unstable) (2018-01-19 r74138)
+* using platform: x86_64-w64-mingw32 (64-bit)
 
 ## R CMD check --as-cran cdata_0.5.2.tar.gz 
 
