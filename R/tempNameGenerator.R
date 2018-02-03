@@ -24,7 +24,7 @@ makeTempNameGenerator <- function(prefix) {
   if((length(prefix)!=1)||(!is.character(prefix))) {
     stop("cdata::makeTempNameGenerator prefix must be a string")
   }
-  alphabet <- c(letters, tolower(letters), as.character(0:9))
+  alphabet <- c(as.character(0:9))
   suffix <- paste(base::sample(alphabet, size=20, replace= TRUE),
                     collapse = '')
   count <- 0
