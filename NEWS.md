@@ -3,6 +3,7 @@
 # cdata 0.6.0 2018/01/22
 
  * Remove deprecated methods.
+ * Add cols() method.
 
 # cdata 0.5.2 2018/01/20
 

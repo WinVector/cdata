@@ -14,9 +14,34 @@ isSpark <- function(db) {
             class(db)))>0
 }
 
-
-listFields <- function(my_db, tableName) {
-  # fails intermitnently, and sometimes gives wrong results
+#' List columns of a table
+#'
+#' @param my_db DBI database connection
+#' @param tableName character name of table
+#' @return list of column names
+#'
+#' @examples
+#'
+#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#' DBI::dbWriteTable(my_db,
+#'                   'd',
+#'                   data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
+#'                   overwrite = TRUE,
+#'                   temporary = TRUE)
+#' cols(my_db, 'd')
+#' cT <- build_unpivot_control(
+#'   nameForNewKeyColumn= 'meas',
+#'   nameForNewValueColumn= 'val',
+#'   columnsToTakeFrom= setdiff(cols(my_db, 'd'), "nope"))
+#' print(cT)
+#' tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
+#' qlook(my_db, tab)
+#' DBI::dbDisconnect(my_db)
+#'
+#' @export
+#'
+cols <- function(my_db, tableName) {
+  # comment out block fails intermitnently, and sometimes gives wrong results
   # filed as: https://github.com/tidyverse/dplyr/issues/3204
   # tryCatch(
   #   return(DBI::dbListFields(my_db, tableName)),
@@ -250,7 +275,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(checkNames) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- listFields(my_db, wideTable)
+    wideTableColnames <- cols(my_db, wideTable)
     badCells <- setdiff(interiorCells, wideTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::rowrecs_to_blocks_q: control table entries that are not wideTable column names:",
@@ -693,7 +718,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     stop(paste("cdata::blocks_to_rowrecs_q", cCheck))
   }
   if(checkNames) {
-    tallTableColnames <- listFields(my_db, tallTable)
+    tallTableColnames <- cols(my_db, tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::blocks_to_rowrecs_q: control table column names that are not tallTable column names:",

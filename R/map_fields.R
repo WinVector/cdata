@@ -41,7 +41,7 @@
 #' @export
 #'
 map_fields_q <- function(dname, cname, mname, my_db, rname) {
-  dests <- vapply(setdiff(listFields(my_db,mname), cname),
+  dests <- vapply(setdiff(cols(my_db,mname), cname),
                   function(di) {
                     DBI::dbQuoteIdentifier(my_db, di)
                   }, character(1))
