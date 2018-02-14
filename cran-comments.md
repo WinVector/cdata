@@ -9,7 +9,7 @@
  using R Under development (unstable) (2018-01-19 r74138)
 * using platform: x86_64-w64-mingw32 (64-bit)
 
-## R CMD check --as-cran cdata_0.5.2.tar.gz 
+## R CMD check --as-cran cdata_0.6.0.tar.gz
 
  * checking extension type ... Package
  * this is package ‘cdata’ version ‘0.5.2’

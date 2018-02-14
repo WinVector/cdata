@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 0.6.0
-Date: 2018-02-06
+Date: 2018-02-14
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -11,7 +11,9 @@ Authors@R: c(
 URL:  https://github.com/WinVector/cdata/, https://winvector.github.io/cdata/
 Maintainer: John Mount <jmount@win-vector.com>
 BugReports: https://github.com/WinVector/cdata/issues
-Description: Supplies higher-order fluid data transform operators that include pivot and anti-pivot as special cases. Based on the 'DBI' database interface.
+Description: Supplies higher-order fluid data transform operators that include pivot and anti-pivot as special cases. 
+    The methodolgy is describe in Zumel, 2018, "Fluid data reshaping with cdata", http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html , doi:10.5281/zenodo.1173299 . 
+    Based on the 'DBI' database interface.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
