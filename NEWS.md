@@ -1,6 +1,6 @@
 
 
-# cdata 0.6.0 2018/02/14
+# cdata 0.6.0 2018/02/20
 
  * Remove deprecated methods.
  * Add cols() method.

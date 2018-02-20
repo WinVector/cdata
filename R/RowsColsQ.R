@@ -213,7 +213,7 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
-#' @param tempNameGenerator a tempNameGenerator from cdata::makeTempNameGenerator()
+#' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param strict logical, if TRUE check control table contents for uniqueness
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
@@ -249,7 +249,7 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 my_db,
                                 ...,
                                 columnsToCopy = NULL,
-                                tempNameGenerator = makeTempNameGenerator('mvtrq'),
+                                tempNameGenerator = mk_tmp_name_source('mvtrq'),
                                 strict = FALSE,
                                 checkNames = TRUE,
                                 showQuery = FALSE,
@@ -462,7 +462,7 @@ rowrecs_to_blocks <- function(wideTable,
                                  controlTable = controlTable,
                                  my_db = my_db,
                                  columnsToCopy = columnsToCopy,
-                                 tempNameGenerator = makeTempNameGenerator('mvtrq'),
+                                 tempNameGenerator = mk_tmp_name_source('mvtrq'),
                                  strict = strict,
                                  checkNames = checkNames,
                                  showQuery = showQuery,
@@ -648,7 +648,7 @@ build_pivot_control <- function(table,
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
-#' @param tempNameGenerator a tempNameGenerator from cdata::makeTempNameGenerator()
+#' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param strict logical, if TRUE check control table contents for uniqueness
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
@@ -688,7 +688,7 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 my_db,
                                 ...,
                                 columnsToCopy = NULL,
-                                tempNameGenerator = makeTempNameGenerator('mvtcq'),
+                                tempNameGenerator = mk_tmp_name_source('mvtcq'),
                                 strict = FALSE,
                                 checkNames = TRUE,
                                 showQuery = FALSE,
@@ -931,7 +931,7 @@ blocks_to_rowrecs <- function(tallTable,
                                  controlTable = controlTable,
                                  my_db = my_db,
                                  columnsToCopy = columnsToCopy,
-                                 tempNameGenerator = makeTempNameGenerator('mvtcq'),
+                                 tempNameGenerator = mk_tmp_name_source('mvtcq'),
                                  strict = strict,
                                  checkNames = checkNames,
                                  showQuery = showQuery,

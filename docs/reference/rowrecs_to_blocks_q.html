@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -92,7 +92,7 @@ and controlTable.</p>
     
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks_q</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>my_db</span>, <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='makeTempNameGenerator.html'>makeTempNameGenerator</a></span>(<span class='st'>"mvtrq"</span>), <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'>mk_tmp_name_source</span>(<span class='st'>"mvtrq"</span>), <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
@@ -121,7 +121,7 @@ and controlTable.</p>
     </tr>
     <tr>
       <th>tempNameGenerator</th>
-      <td><p>a tempNameGenerator from cdata::makeTempNameGenerator()</p></td>
+      <td><p>a tempNameGenerator from cdata::mk_tmp_name_source()</p></td>
     </tr>
     <tr>
       <th>strict</th>
@@ -196,7 +196,7 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
                                <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
                                <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
 <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>rowrecs_to_blocks_q</span>(<span class='st'>'d'</span>, <span class='no'>cT</span>, <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>)
-<span class='fu'><a href='qlook.html'>qlook</a></span>(<span class='no'>my_db</span>, <span class='no'>tab</span>)</div><div class='output co'>#&gt; table `mvtrq_88424656587808953756_0000000001` SQLiteConnection 
+<span class='fu'><a href='qlook.html'>qlook</a></span>(<span class='no'>my_db</span>, <span class='no'>tab</span>)</div><div class='output co'>#&gt; table `mvtrq_56224942609158725804_0000000001` SQLiteConnection 
 #&gt;  nrow: 2 
 #&gt; 'data.frame':	2 obs. of  2 variables:
 #&gt;  $ meas: chr  "AUC" "R2"

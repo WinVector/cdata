@@ -18,6 +18,6 @@ NULL
 # make sure dot doesn't look like an unbound ref
 . <- NULL
 
-#' @importFrom wrapr grepdf
+#' @importFrom wrapr grepdf mk_tmp_name_source := let %.>%
 #' @export
 wrapr::grepdf

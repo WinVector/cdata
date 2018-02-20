@@ -5,7 +5,7 @@
 \title{Map a set of columns to rows (query based, take name of table).}
 \usage{
 rowrecs_to_blocks_q(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
-  tempNameGenerator = makeTempNameGenerator("mvtrq"), strict = FALSE,
+  tempNameGenerator = mk_tmp_name_source("mvtrq"), strict = FALSE,
   checkNames = TRUE, showQuery = FALSE, defaultValue = NULL,
   temporary = FALSE, resultName = NULL)
 }
@@ -20,7 +20,7 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
 
 \item{columnsToCopy}{character list of column names to copy}
 
-\item{tempNameGenerator}{a tempNameGenerator from cdata::makeTempNameGenerator()}
+\item{tempNameGenerator}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
 \item{strict}{logical, if TRUE check control table contents for uniqueness}
 
