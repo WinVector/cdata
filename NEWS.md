@@ -1,10 +1,10 @@
 
 
-# cdata 0.6.0 2018/02/20
+# cdata 0.6.0 2018/02/24
 
- * Remove deprecated methods.
  * Add cols() method.
  * Add doi link in DESCRIPTION (CRAN request).
+ * Add cf() (character frame).
 
 # cdata 0.5.2 2018/01/20
 

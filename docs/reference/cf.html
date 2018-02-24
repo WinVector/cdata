@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a moveValuesToColumns*() control table that specifies a un-pivot (or "shred"). — build_unpivot_control • cdata</title>
+<title>Build character data.frame — cf • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,57 +83,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a moveValuesToColumns*() control table that specifies a un-pivot (or "shred").</h1>
+    <h1>Build character data.frame</h1>
     </div>
 
     
-    <p>Some discussion and examples can be found here:
-<a href='https://winvector.github.io/FluidData/FluidData.html'>https://winvector.github.io/FluidData/FluidData.html</a> and
-here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/cdata</a>.</p>
-<p>buildUnPivotControlTable deprecated, functionality moved to: build_unpivot_control</p>
+    <p>A confineint way to build a character data.frame.  Position of
+first "+" determines number of columns (all other "+"'s are aliases for ",").</p>
     
 
-    <pre class="usage"><span class='fu'>build_unpivot_control</span>(<span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
-  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>)
-
-<span class='fu'>buildUnPivotControlTable</span>(<span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
-  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>cf</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nameForNewKeyColumn</th>
-      <td><p>character name of column to write new keys in.</p></td>
-    </tr>
-    <tr>
-      <th>nameForNewValueColumn</th>
-      <td><p>character name of column to write new values in.</p></td>
-    </tr>
-    <tr>
-      <th>columnsToTakeFrom</th>
-      <td><p>character array names of columns to take values from.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>not used, force later args to be by name</p></td>
+      <td><p>character values, + denotes end of row, first row is column names.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>control table</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='rowrecs_to_blocks_q.html'>rowrecs_to_blocks_q</a></code>, <code><a href='rowrecs_to_blocks.html'>rowrecs_to_blocks</a></code></p>
+    <p>character data.frame</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>build_unpivot_control</span>(<span class='st'>"measurmentType"</span>, <span class='st'>"measurmentValue"</span>, <span class='fu'>c</span>(<span class='st'>"c1"</span>, <span class='st'>"c2"</span>))</div><div class='output co'>#&gt;   measurmentType measurmentValue
-#&gt; 1             c1              c1
-#&gt; 2             c2              c2</div><div class='input'>
+<span class='fu'>cf</span>(<span class='st'>"measure"</span>,                    <span class='st'>"training"</span>, <span class='st'>"validation"</span> +
+   <span class='st'>"minus binary cross entropy"</span>, <span class='st'>"loss"</span>,     <span class='st'>"val_loss"</span>   +
+   <span class='st'>"accuracy"</span>,                   <span class='st'>"acc"</span>,      <span class='st'>"val_acc"</span>    )</div><div class='output co'>#&gt;                      measure training validation
+#&gt; 1 minus binary cross entropy     loss   val_loss
+#&gt; 2                   accuracy      acc    val_acc</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -142,8 +122,6 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
