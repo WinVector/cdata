@@ -85,7 +85,7 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' @param x data.frame (atomic types, with at least 1 row and 1 column).
 #' @return chracter
 #'
-#' @seealso \code{\link{build_frame}}, \link{qchar_frame}}, \code{\link{char_frame}}
+#' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}, \code{\link{char_frame}}
 #'
 #' @examples
 #'
@@ -166,7 +166,7 @@ draw_frame <- function(x) {
 #' @param cf_eval_environment environment to evaluate names in.
 #' @return character data.frame
 #'
-#' @seealso \code{\link{build_frame}}, \link{qchar_frame}}, \code{\link{build_frame}}
+#' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}, \code{\link{build_frame}}
 #'
 #' @examples
 #'
@@ -248,7 +248,7 @@ char_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' @param ... cell names, first infix operator denotes end of header row of column names.
 #' @return character data.frame
 #'
-#' @seealso \link{draw_frame}}, \code{\link{char_frame}}, \code{\link{build_frame}}
+#' @seealso \code{\link{draw_frame}}, \code{\link{char_frame}}, \code{\link{build_frame}}
 #'
 #' @examples
 #'

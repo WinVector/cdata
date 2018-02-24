@@ -26,3 +26,6 @@ print(x)
 cat(draw_frame(x))
 
 }
+\seealso{
+\code{\link{build_frame}},  \code{\link{qchar_frame}}, \code{\link{char_frame}}
+}

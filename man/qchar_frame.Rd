@@ -28,3 +28,6 @@ print(x)
 cat(draw_frame(x))
 
 }
+\seealso{
+\code{\link{draw_frame}}, \code{\link{char_frame}}, \code{\link{build_frame}}
+}
