@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build character data.frame — char_frame • cdata</title>
+<title>Build a (non-empty) character data.frame. — char_frame • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,11 +83,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build character data.frame</h1>
+    <h1>Build a (non-empty) character data.frame.</h1>
     </div>
 
     
-    <p>A confineint way to build a character data.frame.  Position of
+    <p>A convenient way to build a character data.frame in legible transposed form.  Position of
 first "+" (or other infix operator) determines number of columns
 (all other infix operators are aliases for ",").
 Names are de-referenced.</p>
@@ -112,20 +112,20 @@ Names are de-referenced.</p>
 
     <p>character data.frame</p>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><a href='qchar_frame.html'>qchar_frame</a></p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>tc_name</span> <span class='kw'>&lt;-</span> <span class='st'>"training"</span>
-<span class='fu'>char_frame</span>(
-   <span class='st'>"measure"</span>,                   <span class='no'>tc_name</span>, <span class='st'>"validation"</span> +
-   <span class='st'>"minus binary cross entropy"</span>, <span class='st'>"loss"</span>, <span class='st'>"val_loss"</span>   +
-   <span class='st'>"accuracy"</span>,                    <span class='st'>"acc"</span>, <span class='st'>"val_acc"</span>    )</div><div class='output co'>#&gt;                      measure training validation
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>char_frame</span>(
+   <span class='st'>"measure"</span>,                   <span class='no'>tc_name</span>, <span class='st'>"validation"</span> /
+   <span class='st'>"minus binary cross entropy"</span>, <span class='st'>"loss"</span>, <span class='st'>"val_loss"</span>   /
+   <span class='st'>"accuracy"</span>,                    <span class='st'>"acc"</span>, <span class='st'>"val_acc"</span>    )
+<span class='fu'>print</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;                      measure training validation
 #&gt; 1 minus binary cross entropy     loss   val_loss
-#&gt; 2                   accuracy      acc    val_acc</div><div class='input'>
+#&gt; 2                   accuracy      acc    val_acc</div><div class='input'><span class='fu'>cat</span>(<span class='fu'><a href='draw_frame.html'>draw_frame</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
+#&gt;    "measure"                   , "training", "validation" /
+#&gt;    "minus binary cross entropy", "loss"    , "val_loss"   /
+#&gt;    "accuracy"                  , "acc"     , "val_acc"    )</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -134,8 +134,6 @@ Names are de-referenced.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

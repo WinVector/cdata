@@ -2,32 +2,29 @@
 % Please edit documentation in R/cf.R
 \name{qchar_frame}
 \alias{qchar_frame}
-\title{Build a quoted data.frame}
+\title{Build a (non-empty) quoted data.frame.}
 \usage{
-qchar_frame(..., cf_eval_environment = parent.frame())
+qchar_frame(...)
 }
 \arguments{
 \item{...}{cell names, first infix operator denotes end of header row of column names.}
-
-\item{cf_eval_environment}{environment to evaluate names in.}
 }
 \value{
 character data.frame
 }
 \description{
-A confineint way to build a character data.frame.  Position of
+A convenient way to build a character data.frame in legible transposed form.  Position of
 first "+" (or other infix operator) determines number of columns
 (all other infic operators are aliases for ",").
 Names are treated as character types.
 }
 \examples{
 
-qchar_frame(
+x <- qchar_frame(
    measure,                      training, validation /
    "minus binary cross entropy", loss,     val_loss   /
    accuracy,                     acc,      val_acc    )
+print(x)
+cat(draw_frame(x))
 
-}
-\seealso{
-\link{char_frame}
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a (non-empty) quoted data.frame. — qchar_frame • cdata</title>
+<title>Render a data.frame in draw_frame form. — draw_frame • cdata</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,44 +83,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a (non-empty) quoted data.frame.</h1>
+    <h1>Render a data.frame in draw_frame form.</h1>
     </div>
 
     
-    <p>A convenient way to build a character data.frame in legible transposed form.  Position of
-first "+" (or other infix operator) determines number of columns
-(all other infic operators are aliases for ",").
-Names are treated as character types.</p>
+    <p>Render a data.frame in draw_frame form.</p>
     
 
-    <pre class="usage"><span class='fu'>qchar_frame</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>draw_frame</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>cell names, first infix operator denotes end of header row of column names.</p></td>
+      <th>x</th>
+      <td><p>data.frame (atomic types, with at least 1 row and 1 column).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>character data.frame</p>
+    <p>chracter</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>qchar_frame</span>(
-   <span class='no'>measure</span>,                      <span class='no'>training</span>, <span class='no'>validation</span> /
-   <span class='st'>"minus binary cross entropy"</span>, <span class='no'>loss</span>,     <span class='no'>val_loss</span>   /
-   <span class='no'>accuracy</span>,                     <span class='no'>acc</span>,      <span class='no'>val_acc</span>    )
+<span class='no'>tc_name</span> <span class='kw'>&lt;-</span> <span class='st'>"training"</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_frame.html'>build_frame</a></span>(
+   <span class='st'>"measure"</span>,                   <span class='no'>tc_name</span>, <span class='st'>"validation"</span> /
+   <span class='st'>"minus binary cross entropy"</span>,      <span class='fl'>5</span>, <span class='fl'>7</span>            /
+   <span class='st'>"accuracy"</span>,                      <span class='fl'>0.8</span>, <span class='fl'>0.6</span>          )
 <span class='fu'>print</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;                      measure training validation
-#&gt; 1 minus binary cross entropy     loss   val_loss
-#&gt; 2                   accuracy      acc    val_acc</div><div class='input'><span class='fu'>cat</span>(<span class='fu'><a href='draw_frame.html'>draw_frame</a></span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
+#&gt; 1 minus binary cross entropy      5.0        7.0
+#&gt; 2                   accuracy      0.8        0.6</div><div class='input'><span class='fu'>cat</span>(<span class='fu'>draw_frame</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
 #&gt;    "measure"                   , "training", "validation" /
-#&gt;    "minus binary cross entropy", "loss"    , "val_loss"   /
-#&gt;    "accuracy"                  , "acc"     , "val_acc"    )</div><div class='input'>
+#&gt;    "minus binary cross entropy", 5.0       , 7.0          /
+#&gt;    "accuracy"                  , 0.8       , 0.6          )</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
