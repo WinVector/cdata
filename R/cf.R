@@ -2,7 +2,7 @@
 #' Build a (non-empty) data.frame.
 #'
 #' A convenient way to build a data.frame in legible transposed form.  Position of
-#' first "+" (or other infix operator) determines number of columns
+#' first "/" (or other infix operator) determines number of columns
 #' (all other infix operators are aliases for ",").
 #' Names are de-referenced.
 #'
@@ -158,7 +158,7 @@ draw_frame <- function(x) {
 #' Build a (non-empty) character data.frame.
 #'
 #' A convenient way to build a character data.frame in legible transposed form.  Position of
-#' first "+" (or other infix operator) determines number of columns
+#' first "/" (or other infix operator) determines number of columns
 #' (all other infix operators are aliases for ",").
 #' Names are de-referenced.
 #'
@@ -241,7 +241,7 @@ char_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' Build a (non-empty) quoted data.frame.
 #'
 #' A convenient way to build a character data.frame in legible transposed form.  Position of
-#' first "+" (or other infix operator) determines number of columns
+#' first "/" (or other infix operator) determines number of columns
 #' (all other infic operators are aliases for ",").
 #' Names are treated as character types.
 #'
