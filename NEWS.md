@@ -4,7 +4,7 @@
 
  * Add cols() method.
  * Add doi link in DESCRIPTION (CRAN request).
- * Add cf() (character frame).
+ * Add char_frame() (character frame) and qchar_frame (quoted frame).
 
 # cdata 0.5.2 2018/01/20
 
