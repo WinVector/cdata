@@ -28,9 +28,15 @@ x <- build_frame(
    "minus binary cross entropy",      5, 7            /
    "accuracy",                      0.8, 0.6          )
 print(x)
+str(x)
 cat(draw_frame(x))
+
+build_frame(
+  "x" /
+  1   /
+  2   )
 
 }
 \seealso{
-\code{\link{draw_frame}}, \code{\link{char_frame}}, \code{\link{qchar_frame}}
+\code{\link{draw_frame}}, \code{\link{qchar_frame}}
 }

@@ -10,7 +10,7 @@
 #' @param cf_eval_environment environment to evaluate names in.
 #' @return character data.frame
 #'
-#' @seealso \code{\link{draw_frame}}, \code{\link{char_frame}}, \code{\link{qchar_frame}}
+#' @seealso \code{\link{draw_frame}}, \code{\link{qchar_frame}}
 #'
 #' @examples
 #'
@@ -20,7 +20,13 @@
 #'    "minus binary cross entropy",      5, 7            /
 #'    "accuracy",                      0.8, 0.6          )
 #' print(x)
+#' str(x)
 #' cat(draw_frame(x))
+#'
+#' build_frame(
+#'   "x" /
+#'   1   /
+#'   2   )
 #'
 #' @export
 #'
@@ -28,7 +34,7 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
   v <- as.list(substitute(list(...))[-1])
   lv <- length(v)
   # inspect input
-  if(lv<2) {
+  if(lv<1) {
     stop("wrapr::build_frame expect at least a header, one column, and one row")
   }
   cls <- vapply(v, class, character(1))
@@ -37,29 +43,19 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
   }
   ncol <- match("call", cls)
   # unpack
-  deal_with_name_or_val <- function(vi) {
+  unpack_val <- function(vi) {
     if(is.name(vi)) {
       vi <- cf_eval_environment[[as.character(vi)]]
     }
     if(length(vi)<=0) {
-      stop("wrapr::build_frame unexpected NULL/empty")
+      stop("wrapr::build_frame unexpected NULL/empty element")
     }
-    vi
+    if(is.call(vi)) {
+      vi <- lapply(vi[-1], unpack_val)
+    }
+    Reduce(c, lapply(vi, as.list))
   }
-  vu <- lapply(v,
-               function(vi) {
-                 if(length(vi)<=0) {
-                   stop("wrapr::build_frame unexpected NULL/empty element")
-                 }
-                 if(is.call(vi)) {
-                   if(length(vi)!=3) {
-                     stop("wrapr::build_frame expected an infix operator")
-                   }
-                   return(list(deal_with_name_or_val(vi[[2]]),
-                               deal_with_name_or_val(vi[[3]])))
-                 }
-                 deal_with_name_or_val(vi)
-               })
+  vu <- lapply(v, unpack_val)
   vu <- Reduce(c, lapply(vu, as.list))
   nrow <- (length(vu)/ncol) - 1
   seq <- seq_len(nrow)*ncol
@@ -85,7 +81,7 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' @param x data.frame (atomic types, with at least 1 row and 1 column).
 #' @return chracter
 #'
-#' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}, \code{\link{char_frame}}
+#' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}
 #'
 #' @examples
 #'
@@ -155,87 +151,6 @@ draw_frame <- function(x) {
   res
 }
 
-#' Build a (non-empty) character data.frame.
-#'
-#' A convenient way to build a character data.frame in legible transposed form.  Position of
-#' first "/" (or other infix operator) determines number of columns
-#' (all other infix operators are aliases for ",").
-#' Names are de-referenced.
-#'
-#' @param ... cell names, first infix operator denotes end of header row of column names.
-#' @param cf_eval_environment environment to evaluate names in.
-#' @return character data.frame
-#'
-#' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}, \code{\link{build_frame}}
-#'
-#' @examples
-#'
-#' tc_name <- "training"
-#' x <- char_frame(
-#'    "measure",                   tc_name, "validation" /
-#'    "minus binary cross entropy", "loss", "val_loss"   /
-#'    "accuracy",                    "acc", "val_acc"    )
-#' print(x)
-#' cat(draw_frame(x))
-#'
-#' @export
-#'
-char_frame <- function(..., cf_eval_environment = parent.frame()) {
-  v <- as.list(substitute(list(...))[-1])
-  lv <- length(v)
-  # inspect input
-  if(lv<2) {
-    stop("wrapr::char_frame expect at least a header, one column, and one row")
-  }
-  cls <- vapply(v, class, character(1))
-  if(length(setdiff(cls, c("character", "call", "name")))>0) {
-    stop("wrapr::char_frame expect only strings, names, +, and commas")
-  }
-  if(sum(cls=="call") < 1) {
-    stop("wrapr::char_frame expected at least 1 infix operator")
-  }
-  ncol <- match("call", cls)
-  # unpack
-  deal_with_name_or_char <- function(vi) {
-    if(is.name(vi)) {
-      vi <- cf_eval_environment[[as.character(vi)]]
-    }
-    if(length(vi)<=0) {
-      stop("wrapr::char_frame unexpected NULL/empty")
-    }
-    if(!is.character(vi)) {
-      stop("wrapr::char_frame expected a name or character")
-    }
-    as.character(vi) # strip attributes
-  }
-  vu <- lapply(v,
-               function(vi) {
-                 if(length(vi)<=0) {
-                   stop("wrapr::char_frame unexpected NULL/empty element")
-                 }
-                 if(is.name(vi) || is.character(vi)) {
-                   return(deal_with_name_or_char(vi))
-                 }
-                 if(is.call(vi)) {
-                   if(length(vi)!=3) {
-                     stop("wrapr::char_frame expected an infix operator")
-                   }
-                   return(c(deal_with_name_or_char(vi[[2]]),
-                            deal_with_name_or_char(vi[[3]])))
-                 }
-                 stop(paste("wrapr::char_frame unexpected type ",
-                            paste(class(vi), collapse = ", ")))
-               })
-  vu <- as.character(unlist(vu,
-                            recursive = FALSE,
-                            use.names = FALSE))
-  fr <- as.data.frame(matrix(data = vu[-seq_len(ncol)],
-                             ncol=ncol,
-                             byrow = TRUE),
-                      stringsAsFactors = FALSE)
-  colnames(fr) <- vu[seq_len(ncol)]
-  fr
-}
 
 
 #' Build a (non-empty) quoted data.frame.
@@ -248,7 +163,7 @@ char_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' @param ... cell names, first infix operator denotes end of header row of column names.
 #' @return character data.frame
 #'
-#' @seealso \code{\link{draw_frame}}, \code{\link{char_frame}}, \code{\link{build_frame}}
+#' @seealso \code{\link{draw_frame}}, \code{\link{build_frame}}
 #'
 #' @examples
 #'
@@ -257,7 +172,13 @@ char_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'    "minus binary cross entropy", loss,     val_loss   /
 #'    accuracy,                     acc,      val_acc    )
 #' print(x)
+#' str(x)
 #' cat(draw_frame(x))
+#'
+#' qchar_frame(
+#'   x /
+#'   1 /
+#'   2 )
 #'
 #' @export
 #'
@@ -265,7 +186,7 @@ qchar_frame <- function(...) {
   v <- as.list(substitute(list(...))[-1])
   lv <- length(v)
   # inspect input
-  if(lv<2) {
+  if(lv<1) {
     stop("wrapr::qchar_frame expect at least a header, one column, and one row")
   }
   cls <- vapply(v, class, character(1))
@@ -277,39 +198,17 @@ qchar_frame <- function(...) {
   }
   ncol <- match("call", cls)
   # unpack
-  deal_with_name_or_char <- function(vi) {
-    if(is.name(vi)) {
-      vi <- as.character(vi)
-    }
+  unpack_val <- function(vi) {
     if(length(vi)<=0) {
-      stop("wrapr::qchar_frame unexpected NULL/empty")
+      stop("wrapr::qchar_frame unexpected NULL/empty element")
     }
-    if(!is.character(vi)) {
-      stop("wrapr::qchar_frame expected a name or character")
+    if(is.call(vi)) {
+      vi <- lapply(vi[-1], unpack_val)
     }
-    as.character(vi) # strip attributes
+    as.character(unlist(vi))
   }
-  vu <- lapply(v,
-               function(vi) {
-                 if(length(vi)<=0) {
-                   stop("wrapr::qchar_frame unexpected NULL/empty element")
-                 }
-                 if(is.name(vi) || is.character(vi)) {
-                   return(deal_with_name_or_char(vi))
-                 }
-                 if(is.call(vi)) {
-                   if(length(vi)!=3) {
-                     stop("wrapr::qchar_frame expected an infix operator")
-                   }
-                   return(c(deal_with_name_or_char(vi[[2]]),
-                            deal_with_name_or_char(vi[[3]])))
-                 }
-                 stop(paste("wrapr::qchar_frame unexpected type ",
-                            paste(class(vi), collapse = ", ")))
-               })
-  vu <- as.character(unlist(vu,
-                            recursive = FALSE,
-                            use.names = FALSE))
+  vu <- lapply(v, unpack_val)
+  vu <- unlist(vu)
   fr <- as.data.frame(matrix(data = vu[-seq_len(ncol)],
                              ncol=ncol,
                              byrow = TRUE),
