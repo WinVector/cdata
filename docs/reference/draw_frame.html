@@ -102,7 +102,7 @@
     <p>Render a data.frame in draw_frame form.</p>
     
 
-    <pre class="usage"><span class='fu'>draw_frame</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>draw_frame</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -110,6 +110,14 @@
     <tr>
       <th>x</th>
       <td><p>data.frame (atomic types, with at least 1 row and 1 column).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used for values, forces later arguments to bind by name.</p></td>
+    </tr>
+    <tr>
+      <th>time_format</th>
+      <td><p>character, format for "POSIXt" classes.</p></td>
     </tr>
     </table>
     
@@ -133,7 +141,7 @@
 #&gt; 1 minus binary cross entropy      5.0        7.0
 #&gt; 2                   accuracy      0.8        0.6</div><div class='input'><span class='fu'>cat</span>(<span class='fu'>draw_frame</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
 #&gt;    "measure"                   , "training", "validation" |
-#&gt;    "minus binary cross entropy", 5.0       , 7.0          |
+#&gt;    "minus binary cross entropy", 5         , 7            |
 #&gt;    "accuracy"                  , 0.8       , 0.6          )</div><div class='input'>
 </div></pre>
   </div>

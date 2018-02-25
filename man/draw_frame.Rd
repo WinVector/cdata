@@ -4,10 +4,14 @@
 \alias{draw_frame}
 \title{Render a data.frame in draw_frame form.}
 \usage{
-draw_frame(x)
+draw_frame(x, ..., time_format = "\%Y-\%m-\%d \%H:\%M:\%S")
 }
 \arguments{
 \item{x}{data.frame (atomic types, with at least 1 row and 1 column).}
+
+\item{...}{not used for values, forces later arguments to bind by name.}
+
+\item{time_format}{character, format for "POSIXt" classes.}
 }
 \value{
 chracter

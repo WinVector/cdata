@@ -22,6 +22,9 @@ test_that("testBuildFrame.R", {
   d <- data.frame(x = 1)
   testBFRT(d)
 
+  d <- data.frame(x = 1L)
+  testBFRT(d)
+
   d1 <- qchar_frame(
     measure,                      training, validation |
     "minus binary cross entropy", loss,     val_loss   |
@@ -41,4 +44,13 @@ test_that("testBuildFrame.R", {
     x = c("1", "2"),
     stringsAsFactors = FALSE)
   testthat::expect_equivalent(d1, d2)
+
+  d1 <- data.frame(
+    idx = c(1L, 2L),
+    time = strptime(c("02/27/92 23:03:20", "02/27/92 22:29:56"),
+                    "%m/%d/%y %H:%M:%S"),
+    val = c(4, 10),
+    lab = c("a", "b"),
+    stringsAsFactors = FALSE)
+  txt <- draw_frame(d1)
 })

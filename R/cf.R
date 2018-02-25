@@ -154,6 +154,8 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' Render a data.frame in draw_frame form.
 #'
 #' @param x data.frame (atomic types, with at least 1 row and 1 column).
+#' @param ... not used for values, forces later arguments to bind by name.
+#' @param time_format character, format for "POSIXt" classes.
 #' @return chracter
 #'
 #' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}
@@ -170,7 +172,10 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'
 #' @export
 #'
-draw_frame <- function(x) {
+draw_frame <- function(x,
+                       ...,
+                       time_format = "%Y-%m-%d %H:%M:%S") {
+  wrapr::stop_if_dot_args(substitute(list(...)), "wrapr::draw_frame")
   nrow <- nrow(x)
   if(nrow<1) {
     stop("draw_frame need at least 1 row")
@@ -186,8 +191,18 @@ draw_frame <- function(x) {
     paste0('"', v, '"')
   }
   for(ci in colnames(x)) {
-    if(is.character(x[[ci]]) || is.factor(x[[ci]])) {
+    if("POSIXt" %in% class(x[[ci]])) {
+      xq[[ci]] <- paste0("\"",
+                         format(x[[ci]], time_format),
+                         "\"")
+    } else if(is.character(x[[ci]]) || is.factor(x[[ci]])) {
       xq[[ci]] <- qts(as.character(x[[ci]]))
+    } else if(is.integer(x[[ci]])) {
+      xq[[ci]] <- paste0(format(x[[ci]], scientific = FALSE), "L")
+    } else if(is.numeric(x[[ci]])) {
+      xq[[ci]] <- as.character(x[[ci]])
+    } else {
+      xq[[ci]] <- as.character(x[[ci]])
     }
   }
   xm <- as.matrix(xq)
