@@ -17,7 +17,7 @@
 #' tc_name <- "training"
 #' x <- build_frame(
 #'    "measure",                   tc_name, "validation" /
-#'    "minus binary cross entropy",      5, 7            /
+#'    "minus binary cross entropy",      5, -7           /
 #'    "accuracy",                      0.8, 0.6          )
 #' print(x)
 #' str(x)
@@ -25,7 +25,7 @@
 #'
 #' build_frame(
 #'   "x" /
-#'   1   /
+#'   -1  /
 #'   2   )
 #'
 #' @export
@@ -51,7 +51,11 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
       stop("wrapr::build_frame unexpected NULL/empty element")
     }
     if(is.call(vi)) {
-      vi <- lapply(vi[-1], unpack_val)
+      if(length(vi)>2) {
+        vi <- lapply(vi[-1], unpack_val)
+      } else {
+        vi <- eval(vi)
+      }
     }
     Reduce(c, lapply(vi, as.list))
   }
@@ -203,7 +207,11 @@ qchar_frame <- function(...) {
       stop("wrapr::qchar_frame unexpected NULL/empty element")
     }
     if(is.call(vi)) {
-      vi <- lapply(vi[-1], unpack_val)
+      if(length(vi)>2) {
+        vi <- lapply(vi[-1], unpack_val)
+      } else {
+        vi <- eval(vi)
+      }
     }
     as.character(unlist(vi))
   }
