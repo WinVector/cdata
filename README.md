@@ -18,10 +18,14 @@ library("cdata")
     ## Loading required package: wrapr
 
 ``` r
-my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+my_db <- DBI::dbConnect(RSQLite::SQLite(), 
+                        ":memory:")
 
 # pivot example
-d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+d <- build_frame(
+   "meas", "val" /
+   "AUC" , 0.6   /
+   "R2"  , 0.2   )
 DBI::dbWriteTable(my_db,
                   'd',
                   d,
@@ -47,7 +51,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_73669218691898606562_0000000001` SQLiteConnection 
+    ## table `mvtcq_67231508089406543575_0000000001` SQLiteConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6

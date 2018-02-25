@@ -45,14 +45,26 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
   # unpack
   unpack_val <- function(vi) {
     if(is.name(vi)) {
-      vi <- cf_eval_environment[[as.character(vi)]]
+      viv <- cf_eval_environment[[as.character(vi)]]
+      if(is.symbol(viv)) {
+        stop(paste("wrapr::build_frame name",
+                   vi,
+                   "resolved to another name:",
+                   viv))
+      }
+      if(length(viv)<=0) {
+        stop(paste("wrapr::build_frame name",
+                   vi,
+                   "resolved to NULL"))
+      }
+      vi <- viv
     }
     if(length(vi)<=0) {
       stop("wrapr::build_frame unexpected NULL/empty element")
     }
     if(is.call(vi)) {
       if(length(vi)>2) {
-        vi <- lapply(vi[-1], unpack_val)
+        vi <- lapply(as.list(vi)[-1], unpack_val)
       } else {
         vi <- eval(vi,
                    envir = cf_eval_environment,
@@ -117,8 +129,8 @@ draw_frame <- function(x) {
     paste0('"', v, '"')
   }
   for(ci in colnames(x)) {
-    if(is.character(x[[ci]])) {
-      xq[[ci]] <- qts(x[[ci]])
+    if(is.character(x[[ci]]) || is.factor(x[[ci]])) {
+      xq[[ci]] <- qts(as.character(x[[ci]]))
     }
   }
   xm <- as.matrix(xq)
@@ -211,7 +223,7 @@ qchar_frame <- function(...) {
     }
     if(is.call(vi)) {
       if(length(vi)>2) {
-        vi <- lapply(vi[-1], unpack_val)
+        vi <- lapply(as.list(vi)[-1], unpack_val)
       } else {
         vi <- eval(vi,
                    envir = env,
