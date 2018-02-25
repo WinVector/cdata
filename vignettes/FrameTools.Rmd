@@ -27,8 +27,8 @@ d <- data.frame(
 print(d)
 ```
 
-Notice how the table is specified by column (which is close to how `data.frame`s
-are implemented), but printed by rows.  `utils::str()` and 'tibble::glimpse()` both 
+Notice how the table is specified by columns (which is close to how `data.frame`s
+are implemented), but printed by rows.  `utils::str()` and `tibble::glimpse()` both 
 print by columns.
 
 ```{r}
@@ -45,24 +45,27 @@ library("cdata")
 cat(draw_frame(d))
 ```
 
-However, the above code is actually executable `R` code.  If we run it, we re-create
+However, the above rendering is actually executable `R` code.  If we run it, we re-create
 the original `data.frame()`.
 
 ```{r}
 d2 <- build_frame(
-   "names", "x", "y" /
-   "a"    , 1  ,  1  /
-   "b"    , 2  ,  4  /
-   "c"    , 3  ,  9  /
+   "names", "x", "y" |
+   "a"    , 1  ,  1  |
+   "b"    , 2  ,  4  |
+   "c"    , 3  ,  9  |
    "d"    , 4  , 16  )
-str(d2)
+
+print(d2)
 ```
 
-The above is intended for typing examples (or `cdata` control tables) and only builds `data.frame`s with atomic types (characters, numerics, and logicals; no times, factors or list columns).  The specification rule is the first appearance of infix 2-argument function call (in this case the infix division symbol "<code>/</code>") is taken to mean the earlier arguments are part of the header or column names and later arguments are values.  The other appearances of "<code>/</code>" are ignored.  This means we could also write the frame as follows:
+The merit is: the above input is how it looks when printed.
+
+The technique is intended for typing small examples (or `cdata` control tables) and only builds `data.frame`s with atomic types (characters, numerics, and logicals; no times, factors or list columns).  The specification rule is the first appearance of an infix 2-argument function call (in this case the infix "or symbol" "<code>|</code>") is taken to mean the earlier arguments are part of the header or column names and later arguments are values.  The other appearances of "<code>/</code>" are ignored.  This means we could also write the frame as follows:
 
 ```{r}
 build_frame(
-   "names", "x", "y" /
+   "names", "x", "y" |
    "a"    , 1  ,  1  ,
    "b"    , 2  ,  4  ,
    "c"    , 3  ,  9  ,
@@ -79,21 +82,35 @@ One can use the combination of `build_frame()` and `draw_frame()` to neaten up b
 
 ```{r, comment=""}
 cat(draw_frame(build_frame(
- "names", "x", "y" /
+ "names", "x", "y" |
   "a", 1,  1,
   "b", 2,  4,
   "c", 3,  9,
   "d", 4, 16)))
 ```
 
-`build_frame()` allows for simple substitutions of values.  In contract the method `qchar_frame()`
+`build_frame()` allows for simple substitutions of values.  In contrast the method `qchar_frame()`
 builds `data.frame`s containing only `character` types and doesn't require quoting (though it does allow it).
 
 ```{r}
 qchar_frame(
-  col_1, col_2, col_3 /
-  a    , b    , c     /
+  col_1, col_2, col_3 |
+  a    , b    , c     |
   d    , e    , "f g" )
 ```
+
+`build_frame()` is intended to capture typed-in examples, and is only compatible with very limited in-place calculation and substitution, and that _must_ be in parenthesis:
+
+```{r}
+build_frame(
+   "names", "x"     , "y" |
+   "a"    , 1       ,  1  |
+   "b"    , cos(2)  ,  4  |
+   "c"    , (3+2)   ,  9  |
+   "d"    , 4       , 16  )
+```
+
+Expressions not in parenthesis (such as "<code>3 + 2</code>") will confuse the langauge transform `build_frame()` uses to detect cell boundaries.
+
 
 

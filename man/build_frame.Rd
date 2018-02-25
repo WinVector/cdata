@@ -16,7 +16,7 @@ character data.frame
 }
 \description{
 A convenient way to build a data.frame in legible transposed form.  Position of
-first "/" (or other infix operator) determines number of columns
+first "|" (or other infix operator) determines number of columns
 (all other infix operators are aliases for ",").
 Names are de-referenced.
 }
@@ -24,16 +24,16 @@ Names are de-referenced.
 
 tc_name <- "training"
 x <- build_frame(
-   "measure",                   tc_name, "validation" /
-   "minus binary cross entropy",      5, -7           /
+   "measure",                   tc_name, "validation" |
+   "minus binary cross entropy",      5, -7           |
    "accuracy",                      0.8, 0.6          )
 print(x)
 str(x)
 cat(draw_frame(x))
 
 build_frame(
-  "x" /
-  -1  /
+  "x" |
+  -1  |
   2   )
 
 }

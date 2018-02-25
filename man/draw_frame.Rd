@@ -19,8 +19,8 @@ Render a data.frame in draw_frame form.
 
 tc_name <- "training"
 x <- build_frame(
-   "measure",                   tc_name, "validation" /
-   "minus binary cross entropy",      5, 7            /
+   "measure",                   tc_name, "validation" |
+   "minus binary cross entropy",      5, 7            |
    "accuracy",                      0.8, 0.6          )
 print(x)
 cat(draw_frame(x))

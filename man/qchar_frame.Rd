@@ -14,23 +14,23 @@ character data.frame
 }
 \description{
 A convenient way to build a character data.frame in legible transposed form.  Position of
-first "/" (or other infix operator) determines number of columns
+first "|" (or other infix operator) determines number of columns
 (all other infic operators are aliases for ",").
 Names are treated as character types.
 }
 \examples{
 
 x <- qchar_frame(
-   measure,                      training, validation /
-   "minus binary cross entropy", loss,     val_loss   /
+   measure,                      training, validation |
+   "minus binary cross entropy", loss,     val_loss   |
    accuracy,                     acc,      val_acc    )
 print(x)
 str(x)
 cat(draw_frame(x))
 
 qchar_frame(
-  x /
-  1 /
+  x |
+  1 |
   2 )
 
 }

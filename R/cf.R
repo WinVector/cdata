@@ -31,7 +31,7 @@ is_infix <- function(vi) {
 #' Build a (non-empty) data.frame.
 #'
 #' A convenient way to build a data.frame in legible transposed form.  Position of
-#' first "/" (or other infix operator) determines number of columns
+#' first "|" (or other infix operator) determines number of columns
 #' (all other infix operators are aliases for ",").
 #' Names are de-referenced.
 #'
@@ -45,16 +45,16 @@ is_infix <- function(vi) {
 #'
 #' tc_name <- "training"
 #' x <- build_frame(
-#'    "measure",                   tc_name, "validation" /
-#'    "minus binary cross entropy",      5, -7           /
+#'    "measure",                   tc_name, "validation" |
+#'    "minus binary cross entropy",      5, -7           |
 #'    "accuracy",                      0.8, 0.6          )
 #' print(x)
 #' str(x)
 #' cat(draw_frame(x))
 #'
 #' build_frame(
-#'   "x" /
-#'   -1  /
+#'   "x" |
+#'   -1  |
 #'   2   )
 #'
 #' @export
@@ -127,9 +127,12 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
   is_name <- vapply(vu, is.name, logical(1))
   if(any(is_name)) {
     ncol <- which(is_name)[[1]]-1
-    vu <- vu[!is_name]
+    vu <- vu[!is_name] # filter out names
   }
   nrow <- (length(vu)/ncol) - 1
+  if(abs(nrow - round(nrow))>0.1) {
+    stop("wrapr::build_frame confused as to cell count")
+  }
   seq <- seq_len(nrow)*ncol
   fr <- data.frame(x = unlist(vu[seq + 1],
                               recursive = FALSE,
@@ -159,8 +162,8 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'
 #' tc_name <- "training"
 #' x <- build_frame(
-#'    "measure",                   tc_name, "validation" /
-#'    "minus binary cross entropy",      5, 7            /
+#'    "measure",                   tc_name, "validation" |
+#'    "minus binary cross entropy",      5, 7            |
 #'    "accuracy",                      0.8, 0.6          )
 #' print(x)
 #' cat(draw_frame(x))
@@ -208,7 +211,7 @@ draw_frame <- function(x) {
   # get intermediates
   seps <- matrix(data = ", ",
                  nrow = nrow+1, ncol = ncol)
-  seps[, ncol] <- " /"
+  seps[, ncol] <- " |"
   seps[nrow+1, ncol] <- " )"
   # format
   fmt <- matrix(data = paste0(xm, pads, seps),
@@ -228,7 +231,7 @@ draw_frame <- function(x) {
 #' Build a (non-empty) quoted data.frame.
 #'
 #' A convenient way to build a character data.frame in legible transposed form.  Position of
-#' first "/" (or other infix operator) determines number of columns
+#' first "|" (or other infix operator) determines number of columns
 #' (all other infic operators are aliases for ",").
 #' Names are treated as character types.
 #'
@@ -240,16 +243,16 @@ draw_frame <- function(x) {
 #' @examples
 #'
 #' x <- qchar_frame(
-#'    measure,                      training, validation /
-#'    "minus binary cross entropy", loss,     val_loss   /
+#'    measure,                      training, validation |
+#'    "minus binary cross entropy", loss,     val_loss   |
 #'    accuracy,                     acc,      val_acc    )
 #' print(x)
 #' str(x)
 #' cat(draw_frame(x))
 #'
 #' qchar_frame(
-#'   x /
-#'   1 /
+#'   x |
+#'   1 |
 #'   2 )
 #'
 #' @export
@@ -288,7 +291,7 @@ qchar_frame <- function(...) {
   ncell <- length(vu)
   nrow <- ncell/ncol
   if(abs(nrow - round(nrow))>0.1) {
-    stop("wrapr::qchar_frame parse failed, got confused as to what and what is not a cell")
+    stop("wrapr::qchar_frame confused as to cell count")
   }
   fr <- as.data.frame(matrix(data = vu[-seq_len(ncol)],
                              ncol=ncol,
