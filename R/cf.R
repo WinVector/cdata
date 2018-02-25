@@ -54,7 +54,9 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
       if(length(vi)>2) {
         vi <- lapply(vi[-1], unpack_val)
       } else {
-        vi <- eval(vi)
+        vi <- eval(vi,
+                   envir = cf_eval_environment,
+                   enclos = cf_eval_environment)
       }
     }
     Reduce(c, lapply(vi, as.list))
@@ -189,6 +191,7 @@ draw_frame <- function(x) {
 qchar_frame <- function(...) {
   v <- as.list(substitute(list(...))[-1])
   lv <- length(v)
+  env <- parent.frame()
   # inspect input
   if(lv<1) {
     stop("wrapr::qchar_frame expect at least a header, one column, and one row")
@@ -210,7 +213,9 @@ qchar_frame <- function(...) {
       if(length(vi)>2) {
         vi <- lapply(vi[-1], unpack_val)
       } else {
-        vi <- eval(vi)
+        vi <- eval(vi,
+                   envir = env,
+                   enclos = env)
       }
     }
     as.character(unlist(vi))
