@@ -285,6 +285,11 @@ qchar_frame <- function(...) {
   }
   vu <- lapply(v, unpack_val)
   vu <- unlist(vu)
+  ncell <- length(vu)
+  nrow <- ncell/ncol
+  if(abs(nrow - round(nrow))>0.1) {
+    stop("wrapr::qchar_frame parse failed, got confused as to what and what is not a cell")
+  }
   fr <- as.data.frame(matrix(data = vu[-seq_len(ncol)],
                              ncol=ncol,
                              byrow = TRUE),
