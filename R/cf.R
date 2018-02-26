@@ -156,6 +156,7 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #' @param x data.frame (atomic types, with at least 1 row and 1 column).
 #' @param ... not used for values, forces later arguments to bind by name.
 #' @param time_format character, format for "POSIXt" classes.
+#' @param formatC_options named list, options for formatC()- used on numerics.
 #' @return chracter
 #'
 #' @seealso \code{\link{build_frame}},  \code{\link{qchar_frame}}
@@ -164,9 +165,9 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'
 #' tc_name <- "training"
 #' x <- build_frame(
-#'    "measure",                   tc_name, "validation" |
-#'    "minus binary cross entropy",      5, 7            |
-#'    "accuracy",                      0.8, 0.6          )
+#'   "measure"                   , "training", "validation", "idx" |
+#'   "minus binary cross entropy", 5         , 7           , 1L    |
+#'   "accuracy"                  , 0.8       , 0.6         , 2L    )
 #' print(x)
 #' cat(draw_frame(x))
 #'
@@ -174,8 +175,25 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'
 draw_frame <- function(x,
                        ...,
-                       time_format = "%Y-%m-%d %H:%M:%S") {
+                       time_format = "%Y-%m-%d %H:%M:%S",
+                       formatC_options = list()) {
   wrapr::stop_if_dot_args(substitute(list(...)), "wrapr::draw_frame")
+  formatC_args = list(digits = NULL,
+                      width = NULL,
+                      format = NULL,
+                      flag = "",
+                      mode = NULL,
+                      big.mark = "",
+                      big.interval = 3L,
+                      small.mark = "",
+                      small.interval = 5L,
+                      decimal.mark = getOption("OutDec"),
+                      preserve.width = "individual",
+                      zero.print = NULL,
+                      drop0trailing = FALSE)
+  for(oi in names(formatC_options)) {
+    formatC_args[[oi]] <- formatC_options[[oi]]
+  }
   nrow <- nrow(x)
   if(nrow<1) {
     stop("draw_frame need at least 1 row")
@@ -200,7 +218,20 @@ draw_frame <- function(x,
     } else if(is.integer(x[[ci]])) {
       xq[[ci]] <- paste0(format(x[[ci]], scientific = FALSE), "L")
     } else if(is.numeric(x[[ci]])) {
-      xq[[ci]] <- as.character(x[[ci]])
+      xq[[ci]] <- formatC(x[[ci]],
+                          digits = formatC_args$digits,
+                          width =  formatC_args$width,
+                          format =  formatC_args$format,
+                          flag =  formatC_args$flag,
+                          mode =  formatC_args$mode,
+                          big.mark =  formatC_args$big.mark,
+                          big.interval =  formatC_args$big.interval,
+                          small.mark =  formatC_args$small.mark,
+                          small.interval =  formatC_args$small.interval,
+                          decimal.mark =  formatC_args$decimal.mark,
+                          preserve.width =  formatC_args$preserve.width,
+                          zero.print =  formatC_args$zero.print,
+                          drop0trailing =  formatC_args$drop0trailing)
     } else {
       xq[[ci]] <- as.character(x[[ci]])
     }

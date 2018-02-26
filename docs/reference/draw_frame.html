@@ -102,7 +102,8 @@
     <p>Render a data.frame in draw_frame form.</p>
     
 
-    <pre class="usage"><span class='fu'>draw_frame</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>)</pre>
+    <pre class="usage"><span class='fu'>draw_frame</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>time_format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>,
+  <span class='kw'>formatC_options</span> <span class='kw'>=</span> <span class='fu'>list</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -119,6 +120,10 @@
       <th>time_format</th>
       <td><p>character, format for "POSIXt" classes.</p></td>
     </tr>
+    <tr>
+      <th>formatC_options</th>
+      <td><p>named list, options for formatC()- used on numerics.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -134,15 +139,15 @@
     <pre class="examples"><div class='input'>
 <span class='no'>tc_name</span> <span class='kw'>&lt;-</span> <span class='st'>"training"</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_frame.html'>build_frame</a></span>(
-   <span class='st'>"measure"</span>,                   <span class='no'>tc_name</span>, <span class='st'>"validation"</span> <span class='kw'>|</span>
-   <span class='st'>"minus binary cross entropy"</span>,      <span class='fl'>5</span>, <span class='fl'>7</span>            <span class='kw'>|</span>
-   <span class='st'>"accuracy"</span>,                      <span class='fl'>0.8</span>, <span class='fl'>0.6</span>          )
-<span class='fu'>print</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;                      measure training validation
-#&gt; 1 minus binary cross entropy      5.0        7.0
-#&gt; 2                   accuracy      0.8        0.6</div><div class='input'><span class='fu'>cat</span>(<span class='fu'>draw_frame</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
-#&gt;    "measure"                   , "training", "validation" |
-#&gt;    "minus binary cross entropy", 5         , 7            |
-#&gt;    "accuracy"                  , 0.8       , 0.6          )</div><div class='input'>
+  <span class='st'>"measure"</span>                   , <span class='st'>"training"</span>, <span class='st'>"validation"</span>, <span class='st'>"idx"</span> <span class='kw'>|</span>
+  <span class='st'>"minus binary cross entropy"</span>, <span class='fl'>5</span>         , <span class='fl'>7</span>           , <span class='fl'>1L</span>    <span class='kw'>|</span>
+  <span class='st'>"accuracy"</span>                  , <span class='fl'>0.8</span>       , <span class='fl'>0.6</span>         , <span class='fl'>2L</span>    )
+<span class='fu'>print</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt;                      measure training validation idx
+#&gt; 1 minus binary cross entropy      5.0        7.0   1
+#&gt; 2                   accuracy      0.8        0.6   2</div><div class='input'><span class='fu'>cat</span>(<span class='fu'>draw_frame</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; build_frame(
+#&gt;    "measure"                   , "training", "validation", "idx" |
+#&gt;    "minus binary cross entropy", 5         , 7           , 1L    |
+#&gt;    "accuracy"                  , 0.8       , 0.6         , 2L    )</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

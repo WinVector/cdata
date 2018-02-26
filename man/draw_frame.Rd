@@ -4,7 +4,8 @@
 \alias{draw_frame}
 \title{Render a data.frame in draw_frame form.}
 \usage{
-draw_frame(x, ..., time_format = "\%Y-\%m-\%d \%H:\%M:\%S")
+draw_frame(x, ..., time_format = "\%Y-\%m-\%d \%H:\%M:\%S",
+  formatC_options = list())
 }
 \arguments{
 \item{x}{data.frame (atomic types, with at least 1 row and 1 column).}
@@ -12,6 +13,8 @@ draw_frame(x, ..., time_format = "\%Y-\%m-\%d \%H:\%M:\%S")
 \item{...}{not used for values, forces later arguments to bind by name.}
 
 \item{time_format}{character, format for "POSIXt" classes.}
+
+\item{formatC_options}{named list, options for formatC()- used on numerics.}
 }
 \value{
 chracter
@@ -23,9 +26,9 @@ Render a data.frame in draw_frame form.
 
 tc_name <- "training"
 x <- build_frame(
-   "measure",                   tc_name, "validation" |
-   "minus binary cross entropy",      5, 7            |
-   "accuracy",                      0.8, 0.6          )
+  "measure"                   , "training", "validation", "idx" |
+  "minus binary cross entropy", 5         , 7           , 1L    |
+  "accuracy"                  , 0.8       , 0.6         , 2L    )
 print(x)
 cat(draw_frame(x))
 

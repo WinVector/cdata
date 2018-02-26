@@ -1,10 +1,10 @@
 
 
-# cdata 0.6.0 2018/02/24
+# cdata 0.6.0 2018/02/25
 
  * Add cols() method.
  * Add doi link in DESCRIPTION (CRAN request).
- * Add char_frame() (character frame) and qchar_frame (quoted frame).
+ * Add build_frame(), draw_frame(), and qchar_frame (quoted frame).
 
 # cdata 0.5.2 2018/01/20
 
