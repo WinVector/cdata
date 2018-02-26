@@ -165,9 +165,9 @@ build_frame <- function(..., cf_eval_environment = parent.frame()) {
 #'
 #' tc_name <- "training"
 #' x <- build_frame(
-#'   "measure"                   , "training", "validation", "idx" |
-#'   "minus binary cross entropy", 5         , 7           , 1L    |
-#'   "accuracy"                  , 0.8       , 0.6         , 2L    )
+#'   "measure"                   , tc_name, "validation", "idx" |
+#'   "minus binary cross entropy", 5      , 7           , 1L    |
+#'   "accuracy"                  , 0.8    , 0.6         , 2L    )
 #' print(x)
 #' cat(draw_frame(x))
 #'
