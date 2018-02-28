@@ -4,7 +4,7 @@
 
  * Add cols() method.
  * Add doi link in DESCRIPTION (CRAN request).
- * Add build_frame(), draw_frame(), and qchar_frame (quoted frame).
+ * Use build_frame(), draw_frame(), and qchar_frame (quoted frame) from wrapr 1.2.1.
 
 # cdata 0.5.2 2018/01/20
 
