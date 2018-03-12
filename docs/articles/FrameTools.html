@@ -81,7 +81,7 @@
     
     
 <div class="contents">
-<p><a href="https://winvector.github.io/cdata/"><code>cdata</code></a> supplies a few tools for creating example <code>data.frame</code>s. An important use case is: building the control table for <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> and <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> (example <a href="https://winvector.github.io/cdata/articles/cdata.html">here</a>).</p>
+<p><a href="https://winvector.github.io/wrapr/"><code>wrapr</code></a> supplies a few tools for creating example <code>data.frame</code>s. An important use case is: building the control table for <code><a href="http://www.rdocumentation.org/packages/cdata/topics/rowrecs_to_blocks">cdata::rowrecs_to_blocks()</a></code> and <code><a href="http://www.rdocumentation.org/packages/cdata/topics/blocks_to_rowrecs">cdata::blocks_to_rowrecs()</a></code> (example <a href="https://winvector.github.io/cdata/articles/cdata.html">here</a>).</p>
 <p>Lets see how to create an example data frame. The idea is similar to that found in <a href="http://tibble.tidyverse.org/reference/tribble.html"><code><a href="http://www.rdocumentation.org/packages/tibble/topics/tribble">tibble::tribble()</a></code></a>: for small tables a row oriented constructor can be quite legible, and avoids the cognitive load of taking a transpose.</p>
 <p>For example we can create a typical <code>data.frame</code> as follows:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
@@ -102,18 +102,17 @@
 ##  $ names: chr  "a" "b" "c" "d"
 ##  $ x    : num  1 2 3 4
 ##  $ y    : num  1 4 9 16</code></pre>
-<p><code>cdata</code> supplies the method <a href="https://winvector.github.io/cdata/reference/draw_frame.html"><code>draw_frame</code></a> which at first glance appears to be a mere pretty-printer:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
-<pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw">draw_frame</span>(d))</code></pre></div>
-<pre><code>build_frame(
+<p><code>wrapr</code> supplies the method <a href="https://winvector.github.io/wrapr/articles/FrameTools.html"><code>draw_frame</code></a> which at first glance appears to be a mere pretty-printer:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"wrapr"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/draw_frame">draw_frame</a></span>(d))</code></pre></div>
+<pre><code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame(
    "names", "x", "y" |
    "a"    , 1  , 1   |
    "b"    , 2  , 4   |
    "c"    , 3  , 9   |
-   "d"    , 4  , 16  )</code></pre>
+   "d"    , 4  , 16  )</a></code></pre>
 <p>However, the above rendering is actually executable <code>R</code> code. If we run it, we re-create the original <code>data.frame()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2 &lt;-<span class="st"> </span><span class="kw">build_frame</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"names"</span>, <span class="st">"x"</span>, <span class="st">"y"</span> <span class="op">|</span>
 <span class="st">   "a"</span>    , <span class="dv">1</span>  ,  <span class="dv">1</span>  <span class="op">|</span>
 <span class="st">   "b"</span>    , <span class="dv">2</span>  ,  <span class="dv">4</span>  <span class="op">|</span>
@@ -127,8 +126,8 @@
 ## 3     c 3  9
 ## 4     d 4 16</code></pre>
 <p>The merit is: the above input is how it looks when printed.</p>
-<p>The technique is intended for typing small examples (or <code>cdata</code> control tables) and only builds <code>data.frame</code>s with atomic types (characters, numerics, and logicals; no times, factors or list columns). The specification rule is the first appearance of an infix 2-argument function call (in this case the infix “or symbol” “<code>|</code>”) is taken to mean the earlier arguments are part of the header or column names and later arguments are values. The other appearances of “<code>/</code>” are ignored. This means we could also write the frame as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">build_frame</span>(
+<p>The technique is intended for typing small examples (or <a href="https://github.com/WinVector/cdata"><code>cdata</code></a> control tables) and only builds <code>data.frame</code>s with atomic types (characters, numerics, and logicals; no times, factors or list columns). The specification rule is the first appearance of an infix 2-argument function call (in this case the infix “or symbol” “<code>|</code>”) is taken to mean the earlier arguments are part of the header or column names and later arguments are values. The other appearances of “<code>/</code>” are ignored. This means we could also write the frame as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"names"</span>, <span class="st">"x"</span>, <span class="st">"y"</span> <span class="op">|</span>
 <span class="st">   "a"</span>    , <span class="dv">1</span>  ,  <span class="dv">1</span>  ,
    <span class="st">"b"</span>    , <span class="dv">2</span>  ,  <span class="dv">4</span>  ,
@@ -146,29 +145,29 @@ structure(list(names = c("a", "b", "c", "d"), x = c(1, 2, 3,
 4), y = c(1, 4, 9, 16)), .Names = c("names", "x", "y"), row.names = c(NA, 
 -4L), class = "data.frame")
 d</code></pre>
-<p>One can use the combination of <code>build_frame()</code> and <code>draw_frame()</code> to neaten up by-hand examples for later use (via copy and paste):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw">draw_frame</span>(<span class="kw">build_frame</span>(
+<p>One can use the combination of <code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame()</a></code> and <code><a href="http://www.rdocumentation.org/packages/wrapr/topics/draw_frame">draw_frame()</a></code> to neaten up by-hand examples for later use (via copy and paste):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/draw_frame">draw_frame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
  <span class="st">"names"</span>, <span class="st">"x"</span>, <span class="st">"y"</span> <span class="op">|</span>
 <span class="st">  "a"</span>, <span class="dv">1</span>,  <span class="dv">1</span>,
   <span class="st">"b"</span>, <span class="dv">2</span>,  <span class="dv">4</span>,
   <span class="st">"c"</span>, <span class="dv">3</span>,  <span class="dv">9</span>,
   <span class="st">"d"</span>, <span class="dv">4</span>, <span class="dv">16</span>)))</code></pre></div>
-<pre><code>build_frame(
+<pre><code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame(
    "names", "x", "y" |
    "a"    , 1  , 1   |
    "b"    , 2  , 4   |
    "c"    , 3  , 9   |
-   "d"    , 4  , 16  )</code></pre>
-<p><code>build_frame()</code> allows for simple substitutions of values. In contrast the method <code>qchar_frame()</code> builds <code>data.frame</code>s containing only <code>character</code> types and doesn’t require quoting (though it does allow it).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qchar_frame</span>(
+   "d"    , 4  , 16  )</a></code></pre>
+<p><code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame()</a></code> allows for simple substitutions of values. In contrast the method <code><a href="http://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame()</a></code> builds <code>data.frame</code>s containing only <code>character</code> types and doesn’t require quoting (though it does allow it).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
   col_<span class="dv">1</span>, col_<span class="dv">2</span>, col_<span class="dv">3</span> <span class="op">|</span>
 <span class="st">  </span>a    , b    , c     <span class="op">|</span>
 <span class="st">  </span>d    , e    , <span class="st">"f g"</span> )</code></pre></div>
 <pre><code>##   col_1 col_2 col_3
 ## 1     a     b     c
 ## 2     d     e   f g</code></pre>
-<p><code>build_frame()</code> is intended to capture typed-in examples, and is only compatible with very limited in-place calculation and substitution, and that <em>must</em> be in parenthesis:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">build_frame</span>(
+<p><code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame()</a></code> is intended to capture typed-in examples, and is only compatible with very limited in-place calculation and substitution, and that <em>must</em> be in parenthesis:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"names"</span>, <span class="st">"x"</span>     , <span class="st">"y"</span> <span class="op">|</span>
 <span class="st">   "a"</span>    , <span class="dv">1</span>       ,  <span class="dv">1</span>  <span class="op">|</span>
 <span class="st">   "b"</span>    , <span class="kw">cos</span>(<span class="dv">2</span>)  ,  <span class="dv">4</span>  <span class="op">|</span>
@@ -179,7 +178,7 @@ d</code></pre>
 ## 2     b -0.4161468  4
 ## 3     c  5.0000000  9
 ## 4     d  4.0000000 16</code></pre>
-<p>Expressions not in parenthesis (such as “<code>3 + 2</code>”) will confuse the langauge transform <code>build_frame()</code> uses to detect cell boundaries.</p>
+<p>Expressions not in parenthesis (such as “<code>3 + 2</code>”) will confuse the langauge transform <code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame()</a></code> uses to detect cell boundaries.</p>
 </div>
   </div>
 

@@ -1,6 +1,5 @@
 
 
-Maintinance release.  Add DOI to documentation, use newer wrapr methods.
 
 # cdata 0.6.0 2018/03/12
 
