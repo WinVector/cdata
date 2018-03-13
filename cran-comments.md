@@ -9,7 +9,8 @@ minor bug fixes.
   * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 
   * win-builder 
- 
+  * using R Under development (unstable) (2018-03-12 r74391)
+  * using platform: x86_64-w64-mingw32 (64-bit)
 
 ## R CMD check --as-cran cdata_0.6.0.tar.gz
 
