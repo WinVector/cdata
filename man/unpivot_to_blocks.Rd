@@ -38,11 +38,13 @@ unpivotValuesToRows deprecated, functionality moved to: unpivot_to_blocks
 }
 \examples{
 
-d <- data.frame(AUC= 0.6, R2= 0.2)
-unpivot_to_blocks(d,
-                 nameForNewKeyColumn= 'meas',
-                 nameForNewValueColumn= 'val',
-                 columnsToTakeFrom= c('AUC', 'R2'))
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  d <- data.frame(AUC= 0.6, R2= 0.2)
+  unpivot_to_blocks(d,
+                    nameForNewKeyColumn= 'meas',
+                    nameForNewValueColumn= 'val',
+                    columnsToTakeFrom= c('AUC', 'R2'))
+}
 
 }
 \seealso{

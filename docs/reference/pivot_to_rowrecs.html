@@ -153,11 +153,13 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>meas</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
-<span class='fu'>pivot_to_rowrecs</span>(<span class='no'>d</span>,
-                    <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
-                    <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                    <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='fu'>c</span>())</div><div class='output co'>#&gt;   AUC  R2
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>meas</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
+  <span class='fu'>pivot_to_rowrecs</span>(<span class='no'>d</span>,
+                   <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
+                   <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>,
+                   <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='fu'>c</span>())
+}</div><div class='output co'>#&gt;   AUC  R2
 #&gt; 1 0.6 0.2</div><div class='input'>
 </div></pre>
   </div>

@@ -23,4 +23,5 @@ d <- data.frame(key = c('a','a', 'b'))
 checkColsFormUniqueKeys(d, 'key')
 d <- data.frame(key = c('a','a', 'b'), k2 = c(1 ,2, 2))
 checkColsFormUniqueKeys(d, c('key', 'k2'))
+
 }

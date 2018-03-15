@@ -36,11 +36,13 @@ pivotValuesToColumns deprecated, functionality moved to: pivot_to_rowrecs
 }
 \examples{
 
-d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
-pivot_to_rowrecs(d,
-                    columnToTakeKeysFrom= 'meas',
-                    columnToTakeValuesFrom= 'val',
-                    rowKeyColumns= c())
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
+  pivot_to_rowrecs(d,
+                   columnToTakeKeysFrom= 'meas',
+                   columnToTakeValuesFrom= 'val',
+                   rowKeyColumns= c())
+}
 
 }
 \seealso{

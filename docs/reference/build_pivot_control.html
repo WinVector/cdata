@@ -153,12 +153,14 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>measType</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
-                <span class='kw'>measValue</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
-                <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>build_pivot_control</span>(<span class='no'>d</span>,
-                        <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
-                        <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>)</div><div class='output co'>#&gt;   measType   measValue
+<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>measType</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
+                  <span class='kw'>measValue</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
+                  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'>build_pivot_control</span>(<span class='no'>d</span>,
+                      <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
+                      <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>)
+}</div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       ht measType_ht
 #&gt; 2       wt measType_wt</div><div class='input'>
 </div></pre>

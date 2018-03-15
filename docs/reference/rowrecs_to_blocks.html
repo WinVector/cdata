@@ -186,12 +186,14 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># un-pivot example</span>
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-<span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
-                               <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                               <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
-<span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)</div></pre>
+<span class='kw'>if</span>(<span class='fu'>requireNamespace</span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='co'># un-pivot example</span>
+  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
+  <span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
+                              <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
+                              <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+  <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

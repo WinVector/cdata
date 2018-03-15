@@ -66,12 +66,14 @@ here \url{https://github.com/WinVector/cdata}.
 }
 \examples{
 
-# un-pivot example
-d <- data.frame(AUC = 0.6, R2 = 0.2)
-cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
-                               nameForNewValueColumn= 'val',
-                               columnsToTakeFrom= c('AUC', 'R2'))
-tab <- rowrecs_to_blocks(d, cT)
+if(requireNamespace("RSQLite", quietly = TRUE)) {
+  # un-pivot example
+  d <- data.frame(AUC = 0.6, R2 = 0.2)
+  cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
+                              nameForNewValueColumn= 'val',
+                              columnsToTakeFrom= c('AUC', 'R2'))
+  tab <- rowrecs_to_blocks(d, cT)
+}
 
 
 }

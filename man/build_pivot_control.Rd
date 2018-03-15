@@ -36,12 +36,14 @@ buildPivotControlTableD deprecated, functionality moved to: build_pivot_control
 }
 \examples{
 
-d <- data.frame(measType = c("wt", "ht"),
-                measValue = c(150, 6),
-                stringsAsFactors = FALSE)
-build_pivot_control(d,
-                        'measType', 'measValue',
-                        sep = '_')
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  d <- data.frame(measType = c("wt", "ht"),
+                  measValue = c(150, 6),
+                  stringsAsFactors = FALSE)
+  build_pivot_control(d,
+                      'measType', 'measValue',
+                      sep = '_')
+}
 
 }
 \seealso{

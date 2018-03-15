@@ -72,15 +72,17 @@ here \url{https://github.com/WinVector/cdata}.
 }
 \examples{
 
-# pivot example
-d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  # pivot example
+  d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
 
-cT <- build_pivot_control(d,
-                              columnToTakeKeysFrom= 'meas',
-                              columnToTakeValuesFrom= 'val')
-blocks_to_rowrecs(d,
-                     keyColumns = NULL,
-                     controlTable = cT)
+  cT <- build_pivot_control(d,
+                            columnToTakeKeysFrom= 'meas',
+                            columnToTakeValuesFrom= 'val')
+  blocks_to_rowrecs(d,
+                    keyColumns = NULL,
+                    controlTable = cT)
+}
 
 }
 \seealso{
