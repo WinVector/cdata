@@ -1,5 +1,7 @@
 
+# cdata 0.6.1 2018/03/15
 
+ * Narrow dependencies.
 
 # cdata 0.6.0 2018/03/12
 

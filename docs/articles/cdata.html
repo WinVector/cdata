@@ -75,7 +75,7 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-03-12</h4>
+            <h4 class="date">2018-03-15</h4>
           </div>
 
     
@@ -91,6 +91,7 @@
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
 <p>A quick example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">run_vignette &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <pre><code>## Loading required package: wrapr</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
@@ -121,7 +122,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
                            <span class="dt">controlTable =</span> cT,
                            <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_20683389298583804082_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_16971140504097696758_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6

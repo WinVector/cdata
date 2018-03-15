@@ -19,20 +19,22 @@ List columns of a table
 }
 \examples{
 
-my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-DBI::dbWriteTable(my_db,
-                  'd',
-                  data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
-                  overwrite = TRUE,
-                  temporary = TRUE)
-cols(my_db, 'd')
-cT <- build_unpivot_control(
-  nameForNewKeyColumn= 'meas',
-  nameForNewValueColumn= 'val',
-  columnsToTakeFrom= setdiff(cols(my_db, 'd'), "nope"))
-print(cT)
-tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
-qlook(my_db, tab)
-DBI::dbDisconnect(my_db)
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(my_db,
+                    'd',
+                    data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  cols(my_db, 'd')
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn= 'meas',
+    nameForNewValueColumn= 'val',
+    columnsToTakeFrom= setdiff(cols(my_db, 'd'), "nope"))
+  print(cT)
+  tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
+  qlook(my_db, tab)
+  DBI::dbDisconnect(my_db)
+}
 
 }

@@ -22,21 +22,23 @@ isSpark <- function(db) {
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' DBI::dbWriteTable(my_db,
-#'                   'd',
-#'                   data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
-#'                   overwrite = TRUE,
-#'                   temporary = TRUE)
-#' cols(my_db, 'd')
-#' cT <- build_unpivot_control(
-#'   nameForNewKeyColumn= 'meas',
-#'   nameForNewValueColumn= 'val',
-#'   columnsToTakeFrom= setdiff(cols(my_db, 'd'), "nope"))
-#' print(cT)
-#' tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
-#' qlook(my_db, tab)
-#' DBI::dbDisconnect(my_db)
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   DBI::dbWriteTable(my_db,
+#'                     'd',
+#'                     data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   cols(my_db, 'd')
+#'   cT <- build_unpivot_control(
+#'     nameForNewKeyColumn= 'meas',
+#'     nameForNewValueColumn= 'val',
+#'     columnsToTakeFrom= setdiff(cols(my_db, 'd'), "nope"))
+#'   print(cT)
+#'   tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
+#'   qlook(my_db, tab)
+#'   DBI::dbDisconnect(my_db)
+#' }
 #'
 #' @export
 #'
@@ -64,14 +66,16 @@ cols <- function(my_db, tableName) {
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' DBI::dbWriteTable(my_db,
-#'                   'd',
-#'                   data.frame(AUC = 0.6, R2 = 0.2),
-#'                   overwrite = TRUE,
-#'                   temporary = TRUE)
-#' qlook(my_db, 'd')
-#' DBI::dbDisconnect(my_db)
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   DBI::dbWriteTable(my_db,
+#'                     'd',
+#'                     data.frame(AUC = 0.6, R2 = 0.2),
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   qlook(my_db, 'd')
+#'   DBI::dbDisconnect(my_db)
+#' }
 #'
 #' @export
 #'
@@ -226,21 +230,23 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'
-#' # un-pivot example
-#' d <- data.frame(AUC = 0.6, R2 = 0.2)
-#' DBI::dbWriteTable(my_db,
-#'                   'd',
-#'                   d,
-#'                   overwrite = TRUE,
-#'                   temporary = TRUE)
-#' cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
-#'                                nameForNewValueColumn= 'val',
-#'                                columnsToTakeFrom= c('AUC', 'R2'))
-#' tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
-#' qlook(my_db, tab)
-#' DBI::dbDisconnect(my_db)
+#'   # un-pivot example
+#'   d <- data.frame(AUC = 0.6, R2 = 0.2)
+#'   DBI::dbWriteTable(my_db,
+#'                     'd',
+#'                     d,
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
+#'                               nameForNewValueColumn= 'val',
+#'                               columnsToTakeFrom= c('AUC', 'R2'))
+#'   tab <- rowrecs_to_blocks_q('d', cT, my_db = my_db)
+#'   qlook(my_db, tab)
+#'   DBI::dbDisconnect(my_db)
+#' }
 #'
 #' @export
 #'
@@ -440,10 +446,15 @@ rowrecs_to_blocks <- function(wideTable,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
   if(is.null(db_handle)) {
-    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-    need_close = TRUE
+    if (requireNamespace("RSQLite", quietly = TRUE)) {
+      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      need_close = TRUE
+    }
   } else {
     my_db <- db_handle$db
+  }
+  if(is.null(my_db)) {
+    stop("cdata::rowrecs_to_blocks need a database connection")
   }
   rownames(wideTable) <- NULL # just in case
   if(!isSpark(my_db)) {
@@ -495,19 +506,21 @@ rowrecs_to_blocks <- function(wideTable,
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' d <- data.frame(measType = c("wt", "ht"),
-#'                 measValue = c(150, 6),
-#'                 stringsAsFactors = FALSE)
-#' DBI::dbWriteTable(my_db,
-#'                   'd',
-#'                   d,
-#'                   overwrite = TRUE,
-#'                   temporary = TRUE)
-#' build_pivot_control_q('d', 'measType', 'measValue',
-#'                                  my_db = my_db,
-#'                                  sep = '_')
-#' DBI::dbDisconnect(my_db)
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   d <- data.frame(measType = c("wt", "ht"),
+#'                   measValue = c(150, 6),
+#'                   stringsAsFactors = FALSE)
+#'   DBI::dbWriteTable(my_db,
+#'                     'd',
+#'                     d,
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   build_pivot_control_q('d', 'measType', 'measValue',
+#'                         my_db = my_db,
+#'                         sep = '_')
+#'   DBI::dbDisconnect(my_db)
+#' }
 #'
 #' @export
 build_pivot_control_q <- function(tableName,
@@ -580,10 +593,15 @@ build_pivot_control <- function(table,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
   if(is.null(db_handle)) {
-    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-    need_close = TRUE
+    if (requireNamespace("RSQLite", quietly = TRUE)) {
+      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      need_close = TRUE
+    }
   } else {
     my_db <- db_handle$db
+  }
+  if(is.null(my_db)) {
+    stop("cdata::build_pivot_control need a datbase handle")
   }
   ptabtmpnam <- "cdata_build_pc_tmp"
   rownames(table) <- NULL # just in case
@@ -662,23 +680,25 @@ build_pivot_control <- function(table,
 #'
 #' @examples
 #'
-#' my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' # pivot example
-#' d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
-#' DBI::dbWriteTable(my_db,
-#'                   'd',
-#'                   d,
-#'                   temporary = TRUE)
-#' cT <- build_pivot_control_q('d',
-#'                                        columnToTakeKeysFrom= 'meas',
-#'                                        columnToTakeValuesFrom= 'val',
-#'                                        my_db = my_db)
-#' tab <- blocks_to_rowrecs_q('d',
-#'                                      keyColumns = NULL,
-#'                                      controlTable = cT,
-#'                                      my_db = my_db)
-#' qlook(my_db, tab)
-#' DBI::dbDisconnect(my_db)
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   # pivot example
+#'   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+#'   DBI::dbWriteTable(my_db,
+#'                     'd',
+#'                     d,
+#'                     temporary = TRUE)
+#'   cT <- build_pivot_control_q('d',
+#'                               columnToTakeKeysFrom= 'meas',
+#'                               columnToTakeValuesFrom= 'val',
+#'                               my_db = my_db)
+#'   tab <- blocks_to_rowrecs_q('d',
+#'                              keyColumns = NULL,
+#'                              controlTable = cT,
+#'                              my_db = my_db)
+#'   qlook(my_db, tab)
+#'   DBI::dbDisconnect(my_db)
+#' }
 #'
 #' @export
 #'
@@ -907,10 +927,15 @@ blocks_to_rowrecs <- function(tallTable,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
   if(is.null(db_handle)) {
-    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-    need_close = TRUE
+    if (requireNamespace("RSQLite", quietly = TRUE)) {
+      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      need_close = TRUE
+    }
   } else {
     my_db <- db_handle$db
+  }
+  if(is.null(my_db)) {
+    stop("cdata::blocks_to_rowrecs need a database handle")
   }
   talltbltmpnam <- "cdata_tall_tmp"
   rownames(tallTable) <- NULL # just in case

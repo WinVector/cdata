@@ -36,19 +36,21 @@ buildPivotControlTableN deprecated, functionality moved to: build_pivot_control_
 }
 \examples{
 
-my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-d <- data.frame(measType = c("wt", "ht"),
-                measValue = c(150, 6),
-                stringsAsFactors = FALSE)
-DBI::dbWriteTable(my_db,
-                  'd',
-                  d,
-                  overwrite = TRUE,
-                  temporary = TRUE)
-build_pivot_control_q('d', 'measType', 'measValue',
-                                 my_db = my_db,
-                                 sep = '_')
-DBI::dbDisconnect(my_db)
+if (requireNamespace("RSQLite", quietly = TRUE)) {
+  my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  d <- data.frame(measType = c("wt", "ht"),
+                  measValue = c(150, 6),
+                  stringsAsFactors = FALSE)
+  DBI::dbWriteTable(my_db,
+                    'd',
+                    d,
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  build_pivot_control_q('d', 'measType', 'measValue',
+                        my_db = my_db,
+                        sep = '_')
+  DBI::dbDisconnect(my_db)
+}
 
 }
 \seealso{

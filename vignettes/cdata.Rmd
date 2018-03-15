@@ -20,7 +20,11 @@ Briefly `cdata` supplies data transform operators that:
 
 A quick example:
 
-```{r ex1}
+```{r chkpkg}
+run_vignette <- requireNamespace("RSQLite", quietly = TRUE)
+```
+
+```{r ex1, eval=run_vignette}
 library("cdata")
 my_db <- DBI::dbConnect(RSQLite::SQLite(), 
                         ":memory:")
