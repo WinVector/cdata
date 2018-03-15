@@ -417,12 +417,14 @@ rowrecs_to_blocks_q <- function(wideTable,
 #'
 #' @examples
 #'
-#' # un-pivot example
-#' d <- data.frame(AUC = 0.6, R2 = 0.2)
-#' cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
-#'                                nameForNewValueColumn= 'val',
-#'                                columnsToTakeFrom= c('AUC', 'R2'))
-#' tab <- rowrecs_to_blocks(d, cT)
+#' if(requireNamespace("RSQLite", quietly = TRUE)) {
+#'   # un-pivot example
+#'   d <- data.frame(AUC = 0.6, R2 = 0.2)
+#'   cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
+#'                               nameForNewValueColumn= 'val',
+#'                               columnsToTakeFrom= c('AUC', 'R2'))
+#'   tab <- rowrecs_to_blocks(d, cT)
+#' }
 #'
 #'
 #' @export
@@ -445,6 +447,7 @@ rowrecs_to_blocks <- function(wideTable,
                           envir = env,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
+  my_db <- NULL
   if(is.null(db_handle)) {
     if (requireNamespace("RSQLite", quietly = TRUE)) {
       my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
@@ -569,12 +572,14 @@ build_pivot_control_q <- function(tableName,
 #'
 #' @examples
 #'
-#' d <- data.frame(measType = c("wt", "ht"),
-#'                 measValue = c(150, 6),
-#'                 stringsAsFactors = FALSE)
-#' build_pivot_control(d,
-#'                         'measType', 'measValue',
-#'                         sep = '_')
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   d <- data.frame(measType = c("wt", "ht"),
+#'                   measValue = c(150, 6),
+#'                   stringsAsFactors = FALSE)
+#'   build_pivot_control(d,
+#'                       'measType', 'measValue',
+#'                       sep = '_')
+#' }
 #'
 #' @export
 build_pivot_control <- function(table,
@@ -592,6 +597,7 @@ build_pivot_control <- function(table,
                           envir = env,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
+  my_db <- NULL
   if(is.null(db_handle)) {
     if (requireNamespace("RSQLite", quietly = TRUE)) {
       my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
@@ -895,15 +901,17 @@ blocks_to_rowrecs_q <- function(tallTable,
 #'
 #' @examples
 #'
-#' # pivot example
-#' d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   # pivot example
+#'   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
 #'
-#' cT <- build_pivot_control(d,
-#'                               columnToTakeKeysFrom= 'meas',
-#'                               columnToTakeValuesFrom= 'val')
-#' blocks_to_rowrecs(d,
-#'                      keyColumns = NULL,
-#'                      controlTable = cT)
+#'   cT <- build_pivot_control(d,
+#'                             columnToTakeKeysFrom= 'meas',
+#'                             columnToTakeValuesFrom= 'val')
+#'   blocks_to_rowrecs(d,
+#'                     keyColumns = NULL,
+#'                     controlTable = cT)
+#' }
 #'
 #' @export
 #'
@@ -926,6 +934,7 @@ blocks_to_rowrecs <- function(tallTable,
                           envir = env,
                           ifnotfound = list(NULL),
                           inherits = TRUE)[[1]]
+  my_db <- NULL
   if(is.null(db_handle)) {
     if (requireNamespace("RSQLite", quietly = TRUE)) {
       my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

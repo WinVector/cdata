@@ -21,6 +21,7 @@ NULL
 #' checkColsFormUniqueKeys(d, 'key')
 #' d <- data.frame(key = c('a','a', 'b'), k2 = c(1 ,2, 2))
 #' checkColsFormUniqueKeys(d, c('key', 'k2'))
+#'
 #' @export
 #'
 checkColsFormUniqueKeys <- function(data, keyColNames) {
@@ -61,11 +62,13 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #'
 #' @examples
 #'
-#' d <- data.frame(AUC= 0.6, R2= 0.2)
-#' unpivot_to_blocks(d,
-#'                  nameForNewKeyColumn= 'meas',
-#'                  nameForNewValueColumn= 'val',
-#'                  columnsToTakeFrom= c('AUC', 'R2'))
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   d <- data.frame(AUC= 0.6, R2= 0.2)
+#'   unpivot_to_blocks(d,
+#'                     nameForNewKeyColumn= 'meas',
+#'                     nameForNewValueColumn= 'val',
+#'                     columnsToTakeFrom= c('AUC', 'R2'))
+#' }
 #'
 #' @export
 #'
@@ -164,11 +167,13 @@ unpivot_to_blocks <- function(data,
 #'
 #' @examples
 #'
-#' d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
-#' pivot_to_rowrecs(d,
-#'                     columnToTakeKeysFrom= 'meas',
-#'                     columnToTakeValuesFrom= 'val',
-#'                     rowKeyColumns= c())
+#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#'   d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
+#'   pivot_to_rowrecs(d,
+#'                    columnToTakeKeysFrom= 'meas',
+#'                    columnToTakeValuesFrom= 'val',
+#'                    rowKeyColumns= c())
+#' }
 #'
 #' @export
 #'
