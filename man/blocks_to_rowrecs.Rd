@@ -81,7 +81,8 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
                             columnToTakeValuesFrom= 'val')
   blocks_to_rowrecs(d,
                     keyColumns = NULL,
-                    controlTable = cT)
+                    controlTable = cT) \%.>\%
+     print(.)
 }
 
 }

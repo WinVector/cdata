@@ -424,6 +424,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 #'                               nameForNewValueColumn= 'val',
 #'                               columnsToTakeFrom= c('AUC', 'R2'))
 #'   tab <- rowrecs_to_blocks(d, cT)
+#'   print(tab)
 #' }
 #'
 #'
@@ -521,7 +522,8 @@ rowrecs_to_blocks <- function(wideTable,
 #'                     temporary = TRUE)
 #'   build_pivot_control_q('d', 'measType', 'measValue',
 #'                         my_db = my_db,
-#'                         sep = '_')
+#'                         sep = '_') %.>%
+#'      print(.)
 #'   DBI::dbDisconnect(my_db)
 #' }
 #'
@@ -578,7 +580,8 @@ build_pivot_control_q <- function(tableName,
 #'                   stringsAsFactors = FALSE)
 #'   build_pivot_control(d,
 #'                       'measType', 'measValue',
-#'                       sep = '_')
+#'                       sep = '_') %.>%
+#'      print(.)
 #' }
 #'
 #' @export
@@ -910,7 +913,8 @@ blocks_to_rowrecs_q <- function(tallTable,
 #'                             columnToTakeValuesFrom= 'val')
 #'   blocks_to_rowrecs(d,
 #'                     keyColumns = NULL,
-#'                     controlTable = cT)
+#'                     controlTable = cT) %.>%
+#'      print(.)
 #' }
 #'
 #' @export

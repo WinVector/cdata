@@ -160,8 +160,11 @@
   <span class='fu'>unpivot_to_blocks</span>(<span class='no'>d</span>,
                     <span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                     <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                    <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+                    <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>)) <span class='kw'>%.&gt;%</span>
+     <span class='fu'>print</span>(<span class='no'>.</span>)
 }</div><div class='output co'>#&gt;   meas val
+#&gt; 1  AUC 0.6
+#&gt; 2   R2 0.2</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 </div></pre>

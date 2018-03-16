@@ -73,6 +73,7 @@ if(requireNamespace("RSQLite", quietly = TRUE)) {
                               nameForNewValueColumn= 'val',
                               columnsToTakeFrom= c('AUC', 'R2'))
   tab <- rowrecs_to_blocks(d, cT)
+  print(tab)
 }
 
 

@@ -42,7 +42,8 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
                   stringsAsFactors = FALSE)
   build_pivot_control(d,
                       'measType', 'measValue',
-                      sep = '_')
+                      sep = '_') \%.>\%
+     print(.)
 }
 
 }

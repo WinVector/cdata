@@ -41,7 +41,8 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
   pivot_to_rowrecs(d,
                    columnToTakeKeysFrom= 'meas',
                    columnToTakeValuesFrom= 'val',
-                   rowKeyColumns= c())
+                   rowKeyColumns= c()) \%.>\%
+     print(.)
 }
 
 }

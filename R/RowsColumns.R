@@ -67,7 +67,8 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #'   unpivot_to_blocks(d,
 #'                     nameForNewKeyColumn= 'meas',
 #'                     nameForNewValueColumn= 'val',
-#'                     columnsToTakeFrom= c('AUC', 'R2'))
+#'                     columnsToTakeFrom= c('AUC', 'R2')) %.>%
+#'      print(.)
 #' }
 #'
 #' @export
@@ -172,7 +173,8 @@ unpivot_to_blocks <- function(data,
 #'   pivot_to_rowrecs(d,
 #'                    columnToTakeKeysFrom= 'meas',
 #'                    columnToTakeValuesFrom= 'val',
-#'                    rowKeyColumns= c())
+#'                    rowKeyColumns= c()) %.>%
+#'      print(.)
 #' }
 #'
 #' @export

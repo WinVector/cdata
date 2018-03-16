@@ -43,7 +43,8 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
   unpivot_to_blocks(d,
                     nameForNewKeyColumn= 'meas',
                     nameForNewValueColumn= 'val',
-                    columnsToTakeFrom= c('AUC', 'R2'))
+                    columnsToTakeFrom= c('AUC', 'R2')) \%.>\%
+     print(.)
 }
 
 }

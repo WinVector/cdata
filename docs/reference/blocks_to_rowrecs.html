@@ -205,8 +205,10 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
                             <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>)
   <span class='fu'>blocks_to_rowrecs</span>(<span class='no'>d</span>,
                     <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                    <span class='kw'>controlTable</span> <span class='kw'>=</span> <span class='no'>cT</span>)
+                    <span class='kw'>controlTable</span> <span class='kw'>=</span> <span class='no'>cT</span>) <span class='kw'>%.&gt;%</span>
+     <span class='fu'>print</span>(<span class='no'>.</span>)
 }</div><div class='output co'>#&gt;   AUC  R2
+#&gt; 1 0.6 0.2</div><div class='output co'>#&gt;   AUC  R2
 #&gt; 1 0.6 0.2</div><div class='input'>
 </div></pre>
   </div>

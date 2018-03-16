@@ -159,8 +159,11 @@
                   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
   <span class='fu'>build_pivot_control</span>(<span class='no'>d</span>,
                       <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
-                      <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>)
+                      <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>) <span class='kw'>%.&gt;%</span>
+     <span class='fu'>print</span>(<span class='no'>.</span>)
 }</div><div class='output co'>#&gt;   measType   measValue
+#&gt; 1       ht measType_ht
+#&gt; 2       wt measType_wt</div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       ht measType_ht
 #&gt; 2       wt measType_wt</div><div class='input'>
 </div></pre>

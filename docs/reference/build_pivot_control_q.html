@@ -165,9 +165,13 @@
                     <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='fu'>build_pivot_control_q</span>(<span class='st'>'d'</span>, <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
                         <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>,
-                        <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>)
+                        <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>'_'</span>) <span class='kw'>%.&gt;%</span>
+     <span class='fu'>print</span>(<span class='no'>.</span>)
   <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect'>dbDisconnect</a></span>(<span class='no'>my_db</span>)
-}</div></pre>
+}</div><div class='output co'>#&gt;   measType   measValue
+#&gt; 1       ht measType_ht
+#&gt; 2       wt measType_wt</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

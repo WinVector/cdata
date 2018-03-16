@@ -48,7 +48,8 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
                     temporary = TRUE)
   build_pivot_control_q('d', 'measType', 'measValue',
                         my_db = my_db,
-                        sep = '_')
+                        sep = '_') \%.>\%
+     print(.)
   DBI::dbDisconnect(my_db)
 }
 

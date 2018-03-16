@@ -158,8 +158,10 @@
   <span class='fu'>pivot_to_rowrecs</span>(<span class='no'>d</span>,
                    <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                    <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                   <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='fu'>c</span>())
+                   <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='fu'>c</span>()) <span class='kw'>%.&gt;%</span>
+     <span class='fu'>print</span>(<span class='no'>.</span>)
 }</div><div class='output co'>#&gt;   AUC  R2
+#&gt; 1 0.6 0.2</div><div class='output co'>#&gt;   AUC  R2
 #&gt; 1 0.6 0.2</div><div class='input'>
 </div></pre>
   </div>
