@@ -94,6 +94,7 @@ qlook <- function(my_db, tableName,
     nrow <- DBI::dbGetQuery(my_db,
                             paste0("SELECT COUNT(1) FROM ",
                                    DBI::dbQuoteIdentifier(my_db, tableName)))[1,1, drop=TRUE]
+    nrow <- as.numeric(nrow) # defend against Rpostgres integer64
     cat(paste(" nrow:", nrow, '\n'))
     if(nrow>displayRows) {
       cat(" NOTE: \"obs\" below is count of sample, not number of rows of data.\n")
@@ -367,10 +368,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(showQuery) {
     print(q)
   }
-  tryCatch(
-    # sparklyr didn't implement dbExecute(), so using dbGetQuery()
-    DBI::dbGetQuery(my_db, q),
-    warning = function(w) { NULL })
+  DBI::dbExecute(my_db, q)
   resName
 }
 
@@ -852,10 +850,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   if(showQuery) {
     print(q)
   }
-  tryCatch(
-    # sparklyr didn't implement dbExecute(), so using dbGetQuery()
-    DBI::dbGetQuery(my_db, q),
-    warning = function(w) { NULL })
+  DBI::dbExecute(my_db, q)
   resName
 }
 

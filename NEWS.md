@@ -1,7 +1,8 @@
 
-# cdata 0.6.1 2018/03/15
+# cdata 0.6.1 2018/03/17
 
  * Narrow dependencies.
+ * Switch to dbExecute() (sparklyr seems to have that now).
 
 # cdata 0.6.0 2018/03/12
 

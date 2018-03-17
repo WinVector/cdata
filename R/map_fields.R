@@ -61,7 +61,7 @@ map_fields_q <- function(dname, cname, mname, my_db, rname) {
               " d.", DBI::dbQuoteIdentifier(my_db, cname),
               " = ",
               " m.", DBI::dbQuoteIdentifier(my_db, cname))
-  DBI::dbGetQuery(my_db, q)
+  DBI::dbExecute(my_db, q)
   rname
 }
 
