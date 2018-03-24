@@ -18,8 +18,10 @@ library("cdata")
     ## Loading required package: wrapr
 
 ``` r
-my_db <- DBI::dbConnect(RSQLite::SQLite(), 
-                        ":memory:")
+# my_db <- DBI::dbConnect(RSQLite::SQLite(), 
+#                         ":memory:")
+my_db <- sparklyr::spark_connect(version='2.2.0', 
+                                 master = "local")
 
 # pivot example
 d <- build_frame(
@@ -33,7 +35,7 @@ DBI::dbWriteTable(my_db,
 qlook(my_db, 'd')
 ```
 
-    ## table `d` SQLiteConnection 
+    ## table `d` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 2 
     ## 'data.frame':    2 obs. of  2 variables:
     ##  $ meas: chr  "AUC" "R2"
@@ -51,14 +53,15 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_77405387904238021053_0000000001` SQLiteConnection 
+    ## table `mvtcq_51482596149014993516_0000000001` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
     ##  $ R2 : num 0.2
 
 ``` r
-DBI::dbDisconnect(my_db)
+#DBI::dbDisconnect(my_db)
+sparklyr::spark_disconnect(my_db)
 ```
 
 Install via CRAN:

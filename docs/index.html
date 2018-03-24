@@ -89,8 +89,10 @@
 <p>A quick example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
-                        <span class="st">":memory:"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># my_db &lt;- DBI::dbConnect(RSQLite::SQLite(), </span>
+<span class="co">#                         ":memory:")</span>
+my_db &lt;-<span class="st"> </span>sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_connect</a></span>(<span class="dt">version=</span><span class="st">'2.2.0'</span>, 
+                                 <span class="dt">master =</span> <span class="st">"local"</span>)
 
 <span class="co"># pivot example</span>
 d &lt;-<span class="st"> </span><span class="kw">build_frame</span>(
@@ -102,7 +104,7 @@ DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation
                   d,
                   <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
 <span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
-<pre><code>## table `d` SQLiteConnection 
+<pre><code>## table `d` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 2 
 ## 'data.frame':    2 obs. of  2 variables:
 ##  $ meas: chr  "AUC" "R2"
@@ -116,12 +118,13 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/blocks_to_
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_13150530221082897417_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_44756175063358267401_0000000001` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
 ##  $ R2 : num 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#DBI::dbDisconnect(my_db)</span>
+sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_disconnect</a></span>(my_db)</code></pre></div>
 <p>Install via CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <p>Or from Github using devtools:</p>

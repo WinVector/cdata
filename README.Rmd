@@ -19,8 +19,10 @@ A quick example:
 
 ```{r ex1}
 library("cdata")
-my_db <- DBI::dbConnect(RSQLite::SQLite(), 
-                        ":memory:")
+# my_db <- DBI::dbConnect(RSQLite::SQLite(), 
+#                         ":memory:")
+my_db <- sparklyr::spark_connect(version='2.2.0', 
+                                 master = "local")
 
 # pivot example
 d <- build_frame(
@@ -43,7 +45,8 @@ tab <- blocks_to_rowrecs_q('d',
                             my_db = my_db)
 qlook(my_db, tab)
 
-DBI::dbDisconnect(my_db)
+#DBI::dbDisconnect(my_db)
+sparklyr::spark_disconnect(my_db)
 ```
 
 Install via CRAN:

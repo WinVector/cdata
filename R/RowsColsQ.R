@@ -6,13 +6,6 @@
 NULL
 
 
-isSpark <- function(db) {
-  if(is.null(db)) {
-    return(FALSE)
-  }
-  length(intersect(c("spark_connection", "spark_shell_connection"),
-            class(db)))>0
-}
 
 #' List columns of a table
 #'
@@ -291,18 +284,10 @@ rowrecs_to_blocks_q <- function(wideTable,
   }
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  if(!isSpark(my_db)) {
-    DBI::dbWriteTable(my_db,
-                      ctabName,
-                      controlTable,
-                      overwrite = TRUE,
-                      temporary = TRUE)
-  } else {
-    DBI::dbWriteTable(my_db,
+  DBI::dbWriteTable(my_db,
                       ctabName,
                       controlTable,
                       temporary = TRUE)
-  }
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -459,18 +444,10 @@ rowrecs_to_blocks <- function(wideTable,
     stop("cdata::rowrecs_to_blocks need a database connection")
   }
   rownames(wideTable) <- NULL # just in case
-  if(!isSpark(my_db)) {
-    DBI::dbWriteTable(my_db,
-                      wtname,
-                      wideTable,
-                      overwrite = TRUE,
-                      temporary = TRUE)
-  } else {
-    DBI::dbWriteTable(my_db,
-                      wtname,
-                      wideTable,
-                      temporary = TRUE)
-  }
+  DBI::dbWriteTable(my_db,
+                    wtname,
+                    wideTable,
+                    temporary = TRUE)
   resName <- rowrecs_to_blocks_q(wideTable = wtname,
                                  controlTable = controlTable,
                                  my_db = my_db,
@@ -612,18 +589,10 @@ build_pivot_control <- function(table,
   }
   ptabtmpnam <- "cdata_build_pc_tmp"
   rownames(table) <- NULL # just in case
-  if(!isSpark(my_db)) {
-    DBI::dbWriteTable(my_db,
-                      ptabtmpnam,
-                      table,
-                      overwrite = TRUE,
-                      temporary = TRUE)
-  } else {
-    DBI::dbWriteTable(my_db,
+  DBI::dbWriteTable(my_db,
                       ptabtmpnam,
                       table,
                       temporary = TRUE)
-  }
   res <- build_pivot_control_q(tableName = ptabtmpnam,
                                columnToTakeKeysFrom = columnToTakeKeysFrom,
                                columnToTakeValuesFrom = columnToTakeValuesFrom,
@@ -754,18 +723,10 @@ blocks_to_rowrecs_q <- function(tallTable,
   }
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  if(!isSpark(my_db)) {
-    DBI::dbWriteTable(my_db,
-                      ctabName,
-                      controlTable,
-                      overwrite = TRUE,
-                      temporary = TRUE)
-  } else {
-    DBI::dbWriteTable(my_db,
+  DBI::dbWriteTable(my_db,
                       ctabName,
                       controlTable,
                       temporary = TRUE)
-  }
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -947,18 +908,10 @@ blocks_to_rowrecs <- function(tallTable,
   }
   talltbltmpnam <- "cdata_tall_tmp"
   rownames(tallTable) <- NULL # just in case
-  if(!isSpark(my_db)) {
-    DBI::dbWriteTable(my_db,
-                      talltbltmpnam,
-                      tallTable,
-                      temporary = TRUE,
-                      overwrite = TRUE)
-  } else {
-    DBI::dbWriteTable(my_db,
+  DBI::dbWriteTable(my_db,
                       talltbltmpnam,
                       tallTable,
                       temporary = TRUE)
-  }
   resName <- blocks_to_rowrecs_q(tallTable = talltbltmpnam,
                                  keyColumns = keyColumns,
                                  controlTable = controlTable,
