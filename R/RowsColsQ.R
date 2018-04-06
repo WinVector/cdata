@@ -2,9 +2,29 @@
 # Contributed by John Mount jmount@win-vector.com , ownership assigned to Win-Vector LLC.
 # Win-Vector LLC currently distributes this code without intellectual property indemnification, warranty, claim of fitness of purpose, or any other guarantee under a GPL3 license.
 
-#' @importFrom wrapr %.>% let mapsyms
+#' @importFrom wrapr %.>% let mapsyms :=
 NULL
 
+
+get_db_handle <- function(env) {
+  need_close <- FALSE
+  my_db <- NULL
+  db_handle <- base::mget("winvector_temp_db_handle",
+                          envir = env,
+                          ifnotfound = list(NULL),
+                          inherits = TRUE)[[1]]
+  if(is.null(db_handle)) {
+    if (requireNamespace("RSQLite", quietly = TRUE)) {
+      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+      need_close = TRUE
+    } else {
+      stop("cdata needs a database connection to work, to supply one please either set 'winvector_temp_db_handle' or install the package 'RSQLite'.")
+    }
+  } else {
+    my_db <- db_handle$db
+  }
+  list(my_db = my_db, need_close = need_close)
+}
 
 
 #' List columns of a table
@@ -426,23 +446,9 @@ rowrecs_to_blocks <- function(wideTable,
     stop("cdata::rowrecs_to_blocks unexpected arguments.")
   }
   wtname <- "cata_wide_tmp"
-  need_close <- FALSE
-  db_handle <- base::mget("winvector_temp_db_handle",
-                          envir = env,
-                          ifnotfound = list(NULL),
-                          inherits = TRUE)[[1]]
-  my_db <- NULL
-  if(is.null(db_handle)) {
-    if (requireNamespace("RSQLite", quietly = TRUE)) {
-      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-      need_close = TRUE
-    }
-  } else {
-    my_db <- db_handle$db
-  }
-  if(is.null(my_db)) {
-    stop("cdata::rowrecs_to_blocks need a database connection")
-  }
+  dblist <- get_db_handle(env)
+  need_close <- dblist$need_close
+  my_db <- dblist$my_db
   rownames(wideTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                     wtname,
@@ -570,23 +576,9 @@ build_pivot_control <- function(table,
   if(length(list(...))>0) {
     stop("cdata::build_pivot_control unexpected arguments.")
   }
-  need_close <- FALSE
-  db_handle <- base::mget("winvector_temp_db_handle",
-                          envir = env,
-                          ifnotfound = list(NULL),
-                          inherits = TRUE)[[1]]
-  my_db <- NULL
-  if(is.null(db_handle)) {
-    if (requireNamespace("RSQLite", quietly = TRUE)) {
-      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-      need_close = TRUE
-    }
-  } else {
-    my_db <- db_handle$db
-  }
-  if(is.null(my_db)) {
-    stop("cdata::build_pivot_control need a datbase handle")
-  }
+  dblist <- get_db_handle(env)
+  need_close <- dblist$need_close
+  my_db <- dblist$my_db
   ptabtmpnam <- "cdata_build_pc_tmp"
   rownames(table) <- NULL # just in case
   DBI::dbWriteTable(my_db,
@@ -889,23 +881,9 @@ blocks_to_rowrecs <- function(tallTable,
   if(length(list(...))>0) {
     stop("cdata::blocks_to_rowrecs unexpected arguments.")
   }
-  need_close <- FALSE
-  db_handle <- base::mget("winvector_temp_db_handle",
-                          envir = env,
-                          ifnotfound = list(NULL),
-                          inherits = TRUE)[[1]]
-  my_db <- NULL
-  if(is.null(db_handle)) {
-    if (requireNamespace("RSQLite", quietly = TRUE)) {
-      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-      need_close = TRUE
-    }
-  } else {
-    my_db <- db_handle$db
-  }
-  if(is.null(my_db)) {
-    stop("cdata::blocks_to_rowrecs need a database handle")
-  }
+  dblist <- get_db_handle(env)
+  need_close <- dblist$need_close
+  my_db <- dblist$my_db
   talltbltmpnam <- "cdata_tall_tmp"
   rownames(tallTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,

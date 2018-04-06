@@ -1,8 +1,9 @@
 
-# cdata 0.6.1 2018/03/24
+# cdata 0.6.1 2018/04/06
 
  * Narrow dependencies.
  * Switch to dbExecute() (sparklyr seems to have that now).
+ * Centralize getting db handle and add help message.
 
 # cdata 0.6.0 2018/03/12
 
