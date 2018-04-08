@@ -5,7 +5,7 @@
 \title{Move values from rows to columns (pivot).}
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  rowKeyColumns, ..., sep = NULL, env = parent.frame())
+  rowKeyColumns, ..., sep = NULL)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}
@@ -19,8 +19,6 @@ pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 \item{...}{force later arguments to bind by name.}
 
 \item{sep}{character if not null build more detailed column names.}
-
-\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 new data.frame with values moved to columns.

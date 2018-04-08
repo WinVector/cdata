@@ -1,4 +1,8 @@
 
+
+# adapters for more direct pivot/un-pivot notation
+# (hides details of control table)
+
 #' @importFrom wrapr %.>%
 #' @importFrom stats complete.cases
 #' @importFrom wrapr let
@@ -62,7 +66,6 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #' @param columnsToTakeFrom character array names of columns to take values from.
 #' @param ... force later argumets to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
-#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return new data.frame with values moved to rows.
 #'
 #' @examples
@@ -84,8 +87,7 @@ unpivot_to_blocks <- function(data,
                               nameForNewValueColumn,
                               columnsToTakeFrom,
                               ...,
-                              nameForNewClassColumn = NULL,
-                              env = parent.frame()) {
+                              nameForNewClassColumn = NULL) {
   if(!is.data.frame(data)) {
     stop("cdata::unpivot_to_blocks data must be a local data.frame")
   }
@@ -144,8 +146,7 @@ unpivot_to_blocks <- function(data,
   colsToCopy <- setdiff(colnames(data), columnsToTakeFrom)
   res <- rowrecs_to_blocks(data,
                            controlTable = cT,
-                           columnsToCopy = colsToCopy,
-                           env = env)
+                           columnsToCopy = colsToCopy)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -166,7 +167,6 @@ unpivot_to_blocks <- function(data,
 #' @param rowKeyColumns character array names columns that should be table keys.
 #' @param ... force later arguments to bind by name.
 #' @param sep character if not null build more detailed column names.
-#' @param env environment to look for "winvector_temp_db_handle" in.
 #' @return new data.frame with values moved to columns.
 #'
 #' @examples
@@ -187,8 +187,7 @@ pivot_to_rowrecs <- function(data,
                              columnToTakeValuesFrom,
                              rowKeyColumns,
                              ...,
-                             sep = NULL,
-                             env = parent.frame()) {
+                             sep = NULL) {
   if(!is.data.frame(data)) {
     stop("cdata::pivot_to_rowrecs data must be a local data.frame")
   }
@@ -262,7 +261,6 @@ pivot_to_rowrecs <- function(data,
   blocks_to_rowrecs(data,
                     keyColumns = rowKeyColumns,
                     controlTable = cT,
-                    columnsToCopy = colsToCopy,
-                    env = env)
+                    columnsToCopy = colsToCopy)
 }
 

@@ -1,67 +1,9 @@
 
 
 
-
-# confirm control table has uniqueness
-checkControlTable <- function(controlTable, strict) {
-  if(!is.data.frame(controlTable)) {
-    return("control table must be a data.frame")
-  }
-  if(nrow(controlTable)<1) {
-    return("control table must have at least 1 row")
-  }
-  if(ncol(controlTable)<1) {
-    return("control table must have at least 1 column")
-  }
-  classes <- vapply(controlTable, class, character(1))
-  if(!all(classes=='character')) {
-    return("all control table columns must be character")
-  }
-  toCheck <- list(
-    "column names" = colnames(controlTable),
-    "group ids" = controlTable[, 1, drop=TRUE]
-  )
-  for(ci in names(toCheck)) {
-    vals <- toCheck[[ci]]
-    if(any(is.na(vals))) {
-      return(paste("all control table", ci, "must not be NA"))
-    }
-    if(length(unique(vals))!=length(vals)) {
-      return(paste("all control table", ci, "must be distinct"))
-    }
-    if(strict) {
-      if(length(grep(".", vals, fixed=TRUE))>0) {
-        return(paste("all control table", ci ,"must '.'-free"))
-      }
-      if(!all(vals==make.names(vals))) {
-        return(paste("all control table", ci ,"must be valid R variable names"))
-      }
-    }
-  }
-  return(NULL) # good
-}
+# in-memory direct functionality
 
 
-
-get_db_handle <- function(env) {
-  need_close <- FALSE
-  my_db <- NULL
-  db_handle <- base::mget("winvector_temp_db_handle",
-                          envir = env,
-                          ifnotfound = list(NULL),
-                          inherits = TRUE)[[1]]
-  if(is.null(db_handle)) {
-    if (requireNamespace("RSQLite", quietly = TRUE)) {
-      my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-      need_close = TRUE
-    } else {
-      stop("cdata needs a database connection to work, to supply one please either set 'winvector_temp_db_handle' or install the package 'RSQLite'.")
-    }
-  } else {
-    my_db <- db_handle$db
-  }
-  list(my_db = my_db, need_close = need_close)
-}
 
 
 
@@ -150,6 +92,8 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #'
 #' Transform data facts from columns into additional rows controlTable.
 #'
+#' TODO: test and and checks.
+#'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
 #' principle that each data cell has coordinates independent of the
@@ -176,26 +120,19 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
 #' @param controlTable table specifying mapping (local data frame).
 #' @param ... force later arguments to be by name.
-#' @param columnsToCopy character list of column names to copy
-#' @param strict logical, if TRUE check control table contents for uniqueness
-#' @param checkNames logical, if TRUE check names
-#' @param showQuery if TRUE print query
-#' @param defaultValue if not NULL literal to use for non-match values.
-#' @param env environment to look for "winvector_temp_db_handle" in.
+#' @param columnsToCopy character array of column names to copy
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
 #'
 #' @examples
 #'
-#' if(requireNamespace("RSQLite", quietly = TRUE)) {
 #'   # un-pivot example
 #'   d <- data.frame(AUC = 0.6, R2 = 0.2)
 #'   cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
 #'                               nameForNewValueColumn= 'val',
 #'                               columnsToTakeFrom= c('AUC', 'R2'))
 #'   rowrecs_to_blocks(d, cT)
-#' }
 #'
 #'
 #' @export
@@ -203,13 +140,7 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 rowrecs_to_blocks <- function(wideTable,
                               controlTable,
                               ...,
-                              columnsToCopy = NULL,
-                              strict = FALSE,
-                              checkNames = TRUE,
-                              showQuery = FALSE,
-                              defaultValue = NULL,
-                              env = parent.frame()) {
-  # TODO: non-database impl
+                              columnsToCopy = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks wideTable shoud be a data.frame")
@@ -217,37 +148,44 @@ rowrecs_to_blocks <- function(wideTable,
   if(!is.data.frame(controlTable)) {
     stop("cdata::rowrecs_to_blocks controlTable shoud be a data.frame")
   }
-  wtname <- "cata_wide_tmp"
-  dblist <- get_db_handle(env)
-  need_close <- dblist$need_close
-  my_db <- dblist$my_db
-  rownames(wideTable) <- NULL # just in case
-  DBI::dbWriteTable(my_db,
-                    wtname,
-                    wideTable,
-                    temporary = TRUE)
-  resName <- rowrecs_to_blocks_q(wideTable = wtname,
-                                 controlTable = controlTable,
-                                 my_db = my_db,
-                                 columnsToCopy = columnsToCopy,
-                                 tempNameGenerator = mk_tmp_name_source('mvtrq'),
-                                 strict = strict,
-                                 checkNames = checkNames,
-                                 showQuery = showQuery,
-                                 defaultValue = defaultValue)
-  resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", wtname))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
-  if(need_close) {
-    DBI::dbDisconnect(my_db)
+  n_row_in <- nrow(wideTable)
+  n_rep <- nrow(controlTable)
+  n_row_res <- n_rep*n_row_in
+  # build and start filling in result
+  res <- data.frame(x = seq_len(n_row_in))
+  res[['x']] <- NULL
+  for(ci in columnsToCopy) {
+    res[[ci]] <- wideTable[[ci]]
   }
-  resData
+  res[[colnames(controlTable)[[1]]]] <- NA_character_
+  for(ci in 2:ncol(controlTable)) {
+    cn <- colnames(controlTable)[[ci]]
+    res[[cn]] <- wideTable[[controlTable[2, ci, drop = TRUE]]]
+    # TODO: check this keeps class and works with dates
+    res[[cn]][seq_len(n_row_in)] <- NA
+  }
+  # cross product with control table
+  res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE]
+  rownames(res) <- NULL
+  res[[colnames(controlTable)[[1]]]] <- rep(controlTable[[1]], n_row_in)
+  # fill in values
+  for(ci in 2:ncol(controlTable)) {
+    cn <- colnames(controlTable)[[ci]]
+    for(i in seq_len(n_rep)) {
+      indxs <- i + n_rep*(0:(n_row_in-1))
+      col <- controlTable[i, ci, drop = TRUE]
+      res[[cn]][indxs] <- wideTable[[col]]
+    }
+  }
+  res
 }
 
 
 #' Map sets rows to columns (takes a \code{data.frame}).
 #'
 #' Transform data facts from rows into additional columns using controlTable.
+#'
+#' TODO: test and and checks.
 #'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
@@ -276,22 +214,16 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.
-#' @param columnsToCopy character list of column names to copy
-#' @param strict logical, if TRUE check control table contents for uniqueness
-#' @param checkNames logical, if TRUE check names
-#' @param showQuery if TRUE print query
-#' @param defaultValue if not NULL literal to use for non-match values.
-#' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
-#' @param env environment to look for "winvector_temp_db_handle" in.
+#' @param columnsToCopy character, extra columns to copy (aribrary which row per group).
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control}}
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
 #'   # pivot example
-#'   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+#'   d <- data.frame(meas = c('AUC', 'R2'),
+#'                   val = c(0.6, 0.2))
 #'
 #'   cT <- build_pivot_control(d,
 #'                             columnToTakeKeysFrom= 'meas',
@@ -299,7 +231,6 @@ rowrecs_to_blocks <- function(wideTable,
 #'   blocks_to_rowrecs(d,
 #'                     keyColumns = NULL,
 #'                     controlTable = cT)
-#' }
 #'
 #' @export
 #'
@@ -307,14 +238,7 @@ blocks_to_rowrecs <- function(tallTable,
                               keyColumns,
                               controlTable,
                               ...,
-                              columnsToCopy = NULL,
-                              strict = FALSE,
-                              checkNames = TRUE,
-                              showQuery = FALSE,
-                              defaultValue = NULL,
-                              dropDups = FALSE,
-                              env = parent.frame()) {
-  # TODO: non-database impl
+                              columnsToCopy = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs tallTable shoud be a data.frame")
@@ -322,33 +246,40 @@ blocks_to_rowrecs <- function(tallTable,
   if(!is.data.frame(controlTable)) {
     stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")
   }
-  dblist <- get_db_handle(env)
-  need_close <- dblist$need_close
-  my_db <- dblist$my_db
-  talltbltmpnam <- "cdata_tall_tmp"
-  rownames(tallTable) <- NULL # just in case
-  DBI::dbWriteTable(my_db,
-                    talltbltmpnam,
-                    tallTable,
-                    temporary = TRUE)
-  resName <- blocks_to_rowrecs_q(tallTable = talltbltmpnam,
-                                 keyColumns = keyColumns,
-                                 controlTable = controlTable,
-                                 my_db = my_db,
-                                 columnsToCopy = columnsToCopy,
-                                 tempNameGenerator = mk_tmp_name_source('mvtcq'),
-                                 strict = strict,
-                                 checkNames = checkNames,
-                                 showQuery = showQuery,
-                                 defaultValue = defaultValue,
-                                 dropDups = dropDups)
-  resData <- DBI::dbGetQuery(my_db, paste("SELECT * FROM", resName))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", talltbltmpnam))
-  x <- DBI::dbExecute(my_db, paste("DROP TABLE", resName))
-  if(need_close) {
-    DBI::dbDisconnect(my_db)
+  # make simple grouping keys
+  tallTable$cdata_group_key_col <- ""
+  if(length(keyColumns)>=1) {
+    cols <- as.list(tallTable[ , keyColumns, drop=FALSE])
+    names(cols) <- NULL
+    tallTable$cdata_group_key_col <- do.call("paste",
+                                             c(cols, sep = " CDATA_SEP "))
+    tallTable <- tallTable[order(tallTable$cdata_group_key_col), , drop = FALSE]
   }
-  resData
+  first_idxs <- match(unique(tallTable$cdata_group_key_col), tallTable$cdata_group_key_col)
+  res <- tallTable[first_idxs,
+                   c("cdata_group_key_col", keyColumns, columnsToCopy),
+                   drop = FALSE]
+  rownames(res) <- NULL
+  n_res <- nrow(res)
+  # fill in values
+  meas_col <- colnames(controlTable)[[1]]
+  n_rep <- nrow(controlTable)
+  for(ci in 2:ncol(controlTable)) {
+    cn <- colnames(controlTable)[[ci]]
+    for(i in seq_len(n_rep)) {
+      col <- controlTable[i, ci, drop = TRUE]
+      indxs <- which(tallTable[[meas_col]] == col)
+      vals <- tallTable[[cn]][[indxs]]
+      res[[col]] <- vals[[1]]
+      res[[col]][seq_len(n_res)] <- NA
+      posns <- match(res$cdata_group_key_col,
+                     tallTable$cdata_group_key_col[indxs])
+      posns <- posns[!is.na(posns)]
+      res[[col]][posns] <- vals
+    }
+  }
+  res$cdata_group_key_col <- NULL
+  res
 }
 
 

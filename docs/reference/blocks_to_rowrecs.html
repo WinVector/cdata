@@ -103,9 +103,7 @@
     
 
     <pre class="usage"><span class='fu'>blocks_to_rowrecs</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
+  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -128,31 +126,7 @@
     </tr>
     <tr>
       <th>columnsToCopy</th>
-      <td><p>character list of column names to copy</p></td>
-    </tr>
-    <tr>
-      <th>strict</th>
-      <td><p>logical, if TRUE check control table contents for uniqueness</p></td>
-    </tr>
-    <tr>
-      <th>checkNames</th>
-      <td><p>logical, if TRUE check names</p></td>
-    </tr>
-    <tr>
-      <th>showQuery</th>
-      <td><p>if TRUE print query</p></td>
-    </tr>
-    <tr>
-      <th>defaultValue</th>
-      <td><p>if not NULL literal to use for non-match values.</p></td>
-    </tr>
-    <tr>
-      <th>dropDups</th>
-      <td><p>logical if TRUE supress duplicate columns (duplicate determined by name, not content).</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>environment to look for "winvector_temp_db_handle" in.</p></td>
+      <td><p>character, extra columns to copy (aribrary which row per group).</p></td>
     </tr>
     </table>
     
@@ -162,7 +136,8 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is using the theory of "fluid data"n
+    <p>TODO: test and and checks.</p>
+<p>This is using the theory of "fluid data"n
 (<a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/cdata</a>), which includes the
 principle that each data cell has coordinates independent of the
 storage details and storage detail dependent coordinates (usually
@@ -190,17 +165,16 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fu'>requireNamespace</span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='co'># pivot example</span>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>meas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
+  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>meas</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>),
+                  <span class='kw'>val</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
 
   <span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_pivot_control.html'>build_pivot_control</a></span>(<span class='no'>d</span>,
                             <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                             <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>)
   <span class='fu'>blocks_to_rowrecs</span>(<span class='no'>d</span>,
                     <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                    <span class='kw'>controlTable</span> <span class='kw'>=</span> <span class='no'>cT</span>)
-}</div><div class='output co'>#&gt;   AUC  R2
+                    <span class='kw'>controlTable</span> <span class='kw'>=</span> <span class='no'>cT</span>)</div><div class='output co'>#&gt;   AUC  R2
 #&gt; 1 0.6 0.2</div><div class='input'>
 </div></pre>
   </div>

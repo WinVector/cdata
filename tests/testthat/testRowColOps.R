@@ -3,7 +3,6 @@ library('cdata')
 context("rowColOps")
 
 test_that("testRowColOps.R", {
-  if (requireNamespace("RSQLite", quietly = TRUE)) {
     # some small corner cases
 
     d <- data.frame(AUC = 0.6, R2 = 0.2)
@@ -37,8 +36,6 @@ test_that("testRowColOps.R", {
                             rowKeyColumns = c('key'))
     expect_equivalent(data.frame(key = 'a',
                                  AUC = 0.6,
-                                 R2 = 0.2,
-                                 stringsAsFactors = FALSE),
+                                 R2 = 0.2),
                       res)
-  }
 })

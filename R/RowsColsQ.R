@@ -2,8 +2,54 @@
 # Contributed by John Mount jmount@win-vector.com , ownership assigned to Win-Vector LLC.
 # Win-Vector LLC currently distributes this code without intellectual property indemnification, warranty, claim of fitness of purpose, or any other guarantee under a GPL3 license.
 
+
+# Core functionality on databases.
+
+
 #' @importFrom wrapr %.>% let mapsyms :=
 NULL
+
+
+
+# confirm control table has uniqueness
+checkControlTable <- function(controlTable, strict) {
+  if(!is.data.frame(controlTable)) {
+    return("control table must be a data.frame")
+  }
+  if(nrow(controlTable)<1) {
+    return("control table must have at least 1 row")
+  }
+  if(ncol(controlTable)<1) {
+    return("control table must have at least 1 column")
+  }
+  classes <- vapply(controlTable, class, character(1))
+  if(!all(classes=='character')) {
+    return("all control table columns must be character")
+  }
+  toCheck <- list(
+    "column names" = colnames(controlTable),
+    "group ids" = controlTable[, 1, drop=TRUE]
+  )
+  for(ci in names(toCheck)) {
+    vals <- toCheck[[ci]]
+    if(any(is.na(vals))) {
+      return(paste("all control table", ci, "must not be NA"))
+    }
+    if(length(unique(vals))!=length(vals)) {
+      return(paste("all control table", ci, "must be distinct"))
+    }
+    if(strict) {
+      if(length(grep(".", vals, fixed=TRUE))>0) {
+        return(paste("all control table", ci ,"must '.'-free"))
+      }
+      if(!all(vals==make.names(vals))) {
+        return(paste("all control table", ci ,"must be valid R variable names"))
+      }
+    }
+  }
+  return(NULL) # good
+}
+
 
 
 
@@ -135,7 +181,7 @@ qlook <- function(my_db, tableName,
 #' @param controlTable table specifying mapping (local data frame)
 #' @param my_db db handle
 #' @param ... force later arguments to be by name.
-#' @param columnsToCopy character list of column names to copy
+#' @param columnsToCopy character array of column names to copy
 #' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param strict logical, if TRUE check control table contents for uniqueness
 #' @param checkNames logical, if TRUE check names

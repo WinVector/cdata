@@ -5,9 +5,7 @@
 \title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
-  columnsToCopy = NULL, strict = FALSE, checkNames = TRUE,
-  showQuery = FALSE, defaultValue = NULL, dropDups = FALSE,
-  env = parent.frame())
+  columnsToCopy = NULL)
 }
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -18,19 +16,7 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 
 \item{...}{force later arguments to be by name.}
 
-\item{columnsToCopy}{character list of column names to copy}
-
-\item{strict}{logical, if TRUE check control table contents for uniqueness}
-
-\item{checkNames}{logical, if TRUE check names}
-
-\item{showQuery}{if TRUE print query}
-
-\item{defaultValue}{if not NULL literal to use for non-match values.}
-
-\item{dropDups}{logical if TRUE supress duplicate columns (duplicate determined by name, not content).}
-
-\item{env}{environment to look for "winvector_temp_db_handle" in.}
+\item{columnsToCopy}{character, extra columns to copy (aribrary which row per group).}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group
@@ -39,6 +25,8 @@ wide table built by mapping key-grouped tallTable rows to one row per group
 Transform data facts from rows into additional columns using controlTable.
 }
 \details{
+TODO: test and and checks.
+
 This is using the theory of "fluid data"n
 (\url{https://github.com/WinVector/cdata}), which includes the
 principle that each data cell has coordinates independent of the
@@ -64,9 +52,9 @@ here \url{https://github.com/WinVector/cdata}.
 }
 \examples{
 
-if (requireNamespace("RSQLite", quietly = TRUE)) {
   # pivot example
-  d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
+  d <- data.frame(meas = c('AUC', 'R2'),
+                  val = c(0.6, 0.2))
 
   cT <- build_pivot_control(d,
                             columnToTakeKeysFrom= 'meas',
@@ -74,7 +62,6 @@ if (requireNamespace("RSQLite", quietly = TRUE)) {
   blocks_to_rowrecs(d,
                     keyColumns = NULL,
                     controlTable = cT)
-}
 
 }
 \seealso{

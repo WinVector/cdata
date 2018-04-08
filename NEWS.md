@@ -1,10 +1,9 @@
 
-# cdata 0.7.0 2018/04/07
+# cdata 0.7.0 2018/04/08
 
  * Narrow dependencies.
  * Switch to dbExecute() (sparklyr seems to have that now).
- * Centralize getting db handle and add help message.
- * Start making non-DB implementations for local data case.
+ * Non-DB implementations for local data case.
  * Remove deprecated fns.
 
 # cdata 0.6.0 2018/03/12

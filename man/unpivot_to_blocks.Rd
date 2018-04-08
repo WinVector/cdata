@@ -5,8 +5,7 @@
 \title{Move values from columns to rows (anti-pivot, or "shred").}
 \usage{
 unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
-  columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
-  env = parent.frame())
+  columnsToTakeFrom, ..., nameForNewClassColumn = NULL)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToRows*}).}
@@ -20,8 +19,6 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{...}{force later argumets to bind by name.}
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
-
-\item{env}{environment to look for "winvector_temp_db_handle" in.}
 }
 \value{
 new data.frame with values moved to rows.

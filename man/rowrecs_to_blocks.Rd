@@ -4,9 +4,7 @@
 \alias{rowrecs_to_blocks}
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
-rowrecs_to_blocks(wideTable, controlTable, ..., columnsToCopy = NULL,
-  strict = FALSE, checkNames = TRUE, showQuery = FALSE,
-  defaultValue = NULL, env = parent.frame())
+rowrecs_to_blocks(wideTable, controlTable, ..., columnsToCopy = NULL)
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -15,17 +13,7 @@ rowrecs_to_blocks(wideTable, controlTable, ..., columnsToCopy = NULL,
 
 \item{...}{force later arguments to be by name.}
 
-\item{columnsToCopy}{character list of column names to copy}
-
-\item{strict}{logical, if TRUE check control table contents for uniqueness}
-
-\item{checkNames}{logical, if TRUE check names}
-
-\item{showQuery}{if TRUE print query}
-
-\item{defaultValue}{if not NULL literal to use for non-match values.}
-
-\item{env}{environment to look for "winvector_temp_db_handle" in.}
+\item{columnsToCopy}{character array of column names to copy}
 }
 \value{
 long table built by mapping wideTable to one row per group
@@ -34,6 +22,8 @@ long table built by mapping wideTable to one row per group
 Transform data facts from columns into additional rows controlTable.
 }
 \details{
+TODO: test and and checks.
+
 This is using the theory of "fluid data"n
 (\url{https://github.com/WinVector/cdata}), which includes the
 principle that each data cell has coordinates independent of the
@@ -59,14 +49,12 @@ here \url{https://github.com/WinVector/cdata}.
 }
 \examples{
 
-if(requireNamespace("RSQLite", quietly = TRUE)) {
   # un-pivot example
   d <- data.frame(AUC = 0.6, R2 = 0.2)
   cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
                               nameForNewValueColumn= 'val',
                               columnsToTakeFrom= c('AUC', 'R2'))
   rowrecs_to_blocks(d, cT)
-}
 
 
 }

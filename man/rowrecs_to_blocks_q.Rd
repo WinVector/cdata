@@ -18,7 +18,7 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
 
 \item{...}{force later arguments to be by name.}
 
-\item{columnsToCopy}{character list of column names to copy}
+\item{columnsToCopy}{character array of column names to copy}
 
 \item{tempNameGenerator}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
