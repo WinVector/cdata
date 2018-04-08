@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -100,14 +100,9 @@
 
     
     <p>Transform data facts from columns into additional rows controlTable.</p>
-<p>moveValuesToRowsD deprecated, functionality moved to: rowrecs_to_blocks</p>
     
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())
-
-<span class='fu'>moveValuesToRowsD</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>parent.frame</span>())</pre>
     
@@ -192,8 +187,7 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
   <span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                               <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
                               <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
-  <span class='no'>tab</span> <span class='kw'>&lt;-</span> <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)
-  <span class='fu'>print</span>(<span class='no'>tab</span>)
+  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)
 }</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>

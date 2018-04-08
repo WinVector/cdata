@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -75,63 +75,61 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-04-06</h4>
+            <h4 class="date">2018-04-07</h4>
           </div>
 
     
     
 <div class="contents">
 <p>The <code>cdata</code> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png">
-</div>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png"></p>
 <p>Briefly <code>cdata</code> supplies data transform operators that:</p>
 <ul>
 <li>Work on local data or with any <code>DBI</code> data source.</li>
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
 <p>A quick example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">run_vignette &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">run_vignette &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(<span class="st">"cdata"</span>)</a></code></pre></div>
 <pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
-                        <span class="st">":memory:"</span>)
-
-<span class="co"># pivot example</span>
-d &lt;-<span class="st"> </span><span class="kw">build_frame</span>(
-   <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span>
-<span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span>
-<span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )
-
-DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable">dbWriteTable</a></span>(my_db,
-                  <span class="st">'d'</span>,
-                  d,
-                  <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), </a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">                        <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># pivot example</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">d &lt;-<span class="st"> </span><span class="kw">build_frame</span>(</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">   <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable">dbWriteTable</a></span>(my_db,</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">                  <span class="st">'d'</span>,</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">                  d,</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">                  <span class="dt">temporary =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</a></code></pre></div>
 <pre><code>## table `d` SQLiteConnection 
 ##  nrow: 2 
 ## 'data.frame':    2 obs. of  2 variables:
 ##  $ meas: chr  "AUC" "R2"
 ##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pivot_control_q.html">build_pivot_control_q</a></span>(<span class="st">'d'</span>,
-                            <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
-                            <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,
-                            <span class="dt">my_db =</span> my_db)
-tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></span>(<span class="st">'d'</span>,
-                           <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
-                           <span class="dt">controlTable =</span> cT,
-                           <span class="dt">my_db =</span> my_db)
-<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_04216805829530369358_0000000001` SQLiteConnection 
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cT &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pivot_control_q.html">build_pivot_control_q</a></span>(<span class="st">'d'</span>,</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                            <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                            <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">                            <span class="dt">my_db =</span> my_db)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></span>(<span class="st">'d'</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">                           <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">                           <span class="dt">controlTable =</span> cT,</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">                           <span class="dt">my_db =</span> my_db)</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</a></code></pre></div>
+<pre><code>## table `mvtcq_07407046429657842425_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
 ##  $ R2 : num 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</a></code></pre></div>
 <p>Install via CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</a></code></pre></div>
 <p>Or from Github using devtools:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</a></code></pre></div>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
 </div>
   </div>

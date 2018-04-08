@@ -25,6 +25,9 @@ NULL
 #' @export
 #'
 checkColsFormUniqueKeys <- function(data, keyColNames) {
+  if(!is.data.frame(data)) {
+    stop("cdata:::checkColsFormUniqueKeys data should be a data.frame")
+  }
   cn <- colnames(data)
   if(length(keyColNames)!=length(unique(keyColNames, allowNAKeys=TRUE))) {
     stop("cdata::checkColsFormUniqueKeys keyColNames must not have duplicates")
@@ -44,6 +47,8 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
   data <- data[, keyColNames, drop=FALSE]
   return(anyDuplicated(data)<=0)
 }
+
+
 
 #' Move values from columns to rows (anti-pivot, or "shred").
 #'
@@ -84,10 +89,8 @@ unpivot_to_blocks <- function(data,
   if(!is.data.frame(data)) {
     stop("cdata::unpivot_to_blocks data must be a local data.frame")
   }
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::unpivot_to_blocks")
   cn <- colnames(data)
-  if(length(list(...))>0) {
-    stop("cdata::unpivot_to_blocks unexpected arguments")
-  }
   if(length(nameForNewKeyColumn)!=1) {
     stop("cdata::unpivot_to_blocks nameForNewKeyColumn must be length 1")
   }
@@ -189,10 +192,8 @@ pivot_to_rowrecs <- function(data,
   if(!is.data.frame(data)) {
     stop("cdata::pivot_to_rowrecs data must be a local data.frame")
   }
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::pivot_to_rowrecs")
   cn <- colnames(data)
-  if(length(list(...))>0) {
-    stop("cdata::pivot_to_rowrecs unexpected arguments")
-  }
   if(length(columnToTakeKeysFrom)!=1) {
     stop("cdata::pivot_to_rowrecs columnToTakeKeysFrom must be length 1")
   }
@@ -255,8 +256,7 @@ pivot_to_rowrecs <- function(data,
   cT <- build_pivot_control(data,
                             columnToTakeKeysFrom = columnToTakeKeysFrom,
                             columnToTakeValuesFrom = columnToTakeValuesFrom,
-                            sep = sep,
-                            env = env)
+                            sep = sep)
   colsToCopy <- setdiff(colnames(data),
                         c(columnToTakeKeysFrom, columnToTakeValuesFrom, rowKeyColumns))
   blocks_to_rowrecs(data,
