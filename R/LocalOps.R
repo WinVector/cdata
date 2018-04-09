@@ -304,7 +304,7 @@ blocks_to_rowrecs <- function(tallTable,
       srccol <- controlTable[i, 1, drop = TRUE]
       destcol <- controlTable[[cn]][i]
       indxs <- which(tallTable[[meas_col]] == srccol)
-      vals <- tallTable[[cn]][[indxs]]
+      vals <- tallTable[[cn]][indxs]
       res[[destcol]] <- vals[[1]]
       res[[destcol]][seq_len(n_res)] <- NA
       posns <- match(res$cdata_group_key_col,

@@ -90,9 +90,11 @@ test_that("testXForm.R", {
   dOrig$epoch <- seq_len(nrow(dOrig))
   dBlocks <- rowrecs_to_blocks(dOrig, controlTable, columnsToCopy = 'epoch')
   dBlocks <- dBlocks[order(dBlocks$epoch, dBlocks$measure), , drop = FALSE]
+  dBlocks <- dBlocks[, colnames(dReady), drop = FALSE]
   expect_equal(dReady, dBlocks)
   dBack <- blocks_to_rowrecs(dBlocks, "epoch", controlTable)
   dBack <- dBack[order(dBack$epoch), , drop = FALSE]
+  dBack <- dBack[, colnames(dOrig), drop = FALSE]
   expect_equal(dOrig, dBack)
 
 })
