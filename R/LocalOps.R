@@ -267,15 +267,16 @@ blocks_to_rowrecs <- function(tallTable,
   for(ci in 2:ncol(controlTable)) {
     cn <- colnames(controlTable)[[ci]]
     for(i in seq_len(n_rep)) {
-      col <- controlTable[i, ci, drop = TRUE]
-      indxs <- which(tallTable[[meas_col]] == col)
+      srccol <- controlTable[i, 1, drop = TRUE]
+      destcol <- controlTable[[cn]][i]
+      indxs <- which(tallTable[[meas_col]] == srccol)
       vals <- tallTable[[cn]][[indxs]]
-      res[[col]] <- vals[[1]]
-      res[[col]][seq_len(n_res)] <- NA
+      res[[destcol]] <- vals[[1]]
+      res[[destcol]][seq_len(n_res)] <- NA
       posns <- match(res$cdata_group_key_col,
                      tallTable$cdata_group_key_col[indxs])
       posns <- posns[!is.na(posns)]
-      res[[col]][posns] <- vals
+      res[[destcol]][posns] <- vals
     }
   }
   res$cdata_group_key_col <- NULL
