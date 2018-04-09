@@ -11,7 +11,7 @@ NULL
 
 
 
-# confirm control table has uniqueness
+# confirm control table structure
 checkControlTable <- function(controlTable, strict) {
   if(!is.data.frame(controlTable)) {
     return("control table must be a data.frame")
@@ -183,7 +183,7 @@ qlook <- function(my_db, tableName,
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character array of column names to copy
 #' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param strict logical, if TRUE check control table contents for uniqueness
+#' @param strict logical, if TRUE check control table name forms
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
@@ -429,7 +429,7 @@ build_pivot_control_q <- function(tableName,
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character list of column names to copy
 #' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param strict logical, if TRUE check control table contents for uniqueness
+#' @param strict logical, if TRUE check control table name forms
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.

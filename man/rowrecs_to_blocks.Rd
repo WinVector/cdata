@@ -4,7 +4,8 @@
 \alias{rowrecs_to_blocks}
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
-rowrecs_to_blocks(wideTable, controlTable, ..., columnsToCopy = NULL)
+rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
+  strict = FALSE, columnsToCopy = NULL)
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -12,6 +13,10 @@ rowrecs_to_blocks(wideTable, controlTable, ..., columnsToCopy = NULL)
 \item{controlTable}{table specifying mapping (local data frame).}
 
 \item{...}{force later arguments to be by name.}
+
+\item{checkNames}{logical, if TRUE check names}
+
+\item{strict}{logical, if TRUE check control table name forms}
 
 \item{columnsToCopy}{character array of column names to copy}
 }

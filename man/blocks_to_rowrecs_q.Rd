@@ -25,7 +25,7 @@ blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
 
 \item{tempNameGenerator}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
-\item{strict}{logical, if TRUE check control table contents for uniqueness}
+\item{strict}{logical, if TRUE check control table name forms}
 
 \item{checkNames}{logical, if TRUE check names}
 

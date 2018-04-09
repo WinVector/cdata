@@ -121,6 +121,8 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #' @param controlTable table specifying mapping (local data frame).
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character array of column names to copy
+#' @param checkNames logical, if TRUE check names
+#' @param strict logical, if TRUE check control table name forms
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
@@ -140,6 +142,8 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 rowrecs_to_blocks <- function(wideTable,
                               controlTable,
                               ...,
+                              checkNames = TRUE,
+                              strict = FALSE,
                               columnsToCopy = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
@@ -147,6 +151,20 @@ rowrecs_to_blocks <- function(wideTable,
   }
   if(!is.data.frame(controlTable)) {
     stop("cdata::rowrecs_to_blocks controlTable shoud be a data.frame")
+  }
+  cCheck <- checkControlTable(controlTable, strict)
+  if(!is.null(cCheck)) {
+    stop(paste("cdata::rowrecs_to_blocks", cCheck))
+  }
+  if(checkNames) {
+    interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
+    interiorCells <- interiorCells[!is.na(interiorCells)]
+    wideTableColnames <- colnames(wideTable)
+    badCells <- setdiff(interiorCells, wideTableColnames)
+    if(length(badCells)>0) {
+      stop(paste("cdata::rowrecs_to_blocks: control table entries that are not wideTable column names:",
+                 paste(badCells, collapse = ', ')))
+    }
   }
   n_row_in <- nrow(wideTable)
   n_rep <- nrow(controlTable)
@@ -215,6 +233,8 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character, extra columns to copy (aribrary which row per group).
+#' @param checkNames logical, if TRUE check names
+#' @param strict logical, if TRUE check control table name forms
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control}}
@@ -238,13 +258,27 @@ blocks_to_rowrecs <- function(tallTable,
                               keyColumns,
                               controlTable,
                               ...,
-                              columnsToCopy = NULL) {
+                              columnsToCopy = NULL,
+                              checkNames = TRUE,
+                              strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs tallTable shoud be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
     stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")
+  }
+  cCheck <- checkControlTable(controlTable, strict)
+  if(!is.null(cCheck)) {
+    stop(paste("cdata::blocks_to_rowrecs", cCheck))
+  }
+  if(checkNames) {
+    tallTableColnames <- colnames(tallTable)
+    badCells <- setdiff(colnames(controlTable), tallTableColnames)
+    if(length(badCells)>0) {
+      stop(paste("cdata::blocks_to_rowrecs: control table column names that are not tallTable column names:",
+                 paste(badCells, collapse = ', ')))
+    }
   }
   # make simple grouping keys
   tallTable$cdata_group_key_col <- 1

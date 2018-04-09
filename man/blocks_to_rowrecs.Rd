@@ -5,7 +5,7 @@
 \title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
-  columnsToCopy = NULL)
+  columnsToCopy = NULL, checkNames = TRUE, strict = FALSE)
 }
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -17,6 +17,10 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 \item{...}{force later arguments to be by name.}
 
 \item{columnsToCopy}{character, extra columns to copy (aribrary which row per group).}
+
+\item{checkNames}{logical, if TRUE check names}
+
+\item{strict}{logical, if TRUE check control table name forms}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

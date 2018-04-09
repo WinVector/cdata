@@ -22,7 +22,7 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
 
 \item{tempNameGenerator}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
-\item{strict}{logical, if TRUE check control table contents for uniqueness}
+\item{strict}{logical, if TRUE check control table name forms}
 
 \item{checkNames}{logical, if TRUE check names}
 
