@@ -247,12 +247,12 @@ blocks_to_rowrecs <- function(tallTable,
     stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")
   }
   # make simple grouping keys
-  tallTable$cdata_group_key_col <- ""
+  tallTable$cdata_group_key_col <- 1
   if(length(keyColumns)>=1) {
     cols <- as.list(tallTable[ , keyColumns, drop=FALSE])
     names(cols) <- NULL
-    tallTable$cdata_group_key_col <- do.call("paste",
-                                             c(cols, sep = " CDATA_SEP "))
+    keys <- do.call("paste", c(cols, sep = " CDATA_SEP "))
+    tallTable$cdata_group_key_col <- match(keys, keys)
     tallTable <- tallTable[order(tallTable$cdata_group_key_col), , drop = FALSE]
   }
   first_idxs <- match(unique(tallTable$cdata_group_key_col), tallTable$cdata_group_key_col)
