@@ -97,4 +97,26 @@ test_that("testXForm.R", {
   dBack <- dBack[, colnames(dOrig), drop = FALSE]
   expect_equal(dOrig, dBack)
 
+  # same tests on db path
+  if (requireNamespace("RSQLite", quietly = TRUE)) {
+    my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+    DBI::dbWriteTable(my_db,
+                      'dOrig',
+                      dOrig,
+                      temporary = TRUE)
+    DBI::dbWriteTable(my_db,
+                      'dReady',
+                      dReady,
+                      temporary = TRUE)
+
+    tab <- blocks_to_rowrecs_q('d',
+                               keyColumns = NULL,
+                               controlTable = cT,
+                               my_db = my_db)
+
+    DBI::dbDisconnect(my_db)
+  }
+
+
 })
