@@ -1,24 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-The `cdata` package is a demonstration of the [“coordinatized data”
-theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and
-includes an implementation of the [“fluid data”
-methodology](http://winvector.github.io/FluidData/FluidData.html). The
-recommended tutorial is: [Fluid data reshaping with
-cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html).
-We also have a [short free cdata
-screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be
-found
-[here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
 Briefly `cdata` supplies data transform operators that:
 
-  - Work on local data or with any `DBI` data source.
-  - Are powerful generalizations of the operators commonly called
-    `pivot` and `un-pivot`.
+-   Work on local data or with any `DBI` data source.
+-   Are powerful generalizations of the operators commonly called `pivot` and `un-pivot`.
 
 A quick example:
 
@@ -64,7 +53,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_11472023877177225434_0000000001` spark_connection spark_shell_connection DBIConnection 
+    ## table `mvtcq_77368660828107684774_0000000001` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
@@ -87,7 +76,4 @@ Or from Github using devtools:
 devtools::install_github("WinVector/cdata")
 ```
 
-Note: `cdata` is targeted at data with “tame column names” (column names
-that are valid both in databases, and as `R` unquoted variable names)
-and basic types (column values that are simple `R` types such as
-`character`, `numeric`, `logical`, and so on).
+Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).
