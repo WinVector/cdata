@@ -10,7 +10,8 @@
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if (requireNamespace("DBI", quietly = TRUE) &&
+#'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(),
 #'                           ":memory:")
 #'   DBI::dbWriteTable(
@@ -43,6 +44,9 @@
 #' @export
 #'
 map_fields_q <- function(dname, cname, mname, my_db, rname) {
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::map_fields_q requires DBI package")
+  }
   dests <- vapply(setdiff(cols(my_db,mname), cname),
                   function(di) {
                     DBI::dbQuoteIdentifier(my_db, di)

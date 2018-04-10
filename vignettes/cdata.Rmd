@@ -20,7 +20,8 @@ Briefly `cdata` supplies data transform operators that:
 A quick example:
 
 ```{r chkpkg}
-run_vignette <- requireNamespace("RSQLite", quietly = TRUE)
+run_vignette <- requireNamespace("RSQLite", quietly = TRUE) &&
+  requireNamespace("DBI", quietly = TRUE)
 ```
 
 ```{r ex1, eval=run_vignette}

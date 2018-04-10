@@ -20,9 +20,8 @@ LazyData: true
 RoxygenNote: 6.0.1
 Depends:
   wrapr (>= 1.4.0)
-Imports:
-  DBI
 Suggests: 
+    DBI,
     RSQLite,
     testthat,
     knitr,

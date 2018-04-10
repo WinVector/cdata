@@ -25,7 +25,8 @@ Map field values from one column into new derived columns (query based, takes na
 }
 \examples{
 
-if (requireNamespace("RSQLite", quietly = TRUE)) {
+if (requireNamespace("DBI", quietly = TRUE) &&
+  requireNamespace("RSQLite", quietly = TRUE)) {
   my_db <- DBI::dbConnect(RSQLite::SQLite(),
                           ":memory:")
   DBI::dbWriteTable(

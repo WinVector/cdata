@@ -30,7 +30,8 @@ Some discussion and examples can be found here: \url{https://winvector.github.io
 }
 \examples{
 
-if (requireNamespace("RSQLite", quietly = TRUE)) {
+if (requireNamespace("DBI", quietly = TRUE) &&
+  requireNamespace("RSQLite", quietly = TRUE)) {
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   d <- data.frame(measType = c("wt", "ht"),
                   measValue = c(150, 6),

@@ -98,7 +98,8 @@ test_that("testXForm.R", {
   expect_equal(dOrig, dBack)
 
   # same tests on db path
-  if (requireNamespace("RSQLite", quietly = TRUE)) {
+  if (requireNamespace("RSQLite", quietly = TRUE) &&
+      requireNamespace("DBI", quietly = TRUE)) {
     my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 
     DBI::dbWriteTable(my_db,
@@ -110,10 +111,25 @@ test_that("testXForm.R", {
                       dReady,
                       temporary = TRUE)
 
-    tab <- blocks_to_rowrecs_q('d',
-                               keyColumns = NULL,
-                               controlTable = cT,
+    tab1_name <- rowrecs_to_blocks_q('dOrig',
+                                controlTable,
+                                my_db,
+                                columnsToCopy = "epoch")
+    tab1 <- DBI::dbGetQuery(my_db, paste("SELECT * FROM",
+                                         tab1_name))
+    tab1 <- tab1[order(tab1$epoch, tab1$measure), , drop = FALSE]
+    tab1 <- tab1[, colnames(dReady), drop = FALSE]
+    expect_equal(dReady, tab1)
+
+    tab2_name <- blocks_to_rowrecs_q('dReady',
+                               keyColumns = "epoch",
+                               controlTable = controlTable,
                                my_db = my_db)
+    tab2 <- DBI::dbGetQuery(my_db, paste("SELECT * FROM",
+                                         tab2_name))
+    tab2 <- tab2[order(tab2$epoch), , drop = FALSE]
+    tab2 <- tab2[, colnames(dOrig), drop = FALSE]
+    expect_equal(dOrig, tab2)
 
     DBI::dbDisconnect(my_db)
   }

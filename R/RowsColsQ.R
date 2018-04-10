@@ -62,7 +62,8 @@ checkControlTable <- function(controlTable, strict) {
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if (  requireNamespace("DBI", quietly = TRUE) &&
+#'     requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'   DBI::dbWriteTable(my_db,
 #'                     'd',
@@ -83,6 +84,9 @@ checkControlTable <- function(controlTable, strict) {
 #' @export
 #'
 cols <- function(my_db, tableName) {
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::cols requires DBI package")
+  }
   # comment out block fails intermitnently, and sometimes gives wrong results
   # filed as: https://github.com/tidyverse/dplyr/issues/3204
   # tryCatch(
@@ -106,7 +110,8 @@ cols <- function(my_db, tableName) {
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if ( requireNamespace("DBI", quietly = TRUE) &&
+#'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'   DBI::dbWriteTable(my_db,
 #'                     'd',
@@ -122,6 +127,9 @@ cols <- function(my_db, tableName) {
 qlook <- function(my_db, tableName,
                   displayRows = 10,
                   countRows = TRUE) {
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::qlook requires DBI package")
+  }
   h <- DBI::dbGetQuery(my_db,
                        paste0("SELECT * FROM ",
                               DBI::dbQuoteIdentifier(my_db, tableName),
@@ -195,7 +203,8 @@ qlook <- function(my_db, tableName,
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if (requireNamespace("DBI", quietly = TRUE) &&
+#'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'
 #'   # un-pivot example
@@ -228,6 +237,9 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 temporary = FALSE,
                                 resultName = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_q")
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::rowrecs_to_blocks_q requires DBI package")
+  }
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
       stop("rowrecs_to_blocks_q: columnsToCopy must be character")
@@ -347,7 +359,8 @@ rowrecs_to_blocks_q <- function(wideTable,
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if (requireNamespace("DBI", quietly = TRUE) &&
+#'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'   d <- data.frame(measType = c("wt", "ht"),
 #'                   measValue = c(150, 6),
@@ -373,6 +386,9 @@ build_pivot_control_q <- function(tableName,
                                   prefix = columnToTakeKeysFrom,
                                   sep = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::build_pivot_control_q")
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::build_pivot_control_q requires DBI package")
+  }
   q <- paste0("SELECT ",
               DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom),
               " FROM ",
@@ -442,7 +458,8 @@ build_pivot_control_q <- function(tableName,
 #'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
+#' if (requireNamespace("DBI", quietly = TRUE) &&
+#'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'   # pivot example
 #'   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
@@ -479,6 +496,9 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 temporary = FALSE,
                                 resultName = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_q")
+  if(!requireNamespace("DBI", quietly = TRUE)) {
+    stop("cdata::blocks_to_rowrecs_q requires DBI package")
+  }
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
       stop("blocks_to_rowrecs_q: keyColumns must be character")

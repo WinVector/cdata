@@ -72,7 +72,8 @@ here \url{https://github.com/WinVector/cdata}.
 }
 \examples{
 
-if (requireNamespace("RSQLite", quietly = TRUE)) {
+if (requireNamespace("DBI", quietly = TRUE) &&
+  requireNamespace("RSQLite", quietly = TRUE)) {
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   # pivot example
   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
