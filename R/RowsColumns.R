@@ -56,9 +56,9 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 
 #' Move values from columns to rows (anti-pivot, or "shred").
 #'
+#' This is a convenience notation for \code{rowrecs_to_blocks}.
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
-#' @seealso \code{\link{pivot_to_rowrecs}}
 #'
 #' @param data data.frame to work with.
 #' @param nameForNewKeyColumn character name of column to write new keys in.
@@ -68,16 +68,16 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #' @param nameForNewClassColumn optional name to land original cell classes to.
 #' @return new data.frame with values moved to rows.
 #'
+#' @seealso \code{\link{pivot_to_rowrecs}}, \code{\link{rowrecs_to_blocks}}
+#'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
 #'   d <- data.frame(AUC= 0.6, R2= 0.2)
 #'   unpivot_to_blocks(d,
 #'                     nameForNewKeyColumn= 'meas',
 #'                     nameForNewValueColumn= 'val',
 #'                     columnsToTakeFrom= c('AUC', 'R2')) %.>%
 #'      print(.)
-#' }
 #'
 #' @export
 #'
@@ -157,9 +157,9 @@ unpivot_to_blocks <- function(data,
 
 #' Move values from rows to columns (pivot).
 #'
+#' This is a convenience notation for \code{blocks_to_rowrecs}.
 #' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 #'
-#' @seealso \code{\link{unpivot_to_blocks}}
 #'
 #' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).
 #' @param columnToTakeKeysFrom character name of column build new column names from.
@@ -169,16 +169,16 @@ unpivot_to_blocks <- function(data,
 #' @param sep character if not null build more detailed column names.
 #' @return new data.frame with values moved to columns.
 #'
+#' @seealso \code{\link{unpivot_to_blocks}}, \code{\link{blocks_to_rowrecs}}
+#'
 #' @examples
 #'
-#' if (requireNamespace("RSQLite", quietly = TRUE)) {
 #'   d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
 #'   pivot_to_rowrecs(d,
 #'                    columnToTakeKeysFrom= 'meas',
 #'                    columnToTakeValuesFrom= 'val',
 #'                    rowKeyColumns= c()) %.>%
 #'      print(.)
-#' }
 #'
 #' @export
 #'

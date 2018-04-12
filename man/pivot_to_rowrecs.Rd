@@ -24,20 +24,19 @@ pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 new data.frame with values moved to columns.
 }
 \description{
+This is a convenience notation for \code{blocks_to_rowrecs}.
 For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
 }
 \examples{
 
-if (requireNamespace("RSQLite", quietly = TRUE)) {
   d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
   pivot_to_rowrecs(d,
                    columnToTakeKeysFrom= 'meas',
                    columnToTakeValuesFrom= 'val',
                    rowKeyColumns= c()) \%.>\%
      print(.)
-}
 
 }
 \seealso{
-\code{\link{unpivot_to_blocks}}
+\code{\link{unpivot_to_blocks}}, \code{\link{blocks_to_rowrecs}}
 }

@@ -37,5 +37,5 @@ Some discussion and examples can be found here: \url{https://winvector.github.io
 
 }
 \seealso{
-\code{\link{blocks_to_rowrecs}}
+\code{\link{blocks_to_rowrecs}}, \code{\link{build_pivot_control_q}}
 }

@@ -69,5 +69,5 @@ here \url{https://github.com/WinVector/cdata}.
 
 }
 \seealso{
-\code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control}}
+\code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks_q}}
 }

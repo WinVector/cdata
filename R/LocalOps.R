@@ -19,7 +19,7 @@
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \code{\link{blocks_to_rowrecs}}
+#' @seealso \code{\link{blocks_to_rowrecs}}, \code{\link{build_pivot_control_q}}
 #'
 #' @examples
 #'
@@ -237,7 +237,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param strict logical, if TRUE check control table name forms
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control}}
+#' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks_q}}
 #'
 #' @examples
 #'
