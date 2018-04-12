@@ -60,7 +60,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #'
 #' @seealso \code{\link{pivot_to_rowrecs}}
 #'
-#' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToRows*}).
+#' @param data data.frame to work with.
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.

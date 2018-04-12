@@ -8,7 +8,7 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL)
 }
 \arguments{
-\item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToRows*}).}
+\item{data}{data.frame to work with.}
 
 \item{nameForNewKeyColumn}{character name of column to write new keys in.}
 

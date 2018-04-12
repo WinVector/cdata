@@ -1,4 +1,8 @@
 
+# cdata 0.7.0 2018/04/12
+
+ * Documentation fixes.
+
 # cdata 0.7.0 2018/04/09
 
  * Narrow dependencies.
