@@ -81,7 +81,7 @@ checkControlTable <- function(controlTable, strict) {
 #'   DBI::dbDisconnect(my_db)
 #' }
 #'
-#' @export
+#' @noRd
 #'
 cols <- function(my_db, tableName) {
   if(!requireNamespace("DBI", quietly = TRUE)) {
