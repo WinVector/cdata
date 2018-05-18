@@ -1,5 +1,5 @@
 
-# cdata 0.7.1 2018/04/22
+# cdata 0.7.1 2018/05/18
 
  * Documentation fixes.
  * Don't export cols().
