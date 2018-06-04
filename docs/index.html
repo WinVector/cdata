@@ -95,15 +95,14 @@
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
 <p>A quick example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
-<pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># my_db &lt;- DBI::dbConnect(RSQLite::SQLite(), </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)
+<span class="co"># my_db &lt;- DBI::dbConnect(RSQLite::SQLite(), </span>
 <span class="co">#                         ":memory:")</span>
 my_db &lt;-<span class="st"> </span>sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_connect</a></span>(<span class="dt">version=</span><span class="st">'2.2.0'</span>, 
                                  <span class="dt">master =</span> <span class="st">"local"</span>)
 
 <span class="co"># pivot example</span>
-d &lt;-<span class="st"> </span><span class="kw">build_frame</span>(
+d &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span>
 <span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span>
 <span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )
@@ -126,7 +125,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/blocks_to_
                             <span class="dt">controlTable =</span> cT,
                             <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_37736668956431804111_0000000001` spark_connection spark_shell_connection DBIConnection 
+<pre><code>## table `mvtcq_31850932339156385752_0000000001` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6

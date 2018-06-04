@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Move values from columns to rows (anti-pivot, or "shred"). — unpivot_to_blocks" />
 
 <meta property="og:description" content="This is a convenience notation for rowrecs_to_blocks.
@@ -39,8 +42,6 @@ For a tutorial please try vignette('RowsAndColumns', package='cdata')." />
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-
 
 
   </head>
@@ -110,14 +111,16 @@ For a tutorial please try vignette('RowsAndColumns', package='cdata')." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Move values from columns to rows (anti-pivot, or "shred").</h1>
-    <small>Source: <a href='https://github.com/WinVector/cdata//blob/master/R/RowsColumns.R'><code>R/RowsColumns.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/RowsColumns.R'><code>R/RowsColumns.R</code></a></small>
     <div class="hidden name"><code>unpivot_to_blocks.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a convenience notation for <code>rowrecs_to_blocks</code>.
 For a tutorial please try <code>vignette('RowsAndColumns', package='cdata')</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>unpivot_to_blocks</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
   <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>, <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -168,8 +171,6 @@ For a tutorial please try <code>vignette('RowsAndColumns', package='cdata')</cod
                     <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
                     <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>)) <span class='kw'>%.&gt;%</span>
      <span class='fu'>print</span>(<span class='no'>.</span>)</div><div class='output co'>#&gt;   meas val
-#&gt; 1  AUC 0.6
-#&gt; 2   R2 0.2</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 </div></pre>

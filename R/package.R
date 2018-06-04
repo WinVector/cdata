@@ -18,5 +18,5 @@ NULL
 # make sure dot doesn't look like an unbound ref
 . <- NULL
 
-#' @importFrom wrapr mk_tmp_name_source := let %.>%
+#' @importFrom wrapr mk_tmp_name_source
 NULL

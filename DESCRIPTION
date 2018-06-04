@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 0.7.1
-Date: 2018-05-18
+Date: 2018-06-04
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -19,7 +19,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Depends:
-  R (>= 3.2.1),
+  R (>= 3.2.1)
+Imports:
   wrapr (>= 1.4.1)
 Suggests: 
     DBI,

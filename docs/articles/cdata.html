@@ -82,9 +82,9 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-04-22</h4>
+            <h4 class="date">2018-06-04</h4>
       
-      <small>Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
 
     </div>
@@ -100,13 +100,12 @@
 <p>A quick example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">run_vignette &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
 <span class="st">  </span><span class="kw">requireNamespace</span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)</code></pre></div>
-<pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)
+my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
                         <span class="st">":memory:"</span>)
 
 <span class="co"># pivot example</span>
-d &lt;-<span class="st"> </span><span class="kw">build_frame</span>(
+d &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span>
 <span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span>
 <span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )
@@ -130,7 +129,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
                            <span class="dt">controlTable =</span> cT,
                            <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_86461246076817356062_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_97014457069442650286_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6

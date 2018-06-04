@@ -6,9 +6,6 @@
 # Core functionality on databases.
 
 
-#' @importFrom wrapr %.>% let mapsyms :=
-NULL
-
 
 
 # confirm control table structure

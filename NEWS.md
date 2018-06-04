@@ -1,8 +1,9 @@
 
-# cdata 0.7.1 2018/05/18
+# cdata 0.7.1 2018/06/04
 
  * Documentation fixes.
  * Don't export cols().
+ * Reduce wrapr re-export.
 
 # cdata 0.7.0 2018/04/09
 
