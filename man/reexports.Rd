@@ -3,6 +3,8 @@
 \docType{import}
 \name{reexports}
 \alias{reexports}
+\alias{mk_tmp_name_source}
+\alias{reexports}
 \alias{\%.>\%}
 \alias{reexports}
 \alias{let}
@@ -21,6 +23,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{wrapr}{\code{\link[wrapr]{\%.>\%}}, \code{\link[wrapr]{let}}, \code{\link[wrapr]{qc}}, \code{\link[wrapr]{build_frame}}, \code{\link[wrapr]{draw_frame}}, \code{\link[wrapr]{qchar_frame}}}
+  \item{wrapr}{\code{\link[wrapr]{mk_tmp_name_source}}, \code{\link[wrapr]{\%.>\%}}, \code{\link[wrapr]{let}}, \code{\link[wrapr]{qc}}, \code{\link[wrapr]{build_frame}}, \code{\link[wrapr]{draw_frame}}, \code{\link[wrapr]{qchar_frame}}}
 }}
 

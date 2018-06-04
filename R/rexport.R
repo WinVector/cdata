@@ -1,4 +1,8 @@
 
+#' @importFrom wrapr mk_tmp_name_source
+#' @export
+wrapr::mk_tmp_name_source
+
 #' @importFrom wrapr %.>%
 #' @export
 wrapr::`%.>%`
