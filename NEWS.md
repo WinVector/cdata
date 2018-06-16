@@ -1,9 +1,10 @@
 
-# cdata 0.7.1 2018/06/04
+# cdata 0.7.1 2018/06/16
 
  * Documentation fixes.
  * Don't export cols().
  * Reduce wrapr re-export.
+ * More rows in qlook().
 
 # cdata 0.7.0 2018/04/09
 

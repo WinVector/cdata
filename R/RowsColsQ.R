@@ -103,7 +103,7 @@ cols <- function(my_db, tableName) {
 #' @param tableName name of table to look at
 #' @param displayRows number of rows to sample
 #' @param countRows logical, if TRUE return row count.
-#' @return str-line view of data
+#' @return str view of data
 #'
 #' @examples
 #'
@@ -147,7 +147,7 @@ qlook <- function(my_db, tableName,
   } else {
     cat(" NOTE: \"obs\" below is count of sample, not number of rows of data.\n")
   }
-  utils::str(h)
+  utils::str(h, list.len = length(h))
   invisible(NULL)
 }
 

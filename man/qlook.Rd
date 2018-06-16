@@ -16,7 +16,7 @@ qlook(my_db, tableName, displayRows = 10, countRows = TRUE)
 \item{countRows}{logical, if TRUE return row count.}
 }
 \value{
-str-line view of data
+str view of data
 }
 \description{
 Quick look at remote data
