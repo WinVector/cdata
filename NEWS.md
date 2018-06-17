@@ -1,4 +1,8 @@
 
+# cdata 0.7.2 2018/06/17
+
+ * re-export more of wrapr
+
 # cdata 0.7.1 2018/06/16
 
  * Documentation fixes.
