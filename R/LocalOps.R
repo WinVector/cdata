@@ -92,7 +92,6 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #'
 #' Transform data facts from columns into additional rows controlTable.
 #'
-#' TODO: test and and checks.
 #'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
@@ -203,7 +202,6 @@ rowrecs_to_blocks <- function(wideTable,
 #'
 #' Transform data facts from rows into additional columns using controlTable.
 #'
-#' TODO: test and and checks.
 #'
 #' This is using the theory of "fluid data"n
 #' (\url{https://github.com/WinVector/cdata}), which includes the
