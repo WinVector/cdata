@@ -1,7 +1,8 @@
 
-# cdata 0.7.2 2018/06/24
+# cdata 0.7.2 2018/06/25
 
  * re-export more of wrapr
+ * move db fns to rquery.
 
 # cdata 0.7.1 2018/06/16
 
