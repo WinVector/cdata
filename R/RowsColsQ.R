@@ -264,8 +264,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   rownames(controlTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                       ctabName,
-                      controlTable,
-                      temporary = TRUE)
+                      controlTable)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -332,6 +331,7 @@ rowrecs_to_blocks_q <- function(wideTable,
     print(q)
   }
   DBI::dbExecute(my_db, q)
+  DBI::dbRemoveTable(my_db, ctabName)
   resName
 }
 
@@ -526,8 +526,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   rownames(controlTable) <- NULL # just in case
   DBI::dbWriteTable(my_db,
                       ctabName,
-                      controlTable,
-                      temporary = TRUE)
+                      controlTable)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -613,6 +612,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     print(q)
   }
   DBI::dbExecute(my_db, q)
+  DBI::dbRemoveTable(my_db, ctabName)
   resName
 }
 

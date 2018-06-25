@@ -1,5 +1,5 @@
 
-# cdata 0.7.2 2018/06/17
+# cdata 0.7.2 2018/06/24
 
  * re-export more of wrapr
 

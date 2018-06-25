@@ -29,8 +29,6 @@ wide table built by mapping key-grouped tallTable rows to one row per group
 Transform data facts from rows into additional columns using controlTable.
 }
 \details{
-TODO: test and and checks.
-
 This is using the theory of "fluid data"n
 (\url{https://github.com/WinVector/cdata}), which includes the
 principle that each data cell has coordinates independent of the
