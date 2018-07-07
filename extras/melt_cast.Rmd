@@ -1,4 +1,9 @@
+---
+title: "LightTests"
+output: github_document
+---
 
+```{r}
 # row rec form
 d_rowrec_form <- wrapr::build_frame(
   'val_loss', 'val_acc', 'loss', 'acc' , 'epoch' |
@@ -80,4 +85,5 @@ d_thin_b$cdata_cell_label <- rows_cols_to_cells[paste(d_thin_b$cdata_row_label, 
 
 # cast to rowrec form
 data.table::dcast(d_thin_b, epoch ~ cdata_cell_label )
+```
 
