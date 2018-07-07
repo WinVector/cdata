@@ -124,7 +124,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +152,10 @@
     <tr>
       <th>columnsToCopy</th>
       <td><p>character array of column names to copy</p></td>
+    </tr>
+    <tr>
+      <th>use_data_table</th>
+      <td><p>logical if TRUE try to use data.table for the pivots.</p></td>
     </tr>
     </table>
     

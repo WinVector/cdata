@@ -3,11 +3,7 @@ LightTests
 
 ``` r
 library("cdata")
-```
 
-    ## Loading required package: wrapr
-
-``` r
 runTests <- function(db) {
   d <- build_frame(
     "AUC", "R2" |

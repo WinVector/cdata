@@ -4,7 +4,8 @@
 # in-memory direct functionality
 
 
-
+#' @importFrom stats as.formula
+NULL
 
 
 #' Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a \code{data.frame}.
@@ -87,6 +88,36 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 }
 
 
+# unpack control table into maps
+build_transform_maps <- function(controlTable) {
+  cCheck <- checkControlTable(controlTable, FALSE)
+  if(!is.null(cCheck)) {
+    stop(paste("cdata:::build_transform_maps", cCheck))
+  }
+  # use control table to get into a triple-form (only one data column, all others keys).
+  cells <- as.character(unlist(unlist(controlTable[, -1])))
+  cells_to_row_labels <- controlTable
+  for(i in 1:nrow(controlTable)) {
+    cells_to_row_labels[i, ] <- cells_to_row_labels[i, 1]
+  }
+  cells_to_row_labels <- as.character(unlist(cells_to_row_labels[, -1]))
+  names(cells_to_row_labels) <- cells
+  cells_to_col_labels <- controlTable
+  for(j in 2:ncol(controlTable)) {
+    cells_to_col_labels[, j] <- colnames(controlTable)[[j]]
+  }
+  cells_to_col_labels <- as.character(unlist(cells_to_col_labels[, -1]))
+  names(cells_to_col_labels) <- cells
+  rows_cols_to_cells <- cells
+  names(rows_cols_to_cells) <- paste(cells_to_row_labels, ",", cells_to_col_labels)
+  list(
+    cells = cells,
+    cells_to_row_labels = cells_to_row_labels,
+    cells_to_col_labels = cells_to_col_labels,
+    rows_cols_to_cells = rows_cols_to_cells
+  )
+}
+
 
 #' Map a set of columns to rows (takes a \code{data.frame}).
 #'
@@ -122,6 +153,7 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 #' @param columnsToCopy character array of column names to copy
 #' @param checkNames logical, if TRUE check names
 #' @param strict logical, if TRUE check control table name forms
+#' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
@@ -143,7 +175,8 @@ rowrecs_to_blocks <- function(wideTable,
                               ...,
                               checkNames = TRUE,
                               strict = FALSE,
-                              columnsToCopy = NULL) {
+                              columnsToCopy = NULL,
+                              use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks wideTable shoud be a data.frame")
@@ -151,6 +184,7 @@ rowrecs_to_blocks <- function(wideTable,
   if(!is.data.frame(controlTable)) {
     stop("cdata::rowrecs_to_blocks controlTable shoud be a data.frame")
   }
+  rownames(wideTable) <- NULL
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks", cCheck))
@@ -165,6 +199,35 @@ rowrecs_to_blocks <- function(wideTable,
                  paste(badCells, collapse = ', ')))
     }
   }
+
+  if( use_data_table &&
+      requireNamespace("data.table", quietly = TRUE) &&
+      requireNamespace("reshape2", quietly = TRUE) ) {
+    maps <- build_transform_maps(controlTable)
+
+    # from rowrec to one value per row form (triple-like)
+    d_thin_r <- data.table::melt(data.table::as.data.table(wideTable),
+                                 variable.name = "cdata_cell_label",
+                                 value.name = "cdata_cell_value",
+                                 id.vars = columnsToCopy,
+                                 measure.vars = maps$cells)
+    d_thin_r$cdata_row_label <- maps$cells_to_row_labels[d_thin_r$cdata_cell_label]
+    d_thin_r$cdata_col_label <- maps$cells_to_col_labels[d_thin_r$cdata_cell_label]
+
+    # cast to block form
+    f <- paste0(paste(c(columnsToCopy, "cdata_row_label"), collapse = " + "), " ~ ", "cdata_col_label")
+    r <- data.table::dcast(d_thin_r, as.formula(f), value.var = "cdata_cell_value")
+    colnames(r)[which(colnames(r)=="cdata_row_label")] <- colnames(controlTable)[[1]]
+    rownames(r) <- NULL
+    return(as.data.frame(r))
+  }
+
+  if( use_data_table ) {
+    warning("cdata::rowrecs_to_blocks use_data_table==TRUE requires data.table and reshape2 packages")
+  }
+
+  # fall back to local impl
+
   n_row_in <- nrow(wideTable)
   n_rep <- nrow(controlTable)
   n_row_res <- n_rep*n_row_in
@@ -194,6 +257,7 @@ rowrecs_to_blocks <- function(wideTable,
       res[[cn]][indxs] <- wideTable[[col]]
     }
   }
+  rownames(res) <- NULL
   res
 }
 
@@ -233,6 +297,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param columnsToCopy character, extra columns to copy (aribrary which row per group).
 #' @param checkNames logical, if TRUE check names
 #' @param strict logical, if TRUE check control table name forms
+#' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks_q}}
@@ -258,13 +323,22 @@ blocks_to_rowrecs <- function(tallTable,
                               ...,
                               columnsToCopy = NULL,
                               checkNames = TRUE,
-                              strict = FALSE) {
+                              strict = FALSE,
+                              use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs tallTable shoud be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
     stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")
+  }
+  rownames(tallTable) <- NULL
+  clear_key_column <- FALSE
+  if(length(keyColumns)<=0) {
+    # avoid no-keys case
+    tallTable$cdata_key_column <- 1
+    keyColumns <- "cdata_key_column"
+    clear_key_column <- TRUE
   }
   cCheck <- checkControlTable(controlTable, strict)
   if(!is.null(cCheck)) {
@@ -278,6 +352,38 @@ blocks_to_rowrecs <- function(tallTable,
                  paste(badCells, collapse = ', ')))
     }
   }
+
+  if( use_data_table &&
+      requireNamespace("data.table", quietly = TRUE) &&
+      requireNamespace("reshape2", quietly = TRUE) ) {
+    maps <- build_transform_maps(controlTable)
+
+    # from block form to one value per row form (triple-like)
+    d_thin_b <- data.table::melt(data.table::as.data.table(tallTable),
+                                 variable.name = "cdata_col_label",
+                                 value.name = "cdata_cell_value",
+                                 id.vars = c(keyColumns, colnames(controlTable)[[1]]),
+                                 measure.vars = colnames(controlTable)[-1])
+    d_thin_b$cdata_row_label <- d_thin_b[[colnames(controlTable)[[1]]]]
+    d_thin_b[[colnames(controlTable)[[1]]]] <- NULL
+    d_thin_b$cdata_cell_label <- maps$rows_cols_to_cells[paste(d_thin_b$cdata_row_label, ",", d_thin_b$cdata_col_label)]
+
+    # cast to rowrec form
+    f <- paste0(paste(keyColumns, collapse = " + "), " ~ ", "cdata_cell_label")
+    r <- data.table::dcast(d_thin_b, as.formula(f), value.var = "cdata_cell_value")
+    if(clear_key_column) {
+      r$cdata_key_column <- NULL
+    }
+    rownames(r) <- NULL
+    return(as.data.frame(r))
+  }
+
+  if( use_data_table ) {
+    warning("cdata::blocks_to_rowrecs use_data_table==TRUE requires data.table and reshape2 packages")
+  }
+
+  # fall back to local impl
+
   # make simple grouping keys
   tallTable$cdata_group_key_col <- 1
   if(length(keyColumns)>=1) {
@@ -312,6 +418,7 @@ blocks_to_rowrecs <- function(tallTable,
     }
   }
   res$cdata_group_key_col <- NULL
+  rownames(res) <- NULL
   res
 }
 

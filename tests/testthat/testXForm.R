@@ -16,10 +16,14 @@ test_that("testXForm.R", {
   longform = build_frame(
     "loss", "acc", "val_loss", "val_acc" |
     "loss", "acc", "val_loss", "val_acc" )
-  expect_equal(longform, rowrec)
+  testthat::expect_equal(sort(colnames(longform)), sort(colnames(rowrec)))
+  testthat::expect_equal(longform, rowrec[, colnames(longform), drop=FALSE])
+
   blockrec <- rowrecs_to_blocks(rowrec, controlTable)
   blockrec <- blockrec[order(blockrec$measure, decreasing = TRUE), , drop = FALSE]
-  expect_equal(controlTable, blockrec)
+  rownames(blockrec) <- NULL
+  testthat::expect_equal(sort(colnames(controlTable)), sort(colnames(blockrec)))
+  testthat::expect_equal(controlTable, blockrec[ , colnames(controlTable), drop=FALSE])
 
   # operating on example data
   dOrig <- build_frame(
@@ -87,11 +91,13 @@ test_that("testXForm.R", {
       20L    , "minus binary cross entropy", 0.003934  , 0.696        |
       20L    , "accuracy"                  , 0.9999    , 0.8649       )
   dReady <- dReady[order(dReady$epoch, dReady$measure), , drop = FALSE]
+  rownames(dReady) <- NULL
   dOrig$epoch <- seq_len(nrow(dOrig))
   dBlocks <- rowrecs_to_blocks(dOrig, controlTable, columnsToCopy = 'epoch')
   dBlocks <- dBlocks[order(dBlocks$epoch, dBlocks$measure), , drop = FALSE]
   dBlocks <- dBlocks[, colnames(dReady), drop = FALSE]
-  expect_equal(dReady, dBlocks)
+  rownames(dBlocks) <- NULL
+  testthat::expect_equal(dReady, dBlocks)
   dBack <- blocks_to_rowrecs(dBlocks, "epoch", controlTable)
   dBack <- dBack[order(dBack$epoch), , drop = FALSE]
   dBack <- dBack[, colnames(dOrig), drop = FALSE]
@@ -119,6 +125,7 @@ test_that("testXForm.R", {
                                          tab1_name))
     tab1 <- tab1[order(tab1$epoch, tab1$measure), , drop = FALSE]
     tab1 <- tab1[, colnames(dReady), drop = FALSE]
+    rownames(tab1) <- NULL
     expect_equal(dReady, tab1)
 
     tab2_name <- blocks_to_rowrecs_q('dReady',
@@ -129,6 +136,7 @@ test_that("testXForm.R", {
                                          tab2_name))
     tab2 <- tab2[order(tab2$epoch), , drop = FALSE]
     tab2 <- tab2[, colnames(dOrig), drop = FALSE]
+    rownames(tab2) <- NULL
     expect_equal(dOrig, tab2)
 
     DBI::dbDisconnect(my_db)

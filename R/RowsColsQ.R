@@ -16,8 +16,8 @@ checkControlTable <- function(controlTable, strict) {
   if(nrow(controlTable)<1) {
     return("control table must have at least 1 row")
   }
-  if(ncol(controlTable)<1) {
-    return("control table must have at least 1 column")
+  if(ncol(controlTable)<2) {
+    return("control table must have at least 2 columns")
   }
   classes <- vapply(controlTable, class, character(1))
   if(!all(classes=='character')) {

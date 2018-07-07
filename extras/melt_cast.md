@@ -14,7 +14,7 @@ d_rowrec_form <- wrapr::build_frame(
 
 # block form
 d_block_form <- wrapr::build_frame(
-  'epoch', 'row_label'                 , 'training', 'validation' |
+  'epoch', 'measure'                   , 'training', 'validation' |
   1L     , 'accuracy'                  , 0.8722    , 0.7852       |
   1L     , 'minus binary cross entropy', 0.377     , 0.5067       |
   2L     , 'accuracy'                  , 0.8895    , 0.904        |
@@ -35,67 +35,43 @@ controlTable <- wrapr::build_frame(
   'accuracy'                  , 'acc'     , 'val_acc'    )
 
 
-# use control table to get into a triple-form (only one data column, all others keys).
-cells <- as.character(unlist(unlist(controlTable[, -1])))
-cells_to_row_labels <- controlTable
-for(i in 1:nrow(controlTable)) {
-  cells_to_row_labels[i, ] <- cells_to_row_labels[i, 1]
-}
-cells_to_row_labels <- as.character(unlist(cells_to_row_labels[, -1]))
-names(cells_to_row_labels) <- cells
-cells_to_col_labels <- controlTable
-for(j in 2:ncol(controlTable)) {
-  cells_to_col_labels[, j] <- colnames(controlTable)[[j]]
-}
-cells_to_col_labels <- as.character(unlist(cells_to_col_labels[, -1]))
-names(cells_to_col_labels) <- cells
-rows_cols_to_cells <- cells
-names(rows_cols_to_cells) <- paste(cells_to_row_labels, ",", cells_to_col_labels)
-
-
-
-# from rowrec to one value per row form (triple-like)
-d_thin_r <- data.table::melt(d_rowrec_form,
-                             id.vars = "epoch",
-                             measure.vars = cells)
-d_thin_r$cdata_cell_label <- d_thin_r$variable
-d_thin_r$cdata_row_label <- cells_to_row_labels[d_thin_r$cdata_cell_label]
-d_thin_r$cdata_col_label <- cells_to_col_labels[d_thin_r$cdata_cell_label]
-
-# cast to block form
-r <- data.table::dcast(d_thin_r, epoch + cdata_row_label ~ cdata_col_label )
-r$row_label <- r$cdata_row_label
-r$cdata_row_label <- NULL
-r
+cdata::rowrecs_to_blocks(d_rowrec_form, controlTable, columnsToCopy = "epoch", use_data_table = TRUE)
 ```
 
-    ##    epoch training validation                  row_label
-    ## 1      1   0.7852     0.8722                   accuracy
-    ## 2      1   0.5067     0.3770 minus binary cross entropy
-    ## 3      2   0.9040     0.8895                   accuracy
-    ## 4      2   0.3002     0.2997 minus binary cross entropy
-    ## 5      3   0.9303     0.8822                   accuracy
-    ## 6      3   0.2166     0.2964 minus binary cross entropy
-    ## 7      4   0.9428     0.8899                   accuracy
-    ## 8      4   0.1739     0.2779 minus binary cross entropy
-    ## 9      5   0.9545     0.8861                   accuracy
-    ## 10     5   0.1411     0.2843 minus binary cross entropy
-    ## 11     6   0.9656     0.8817                   accuracy
-    ## 12     6   0.1136     0.3120 minus binary cross entropy
+    ##    epoch                    measure training validation
+    ## 1      1                   accuracy   0.7852     0.8722
+    ## 2      1 minus binary cross entropy   0.5067     0.3770
+    ## 3      2                   accuracy   0.9040     0.8895
+    ## 4      2 minus binary cross entropy   0.3002     0.2997
+    ## 5      3                   accuracy   0.9303     0.8822
+    ## 6      3 minus binary cross entropy   0.2166     0.2964
+    ## 7      4                   accuracy   0.9428     0.8899
+    ## 8      4 minus binary cross entropy   0.1739     0.2779
+    ## 9      5                   accuracy   0.9545     0.8861
+    ## 10     5 minus binary cross entropy   0.1411     0.2843
+    ## 11     6                   accuracy   0.9656     0.8817
+    ## 12     6 minus binary cross entropy   0.1136     0.3120
 
 ``` r
-# from block form to one value per row form (triple-like)
-d_thin_b <- data.table::melt(d_block_form,
-                             id.vars = c("epoch", "row_label"),
-                             measure.vars = c("training", "validation"))
-d_thin_b$cdata_row_label <- d_thin_b$row_label
-d_thin_b$row_label <- NULL
-d_thin_b$cdata_col_label <- d_thin_b$variable
-d_thin_b$variable <- NULL
-d_thin_b$cdata_cell_label <- rows_cols_to_cells[paste(d_thin_b$cdata_row_label, ",", d_thin_b$cdata_col_label)]
+cdata::rowrecs_to_blocks(d_rowrec_form, controlTable, columnsToCopy = "epoch", use_data_table = FALSE)
+```
 
-# cast to rowrec form
-data.table::dcast(d_thin_b, epoch ~ cdata_cell_label )
+    ##    epoch                    measure training validation
+    ## 1      1 minus binary cross entropy   0.5067     0.3770
+    ## 2      1                   accuracy   0.7852     0.8722
+    ## 3      2 minus binary cross entropy   0.3002     0.2997
+    ## 4      2                   accuracy   0.9040     0.8895
+    ## 5      3 minus binary cross entropy   0.2166     0.2964
+    ## 6      3                   accuracy   0.9303     0.8822
+    ## 7      4 minus binary cross entropy   0.1739     0.2779
+    ## 8      4                   accuracy   0.9428     0.8899
+    ## 9      5 minus binary cross entropy   0.1411     0.2843
+    ## 10     5                   accuracy   0.9545     0.8861
+    ## 11     6 minus binary cross entropy   0.1136     0.3120
+    ## 12     6                   accuracy   0.9656     0.8817
+
+``` r
+cdata::blocks_to_rowrecs(d_block_form, controlTable, keyColumns = "epoch", use_data_table = TRUE)
 ```
 
     ##   epoch    acc   loss val_acc val_loss
@@ -105,3 +81,15 @@ data.table::dcast(d_thin_b, epoch ~ cdata_cell_label )
     ## 4     4 0.8899 0.2779  0.9428   0.1739
     ## 5     5 0.8861 0.2843  0.9545   0.1411
     ## 6     6 0.8817 0.3120  0.9656   0.1136
+
+``` r
+cdata::blocks_to_rowrecs(d_block_form, controlTable, keyColumns = "epoch", use_data_table = FALSE)
+```
+
+    ##   epoch   loss    acc val_loss val_acc
+    ## 1     1 0.3770 0.8722   0.5067  0.7852
+    ## 2     2 0.2997 0.8895   0.3002  0.9040
+    ## 3     3 0.2964 0.8822   0.2166  0.9303
+    ## 4     4 0.2779 0.8899   0.1739  0.9428
+    ## 5     5 0.2843 0.8861   0.1411  0.9545
+    ## 6     6 0.3120 0.8817   0.1136  0.9656

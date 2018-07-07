@@ -82,7 +82,7 @@
       <h1>Frame Tools</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-06-24</h4>
+            <h4 class="date">2018-07-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/FrameTools.Rmd"><code>vignettes/FrameTools.Rmd</code></a></small>
       <div class="hidden name"><code>FrameTools.Rmd</code></div>
@@ -115,12 +115,12 @@
 <p><code>wrapr</code> supplies the method <a href="https://winvector.github.io/wrapr/articles/FrameTools.html"><code>draw_frame</code></a> which at first glance appears to be a mere pretty-printer:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"wrapr"</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/draw_frame">draw_frame</a></span>(d))</code></pre></div>
-<pre><code><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">wrapr::build_frame(
+<pre><code>d &lt;- wrapr::build_frame(
    'names', 'x', 'y' |
    'a'    , 1  , 1   |
    'b'    , 2  , 4   |
    'c'    , 3  , 9   |
-   'd'    , 4  , 16  )</a></code></pre>
+   'd'    , 4  , 16  )</code></pre>
 <p>However, the above rendering is actually executable <code>R</code> code. If we run it, we re-create the original <code>data.frame()</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"names"</span>, <span class="st">"x"</span>, <span class="st">"y"</span> <span class="op">|</span>

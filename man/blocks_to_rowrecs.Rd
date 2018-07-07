@@ -5,7 +5,8 @@
 \title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
-  columnsToCopy = NULL, checkNames = TRUE, strict = FALSE)
+  columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
+  use_data_table = TRUE)
 }
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -21,6 +22,8 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 \item{checkNames}{logical, if TRUE check names}
 
 \item{strict}{logical, if TRUE check control table name forms}
+
+\item{use_data_table}{logical if TRUE try to use data.table for the pivots.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

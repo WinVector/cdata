@@ -10,8 +10,6 @@ library("tidyr")
 library("cdata")
 ```
 
-    ## Loading required package: wrapr
-
 ``` r
 set.seed(3525)
 mkData <- function(nrow, ncol) {
