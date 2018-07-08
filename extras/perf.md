@@ -21,8 +21,10 @@ mkData <- function(nrow, ncol) {
   dWide
 }
 
-for(nrow in c(100, 1000, 10000)) {
+for(nrow in c(1000, 10000)) {
   for(ncol in c(10, 100)) {
+    print("***************")
+    print(paste("nrow", nrow, "ncol", ncol))
     dWide <- mkData(nrow, ncol)
     # unpivot in cdata notation
     # actually rowrecs_to_blocks() is the preferend notation 
@@ -57,8 +59,9 @@ for(nrow in c(100, 1000, 10000)) {
     
     t_unpivot <- microbenchmark(unpivot_cdata(), unpivot_tidyr())
     #print(t_unpivot)
-    #autoplot(t_unpivot)
-    print(WVPlots::ScatterBoxPlotH(t_unpivot,  "time", "expr",
+    #print(autoplot(t_unpivot))
+    t_unpivot$seconds <- t_unpivot$time/1e+9
+    print(WVPlots::ScatterBoxPlotH(t_unpivot, "seconds", "expr",
                                    paste0("un-pivot times (NS) (rows=",
                                           nrow, 
                                           ", cols=",
@@ -97,9 +100,10 @@ for(nrow in c(100, 1000, 10000)) {
     
     t_pivot <- microbenchmark(pivot_cdata(), pivot_tidyr())
     #print(t_pivot)
-    #autoplot(t_pivot)
-    print(WVPlots::ScatterBoxPlotH(t_pivot,  "time", "expr", 
-                                   paste0("pivot times (NS) (rows=",
+    #print(autoplot(t_pivot))
+    t_pivot$seconds <- t_pivot$time/1e+9
+    print(WVPlots::ScatterBoxPlotH(t_pivot,  "seconds", "expr", 
+                                   paste0("pivot times (rows=",
                                           nrow, 
                                           ", cols=",
                                           ncol,
@@ -108,4 +112,22 @@ for(nrow in c(100, 1000, 10000)) {
 }
 ```
 
-![](perf_files/figure-markdown_github/exp-1.png)![](perf_files/figure-markdown_github/exp-2.png)![](perf_files/figure-markdown_github/exp-3.png)![](perf_files/figure-markdown_github/exp-4.png)![](perf_files/figure-markdown_github/exp-5.png)![](perf_files/figure-markdown_github/exp-6.png)![](perf_files/figure-markdown_github/exp-7.png)![](perf_files/figure-markdown_github/exp-8.png)![](perf_files/figure-markdown_github/exp-9.png)![](perf_files/figure-markdown_github/exp-10.png)![](perf_files/figure-markdown_github/exp-11.png)![](perf_files/figure-markdown_github/exp-12.png)
+    ## [1] "***************"
+    ## [1] "nrow 1000 ncol 10"
+
+![](perf_files/figure-markdown_github/exp-1.png)![](perf_files/figure-markdown_github/exp-2.png)
+
+    ## [1] "***************"
+    ## [1] "nrow 1000 ncol 100"
+
+![](perf_files/figure-markdown_github/exp-3.png)![](perf_files/figure-markdown_github/exp-4.png)
+
+    ## [1] "***************"
+    ## [1] "nrow 10000 ncol 10"
+
+![](perf_files/figure-markdown_github/exp-5.png)![](perf_files/figure-markdown_github/exp-6.png)
+
+    ## [1] "***************"
+    ## [1] "nrow 10000 ncol 100"
+
+![](perf_files/figure-markdown_github/exp-7.png)![](perf_files/figure-markdown_github/exp-8.png)
