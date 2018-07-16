@@ -16,7 +16,7 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 
 \item{columnsToTakeFrom}{character array names of columns to take values from.}
 
-\item{...}{force later argumets to bind by name.}
+\item{...}{force later arguments to bind by name.}
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
 }

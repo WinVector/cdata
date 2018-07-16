@@ -46,7 +46,7 @@ controlTable[ , 1] (the group label) cross colnames(controlTable)
 controlTable[ , 2:ncol(controlTable)] (column labels)
 are names of data cells in the wide form.
 To get behavior similar to tidyr::gather/spread one builds the control table
-by running an appropiate query over the data.
+by running an appropriate query over the data.
 
 Some discussion and examples can be found here:
 \url{https://winvector.github.io/FluidData/FluidData.html} and

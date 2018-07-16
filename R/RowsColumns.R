@@ -64,7 +64,7 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #' @param nameForNewKeyColumn character name of column to write new keys in.
 #' @param nameForNewValueColumn character name of column to write new values in.
 #' @param columnsToTakeFrom character array names of columns to take values from.
-#' @param ... force later argumets to bind by name.
+#' @param ... force later arguments to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
 #' @return new data.frame with values moved to rows.
 #'

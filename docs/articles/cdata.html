@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.3</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2018-07-07</h4>
+            <h4 class="date">2018-07-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -129,7 +129,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
                            <span class="dt">controlTable =</span> cT,
                            <span class="dt">my_db =</span> my_db)
 <span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_66128993000465712231_0000000001` SQLiteConnection 
+<pre><code>## table `mvtcq_98758136410575847505_0000000001` SQLiteConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
@@ -137,7 +137,7 @@ tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
 <p>Install via CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
-<p>Or from Github using devtools:</p>
+<p>Or from GitHub using devtools:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
   </div>

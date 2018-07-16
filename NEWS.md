@@ -1,4 +1,8 @@
 
+# cdata 0.7.2 2018/07/16
+
+ * Documentation fixes.
+
 # cdata 0.7.2 2018/07/07
 
  * switch local ops to data.table implementation.

@@ -141,7 +141,7 @@ build_transform_maps <- function(controlTable) {
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
 #' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropiate query over the data.
+#' by running an appropriate query over the data.
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
@@ -284,7 +284,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
 #' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropiate query over the data.
+#' by running an appropriate query over the data.
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
@@ -294,7 +294,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param keyColumns character list of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.
-#' @param columnsToCopy character, extra columns to copy (aribrary which row per group).
+#' @param columnsToCopy character, extra columns to copy.
 #' @param checkNames logical, if TRUE check names
 #' @param strict logical, if TRUE check control table name forms
 #' @param use_data_table logical if TRUE try to use data.table for the pivots.

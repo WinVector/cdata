@@ -48,7 +48,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_87375781106602338323_0000000001` spark_connection spark_shell_connection DBIConnection 
+    ## table `mvtcq_91164845446909464983_0000000001` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
@@ -65,7 +65,7 @@ Install via CRAN:
 install.packages("cdata")
 ```
 
-Or from Github using devtools:
+Or from GitHub using devtools:
 
 ``` r
 devtools::install_github("WinVector/cdata")

@@ -176,7 +176,7 @@ qlook <- function(my_db, tableName,
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
 #' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropiate query over the data.
+#' by running an appropriate query over the data.
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
@@ -429,7 +429,7 @@ build_pivot_control_q <- function(tableName,
 #' controlTable[ , 2:ncol(controlTable)] (column labels)
 #' are names of data cells in the wide form.
 #' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropiate query over the data.
+#' by running an appropriate query over the data.
 #'
 #' Some discussion and examples can be found here:
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
@@ -446,7 +446,7 @@ build_pivot_control_q <- function(tableName,
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
-#' @param dropDups logical if TRUE supress duplicate columns (duplicate determined by name, not content).
+#' @param dropDups logical if TRUE suppress duplicate columns (duplicate determined by name, not content).
 #' @param temporary logical, if TRUE make result temporary.
 #' @param resultName character, name for result table.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
