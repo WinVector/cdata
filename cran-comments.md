@@ -11,6 +11,15 @@
 ## R CMD check --as-cran cdata_0.7.3.tar.gz
 
  
+    * using session charset: UTF-8
+    * using option ‘--as-cran’
+    * checking for file ‘cdata/DESCRIPTION’ ... OK
+    * checking extension type ... Package
+    * this is package ‘cdata’ version ‘0.7.3’
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    Maintainer: ‘John Mount <jmount@win-vector.com>’
+    Status: OK
 
 ## Downstream dependencies
 
