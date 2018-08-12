@@ -4,8 +4,9 @@
 \alias{build_pivot_control_q}
 \title{Build a blocks_to_rowrecs_q() control table that specifies a pivot (query based, takes name of table).}
 \usage{
-build_pivot_control_q(tableName, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  my_db, ..., prefix = columnToTakeKeysFrom, sep = NULL)
+build_pivot_control_q(tableName, columnToTakeKeysFrom,
+  columnToTakeValuesFrom, my_db, ..., prefix = columnToTakeKeysFrom,
+  sep = NULL)
 }
 \arguments{
 \item{tableName}{Name of table to scan for new column names.}

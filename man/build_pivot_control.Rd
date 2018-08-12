@@ -4,8 +4,8 @@
 \alias{build_pivot_control}
 \title{Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a \code{data.frame}.}
 \usage{
-build_pivot_control(table, columnToTakeKeysFrom, columnToTakeValuesFrom, ...,
-  prefix = columnToTakeKeysFrom, sep = NULL)
+build_pivot_control(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
+  ..., prefix = columnToTakeKeysFrom, sep = NULL)
 }
 \arguments{
 \item{table}{data.frame to scan for new column names (in-memory data.frame).}

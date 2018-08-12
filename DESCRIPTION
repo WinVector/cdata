@@ -1,14 +1,14 @@
 Package: cdata
 Type: Package
 Title: Fluid Data Transformations
-Version: 0.7.3
-Date: 2018-07-20
+Version: 0.7.4
+Date: 2018-08-12
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
     person(family = "Win-Vector LLC", role = c("cph"))
     )
-URL:  https://github.com/WinVector/cdata/, https://winvector.github.io/cdata/
+URL: https://github.com/WinVector/cdata/, https://winvector.github.io/cdata/
 Maintainer: John Mount <jmount@win-vector.com>
 BugReports: https://github.com/WinVector/cdata/issues
 Description: Supplies higher-order fluid data transform operators that include pivot and anti-pivot as special cases. 
@@ -17,7 +17,7 @@ Description: Supplies higher-order fluid data transform operators that include p
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Depends:
   R (>= 3.2.1)
 Imports:
@@ -33,5 +33,3 @@ Suggests:
     reshape2
 VignetteBuilder: knitr
 ByteCompile: true
-
-

@@ -291,7 +291,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' here \url{https://github.com/WinVector/cdata}.
 #'
 #' @param tallTable data.frame containing data to be mapped (in-memory data.frame).
-#' @param keyColumns character list of column defining row groups
+#' @param keyColumns character vector of column defining row groups
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character, extra columns to copy.

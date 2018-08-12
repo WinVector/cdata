@@ -4,7 +4,8 @@
 \alias{rowrecs_to_blocks_q}
 \title{Map a set of columns to rows (query based, take name of table).}
 \usage{
-rowrecs_to_blocks_q(wideTable, controlTable, my_db, ..., columnsToCopy = NULL,
+rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
+  columnsToCopy = NULL,
   tempNameGenerator = mk_tmp_name_source("mvtrq"), strict = FALSE,
   checkNames = TRUE, showQuery = FALSE, defaultValue = NULL,
   temporary = FALSE, resultName = NULL)

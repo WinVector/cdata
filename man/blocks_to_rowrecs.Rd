@@ -11,7 +11,7 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
 
-\item{keyColumns}{character list of column defining row groups}
+\item{keyColumns}{character vector of column defining row groups}
 
 \item{controlTable}{table specifying mapping (local data frame)}
 
