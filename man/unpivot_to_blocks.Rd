@@ -2,10 +2,15 @@
 % Please edit documentation in R/RowsColumns.R
 \name{unpivot_to_blocks}
 \alias{unpivot_to_blocks}
+\alias{unpivot_to_blocks.default}
 \title{Move values from columns to rows (anti-pivot, or "shred").}
 \usage{
 unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL)
+
+\method{unpivot_to_blocks}{default}(data, nameForNewKeyColumn,
+  nameForNewValueColumn, columnsToTakeFrom, ...,
+  nameForNewClassColumn = NULL)
 }
 \arguments{
 \item{data}{data.frame to work with.}

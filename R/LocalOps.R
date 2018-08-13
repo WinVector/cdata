@@ -38,9 +38,20 @@ build_pivot_control <- function(table,
                                 ...,
                                 prefix = columnToTakeKeysFrom,
                                 sep = NULL) {
+  UseMethod("build_pivot_control")
+}
+
+#' @export
+#' @rdname build_pivot_control
+build_pivot_control.default <- function(table,
+                                        columnToTakeKeysFrom,
+                                        columnToTakeValuesFrom,
+                                        ...,
+                                        prefix = columnToTakeKeysFrom,
+                                        sep = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::build_pivot_control")
   if(!is.data.frame(table)) {
-    stop("build_pivot_control table should be a data.frame")
+    stop("build_pivot_control.default table should be a data.frame")
   }
   controlTable <- data.frame(vals = unique(table[[columnToTakeKeysFrom]]),
                              stringsAsFactors = FALSE)
@@ -124,7 +135,7 @@ build_transform_maps <- function(controlTable) {
 #' Transform data facts from columns into additional rows controlTable.
 #'
 #'
-#' This is using the theory of "fluid data"n
+#' This is using the theory of "fluid data"
 #' (\url{https://github.com/WinVector/cdata}), which includes the
 #' principle that each data cell has coordinates independent of the
 #' storage details and storage detail dependent coordinates (usually
@@ -177,9 +188,21 @@ rowrecs_to_blocks <- function(wideTable,
                               strict = FALSE,
                               columnsToCopy = NULL,
                               use_data_table = TRUE) {
+  UseMethod("rowrecs_to_blocks")
+}
+
+#' @export
+#' @rdname rowrecs_to_blocks
+rowrecs_to_blocks.default <- function(wideTable,
+                                      controlTable,
+                                      ...,
+                                      checkNames = TRUE,
+                                      strict = FALSE,
+                                      columnsToCopy = NULL,
+                                      use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
-    stop("cdata::rowrecs_to_blocks wideTable shoud be a data.frame")
+    stop("cdata::rowrecs_to_blocks.default wideTable shoud be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
     stop("cdata::rowrecs_to_blocks controlTable shoud be a data.frame")
@@ -325,9 +348,22 @@ blocks_to_rowrecs <- function(tallTable,
                               checkNames = TRUE,
                               strict = FALSE,
                               use_data_table = TRUE) {
+  UseMethod("blocks_to_rowrecs")
+}
+
+#' @export
+#' @rdname blocks_to_rowrecs
+blocks_to_rowrecs.default <- function(tallTable,
+                                      keyColumns,
+                                      controlTable,
+                                      ...,
+                                      columnsToCopy = NULL,
+                                      checkNames = TRUE,
+                                      strict = FALSE,
+                                      use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
-    stop("cdata::blocks_to_rowrecs tallTable shoud be a data.frame")
+    stop("cdata::blocks_to_rowrecs.default tallTable shoud be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
     stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")

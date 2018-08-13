@@ -2,10 +2,15 @@
 % Please edit documentation in R/LocalOps.R
 \name{blocks_to_rowrecs}
 \alias{blocks_to_rowrecs}
+\alias{blocks_to_rowrecs.default}
 \title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
+  use_data_table = TRUE)
+
+\method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
+  ..., columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
   use_data_table = TRUE)
 }
 \arguments{

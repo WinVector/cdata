@@ -2,10 +2,15 @@
 % Please edit documentation in R/LocalOps.R
 \name{build_pivot_control}
 \alias{build_pivot_control}
+\alias{build_pivot_control.default}
 \title{Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a \code{data.frame}.}
 \usage{
 build_pivot_control(table, columnToTakeKeysFrom, columnToTakeValuesFrom,
   ..., prefix = columnToTakeKeysFrom, sep = NULL)
+
+\method{build_pivot_control}{default}(table, columnToTakeKeysFrom,
+  columnToTakeValuesFrom, ..., prefix = columnToTakeKeysFrom,
+  sep = NULL)
 }
 \arguments{
 \item{table}{data.frame to scan for new column names (in-memory data.frame).}

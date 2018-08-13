@@ -2,10 +2,15 @@
 % Please edit documentation in R/LocalOps.R
 \name{rowrecs_to_blocks}
 \alias{rowrecs_to_blocks}
+\alias{rowrecs_to_blocks.default}
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
 rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
   strict = FALSE, columnsToCopy = NULL, use_data_table = TRUE)
+
+\method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
+  checkNames = TRUE, strict = FALSE, columnsToCopy = NULL,
+  use_data_table = TRUE)
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -29,7 +34,7 @@ long table built by mapping wideTable to one row per group
 Transform data facts from columns into additional rows controlTable.
 }
 \details{
-This is using the theory of "fluid data"n
+This is using the theory of "fluid data"
 (\url{https://github.com/WinVector/cdata}), which includes the
 principle that each data cell has coordinates independent of the
 storage details and storage detail dependent coordinates (usually
