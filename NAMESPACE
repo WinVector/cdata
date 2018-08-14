@@ -2,6 +2,7 @@
 
 S3method(blocks_to_rowrecs,default)
 S3method(build_pivot_control,default)
+S3method(build_pivot_control,relop)
 S3method(rowrecs_to_blocks,default)
 S3method(unpivot_to_blocks,default)
 S3method(unpivot_to_blocks,relop)

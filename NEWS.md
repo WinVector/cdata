@@ -1,5 +1,5 @@
 
-# cdata 0.7.4 2018/08/12
+# cdata 0.7.4 2018/08/14
 
  * rquery extension (moving methods to S3).
  * Documentation fixes.
