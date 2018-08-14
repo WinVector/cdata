@@ -3,6 +3,7 @@
 \name{unpivot_to_blocks}
 \alias{unpivot_to_blocks}
 \alias{unpivot_to_blocks.default}
+\alias{unpivot_to_blocks.relop}
 \title{Move values from columns to rows (anti-pivot, or "shred").}
 \usage{
 unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
@@ -11,6 +12,11 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 \method{unpivot_to_blocks}{default}(data, nameForNewKeyColumn,
   nameForNewValueColumn, columnsToTakeFrom, ...,
   nameForNewClassColumn = NULL)
+
+\method{unpivot_to_blocks}{relop}(data, nameForNewKeyColumn,
+  nameForNewValueColumn, columnsToTakeFrom, ...,
+  nameForNewClassColumn = NULL,
+  tmp_name_source = wrapr::mk_tmp_name_source("sn"), temporary = TRUE)
 }
 \arguments{
 \item{data}{data.frame to work with.}
@@ -24,6 +30,10 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{...}{force later arguments to bind by name.}
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
+
+\item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
+
+\item{temporary}{logical, if TRUE make result temporary.}
 }
 \value{
 new data.frame with values moved to rows.
@@ -40,6 +50,36 @@ For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
                     nameForNewValueColumn= 'val',
                     columnsToTakeFrom= c('AUC', 'R2')) \%.>\%
      print(.)
+
+
+d <- data.frame(AUC= 0.6, R2= 0.2)
+ops <- rquery::local_td(d) \%.>\%
+  unpivot_to_blocks(
+    .,
+    nameForNewKeyColumn= 'meas',
+    nameForNewValueColumn= 'val',
+    columnsToTakeFrom= c('AUC', 'R2'))
+cat(format(ops))
+
+if(requireNamespace("rqdatatable", quietly = TRUE)) {
+  library("rqdatatable")
+  d \%.>\%
+    ops \%.>\%
+    print(.)
+}
+
+if(requireNamespace("RSQLite", quietly = TRUE)) {
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(db,
+                    'd',
+                    d,
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  db \%.>\%
+    ops \%.>\%
+    print(.)
+  DBI::dbDisconnect(db)
+}
 
 }
 \seealso{
