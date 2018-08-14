@@ -2,14 +2,10 @@
 % Please edit documentation in R/RowsColumns.R
 \name{pivot_to_rowrecs}
 \alias{pivot_to_rowrecs}
-\alias{pivot_to_rowrecs.default}
 \title{Move values from rows to columns (pivot).}
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL)
-
-\method{pivot_to_rowrecs}{default}(data, columnToTakeKeysFrom,
-  columnToTakeValuesFrom, rowKeyColumns, ..., sep = NULL)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}

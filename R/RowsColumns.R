@@ -199,19 +199,8 @@ pivot_to_rowrecs <- function(data,
                              rowKeyColumns,
                              ...,
                              sep = NULL) {
-  UseMethod("pivot_to_rowrecs")
-}
-
-#' @export
-#' @rdname pivot_to_rowrecs
-pivot_to_rowrecs.default <- function(data,
-                                     columnToTakeKeysFrom,
-                                     columnToTakeValuesFrom,
-                                     rowKeyColumns,
-                                     ...,
-                                     sep = NULL) {
   if(!is.data.frame(data)) {
-    stop("cdata::pivot_to_rowrecs.default data must be a local data.frame")
+    stop("cdata::pivot_to_rowrecs data must be a local data.frame")
   }
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::pivot_to_rowrecs")
   cn <- colnames(data)
