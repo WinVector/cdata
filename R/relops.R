@@ -199,6 +199,41 @@ unpivot_to_blocks.relop <- function(data,
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE make result temporary.
 #'
+#' @examples
+#'
+#' d <- data.frame(meas = c('AUC', 'R2'),
+#'                 val = c(0.6, 0.2))
+#' cT <- build_pivot_control(
+#'   d,
+#'   columnToTakeKeysFrom= 'meas',
+#'   columnToTakeValuesFrom= 'val')
+#'
+#' ops <- rquery::local_td(d) %.>%
+#'   blocks_to_rowrecs(.,
+#'                     keyColumns = NULL,
+#'                     controlTable = cT)
+#' cat(format(ops))
+#'
+#' if(requireNamespace("rqdatatable", quietly = TRUE)) {
+#'   library("rqdatatable")
+#'   d %.>%
+#'     ops %.>%
+#'     print(.)
+#' }
+#'
+#' if(requireNamespace("RSQLite", quietly = TRUE)) {
+#'   db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   DBI::dbWriteTable(db,
+#'                     'd',
+#'                     d,
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   db %.>%
+#'     ops %.>%
+#'     print(.)
+#'   DBI::dbDisconnect(db)
+#' }
+#'
 #' @export
 #' @rdname blocks_to_rowrecs
 blocks_to_rowrecs.relop <- function(tallTable,
@@ -211,7 +246,6 @@ blocks_to_rowrecs.relop <- function(tallTable,
                                     use_data_table = TRUE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                                     temporary = TRUE) {
-  stop("Not implmented yet.") # TODO: remove this stop().
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!("relop" %in% class(tallTable))) {
     stop("cdata::blocks_to_rowrecs.relop tallTable must be of class relop")
@@ -231,7 +265,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
   incoming_table_name = tmp_name_source()
   outgoing_table_name = tmp_name_source()
   columns_produced <- c(keyColumns,
-                        as.character(unlist(controlTable[, -1, drop=FALSE]))) # TODO: work this out.
+                        as.character(unlist(controlTable[, -1, drop=FALSE])))
   f_db <- function(db,
                    incoming_table_name,
                    outgoing_table_name) {
@@ -274,6 +308,38 @@ blocks_to_rowrecs.relop <- function(tallTable,
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE make result temporary.
 #'
+#' @examples
+#'
+#' d <- data.frame(AUC = 0.6, R2 = 0.2)
+#' cT <- build_unpivot_control(
+#'   nameForNewKeyColumn= 'meas',
+#'   nameForNewValueColumn= 'val',
+#'   columnsToTakeFrom= c('AUC', 'R2'))
+#'
+#' ops <- rquery::local_td(d) %.>%
+#'   rowrecs_to_blocks(., cT)
+#' cat(format(ops))
+#'
+#' if(requireNamespace("rqdatatable", quietly = TRUE)) {
+#'   library("rqdatatable")
+#'   d %.>%
+#'     ops %.>%
+#'     print(.)
+#' }
+#'
+#' if(requireNamespace("RSQLite", quietly = TRUE)) {
+#'   db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+#'   DBI::dbWriteTable(db,
+#'                     'd',
+#'                     d,
+#'                     overwrite = TRUE,
+#'                     temporary = TRUE)
+#'   db %.>%
+#'     ops %.>%
+#'     print(.)
+#'   DBI::dbDisconnect(db)
+#' }
+#'
 #' @export
 #' @rdname rowrecs_to_blocks
 rowrecs_to_blocks.relop <- function(wideTable,
@@ -285,7 +351,6 @@ rowrecs_to_blocks.relop <- function(wideTable,
                                     use_data_table = TRUE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                                     temporary = TRUE) {
-  stop("Not implmented yet.") # TODO: remove this stop().
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!("relop" %in% class(wideTable))) {
     stop("cdata::rowrecs_to_blocks.relop wideTable should be of class relop")
@@ -303,7 +368,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
   force(temporary)
   incoming_table_name = tmp_name_source()
   outgoing_table_name = tmp_name_source()
-  columns_produced <- c(columnsToCopy, colnames(controlTable)) # TODO: work this out.
+  columns_produced <- c(columnsToCopy, colnames(controlTable))
   f_db <- function(db,
                    incoming_table_name,
                    outgoing_table_name) {

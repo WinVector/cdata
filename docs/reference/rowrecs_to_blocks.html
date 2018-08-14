@@ -113,7 +113,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Map a set of columns to rows (takes a <code>data.frame</code>).</h1>
-    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/relops.R'><code>R/relops.R</code></a></small>
     <div class="hidden name"><code>rowrecs_to_blocks.Rd</code></div>
     </div>
 
@@ -129,7 +129,14 @@
 <span class='co'># S3 method for default</span>
 <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
   <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># S3 method for relop</span>
+<span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
+  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,6 +168,14 @@
     <tr>
       <th>use_data_table</th>
       <td><p>logical if TRUE try to use data.table for the un-pivots.</p></td>
+    </tr>
+    <tr>
+      <th>tmp_name_source</th>
+      <td><p>a tempNameGenerator from cdata::mk_tmp_name_source()</p></td>
+    </tr>
+    <tr>
+      <th>temporary</th>
+      <td><p>logical, if TRUE make result temporary.</p></td>
     </tr>
     </table>
     
@@ -207,6 +222,41 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 
+
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
+<span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(
+  <span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
+  <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
+  <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+
+<span class='no'>ops</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rquery</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/rquery/topics/local_td'>local_td</a></span>(<span class='no'>d</span>) <span class='kw'>%.&gt;%</span>
+  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>.</span>, <span class='no'>cT</span>)
+<span class='fu'>cat</span>(<span class='fu'>format</span>(<span class='no'>ops</span>))</div><div class='output co'>#&gt; table(d; 
+#&gt;   AUC,
+#&gt;   R2) %.&gt;%
+#&gt;  non_sql_node(., rowrecs_to_blocks(.))</div><div class='input'>
+<span class='kw'>if</span>(<span class='fu'>requireNamespace</span>(<span class='st'>"rqdatatable"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='fu'>library</span>(<span class='st'>"rqdatatable"</span>)
+  <span class='no'>d</span> <span class='kw'>%.&gt;%</span>
+    <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
+    <span class='fu'>print</span>(<span class='no'>.</span>)
+}</div><div class='output co'>#&gt;    meas val
+#&gt; 1:  AUC 0.6
+#&gt; 2:   R2 0.2</div><div class='input'>
+<span class='kw'>if</span>(<span class='fu'>requireNamespace</span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbConnect'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RSQLite/topics/SQLite'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable'>dbWriteTable</a></span>(<span class='no'>db</span>,
+                    <span class='st'>'d'</span>,
+                    <span class='no'>d</span>,
+                    <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                    <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='no'>db</span> <span class='kw'>%.&gt;%</span>
+    <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
+    <span class='fu'>print</span>(<span class='no'>.</span>)
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect'>dbDisconnect</a></span>(<span class='no'>db</span>)
+}</div><div class='output co'>#&gt;   meas val
+#&gt; 1  AUC 0.6
+#&gt; 2   R2 0.2</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

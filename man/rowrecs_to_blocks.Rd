@@ -78,6 +78,37 @@ here \url{https://github.com/WinVector/cdata}.
   rowrecs_to_blocks(d, cT)
 
 
+
+d <- data.frame(AUC = 0.6, R2 = 0.2)
+cT <- build_unpivot_control(
+  nameForNewKeyColumn= 'meas',
+  nameForNewValueColumn= 'val',
+  columnsToTakeFrom= c('AUC', 'R2'))
+
+ops <- rquery::local_td(d) \%.>\%
+  rowrecs_to_blocks(., cT)
+cat(format(ops))
+
+if(requireNamespace("rqdatatable", quietly = TRUE)) {
+  library("rqdatatable")
+  d \%.>\%
+    ops \%.>\%
+    print(.)
+}
+
+if(requireNamespace("RSQLite", quietly = TRUE)) {
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  DBI::dbWriteTable(db,
+                    'd',
+                    d,
+                    overwrite = TRUE,
+                    temporary = TRUE)
+  db \%.>\%
+    ops \%.>\%
+    print(.)
+  DBI::dbDisconnect(db)
+}
+
 }
 \seealso{
 \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
