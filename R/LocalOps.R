@@ -202,10 +202,10 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
-    stop("cdata::rowrecs_to_blocks.default wideTable shoud be a data.frame")
+    stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
-    stop("cdata::rowrecs_to_blocks controlTable shoud be a data.frame")
+    stop("cdata::rowrecs_to_blocks controlTable should be a data.frame")
   }
   rownames(wideTable) <- NULL
   cCheck <- checkControlTable(controlTable, strict)
@@ -363,10 +363,10 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
-    stop("cdata::blocks_to_rowrecs.default tallTable shoud be a data.frame")
+    stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")
   }
   if(!is.data.frame(controlTable)) {
-    stop("cdata::blocks_to_rowrecs controlTable shoud be a data.frame")
+    stop("cdata::blocks_to_rowrecs controlTable should be a data.frame")
   }
   rownames(tallTable) <- NULL
   clear_key_column <- FALSE
