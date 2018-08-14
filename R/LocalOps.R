@@ -164,7 +164,7 @@ build_transform_maps <- function(controlTable) {
 #' @param columnsToCopy character array of column names to copy
 #' @param checkNames logical, if TRUE check names
 #' @param strict logical, if TRUE check control table name forms
-#' @param use_data_table logical if TRUE try to use data.table for the pivots.
+#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}

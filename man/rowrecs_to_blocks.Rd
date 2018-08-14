@@ -25,7 +25,7 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
 
 \item{columnsToCopy}{character array of column names to copy}
 
-\item{use_data_table}{logical if TRUE try to use data.table for the pivots.}
+\item{use_data_table}{logical if TRUE try to use data.table for the un-pivots.}
 }
 \value{
 long table built by mapping wideTable to one row per group
