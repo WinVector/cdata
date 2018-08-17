@@ -1,0 +1,90 @@
+---
+title: "node_version"
+output: github_document
+---
+
+Showing that `cdata` works the same with an `rquery` pipeline both in memory and on databases.
+Example from ["Fluid data reshaping with cdata"](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html).
+
+```{r setup}
+library("cdata")
+library("rqdatatable")
+
+
+# example from: http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html
+d <- wrapr::build_frame(
+  "val_loss", "val_acc", "loss" , "acc" , "epoch" |
+  -0.377    , 0.8722   , -0.5067, 0.7852, 1       |
+  -0.2997   , 0.8895   , -0.3002, 0.904 , 2       |
+  -0.2964   , 0.8822   , -0.2166, 0.9303, 3       |
+  -0.2779   , 0.8899   , -0.1739, 0.9428, 4       |
+  -0.2843   , 0.8861   , -0.1411, 0.9545, 5       |
+  -0.312    , 0.8817   , -0.1136, 0.9656, 6       )
+
+controlTable = build_frame(
+  "measure"                   , "training", "validation" |
+  "minus binary cross entropy", "loss"    , "val_loss"   |
+  "accuracy"                  , "acc"     , "val_acc"    )
+```
+
+```{r immedate}
+d1 <- rowrecs_to_blocks(
+  d,
+  controlTable = controlTable,
+  columnsToCopy = "epoch")
+
+knitr::kable(d1)
+
+d2 <- blocks_to_rowrecs(
+  d1,
+  controlTable = controlTable,
+  keyColumns = "epoch")
+
+knitr::kable(d2)
+```
+
+```{r rqdatatable}
+ops1 <- local_td(d) %.>%
+  rowrecs_to_blocks(
+    .,
+    controlTable = controlTable,
+    columnsToCopy = "epoch")
+
+cat(format(ops1))
+
+d %.>% 
+  ops1 %.>%
+  knitr::kable(.)
+
+ops2 <- local_td(d1) %.>%
+  blocks_to_rowrecs(
+    .,
+    controlTable = controlTable,
+    keyColumns = "epoch")
+
+cat(format(ops2))
+
+d1 %.>% 
+  ops2 %.>%
+  knitr::kable(.)
+```
+
+```{r rquery}
+db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+rq_copy_to(db, "d", d)
+
+db %.>% 
+  ops1 %.>%
+  knitr::kable(.)
+
+rq_copy_to(db, "d1", d1)
+
+db %.>% ops2 %.>%
+  knitr::kable(.)
+
+DBI::dbDisconnect(db)
+
+```
+
+
