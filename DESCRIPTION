@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 0.7.4
-Date: 2018-08-14
+Date: 2018-08-16
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -22,7 +22,7 @@ Depends:
   R (>= 3.2.1)
 Imports:
   wrapr (>= 1.6.0),
-  rquery (>= 0.6.1),
+  rquery (>= 0.6.2),
   stats
 Suggests: 
     DBI,
