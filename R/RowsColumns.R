@@ -9,6 +9,78 @@
 NULL
 
 
+#' Check for duplicate rows.
+#'
+#' @param data data.frame
+#' @return TRUE if there are no duplicate rows, else FALSE.
+#'
+#' @noRd
+has_no_dup_rows <- function(data) {
+  if(!is.data.frame(data)) {
+    stop("cdata:::has_no_dup_rows(data) data must be a data.frame")
+  }
+  ndata <- nrow(data)
+  if(ndata<=1) {
+    return(TRUE)
+  }
+  keyColNames <- colnames(data)
+  nkey <- length(keyColNames)
+  if(nkey<=0) {
+    return(FALSE)
+  }
+  idxs <- do.call(order, c(as.list(data), list(method = "radix")))
+  data <- data[idxs, , drop = FALSE]
+  rownames(data) <- NULL
+  new_value <- c(TRUE, rep(FALSE, ndata-1))
+  for(ki in keyColNames) {
+    di <- c(TRUE, data[[ki]][-1]!=data[[ki]][-ndata])
+    new_value <- new_value | di
+  }
+  return(isTRUE(all(new_value)))
+}
+# n <- 1000
+# set.seed(2352)
+#
+# d1 <- data.frame(x1 = sample(letters, n, replace = TRUE),
+#                  x2 = sample(letters, n, replace = TRUE),
+#                  x3 = sample(letters, n, replace = TRUE),
+#                  x4 = sample(letters, n, replace = TRUE))
+# d1_decision <- anyDuplicated(d1)<=0
+# d2 <- d1
+# while((anyDuplicated(d2)<=0)==d1_decision) {
+#   d2 <- data.frame(x1 = sample(letters, n, replace = TRUE),
+#                    x2 = sample(letters, n, replace = TRUE),
+#                    x3 = sample(letters, n, replace = TRUE),
+#                    x4 = sample(letters, n, replace = TRUE))
+# }
+#
+# my_check <- function(values) {
+#   all(sapply(values[-1], function(x) identical(values[[1]], x)))
+# }
+#
+# print(anyDuplicated(d1)<=0)
+# microbenchmark::microbenchmark(
+#   any_dup = { anyDuplicated(d1)<=0 },
+#   has_no_dup = { cdata:::has_no_dup_rows(d1) },
+#   check = my_check
+# )
+# # Unit: microseconds
+# # expr       min         lq      mean   median        uq       max neval cld
+# # any_dup 16528.260 21851.0965 31134.210 30628.08 39116.609 96021.977   100   b
+# # has_no_dup   728.621   900.9505  1031.029   964.23  1068.575  4182.615   100  a
+#
+#
+# print(anyDuplicated(d2)<=0)
+# microbenchmark::microbenchmark(
+#   any_dup = { anyDuplicated(d2)<=0 },
+#   has_no_dup = { cdata:::has_no_dup_rows(d2) },
+#   check = my_check
+# )
+# # Unit: microseconds
+# # expr       min       lq       mean     median       uq       max neval cld
+# # any_dup 16679.607 17874.35 20899.9830 19369.3610 21756.95 50894.236   100   b
+# # has_no_dup   735.003   859.79   973.4994   927.8125  1053.39  2099.416   100  a
+
 
 #' Check that a set of columns form unique keys.
 #'
@@ -21,10 +93,9 @@ NULL
 #'
 #' @examples
 #'
-#' d <- data.frame(key = c('a','a', 'b'))
-#' checkColsFormUniqueKeys(d, 'key')
 #' d <- data.frame(key = c('a','a', 'b'), k2 = c(1 ,2, 2))
-#' checkColsFormUniqueKeys(d, c('key', 'k2'))
+#' checkColsFormUniqueKeys(d, 'key') # should be FALSE
+#' checkColsFormUniqueKeys(d, c('key', 'k2')) # should be TRUE
 #'
 #' @export
 #'
@@ -47,9 +118,12 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
   if(length(keyColNames) <= 0) {
     return(FALSE)
   }
-  # count the number of rows identifiable by keys
-  data <- data[, keyColNames, drop=FALSE]
-  return(anyDuplicated(data)<=0)
+  data <- data[, keyColNames, drop = FALSE]
+  rownames(data) <- NULL
+  # identify duplicate rows, no duplicated is the obvious way, the
+  # code below is an attempt at a speedup (at the cost of space).
+  # return(anyDuplicated(data)<=0)
+  return(has_no_dup_rows(data))
 }
 
 
