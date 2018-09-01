@@ -1,4 +1,8 @@
 
+# cdata 0.7.5 2018/09/01
+
+ * Neaten up uniqueness checking.
+
 # cdata 0.7.4 2018/08/16
 
  * rquery extension (moving methods to S3).

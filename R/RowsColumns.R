@@ -248,21 +248,6 @@ pivot_to_rowrecs <- function(data,
                 "\n rowKeyColumns plus columnToTakeKeysFrom",
                 "\n isn't unique across rows"))
   }
-  # we are also going to insist that rowKeyColumns are the unique keys for
-  # the distinct rows data frame without columnToTakeKeysFrom and columnToTakeValuesFrom
-  dcols <- setdiff(colnames(data),
-                   c(columnToTakeKeysFrom, columnToTakeValuesFrom))
-  if(length(dcols)>0) {
-    dsub <- data[, dcols, drop=FALSE]
-    dups <- duplicated(dsub)
-    dsub <- dsub[!dups, , drop=FALSE]
-    if(!checkColsFormUniqueKeys(dsub,
-                                rowKeyColumns)) {
-      stop(paste0("\n some columns not in",
-                  "\n c(rowKeyColumns, columnToTakeKeysFrom, columnToTakeValuesFrom)",
-                  "\n are splitting up row groups"))
-    }
-  }
   cT <- build_pivot_control(data,
                             columnToTakeKeysFrom = columnToTakeKeysFrom,
                             columnToTakeValuesFrom = columnToTakeValuesFrom,
