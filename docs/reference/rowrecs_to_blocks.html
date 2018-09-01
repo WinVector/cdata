@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.7.5</span>
       </span>
     </div>
 
@@ -112,12 +112,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
-  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
@@ -143,15 +144,19 @@
     </tr>
     <tr>
       <th>checkNames</th>
-      <td><p>logical, if TRUE check names</p></td>
+      <td><p>logical, if TRUE check names.</p></td>
+    </tr>
+    <tr>
+      <th>checkKeys</th>
+      <td><p>logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).</p></td>
     </tr>
     <tr>
       <th>strict</th>
-      <td><p>logical, if TRUE check control table name forms</p></td>
+      <td><p>logical, if TRUE check control table name forms.</p></td>
     </tr>
     <tr>
       <th>columnsToCopy</th>
-      <td><p>character array of column names to copy</p></td>
+      <td><p>character array of column names to copy.</p></td>
     </tr>
     <tr>
       <th>use_data_table</th>
