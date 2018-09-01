@@ -7,12 +7,12 @@
 \title{Map sets rows to columns (takes a \code{data.frame}).}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
-  columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
-  use_data_table = TRUE)
+  columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
+  strict = FALSE, use_data_table = TRUE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
-  ..., columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
-  use_data_table = TRUE)
+  ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
+  strict = FALSE, use_data_table = TRUE)
 
 \method{blocks_to_rowrecs}{relop}(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
@@ -31,7 +31,9 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 
 \item{columnsToCopy}{character, extra columns to copy.}
 
-\item{checkNames}{logical, if TRUE check names}
+\item{checkNames}{logical, if TRUE check names.}
+
+\item{checkKeys}{logical, if TRUE check keyColumns uniquely identify blocks (required).}
 
 \item{strict}{logical, if TRUE check control table name forms}
 

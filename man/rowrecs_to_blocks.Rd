@@ -7,11 +7,12 @@
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
 rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
-  strict = FALSE, columnsToCopy = NULL, use_data_table = TRUE)
+  checkKeys = TRUE, strict = FALSE, columnsToCopy = NULL,
+  use_data_table = TRUE)
 
 \method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
-  checkNames = TRUE, strict = FALSE, columnsToCopy = NULL,
-  use_data_table = TRUE)
+  checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
+  columnsToCopy = NULL, use_data_table = TRUE)
 
 \method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
   checkNames = TRUE, strict = FALSE, columnsToCopy = NULL,
@@ -26,11 +27,13 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
 
 \item{...}{force later arguments to be by name.}
 
-\item{checkNames}{logical, if TRUE check names}
+\item{checkNames}{logical, if TRUE check names.}
 
-\item{strict}{logical, if TRUE check control table name forms}
+\item{checkKeys}{logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).}
 
-\item{columnsToCopy}{character array of column names to copy}
+\item{strict}{logical, if TRUE check control table name forms.}
+
+\item{columnsToCopy}{character array of column names to copy.}
 
 \item{use_data_table}{logical if TRUE try to use data.table for the un-pivots.}
 

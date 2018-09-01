@@ -32,17 +32,17 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
   if(!is.data.frame(data)) {
     stop("cdata:::checkColsFormUniqueKeys data should be a data.frame")
   }
+  if(length(keyColNames)!=length(unique(keyColNames, allowNAKeys=TRUE))) {
+    stop("cdata::checkColsFormUniqueKeys keyColNames must not have duplicates/NAs")
+  }
+  cn <- colnames(data)
+  if(length(setdiff(keyColNames, cn))>0) {
+    stop("cdata::checkColsFormUniqueKeys all keyColNames must be columns of data")
+  }
   # count the number of rows
   ndata <- nrow(data)
   if(ndata<=1) {
     return(TRUE)
-  }
-  cn <- colnames(data)
-  if(length(keyColNames)!=length(unique(keyColNames, allowNAKeys=TRUE))) {
-    stop("cdata::checkColsFormUniqueKeys keyColNames must not have duplicates/NAs")
-  }
-  if(length(setdiff(keyColNames,cn))>0) {
-    stop("cdata::checkColsFormUniqueKeys all keyColNames must be columns of data")
   }
   if(length(keyColNames) <= 0) {
     return(FALSE)

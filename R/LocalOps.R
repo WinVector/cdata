@@ -161,9 +161,10 @@ build_transform_maps <- function(controlTable) {
 #' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
 #' @param controlTable table specifying mapping (local data frame).
 #' @param ... force later arguments to be by name.
-#' @param columnsToCopy character array of column names to copy
-#' @param checkNames logical, if TRUE check names
-#' @param strict logical, if TRUE check control table name forms
+#' @param columnsToCopy character array of column names to copy.
+#' @param checkNames logical, if TRUE check names.
+#' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
+#' @param strict logical, if TRUE check control table name forms.
 #' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @return long table built by mapping wideTable to one row per group
 #'
@@ -185,6 +186,7 @@ rowrecs_to_blocks <- function(wideTable,
                               controlTable,
                               ...,
                               checkNames = TRUE,
+                              checkKeys = TRUE,
                               strict = FALSE,
                               columnsToCopy = NULL,
                               use_data_table = TRUE) {
@@ -197,6 +199,7 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       controlTable,
                                       ...,
                                       checkNames = TRUE,
+                                      checkKeys = FALSE,
                                       strict = FALSE,
                                       columnsToCopy = NULL,
                                       use_data_table = TRUE) {
@@ -212,7 +215,7 @@ rowrecs_to_blocks.default <- function(wideTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks", cCheck))
   }
-  if(checkNames) {
+  if(checkNames || checkKeys) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
     wideTableColnames <- colnames(wideTable)
@@ -220,6 +223,9 @@ rowrecs_to_blocks.default <- function(wideTable,
     if(length(badCells)>0) {
       stop(paste("cdata::rowrecs_to_blocks: control table entries that are not wideTable column names:",
                  paste(badCells, collapse = ', ')))
+    }
+    if(checkKeys) {
+      checkColsFormUniqueKeys(wideTable, columnsToCopy)
     }
   }
 
@@ -318,7 +324,8 @@ rowrecs_to_blocks.default <- function(wideTable,
 #' @param controlTable table specifying mapping (local data frame)
 #' @param ... force later arguments to be by name.
 #' @param columnsToCopy character, extra columns to copy.
-#' @param checkNames logical, if TRUE check names
+#' @param checkNames logical, if TRUE check names.
+#' @param checkKeys logical, if TRUE check keyColumns uniquely identify blocks (required).
 #' @param strict logical, if TRUE check control table name forms
 #' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
@@ -346,6 +353,7 @@ blocks_to_rowrecs <- function(tallTable,
                               ...,
                               columnsToCopy = NULL,
                               checkNames = TRUE,
+                              checkKeys = TRUE,
                               strict = FALSE,
                               use_data_table = TRUE) {
   UseMethod("blocks_to_rowrecs")
@@ -359,6 +367,7 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       ...,
                                       columnsToCopy = NULL,
                                       checkNames = TRUE,
+                                      checkKeys = TRUE,
                                       strict = FALSE,
                                       use_data_table = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
@@ -380,12 +389,24 @@ blocks_to_rowrecs.default <- function(tallTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs", cCheck))
   }
-  if(checkNames) {
+  if(checkNames || checkKeys) {
     tallTableColnames <- colnames(tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::blocks_to_rowrecs: control table column names that are not tallTable column names:",
                  paste(badCells, collapse = ', ')))
+    }
+    if(checkKeys) {
+      # keys plot colnames(controlTable)[[1]] should uniquely identify rows
+      checkColsFormUniqueKeys(tallTable, c(keyColumns, colnames(controlTable)[[1]]))
+      # only values expected in controlTable[[1]] should be in tallTable[[colnames(controlTable)[[1]]]]
+      bkeys <- controlTable[[1]]
+      bseen <- unique(tallTable[[colnames(controlTable)[[1]]]])
+      bnovel <- setdiff(bseen, bkeys)
+      if(length(bnovel)>0) {
+        stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
+                   paste(bnovel, collapse = ', ')))
+      }
     }
   }
 
