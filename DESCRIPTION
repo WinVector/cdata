@@ -19,19 +19,19 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
 Depends:
-  R (>= 3.2.1)
+  R (>= 3.4.0)
 Imports:
-  wrapr (>= 1.6.0),
+  wrapr (>= 1.6.1),
   rquery (>= 0.6.2),
-  stats
+  stats,
 Suggests: 
     DBI,
     RSQLite,
     testthat,
     knitr,
     rmarkdown,
-    rqdatatable (>= 0.1.3),
     data.table (>= 1.11.4),
+    rqdatatable (>= 0.1.4),
     reshape2
 VignetteBuilder: knitr
 ByteCompile: true
