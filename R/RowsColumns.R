@@ -231,7 +231,9 @@ unpivot_to_blocks.default <- function(data,
   colsToCopy <- setdiff(colnames(data), columnsToTakeFrom)
   res <- rowrecs_to_blocks(data,
                            controlTable = cT,
-                           columnsToCopy = colsToCopy)
+                           columnsToCopy = colsToCopy,
+                           checkNames = FALSE,
+                           checkKeys = FALSE)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -331,7 +333,9 @@ pivot_to_rowrecs <- function(data,
   blocks_to_rowrecs(data,
                     keyColumns = rowKeyColumns,
                     controlTable = cT,
-                    columnsToCopy = colsToCopy)
+                    columnsToCopy = colsToCopy,
+                    checkNames = FALSE,
+                    checkKeys = FALSE)
 }
 
 
