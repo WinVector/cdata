@@ -243,7 +243,7 @@ rowrecs_to_blocks.default <- function(wideTable,
     d_thin_r$cdata_row_label <- maps$cells_to_row_labels[d_thin_r$cdata_cell_label]
     d_thin_r$cdata_col_label <- maps$cells_to_col_labels[d_thin_r$cdata_cell_label]
 
-    # cast to block form
+    # cast to block form, note: if cdata_col_label isn't varying then don't need this step.
     f <- paste0(paste(c(columnsToCopy, "cdata_row_label"), collapse = " + "), " ~ ", "cdata_col_label")
     r <- data.table::dcast(d_thin_r, as.formula(f), value.var = "cdata_cell_value")
     colnames(r)[which(colnames(r)=="cdata_row_label")] <- colnames(controlTable)[[1]]
