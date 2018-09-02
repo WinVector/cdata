@@ -1,5 +1,5 @@
 
-# cdata 0.7.5 2018/09/01
+# cdata 1.0.0 2018/09/02
 
  * Neaten up uniqueness checking.
 
