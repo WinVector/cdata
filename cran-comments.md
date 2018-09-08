@@ -7,15 +7,17 @@
     * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 
     * win-builder 
-    * using R Under development (unstable) (2018-08-16 r75161)
+    * using R Under development (unstable) (2018-09-07 r75257)
     * using platform: x86_64-w64-mingw32 (64-bit)
 
-## R CMD check --as-cran cdata_0.7.4.tar.gz
+## Test rsults
 
+    R CMD check --as-cran cdata_1.0.0.tar.gz 
+    
     * using option ‘--as-cran’
     * checking for file ‘cdata/DESCRIPTION’ ... OK
     * checking extension type ... Package
-    * this is package ‘cdata’ version ‘0.7.4’
+    * this is package ‘cdata’ version ‘1.0.0’
     * package encoding: UTF-8
     * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
     Maintainer: ‘John Mount <jmount@win-vector.com>’
