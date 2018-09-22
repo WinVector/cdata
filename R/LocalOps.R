@@ -230,29 +230,28 @@ rowrecs_to_blocks.default <- function(wideTable,
   }
 
   if( use_data_table &&
-      requireNamespace("data.table", quietly = TRUE) &&
-      requireNamespace("reshape2", quietly = TRUE) ) {
+      requireNamespace("data.table", quietly = TRUE) ) {
     maps <- build_transform_maps(controlTable)
 
     # from rowrec to one value per row form (triple-like)
-    d_thin_r <- data.table::melt(data.table::as.data.table(wideTable),
-                                 variable.name = "cdata_cell_label",
-                                 value.name = "cdata_cell_value",
-                                 id.vars = columnsToCopy,
-                                 measure.vars = maps$cells)
+    d_thin_r <- data.table::melt.data.table(data.table::as.data.table(wideTable),
+                                            variable.name = "cdata_cell_label",
+                                            value.name = "cdata_cell_value",
+                                            id.vars = columnsToCopy,
+                                            measure.vars = maps$cells)
     d_thin_r$cdata_row_label <- maps$cells_to_row_labels[d_thin_r$cdata_cell_label]
     d_thin_r$cdata_col_label <- maps$cells_to_col_labels[d_thin_r$cdata_cell_label]
 
     # cast to block form, note: if cdata_col_label isn't varying then don't need this step.
     f <- paste0(paste(c(columnsToCopy, "cdata_row_label"), collapse = " + "), " ~ ", "cdata_col_label")
-    r <- data.table::dcast(d_thin_r, as.formula(f), value.var = "cdata_cell_value")
+    r <- data.table::dcast.data.table(d_thin_r, as.formula(f), value.var = "cdata_cell_value")
     colnames(r)[which(colnames(r)=="cdata_row_label")] <- colnames(controlTable)[[1]]
     rownames(r) <- NULL
     return(as.data.frame(r))
   }
 
   if( use_data_table ) {
-    warning("cdata::rowrecs_to_blocks use_data_table==TRUE requires data.table and reshape2 packages")
+    warning("cdata::rowrecs_to_blocks use_data_table==TRUE requires data.table package")
   }
 
   # fall back to local impl
@@ -411,23 +410,22 @@ blocks_to_rowrecs.default <- function(tallTable,
   }
 
   if( use_data_table &&
-      requireNamespace("data.table", quietly = TRUE) &&
-      requireNamespace("reshape2", quietly = TRUE) ) {
+      requireNamespace("data.table", quietly = TRUE) ) {
     maps <- build_transform_maps(controlTable)
 
     # from block form to one value per row form (triple-like)
-    d_thin_b <- data.table::melt(data.table::as.data.table(tallTable),
-                                 variable.name = "cdata_col_label",
-                                 value.name = "cdata_cell_value",
-                                 id.vars = c(keyColumns, colnames(controlTable)[[1]]),
-                                 measure.vars = colnames(controlTable)[-1])
+    d_thin_b <- data.table::melt.data.table(data.table::as.data.table(tallTable),
+                                            variable.name = "cdata_col_label",
+                                            value.name = "cdata_cell_value",
+                                            id.vars = c(keyColumns, colnames(controlTable)[[1]]),
+                                            measure.vars = colnames(controlTable)[-1])
     d_thin_b$cdata_row_label <- d_thin_b[[colnames(controlTable)[[1]]]]
     d_thin_b[[colnames(controlTable)[[1]]]] <- NULL
     d_thin_b$cdata_cell_label <- maps$rows_cols_to_cells[paste(d_thin_b$cdata_row_label, ",", d_thin_b$cdata_col_label)]
 
     # cast to rowrec form
     f <- paste0(paste(keyColumns, collapse = " + "), " ~ ", "cdata_cell_label")
-    r <- data.table::dcast(d_thin_b, as.formula(f), value.var = "cdata_cell_value")
+    r <- data.table::dcast.data.table(d_thin_b, as.formula(f), value.var = "cdata_cell_value")
     if(clear_key_column) {
       r$cdata_key_column <- NULL
     }
@@ -436,7 +434,7 @@ blocks_to_rowrecs.default <- function(tallTable,
   }
 
   if( use_data_table ) {
-    warning("cdata::blocks_to_rowrecs use_data_table==TRUE requires data.table and reshape2 packages")
+    warning("cdata::blocks_to_rowrecs use_data_table==TRUE requires data.table package")
   }
 
   # fall back to local impl

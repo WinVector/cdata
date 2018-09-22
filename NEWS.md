@@ -1,4 +1,8 @@
 
+# cdata 1.0.1 2018/09/08
+
+ * Clean up suggests.
+
 # cdata 1.0.0 2018/09/08
 
  * Neaten up uniqueness checking.
