@@ -7,12 +7,12 @@
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
 rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE, columnsToCopy = NULL,
-  use_data_table = TRUE)
+  checkKeys = FALSE, strict = FALSE, columnsToCopy = NULL,
+  use_data_table = FALSE)
 
 \method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  columnsToCopy = NULL, use_data_table = TRUE)
+  columnsToCopy = NULL, use_data_table = FALSE)
 
 \method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
   checkNames = TRUE, strict = FALSE, columnsToCopy = NULL,

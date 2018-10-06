@@ -11,10 +11,11 @@ test_that("testRowColOps.R", {
                              nameForNewValueColumn = 'val',
                              columnsToTakeFrom = c('AUC', 'R2'))
     res <- res[order(res$meas), , drop=FALSE]
-    expect_equivalent(data.frame(meas = c('AUC', 'R2'),
-                                 val = c(0.6, 0.2),
-                                 stringsAsFactors = FALSE),
-                      res)
+    ex <- data.frame(meas = c('AUC', 'R2'),
+                     val = c(0.6, 0.2),
+                     stringsAsFactors = FALSE)
+    expect_equivalent(ex,
+                      res[, colnames(ex), drop = FALSE])
 
     d <- data.frame(meas = c('AUC', 'R2'),
                     val = c(0.6, 0.2))
@@ -22,20 +23,24 @@ test_that("testRowColOps.R", {
                             columnToTakeKeysFrom = 'meas',
                             columnToTakeValuesFrom = 'val',
                             rowKeyColumns = c())
-    expect_equivalent(data.frame(AUC = 0.6,
-                                 R2 = 0.2,
-                                 stringsAsFactors = FALSE),
-                      res)
+    ex <- data.frame(AUC = 0.6,
+                     R2 = 0.2,
+                     stringsAsFactors = FALSE)
+    expect_equivalent(ex,
+                      res[, colnames(ex), drop = FALSE])
 
     d <- data.frame(key = c('a', 'a'),
                     meas = c('AUC', 'R2'),
-                    val = c(0.6, 0.2))
+                    val = c(0.6, 0.2),
+                    stringsAsFactors = FALSE)
     res <- pivot_to_rowrecs(d,
                             columnToTakeKeysFrom = 'meas',
                             columnToTakeValuesFrom = 'val',
                             rowKeyColumns = c('key'))
-    expect_equivalent(data.frame(key = 'a',
-                                 AUC = 0.6,
-                                 R2 = 0.2),
-                      res)
+    ex <- data.frame(key = 'a',
+                     AUC = 0.6,
+                     R2 = 0.2,
+                     stringsAsFactors = FALSE)
+    expect_equivalent(ex,
+                      res[, colnames(ex), drop = FALSE])
 })

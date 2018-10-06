@@ -1,4 +1,8 @@
 
+# cdata 1.0.1 2018/10/10
+
+ * Change defaults.
+ 
 # cdata 1.0.1 2018/09/22
 
  * Clean up suggests.

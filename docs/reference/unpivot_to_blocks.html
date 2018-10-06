@@ -62,7 +62,7 @@ For a tutorial please try vignette('RowsAndColumns', package='cdata')." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.2</span>
       </span>
     </div>
 
@@ -114,12 +114,15 @@ For a tutorial please try <code>vignette('RowsAndColumns', package='cdata')</cod
     </div>
 
     <pre class="usage"><span class='fu'>unpivot_to_blocks</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
-  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>, <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>, <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>unpivot_to_blocks</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>,
   <span class='no'>nameForNewValueColumn</span>, <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>,
-  <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>nameForNewClassColumn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>unpivot_to_blocks</span>(<span class='no'>data</span>, <span class='no'>nameForNewKeyColumn</span>,
@@ -153,6 +156,22 @@ For a tutorial please try <code>vignette('RowsAndColumns', package='cdata')</cod
     <tr>
       <th>nameForNewClassColumn</th>
       <td><p>optional name to land original cell classes to.</p></td>
+    </tr>
+    <tr>
+      <th>checkNames</th>
+      <td><p>logical, if TRUE check names.</p></td>
+    </tr>
+    <tr>
+      <th>checkKeys</th>
+      <td><p>logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).</p></td>
+    </tr>
+    <tr>
+      <th>strict</th>
+      <td><p>logical, if TRUE check control table name forms.</p></td>
+    </tr>
+    <tr>
+      <th>use_data_table</th>
+      <td><p>logical if TRUE try to use data.table for the un-pivots.</p></td>
     </tr>
     <tr>
       <th>tmp_name_source</th>

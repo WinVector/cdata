@@ -8,7 +8,7 @@
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
-  strict = FALSE, use_data_table = TRUE)
+  strict = FALSE, use_data_table = FALSE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
   ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,

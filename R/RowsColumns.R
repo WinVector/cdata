@@ -140,6 +140,10 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 #' @param columnsToTakeFrom character array names of columns to take values from.
 #' @param ... force later arguments to bind by name.
 #' @param nameForNewClassColumn optional name to land original cell classes to.
+#' @param checkNames logical, if TRUE check names.
+#' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
+#' @param strict logical, if TRUE check control table name forms.
+#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @return new data.frame with values moved to rows.
 #'
 #' @seealso \code{\link{pivot_to_rowrecs}}, \code{\link{rowrecs_to_blocks}}
@@ -161,7 +165,11 @@ unpivot_to_blocks <- function(data,
                               nameForNewValueColumn,
                               columnsToTakeFrom,
                               ...,
-                              nameForNewClassColumn = NULL) {
+                              nameForNewClassColumn = NULL,
+                              checkNames = TRUE,
+                              checkKeys = FALSE,
+                              strict = FALSE,
+                              use_data_table = FALSE) {
   UseMethod("unpivot_to_blocks")
 }
 
@@ -172,7 +180,11 @@ unpivot_to_blocks.default <- function(data,
                                       nameForNewValueColumn,
                                       columnsToTakeFrom,
                                       ...,
-                                      nameForNewClassColumn = NULL) {
+                                      nameForNewClassColumn = NULL,
+                                      checkNames = TRUE,
+                                      checkKeys = FALSE,
+                                      strict = FALSE,
+                                      use_data_table = FALSE) {
   if(!is.data.frame(data)) {
     stop("cdata::unpivot_to_blocks.default data must be a local data.frame")
   }
@@ -232,8 +244,10 @@ unpivot_to_blocks.default <- function(data,
   res <- rowrecs_to_blocks(data,
                            controlTable = cT,
                            columnsToCopy = colsToCopy,
-                           checkNames = FALSE,
-                           checkKeys = FALSE)
+                           checkNames = checkNames,
+                           checkKeys = checkKeys,
+                           strict = strict,
+                           use_data_table = use_data_table)
   if(!is.null(nameForNewClassColumn)) {
     classMap <- vapply(data, class, character(1))
     names(classMap) <- colnames(data)
@@ -254,6 +268,10 @@ unpivot_to_blocks.default <- function(data,
 #' @param rowKeyColumns character array names columns that should be table keys.
 #' @param ... force later arguments to bind by name.
 #' @param sep character if not null build more detailed column names.
+#' @param checkNames logical, if TRUE check names.
+#' @param checkKeys logical, if TRUE check keyColumns uniquely identify blocks (required).
+#' @param strict logical, if TRUE check control table name forms
+#' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @return new data.frame with values moved to columns.
 #'
 #' @seealso \code{\link{unpivot_to_blocks}}, \code{\link{blocks_to_rowrecs}}
@@ -274,7 +292,11 @@ pivot_to_rowrecs <- function(data,
                              columnToTakeValuesFrom,
                              rowKeyColumns,
                              ...,
-                             sep = NULL) {
+                             sep = NULL,
+                             checkNames = TRUE,
+                             checkKeys = TRUE,
+                             strict = FALSE,
+                             use_data_table = FALSE) {
   if(!is.data.frame(data)) {
     stop("cdata::pivot_to_rowrecs data must be a local data.frame")
   }
@@ -334,8 +356,10 @@ pivot_to_rowrecs <- function(data,
                     keyColumns = rowKeyColumns,
                     controlTable = cT,
                     columnsToCopy = colsToCopy,
-                    checkNames = FALSE,
-                    checkKeys = FALSE)
+                    checkNames = checkNames,
+                    checkKeys = checkKeys,
+                    strict = strict,
+                    use_data_table = use_data_table)
 }
 
 

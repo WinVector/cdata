@@ -5,7 +5,8 @@
 \title{Move values from rows to columns (pivot).}
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  rowKeyColumns, ..., sep = NULL)
+  rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
+  checkKeys = TRUE, strict = FALSE, use_data_table = FALSE)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}
@@ -19,6 +20,14 @@ pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 \item{...}{force later arguments to bind by name.}
 
 \item{sep}{character if not null build more detailed column names.}
+
+\item{checkNames}{logical, if TRUE check names.}
+
+\item{checkKeys}{logical, if TRUE check keyColumns uniquely identify blocks (required).}
+
+\item{strict}{logical, if TRUE check control table name forms}
+
+\item{use_data_table}{logical if TRUE try to use data.table for the pivots.}
 }
 \value{
 new data.frame with values moved to columns.

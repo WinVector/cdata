@@ -186,10 +186,10 @@ rowrecs_to_blocks <- function(wideTable,
                               controlTable,
                               ...,
                               checkNames = TRUE,
-                              checkKeys = TRUE,
+                              checkKeys = FALSE,
                               strict = FALSE,
                               columnsToCopy = NULL,
-                              use_data_table = TRUE) {
+                              use_data_table = FALSE) {
   UseMethod("rowrecs_to_blocks")
 }
 
@@ -202,7 +202,7 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       checkKeys = FALSE,
                                       strict = FALSE,
                                       columnsToCopy = NULL,
-                                      use_data_table = TRUE) {
+                                      use_data_table = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
@@ -225,7 +225,9 @@ rowrecs_to_blocks.default <- function(wideTable,
                  paste(badCells, collapse = ', ')))
     }
     if(checkKeys) {
-      checkColsFormUniqueKeys(wideTable, columnsToCopy)
+      if(!checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
+        stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
+      }
     }
   }
 
@@ -354,7 +356,7 @@ blocks_to_rowrecs <- function(tallTable,
                               checkNames = TRUE,
                               checkKeys = TRUE,
                               strict = FALSE,
-                              use_data_table = TRUE) {
+                              use_data_table = FALSE) {
   UseMethod("blocks_to_rowrecs")
 }
 
@@ -397,7 +399,9 @@ blocks_to_rowrecs.default <- function(tallTable,
     }
     if(checkKeys) {
       # keys plot colnames(controlTable)[[1]] should uniquely identify rows
-      checkColsFormUniqueKeys(tallTable, c(keyColumns, colnames(controlTable)[[1]]))
+      if(!checkColsFormUniqueKeys(tallTable, c(keyColumns, colnames(controlTable)[[1]]))) {
+        stop("cdata::blocks_to_rowrecs: keyColumns plus first column of control table do not uniquely key rows")
+      }
       # only values expected in controlTable[[1]] should be in tallTable[[colnames(controlTable)[[1]]]]
       bkeys <- controlTable[[1]]
       bseen <- unique(tallTable[[colnames(controlTable)[[1]]]])

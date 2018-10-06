@@ -7,11 +7,14 @@
 \title{Move values from columns to rows (anti-pivot, or "shred").}
 \usage{
 unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
-  columnsToTakeFrom, ..., nameForNewClassColumn = NULL)
+  columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
+  checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
+  use_data_table = FALSE)
 
 \method{unpivot_to_blocks}{default}(data, nameForNewKeyColumn,
   nameForNewValueColumn, columnsToTakeFrom, ...,
-  nameForNewClassColumn = NULL)
+  nameForNewClassColumn = NULL, checkNames = TRUE, checkKeys = FALSE,
+  strict = FALSE, use_data_table = FALSE)
 
 \method{unpivot_to_blocks}{relop}(data, nameForNewKeyColumn,
   nameForNewValueColumn, columnsToTakeFrom, ...,
@@ -30,6 +33,14 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{...}{force later arguments to bind by name.}
 
 \item{nameForNewClassColumn}{optional name to land original cell classes to.}
+
+\item{checkNames}{logical, if TRUE check names.}
+
+\item{checkKeys}{logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).}
+
+\item{strict}{logical, if TRUE check control table name forms.}
+
+\item{use_data_table}{logical if TRUE try to use data.table for the un-pivots.}
 
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
