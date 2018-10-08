@@ -22,4 +22,10 @@ test_that("test_check.R", {
                                                  controlTable = cT,
                                                  checkKeys = TRUE,
                                                  use_data_table = FALSE))
+  d1 <- rowrecs_to_blocks(res,
+                          controlTable = cT)
+  d2 <- unpivot_to_blocks(res,
+                          nameForNewKeyColumn = "estimation_method",
+                          nameForNewValueColumn = "sd_estimate",
+                          columnsToTakeFrom = c("adj_sd", "naive_sd"))
 })

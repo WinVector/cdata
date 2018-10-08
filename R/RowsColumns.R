@@ -234,9 +234,6 @@ unpivot_to_blocks.default <- function(data,
     }
   }
   dcols <- setdiff(cn, columnsToTakeFrom)
-  if(!checkColsFormUniqueKeys(data, dcols)) {
-    stop("cdata::unpivot_to_blocks rows were not uniquely keyed")
-  }
   cT <- build_unpivot_control(nameForNewKeyColumn = nameForNewKeyColumn,
                               nameForNewValueColumn = nameForNewValueColumn,
                               columnsToTakeFrom = columnsToTakeFrom)
@@ -336,15 +333,6 @@ pivot_to_rowrecs <- function(data,
   }
   if(columnToTakeValuesFrom %in% rowKeyColumns) {
     stop("cdata::pivot_to_rowrecs columnToTakeValuesFrom not be in rowKeyColumns")
-  }
-  # we insist that the rowKeyColumns plus
-  # columnToTakeKeysFrom are unique keys
-  if(!checkColsFormUniqueKeys(data,
-                              c(rowKeyColumns,
-                                columnToTakeKeysFrom))) {
-    stop(paste0("\n moveValeusToColumns: specified",
-                "\n rowKeyColumns plus columnToTakeKeysFrom",
-                "\n isn't unique across rows"))
   }
   cT <- build_pivot_control(data,
                             columnToTakeKeysFrom = columnToTakeKeysFrom,
