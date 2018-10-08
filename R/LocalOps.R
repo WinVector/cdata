@@ -477,6 +477,9 @@ blocks_to_rowrecs.default <- function(tallTable,
     }
   }
   res$cdata_group_key_col <- NULL
+  if(clear_key_column) {
+    res$cdata_key_column <- NULL
+  }
   rownames(res) <- NULL
   res
 }
