@@ -48,7 +48,7 @@ tab <- blocks_to_rowrecs_q('d',
 qlook(my_db, tab)
 ```
 
-    ## table `mvtcq_66101738774069104522_0000000001` spark_connection spark_shell_connection DBIConnection 
+    ## table `mvtcq_59182013890876791921_0000000001` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6

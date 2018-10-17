@@ -3,7 +3,7 @@ library('cdata')
 context("chicks")
 
 test_that("test_chicks.R", {
-  lst <- readRDS("chick.RDS")
+  lst <- readRDS("chickw.RDS")
   ChickWeight <- lst$ChickWeight
   ChickWeight_wide <- lst$ChickWeight_wide
 

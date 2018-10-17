@@ -472,8 +472,10 @@ blocks_to_rowrecs.default <- function(tallTable,
       res[[destcol]][seq_len(n_res)] <- NA
       posns <- match(res$cdata_group_key_col,
                      tallTable$cdata_group_key_col[indxs])
+      lhs <- seq_len(n_res)
+      lhs <- lhs[!is.na(posns)]
       posns <- posns[!is.na(posns)]
-      res[[destcol]][posns] <- vals
+      res[[destcol]][lhs] <- vals[posns]
     }
   }
   res$cdata_group_key_col <- NULL
