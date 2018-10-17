@@ -12,7 +12,7 @@ test_that("test_chicks.R", {
     columnToTakeKeysFrom = "Time",
     columnToTakeValuesFrom = "weight",
     rowKeyColumns = "Chick")
-  ChickWeight_wide2 <- seatbelts_long2[order(ChickWeight_wide2$Chick), , drop = FALSE]
+  ChickWeight_wide2 <- ChickWeight_wide2[order(ChickWeight_wide2$Chick), , drop = FALSE]
   row.names(ChickWeight_wide2) <- NULL
   testthat::expect(isTRUE(all.equal(ChickWeight_wide, ChickWeight_wide2)), failure_message = "mismatch")
 })
