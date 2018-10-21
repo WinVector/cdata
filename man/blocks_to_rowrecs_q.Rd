@@ -95,5 +95,5 @@ if (requireNamespace("DBI", quietly = TRUE) &&
 
 }
 \seealso{
-\code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
+\code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
 }

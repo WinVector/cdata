@@ -20,7 +20,7 @@ NULL
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \code{\link{blocks_to_rowrecs}}, \code{\link{build_pivot_control_q}}
+#' @seealso \code{\link{blocks_to_rowrecs}}
 #'
 #' @examples
 #'
@@ -79,7 +79,7 @@ build_pivot_control.default <- function(table,
 #' @param ... not used, force later args to be by name
 #' @return control table
 #'
-#' @seealso \code{\link{rowrecs_to_blocks_q}}, \code{\link{rowrecs_to_blocks}}
+#' @seealso \code{\link{rowrecs_to_blocks}}
 #'
 #' @examples
 #'
@@ -168,7 +168,7 @@ build_transform_maps <- function(controlTable) {
 #' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
+#' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs}}
 #'
 #' @examples
 #'
@@ -336,7 +336,7 @@ rowrecs_to_blocks.default <- function(wideTable,
 #' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks_q}}
+#' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks}}
 #'
 #' @examples
 #'

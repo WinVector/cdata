@@ -196,7 +196,7 @@ qlook <- function(my_db, tableName,
 #' @param resultName character, name for result table.
 #' @return long table built by mapping wideTable to one row per group
 #'
-#' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}, \code{\link{rowrecs_to_blocks}}
+#' @seealso \code{\link{build_unpivot_control}},  \code{\link{rowrecs_to_blocks}}
 #'
 #' @examples
 #'
@@ -352,7 +352,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 #' @param sep separator to build complex column names.
 #' @return control table
 #'
-#' @seealso \code{\link{blocks_to_rowrecs_q}}, \code{\link{build_pivot_control_q}}
+#' @seealso \code{\link{blocks_to_rowrecs_q}}, \code{\link{build_pivot_control}}
 #'
 #' @examples
 #'
@@ -451,7 +451,7 @@ build_pivot_control_q <- function(tableName,
 #' @param resultName character, name for result table.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
-#' @seealso \code{\link{rowrecs_to_blocks_q}}, \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
+#' @seealso \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
 #'
 #' @examples
 #'

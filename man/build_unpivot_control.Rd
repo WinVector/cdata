@@ -30,5 +30,5 @@ build_unpivot_control("measurmentType", "measurmentValue", c("c1", "c2"))
 
 }
 \seealso{
-\code{\link{rowrecs_to_blocks_q}}, \code{\link{rowrecs_to_blocks}}
+\code{\link{rowrecs_to_blocks}}
 }

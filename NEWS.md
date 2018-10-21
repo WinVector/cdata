@@ -1,4 +1,8 @@
 
+# cdata 1.0.4 2018/10/21
+
+ * Improve doc cross-linking.
+
 # cdata 1.0.3 2018/10/20
 
  * Fix ragged gather bug.

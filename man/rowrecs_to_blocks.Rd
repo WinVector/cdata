@@ -114,5 +114,5 @@ if(requireNamespace("RSQLite", quietly = TRUE)) {
 
 }
 \seealso{
-\code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs_q}}
+\code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs}}
 }

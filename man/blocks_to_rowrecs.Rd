@@ -122,5 +122,5 @@ if(requireNamespace("RSQLite", quietly = TRUE)) {
 
 }
 \seealso{
-\code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks_q}}
+\code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks}}
 }
