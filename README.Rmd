@@ -17,6 +17,11 @@ Briefly: `cdata` supplies data transform operators that:
 
 A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
+```{r opts, include=FALSE, warning=FALSE, message=FALSE}
+library("knitr")
+opts_knit$set(base.dir = 'tools')
+```
+
 ```{r ex0}
 
 iris <- data.frame(iris)
@@ -101,12 +106,11 @@ A quick database example:
 library("cdata")
 library("rquery")
 
-use_spark <- FALSE
+use_spark <- TRUE
 
 if(use_spark) {
   my_db <- sparklyr::spark_connect(version='2.2.0', 
                                    master = "local")
-  
 } else {
   my_db <- DBI::dbConnect(RSQLite::SQLite(),
                           ":memory:")

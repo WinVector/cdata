@@ -82,44 +82,139 @@
 <li>Work on local data or with any <code>DBI</code> data source.</li>
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
-<p>A quick example:</p>
+<p>A quick example: plot iris petal and sepal dimensions in a faceted graph.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
+
+<span class="kw">library</span>(<span class="st">"ggplot2"</span>)
+<span class="kw">library</span>(<span class="st">"cdata"</span>)
+
+<span class="co">#</span>
+<span class="co"># build a control table with a "key column" dimension</span>
+<span class="co"># and "value columns" Length and Width</span>
+<span class="co">#</span>
+controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+   dimension, Length      , Width       <span class="op">|</span>
+<span class="st">   </span>Petal    , Petal.Length, Petal.Width <span class="op">|</span>
+<span class="st">   </span>Sepal    , Sepal.Length, Sepal.Width )
+
+<span class="co"># do the unpivot to convert the row records to block records</span>
+iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
+  iris,
+  controlTable,
+  <span class="dt">columnsToCopy =</span> <span class="kw">c</span>(<span class="st">"Species"</span>))
+
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>dimension, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
+<p><img src="index_files/figure-html/ex0-1.png" width="700"></p>
+<p>An example of using <code>cdata</code> to creat a scatterplot matrix, or pair plot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
+
+<span class="kw">library</span>(<span class="st">"ggplot2"</span>)
+<span class="kw">library</span>(<span class="st">"cdata"</span>)
+
+<span class="co"># declare our columns of interest</span>
+meas_vars &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
+category_variable &lt;-<span class="st"> "Species"</span>
+
+<span class="co"># build a control with all pairs of variables as value columns</span>
+<span class="co"># and pair_key as the key column</span>
+controlTable &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">expand.grid</span>(meas_vars, meas_vars, 
+                                       <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+<span class="co"># name the value columns value1 and value2</span>
+<span class="kw">colnames</span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(value1, value2)
+<span class="co"># insert first, or key column</span>
+controlTable &lt;-<span class="st"> </span><span class="kw">cbind</span>(
+  <span class="kw">data.frame</span>(<span class="dt">pair_key =</span> <span class="kw">paste</span>(controlTable[[<span class="dv">1</span>]], controlTable[[<span class="dv">2</span>]]),
+             <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),
+  controlTable)
+
+
+<span class="co"># do the unpivot to convert the row records to multiple block records</span>
+iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
+  iris,
+  controlTable,
+  <span class="dt">columnsToCopy =</span> category_variable)
+
+<span class="co"># unpack the key column into two variable keys for the facet_grid</span>
+splt &lt;-<span class="st"> </span><span class="kw">strsplit</span>(iris_aug<span class="op">$</span>pair_key, <span class="dt">split =</span> <span class="st">" "</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)
+iris_aug<span class="op">$</span>v1 &lt;-<span class="st"> </span><span class="kw">vapply</span>(splt, <span class="cf">function</span>(si) si[[<span class="dv">1</span>]], <span class="kw">character</span>(<span class="dv">1</span>))
+iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="kw">vapply</span>(splt, <span class="cf">function</span>(si) si[[<span class="dv">2</span>]], <span class="kw">character</span>(<span class="dv">1</span>))
+
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>value1, <span class="dt">y=</span>value2)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes_">aes_string</a></span>(<span class="dt">color=</span>category_variable, <span class="dt">shape=</span>category_variable)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid">facet_grid</a></span>(v2<span class="op">~</span>v1, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
+<p><img src="index_files/figure-html/ex0_1-1.png" width="700"></p>
+<p>A quick database example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)
-<span class="co"># my_db &lt;- DBI::dbConnect(RSQLite::SQLite(), </span>
-<span class="co">#                         ":memory:")</span>
-my_db &lt;-<span class="st"> </span>sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_connect</a></span>(<span class="dt">version=</span><span class="st">'2.2.0'</span>, 
-                                 <span class="dt">master =</span> <span class="st">"local"</span>)
+<span class="kw">library</span>(<span class="st">"rquery"</span>)
+
+use_spark &lt;-<span class="st"> </span><span class="ot">TRUE</span>
+
+<span class="cf">if</span>(use_spark) {
+  my_db &lt;-<span class="st"> </span>sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_connect</a></span>(<span class="dt">version=</span><span class="st">'2.2.0'</span>, 
+                                   <span class="dt">master =</span> <span class="st">"local"</span>)
+} <span class="cf">else</span> {
+  my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(),
+                          <span class="st">":memory:"</span>)
+}
+
+
 
 <span class="co"># pivot example</span>
-d &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-   <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span>
-<span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span>
+d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
+   <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">|</span>
+<span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">|</span>
 <span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )
 DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable">dbWriteTable</a></span>(my_db,
                   <span class="st">'d'</span>,
                   d,
                   <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
 <pre><code>## table `d` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 2 
 ## 'data.frame':    2 obs. of  2 variables:
 ##  $ meas: chr  "AUC" "R2"
 ##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="reference/build_pivot_control_q.html">build_pivot_control_q</a></span>(<span class="st">'d'</span>,
-                              <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
-                              <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,
-                              <span class="dt">my_db =</span> my_db)
-tab &lt;-<span class="st"> </span><span class="kw"><a href="reference/blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></span>(<span class="st">'d'</span>,
-                            <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
-                            <span class="dt">controlTable =</span> cT,
-                            <span class="dt">my_db =</span> my_db)
-<span class="kw"><a href="reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_69400241667944818124_0000000001` spark_connection spark_shell_connection DBIConnection 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">td &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/db_td">db_td</a></span>(my_db, <span class="st">"d"</span>)
+td</code></pre></div>
+<pre><code>## [1] "table(`d`; meas, val)"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/build_pivot_control.html">build_pivot_control</a></span>(.,
+                      <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
+                      <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>) <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(my_db, .)
+<span class="kw">print</span>(cT)</code></pre></div>
+<pre><code>##   meas val
+## 1  AUC AUC
+## 2   R2  R2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(.,
+                    <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
+                    <span class="dt">controlTable =</span> cT,
+                    <span class="dt">temporary =</span> <span class="ot">FALSE</span>) <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
+
+<span class="kw">print</span>(tab)</code></pre></div>
+<pre><code>## [1] "table(`rquery_mat_26091087608256953241_0000000000`; AUC, R2)"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)</code></pre></div>
+<pre><code>## table `rquery_mat_26091087608256953241_0000000000` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
 ##  $ R2 : num 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#DBI::dbDisconnect(my_db)</span>
-sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_disconnect</a></span>(my_db)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(use_spark) {
+  sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_disconnect</a></span>(my_db)
+} <span class="cf">else</span> {
+  DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)
+}</code></pre></div>
 <p>Install via CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <p>Or from GitHub using devtools:</p>

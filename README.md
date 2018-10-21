@@ -95,12 +95,11 @@ A quick database example:
 library("cdata")
 library("rquery")
 
-use_spark <- FALSE
+use_spark <- TRUE
 
 if(use_spark) {
   my_db <- sparklyr::spark_connect(version='2.2.0', 
                                    master = "local")
-  
 } else {
   my_db <- DBI::dbConnect(RSQLite::SQLite(),
                           ":memory:")
@@ -120,7 +119,7 @@ DBI::dbWriteTable(my_db,
 rstr(my_db, 'd')
 ```
 
-    ## table `d` SQLiteConnection 
+    ## table `d` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 2 
     ## 'data.frame':    2 obs. of  2 variables:
     ##  $ meas: chr  "AUC" "R2"
@@ -157,13 +156,13 @@ tab <- td %.>%
 print(tab)
 ```
 
-    ## [1] "table(`rquery_mat_56361051768599796421_0000000000`; AUC, R2)"
+    ## [1] "table(`rquery_mat_13782577874446676343_0000000000`; AUC, R2)"
 
 ``` r
 rstr(my_db, tab)
 ```
 
-    ## table `rquery_mat_56361051768599796421_0000000000` SQLiteConnection 
+    ## table `rquery_mat_13782577874446676343_0000000000` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
