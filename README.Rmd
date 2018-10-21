@@ -15,35 +15,46 @@ Briefly: `cdata` supplies data transform operators that:
  * Work on local data or with any `DBI` data source.
  * Are powerful generalizations of the operators commonly called `pivot` and `un-pivot`.
 
-A quick example:
+A quick database example:
 
 ```{r ex1}
 library("cdata")
+library("rquery")
 # my_db <- DBI::dbConnect(RSQLite::SQLite(), 
 #                         ":memory:")
 my_db <- sparklyr::spark_connect(version='2.2.0', 
                                  master = "local")
 
 # pivot example
-d <- build_frame(
-   "meas", "val" /
-   "AUC" , 0.6   /
+d <- wrapr::build_frame(
+   "meas", "val" |
+   "AUC" , 0.6   |
    "R2"  , 0.2   )
 DBI::dbWriteTable(my_db,
                   'd',
                   d,
                   temporary = TRUE)
-qlook(my_db, 'd')
+rstr(my_db, 'd')
+td <- db_td(my_db, "d")
+td
 
-cT <- build_pivot_control_q('d',
-                              columnToTakeKeysFrom= 'meas',
-                              columnToTakeValuesFrom= 'val',
-                              my_db = my_db)
-tab <- blocks_to_rowrecs_q('d',
-                            keyColumns = NULL,
-                            controlTable = cT,
-                            my_db = my_db)
-qlook(my_db, tab)
+cT <- td %.>%
+  build_pivot_control(.,
+                      columnToTakeKeysFrom= 'meas',
+                      columnToTakeValuesFrom= 'val') %.>%
+  execute(my_db, .)
+print(cT)
+
+tab <- td %.>%
+  blocks_to_rowrecs(.,
+                    keyColumns = NULL,
+                    controlTable = cT,
+                    temporary = FALSE) %.>%
+  materialize(my_db, .)
+
+print(tab)
+  
+rstr(my_db, tab)
 
 #DBI::dbDisconnect(my_db)
 sparklyr::spark_disconnect(my_db)
