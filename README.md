@@ -39,7 +39,7 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 ```
 
-![](README_files/figure-markdown_github/ex0-1.png)
+![](tools/README_files/figure-markdown_github/ex0-1.png)
 
 An example of using `cdata` to creat a scatterplot matrix, or pair plot:
 
@@ -87,7 +87,7 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   xlab(NULL)
 ```
 
-![](README_files/figure-markdown_github/ex0_1-1.png)
+![](tools/README_files/figure-markdown_github/ex0_1-1.png)
 
 A quick database example:
 
