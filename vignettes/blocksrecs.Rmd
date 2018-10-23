@@ -1,0 +1,134 @@
+---
+title: "Block Records and Row Records"
+author: "John Mount, Nina Zumel"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Records}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The entire theory of `cdata` is based on the principles:
+
+  * data has coordinates 
+  * data is naturally grouped into records.
+  
+The idea of data coordinates is related to [Codd's 2nd rule](https://en.wikipedia.org/wiki/Codd%27s_12_rules): 
+  
+> Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
+
+The coordinatized data concept: is the exact implementation is not important.  One can perform a data *change of basis* to get data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
+
+The idea of data records records, and these records possibly being different than simple rows is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested record.
+
+The entirety of the `cdata` package is to supply a transforms between what we call "row records" (records that
+happen to be implemented as a single row) and block records (records that span multiple rows).  These two
+methods are:
+
+  * `cdata::rowrecs_to_blocks()`
+  * `cdata::blocks_to_rowrecs()`
+  
+All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases).
+
+
+Let's look at this with some specific data.
+
+For our example let's take the task of re-organizing the `iris` data for a faceted plot, as
+discussed [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+
+```{r}
+library(cdata)
+
+iris <- data.frame(iris)
+
+head(iris, n=1)
+
+(controlTable <- wrapr::qchar_frame(
+  flower_part, Length      , Width       |
+  Petal      , Petal.Length, Petal.Width |
+  Sepal      , Sepal.Length, Sepal.Width ))
+
+
+iris_aug <- rowrecs_to_blocks(
+  head(iris, n=1),
+  controlTable,
+  columnsToCopy = "Species")
+
+iris_aug
+```
+
+<img src="rowrecs_to_blocks.png" width="600">
+
+```{r}
+
+iris_back <- blocks_to_rowrecs(
+  iris_aug,
+  keyColumns = "Species",
+  controlTable
+)
+
+iris_back
+```
+
+To perform the reverse transform we would need additional keys to help us identify the
+block records.
+
+```{r}
+iris$row_id <- seq_len(nrow(iris))
+
+iris_aug <- rowrecs_to_blocks(
+  iris,
+  controlTable,
+  columnsToCopy = c("row_id", "Species"))
+
+head(iris_aug, n=6)
+
+iris_back <- blocks_to_rowrecs(
+  iris_aug,
+  keyColumns = c("row_id", "Species"),
+  controlTable
+)
+
+head(iris_back, n=3)
+```
+
+<img src="blocks_to_rowrecs.png" width="600">
+
+
+`cdata` considers the row-record a universal form.  Just about any data shape can be transformed to any other by:
+
+ * (optionally) Combining columns
+ * Performing a `blocks_to_rowrecs()` step.
+ * Performing a `rowrecs_to_blocks()` step.
+ * (optionally) Splitting some columns.
+ 
+However, for most practical applications we have seen a single `blocks_to_rowrecs()` step or `rowrecs_to_blocks()` step is sufficient.
+
+This differs from `reshape2` where the `melt()` to "molten" (or thin RDF-triple like) is the universal intermediate form that one then `dcast()`s into desired arrangements.
+
+The `cdata` operators have some interesting lineage
+
+  * `rowrecs_to_blocks()` is a variation of a relational-join of the data with the control table.  This is why you get one row per pair of original data rows and control table rows.
+  * `blocks_to_rowrecs()` is essential an aggregation or relational-projection (actually even a coalesce) over a widened table.  This is why this operation decreases the number of rows.
+
+The act of designing a control table to solve a problem exposes a lot of problem structure:
+
+ * If the control table has two columns then the operation could be implemented as a `tidyr` `gather()` or `spread()`.
+ * If the control table has `k` rows then the `rowrecs_to_blocks()` direction could be implemented as `k-1` `rbind()`s.
+
+Some additonal tutorials on `cdata` data transforms can are given below:
+
+  * [The faceted plot example](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/)
+  * [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
+  * [short free cdata screencast](https://youtu.be/4cYbP3kbc0k)
+  * ["Coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) 
+  * [The "fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html)
+  * [another worked example](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
