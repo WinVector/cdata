@@ -4,4 +4,5 @@ pkgdown_sha: ~
 articles:
   blocksrecs: blocksrecs.html
   cdata: cdata.html
+  design: design.html
 

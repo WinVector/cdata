@@ -59,6 +59,9 @@
 <li>
       <a href="articles/blocksrecs.html">Block Records and Row Records</a>
     </li>
+    <li>
+      <a href="articles/design.html">Designing Transforms</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -101,11 +104,11 @@
 <span class="kw">library</span>(<span class="st">"cdata"</span>)
 
 <span class="co">#</span>
-<span class="co"># build a control table with a "key column" dimension</span>
+<span class="co"># build a control table with a "key column" flower_part</span>
 <span class="co"># and "value columns" Length and Width</span>
 <span class="co">#</span>
 controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-   dimension, Length      , Width       <span class="op">|</span>
+   flower_part, Length      , Width       <span class="op">|</span>
 <span class="st">   </span>Petal    , Petal.Length, Petal.Width <span class="op">|</span>
 <span class="st">   </span>Sepal    , Sepal.Length, Sepal.Width )
 
@@ -118,10 +121,12 @@ iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowre
 
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>dimension, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
 <p><img src="index_files/figure-html/ex0-1.png" width="700"></p>
-<p>An example of using <code>cdata</code> to creat a scatterplot matrix, or pair plot:</p>
+<p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.<br>
+And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
 
 <span class="kw">library</span>(<span class="st">"ggplot2"</span>)
@@ -164,7 +169,8 @@ iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
 <p><img src="index_files/figure-html/ex0_1-1.png" width="700"></p>
-<p>A quick database example:</p>
+<p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
+<p>And a quick database example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)
 <span class="kw">library</span>(<span class="st">"rquery"</span>)
 
@@ -215,9 +221,9 @@ td</code></pre></div>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw">print</span>(tab)</code></pre></div>
-<pre><code>## [1] "table(`rquery_mat_07615481360796422975_0000000000`; AUC, R2)"</code></pre>
+<pre><code>## [1] "table(`rquery_mat_71474448087587860556_0000000000`; AUC, R2)"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `rquery_mat_07615481360796422975_0000000000` spark_connection spark_shell_connection DBIConnection 
+<pre><code>## table `rquery_mat_71474448087587860556_0000000000` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6

@@ -1,0 +1,140 @@
+---
+title: "Designing Transforms"
+author: "John Mount, Nina Zumel"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The question comes up: how do you design the control table
+that implements a given transform.
+
+Let's discuss that with an example: [plotting the `iris` data
+faceted](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+
+To produce the following graph with `ggplot2` 
+
+<img src="iris_plot.png">
+
+One wants data that looks like the following:
+
+<img src="design_2.png" width="600">
+
+Notice `Species` is in a column so we can use it to choose colors.
+Also, `flower_part` is in a column so we can use it to facet.
+
+However, `iris` data starts in the following format.
+
+<img src="design_1.png" width="600">
+
+So we want to transform one to the other before plotting.
+
+<img src="design_3.png" width="600">
+
+There are a great number of ways to achieve the above transform. 
+We are going to concentrate on the `cdata` methodology.  
+Notice we are moving data from an "all of the record is in one row"
+to "the meaningful record unit in a block across several rows".
+In `cdata` this means we want to perform a `rowrecs_to_blocks()` 
+transform.  To do this we start by labeling the roles of different portion of
+the data we want and headers in our desired result record.  In particular we identify:
+
+ * Columns we want copied as additional row information (or even as partial row keys).
+ * An additional partial row key column.
+ * Levels we expect in the new partial row key column.
+ * New column names for the new `data.frame`.
+ 
+We show this below.  
+
+<img src="design_4.png" width="600">
+
+We then fill this information into a new data structure we call the control table.
+
+The rules are:
+
+  * The key column is the first column of the control table.
+  * The key levels we wish to track are values in the key column.
+  * The column names of the control table are the new column names we will produce in our result.
+  * The block of values seen in our example record are replaced by a the column names these values were taken from in the original data.
+  * Any other columns we want copied are specified in the `columnsToCopy` argument.
+
+<img src="design_5.png" width="600">
+
+We then translate this diagram into a `controlTabl` `data.frame` and `columnsToCopy` vector.
+
+```{r}
+(controlTable <- wrapr::qchar_frame(
+  flower_part, Length      , Width       |
+  Petal      , Petal.Length, Petal.Width |
+  Sepal      , Sepal.Length, Sepal.Width ))
+
+(columnsToCopy <- "Species")
+
+```
+
+And we can now perform the transform.
+
+```{r}
+library("cdata")
+
+iris_aug <- rowrecs_to_blocks(
+  iris,
+  controlTable,
+  columnsToCopy = "Species") 
+head(iris_aug)
+```
+  
+  
+And that completes the example plot as described [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+
+Designing a `rowrecs_to_blocks` transform is even easier, as the `controlTable` has the same
+shape is the record block (assuming the record partial key controlling column is the first column).  All 
+one has to do is replace the value in such an example record with the desired column names.
+
+For example:
+
+```{r}
+# grab a record to use to build our control table 
+ct <- iris_aug[1:2, c("flower_part", "Length", "Width")]
+print(ct)
+
+# replace values with desired column names
+# as in this case the values are unique we can do
+# this mechanically, normally we do this by hand
+for(i in 1:nrow(ct)) {
+  for(j in 2:ncol(ct)) {
+    ct[i,j] <- colnames(iris)[which(iris[1,]==ct[i,j])]
+  }
+}
+
+print(ct)
+```
+
+
+Though to invert such a transform we would need additional keys showing which rows together form a record (which we demonstrate [here](https://winvector.github.io/cdata/articles/blocksrecs.html)).
+
+Notice having an example record in each form (`iris_aug[1:2, c("flower_part", "Length", "Width")]` and `iris[1,]`) is enough to build up the control table (either by machine on using pencil and paper). In practice: we *highly* recommend looking at your data, writing down what one record on each side of the transform would look like, and then using that to fill out the control table on paper.
+
+
+Some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+
+
+Some additional tutorials on `cdata` data transforms can are given below:
+
+  * [The faceted plot example](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/)
+  * [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
+  * [short free cdata screencast](https://youtu.be/4cYbP3kbc0k)
+  * ["Coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) 
+  * [The "fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html)
+  * [another worked example](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
+

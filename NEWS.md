@@ -1,6 +1,7 @@
 
-# cdata 1.0.4 2018/10/21
+# cdata 1.0.4 2018/10/23
 
+ * More vignettes.
  * Improve doc cross-linking.
 
 # cdata 1.0.3 2018/10/20

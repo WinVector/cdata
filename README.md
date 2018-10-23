@@ -18,11 +18,11 @@ library("ggplot2")
 library("cdata")
 
 #
-# build a control table with a "key column" dimension
+# build a control table with a "key column" flower_part
 # and "value columns" Length and Width
 #
 controlTable <- wrapr::qchar_frame(
-   dimension, Length      , Width       |
+   flower_part, Length      , Width       |
    Petal    , Petal.Length, Petal.Width |
    Sepal    , Sepal.Length, Sepal.Width )
 
@@ -35,13 +35,16 @@ iris_aug <- rowrecs_to_blocks(
 
 ggplot(iris_aug, aes(x=Length, y=Width)) +
   geom_point(aes(color=Species, shape=Species)) + 
-  facet_wrap(~dimension, labeller = label_both, scale = "free") +
+  facet_wrap(~flower_part, labeller = label_both, scale = "free") +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 ```
 
-![](tools/README_files/figure-markdown_github/ex0-1.png)
+![](README_files/figure-markdown_github/ex0-1.png)
 
-An example of using `cdata` to creat a scatterplot matrix, or pair plot:
+More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
+And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+
+We can also exhibit a larger example of using `cdata` to create a scatter-plot matrix, or pair plot:
 
 ``` r
 iris <- data.frame(iris)
@@ -87,9 +90,11 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   xlab(NULL)
 ```
 
-![](tools/README_files/figure-markdown_github/ex0_1-1.png)
+![](README_files/figure-markdown_github/ex0_1-1.png)
 
-A quick database example:
+The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
+
+And a quick database example:
 
 ``` r
 library("cdata")
@@ -156,13 +161,13 @@ tab <- td %.>%
 print(tab)
 ```
 
-    ## [1] "table(`rquery_mat_13782577874446676343_0000000000`; AUC, R2)"
+    ## [1] "table(`rquery_mat_30785505767875308409_0000000000`; AUC, R2)"
 
 ``` r
 rstr(my_db, tab)
 ```
 
-    ## table `rquery_mat_13782577874446676343_0000000000` spark_connection spark_shell_connection DBIConnection 
+    ## table `rquery_mat_30785505767875308409_0000000000` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
