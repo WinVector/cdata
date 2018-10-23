@@ -25,11 +25,11 @@ The idea of data coordinates is related to [Codd's 2nd rule](https://en.wikipedi
   
 > Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
 
-The coordinatized data concept: is the exact implementation is not important.  One can perform a data *change of basis* to get data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
+The coordinatized data concept: is the exact current data realization is not important.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
 
-The idea of data records records, and these records possibly being different than simple rows is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested record.
+The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested format.
 
-The entirety of the `cdata` package is to supply a transforms between what we call "row records" (records that
+The entirety of the `cdata` package is to supply transforms between what we call "row records" (records that
 happen to be implemented as a single row) and block records (records that span multiple rows).  These two
 methods are:
 
@@ -39,7 +39,7 @@ methods are:
 All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases).
 
 
-Let's look at this with some specific data.
+Let's look at `cdata` with some specific data.
 
 For our example let's take the task of re-organizing the `iris` data for a faceted plot, as
 discussed [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
@@ -114,24 +114,6 @@ However, for most practical applications we have seen a single `blocks_to_rowrec
 
 This differs from `reshape2` where the `melt()` to "molten" (or thin RDF-triple like) is the universal intermediate form that one then `dcast()`s into desired arrangements.
 
-The `cdata` operators have some interesting lineage:
-
-  * `rowrecs_to_blocks()` is a variation of a relational-join of the data with the control table.  This is why you get one row per pair of original data rows and control table rows.
-  * `blocks_to_rowrecs()` is essential an aggregation or relational-projection (actually even a coalesce) over a widened table.  This is why this operation decreases the number of rows.
-  * The `controlTable` is a picture of of one side of the transform (and a wide row is the other).
-  
-The sense we mean the control table is a picture of the transform is made a bit more obvious if we apply the control table to itself.
-
-```{r}
-row <- blocks_to_rowrecs(controlTable, 
-                         keyColumns = NULL, 
-                         controlTable = controlTable)
-print(row)
-
-# recover the controlTable from the row!
-rowrecs_to_blocks(row,
-                  controlTable = controlTable)
-```
 
 
 The act of designing a control table to solve a problem exposes a lot of problem structure:

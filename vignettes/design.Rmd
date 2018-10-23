@@ -89,8 +89,8 @@ library("cdata")
 
 iris_aug <- rowrecs_to_blocks(
   iris,
-  controlTable,
-  columnsToCopy = "Species") 
+  controlTable = controlTable,
+  columnsToCopy = columnsToCopy) 
 head(iris_aug)
 ```
   
@@ -98,7 +98,7 @@ head(iris_aug)
 And that completes the example plot as described [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 Designing a `rowrecs_to_blocks` transform is even easier, as the `controlTable` has the same
-shape is the record block (assuming the record partial key controlling column is the first column).  All 
+shape as the record block (assuming the record partial key controlling column is the first column).  All 
 one has to do is replace the value in such an example record with the desired column names.
 
 For example:

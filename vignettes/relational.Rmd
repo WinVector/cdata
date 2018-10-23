@@ -1,0 +1,49 @@
+---
+title: "Connection to Relations Operators"
+author: "John Mount"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{relational}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `cdata` operators have some interesting lineage:
+
+  * `rowrecs_to_blocks()` is a variation of a relational-join of the data with the control table.  This is why you get one row per pair of original data rows and control table rows.
+  * `blocks_to_rowrecs()` is essentially an aggregation or relational-projection (actually even a coalesce) over a widened table.  This is why this operation decreases the number of rows.
+  * The `controlTable` is a picture of of one side of the transform (and a wide row is the other).
+  
+The sense we mean the control table is a picture of the transform is made a bit more obvious if we apply the control table to itself.
+
+```{r}
+library(cdata)
+
+iris <- data.frame(iris)
+
+
+(controlTable <- wrapr::qchar_frame(
+  flower_part, Length      , Width       |
+  Petal      , Petal.Length, Petal.Width |
+  Sepal      , Sepal.Length, Sepal.Width ))
+
+row <- blocks_to_rowrecs(controlTable, 
+                         keyColumns = NULL, 
+                         controlTable = controlTable)
+print(row)
+
+# recover the controlTable from the row!
+rowrecs_to_blocks(row,
+                  controlTable = controlTable)
+```
+
+Some discussion of this example and the theory of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+

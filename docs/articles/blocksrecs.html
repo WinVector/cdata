@@ -60,6 +60,9 @@
     <li>
       <a href="../articles/design.html">Designing Transforms</a>
     </li>
+    <li>
+      <a href="../articles/relational.html">Connection to Relations Operators</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -103,15 +106,15 @@
 <blockquote>
 <p>Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.</p>
 </blockquote>
-<p>The coordinatized data concept: is the exact implementation is not important. One can perform a data <em>change of basis</em> to get data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).</p>
-<p>The idea of data records records, and these records possibly being different than simple rows is a staple of computer science: harking at least back to <a href="https://en.wikipedia.org/wiki/Record-oriented_filesystem">record-oriented filesystems</a>, and perhaps living on in JSON nested record.</p>
-<p>The entirety of the <code>cdata</code> package is to supply a transforms between what we call “row records” (records that happen to be implemented as a single row) and block records (records that span multiple rows). These two methods are:</p>
+<p>The coordinatized data concept: is the exact current data realization is not important. One can perform a data <em>change of basis</em> to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).</p>
+<p>The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to <a href="https://en.wikipedia.org/wiki/Record-oriented_filesystem">record-oriented filesystems</a>, and perhaps living on in JSON nested format.</p>
+<p>The entirety of the <code>cdata</code> package is to supply transforms between what we call “row records” (records that happen to be implemented as a single row) and block records (records that span multiple rows). These two methods are:</p>
 <ul>
 <li><code><a href="../reference/rowrecs_to_blocks.html">cdata::rowrecs_to_blocks()</a></code></li>
 <li><code><a href="../reference/blocks_to_rowrecs.html">cdata::blocks_to_rowrecs()</a></code></li>
 </ul>
 <p>All the other <code>cdata</code> functions are helpers allowing abbreviated notation in special cases (such as <code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code> <code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code>) and adapters (allowing these operations to be performed directly in databases).</p>
-<p>Let’s look at this with some specific data.</p>
+<p>Let’s look at <code>cdata</code> with some specific data.</p>
 <p>For our example let’s take the task of re-organizing the <code>iris</code> data for a faceted plot, as discussed <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cdata)
 
@@ -188,28 +191,6 @@ iris_back &lt;-<span class="st"> </span><span class="kw"><a href="../reference/b
 </ul>
 <p>However, for most practical applications we have seen a single <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> step or <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> step is sufficient.</p>
 <p>This differs from <code>reshape2</code> where the <code>melt()</code> to “molten” (or thin RDF-triple like) is the universal intermediate form that one then <code>dcast()</code>s into desired arrangements.</p>
-<p>The <code>cdata</code> operators have some interesting lineage:</p>
-<ul>
-<li>
-<code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> is a variation of a relational-join of the data with the control table. This is why you get one row per pair of original data rows and control table rows.</li>
-<li>
-<code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> is essential an aggregation or relational-projection (actually even a coalesce) over a widened table. This is why this operation decreases the number of rows.</li>
-<li>The <code>controlTable</code> is a picture of of one side of the transform (and a wide row is the other).</li>
-</ul>
-<p>The sense we mean the control table is a picture of the transform is made a bit more obvious if we apply the control table to itself.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">row &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(controlTable, 
-                         <span class="dt">keyColumns =</span> <span class="ot">NULL</span>, 
-                         <span class="dt">controlTable =</span> controlTable)
-<span class="kw">print</span>(row)
-<span class="co">#&gt;   Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="co">#&gt; 1 Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-
-<span class="co"># recover the controlTable from the row!</span>
-<span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(row,
-                  <span class="dt">controlTable =</span> controlTable)
-<span class="co">#&gt;   flower_part       Length       Width</span>
-<span class="co">#&gt; 1       Petal Petal.Length Petal.Width</span>
-<span class="co">#&gt; 2       Sepal Sepal.Length Sepal.Width</span></code></pre></div>
 <p>The act of designing a control table to solve a problem exposes a lot of problem structure:</p>
 <ul>
 <li>If the control table has two columns then the operation could be implemented as a <code>tidyr</code> <code>gather()</code> or <code>spread()</code>.</li>
