@@ -169,13 +169,13 @@ tab <- td %.>%
 print(tab)
 ```
 
-    ## [1] "table(`rquery_mat_08054208930638657937_0000000000`; AUC, R2)"
+    ## [1] "table(`rquery_mat_27648861905981445562_0000000000`; AUC, R2)"
 
 ``` r
 rstr(my_db, tab)
 ```
 
-    ## table `rquery_mat_08054208930638657937_0000000000` spark_connection spark_shell_connection DBIConnection 
+    ## table `rquery_mat_27648861905981445562_0000000000` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6

@@ -16,8 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-As a followup to our previous post, this post goes
-a bit deeper into reasoning about data transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) package.  The `cdata` packages demonstrates the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html) for general 
+This note is about the design of data transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) package.  The `cdata` packages demonstrates the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html) for general 
 data re-shaping.
 
 [`cdata`](https://CRAN.R-project.org/package=cdata) adheres to the so-called "Rule of Representation":
@@ -32,7 +31,7 @@ The design principle expressed by this rule is that it is much easier to reason 
 We showed in [the last post](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/) how `cdata` takes a transform control table to specify how you want your data reshaped.
 The question then becomes: how do you come up with the transform control table?
 
-Let's discuss that using the example from the previous post: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+Let's discuss that using the example from the post: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 The goal is to produce the following graph with `ggplot2` 
 
