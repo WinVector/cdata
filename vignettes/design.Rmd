@@ -16,8 +16,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-The question comes up: how do you design the control table
-that implements a given transform.
+
+[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to the so-called "Rule of Representation":
+
+> Fold knowledge into data, so program logic can be stupid and robust.
+>
+> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley
+, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+
+The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
+
+The question is then: how do you come up with the transform control table needed to use `cdata` to solve your problem?
 
 Let's discuss that with an example: ["plotting the `iris` data faceted""](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 

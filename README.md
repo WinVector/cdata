@@ -1,13 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to the so-called "Rule of Representation":
+
+> Fold knowledge into data, so program logic can be stupid and robust.
+>
+> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley , 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+
+The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
 Briefly: `cdata` supplies data transform operators that:
 
 -   Work on local data or with any `DBI` data source.
--   Are powerful generalizations of the operators commonly called `pivot` and `un-pivot`.
+-   Are powerful generalizations of the operations commonly called `pivot` and `un-pivot`.
 
 A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
@@ -43,6 +49,8 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
 And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+
+------------------------------------------------------------------------
 
 We can also exhibit a larger example of using `cdata` to create a scatter-plot matrix, or pair plot:
 
@@ -161,13 +169,13 @@ tab <- td %.>%
 print(tab)
 ```
 
-    ## [1] "table(`rquery_mat_30785505767875308409_0000000000`; AUC, R2)"
+    ## [1] "table(`rquery_mat_08054208930638657937_0000000000`; AUC, R2)"
 
 ``` r
 rstr(my_db, tab)
 ```
 
-    ## table `rquery_mat_30785505767875308409_0000000000` spark_connection spark_shell_connection DBIConnection 
+    ## table `rquery_mat_08054208930638657937_0000000000` spark_connection spark_shell_connection DBIConnection 
     ##  nrow: 1 
     ## 'data.frame':    1 obs. of  2 variables:
     ##  $ AUC: num 0.6
@@ -180,6 +188,12 @@ if(use_spark) {
   DBI::dbDisconnect(my_db)
 }
 ```
+
+------------------------------------------------------------------------
+
+The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html). The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+
+------------------------------------------------------------------------
 
 Install via CRAN:
 

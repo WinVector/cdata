@@ -91,14 +91,19 @@
     
     
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<p>The <code>cdata</code> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
+<p><a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> is a general data re-shaper that has the great virtue of adhering to the so-called “Rule of Representation”:</p>
+<blockquote>
+<p>Fold knowledge into data, so program logic can be stupid and robust.</p>
+<p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263"><em>The Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley , 2003</a></p>
+</blockquote>
+<p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.</p>
 <div class="figure">
 <img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png">
 </div>
 <p>Briefly: <code>cdata</code> supplies data transform operators that:</p>
 <ul>
 <li>Work on local data or with any <code>DBI</code> data source.</li>
-<li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
+<li>Are powerful generalizations of the operations commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
 </ul>
 <p>A quick example: plot iris petal and sepal dimensions in a faceted graph.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
@@ -129,6 +134,7 @@ iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowre
 <p><img src="index_files/figure-html/ex0-1.png" width="700"></p>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.<br>
 And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<hr>
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
 
@@ -224,9 +230,9 @@ td</code></pre></div>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw">print</span>(tab)</code></pre></div>
-<pre><code>## [1] "table(`rquery_mat_85624272478423846209_0000000000`; AUC, R2)"</code></pre>
+<pre><code>## [1] "table(`rquery_mat_24179384194235236191_0000000000`; AUC, R2)"</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `rquery_mat_85624272478423846209_0000000000` spark_connection spark_shell_connection DBIConnection 
+<pre><code>## table `rquery_mat_24179384194235236191_0000000000` spark_connection spark_shell_connection DBIConnection 
 ##  nrow: 1 
 ## 'data.frame':    1 obs. of  2 variables:
 ##  $ AUC: num 0.6
@@ -236,6 +242,9 @@ td</code></pre></div>
 } <span class="cf">else</span> {
   DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)
 }</code></pre></div>
+<hr>
+<p>The <code>cdata</code> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
+<hr>
 <p>Install via CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"cdata"</span>)</code></pre></div>
 <p>Or from GitHub using devtools:</p>
