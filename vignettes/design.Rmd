@@ -28,7 +28,7 @@ The point being: it is much easier to reason about data than to try to reason ab
 
 The question is then: how do you come up with the transform control table needed to use `cdata` to solve your problem?
 
-Let's discuss that with an example: ["plotting the `iris` data faceted""](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+Let's discuss that with an example: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 To produce the following graph with `ggplot2` 
 
@@ -50,7 +50,7 @@ So we want to transform one to the other before plotting.
 <img src="design_3.png" width="600">
 
 This new block record is partially keyed by the `flower_part` 
-column (which tells us which pace of a record a row corresponds to)
+column (which tells us which piece of a record a row corresponds to)
 and could be also per-record keyed by an `iris_id` (which we are not
 adding, as we do not need it for our graphing task, adding the
 per-record id makes the transform convertible and is shown 
@@ -115,8 +115,8 @@ head(iris_aug)
   
 The data is now ready to plot using `ggplot2` as was shown  [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
-Designing a `rowrecs_to_blocks` transform is even easier, as the `controlTable` has the same
-shape as the record block (assuming the record partial key controlling column is the first column).  All 
+Designing a `blocks_to_rowrecs` transform is even easier, as the `controlTable` has the same
+shape as the incoming record block (assuming the record partial key controlling column is the first column).  All 
 one has to do is replace the value in such an example record with the desired column names.
 
 For example:
