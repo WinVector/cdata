@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The entire theory of `cdata` is based on the principles:
+The theory of `cdata` data transforms is based on the principles:
 
   * data has coordinates 
   * data is naturally grouped into records.
@@ -25,7 +25,7 @@ The idea of data coordinates is related to [Codd's 2nd rule](https://en.wikipedi
   
 > Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
 
-The coordinatized data concept: is the exact current data realization is not important.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
+The coordinatized data concept: is the exact *current* data realization is incidental.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
 
 The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested format.
 
@@ -36,7 +36,7 @@ methods are:
   * `cdata::rowrecs_to_blocks()`
   * `cdata::blocks_to_rowrecs()`
   
-All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases).
+All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases and large data systems such as `Apache Spark`).
 
 
 Let's look at `cdata` with some specific data.
@@ -48,6 +48,7 @@ discussed [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdat
 library(cdata)
 
 iris <- data.frame(iris)
+iris$iris_id <- seq_len(nrow(iris))
 
 head(iris, n=1)
 
@@ -56,19 +57,22 @@ head(iris, n=1)
   Petal      , Petal.Length, Petal.Width |
   Sepal      , Sepal.Length, Sepal.Width ))
 
+columnsToCopy <- "Species"
 
 iris_aug <- rowrecs_to_blocks(
   head(iris, n=1),
   controlTable,
-  columnsToCopy = "Species")
+  columnsToCopy = columnsToCopy)
 
 iris_aug
 ```
 
+This transform is specified by what we call the "transform control table", which in this case
+looks like the following.
+
 <img src="rowrecs_to_blocks.png" width="600">
 
 ```{r}
-
 iris_back <- blocks_to_rowrecs(
   iris_aug,
   keyColumns = "Species",
@@ -78,50 +82,55 @@ iris_back <- blocks_to_rowrecs(
 iris_back
 ```
 
-To perform the reverse transform we would need additional keys to help us identify the
-block records.
+How to design this table is taught [here](https://winvector.github.io/cdata/articles/design.html).
+
+To perform the reverse transform we use the same transform control table, and use additional keys to help us identify the
+which rows are in the same block record (in this case the `iris_id` column).  A forward and then back transform is as follows.
 
 ```{r}
-iris$iris_id <- seq_len(nrow(iris))
+columnsToCopy = qc(iris_id, Species)
 
+# re-do the forward transform, this time
+# with the iris_id
 iris_aug <- rowrecs_to_blocks(
-  iris,
+  head(iris, n=3),
   controlTable,
-  columnsToCopy = c("iris_id", "Species"))
+  columnsToCopy = columnsToCopy)
 
-head(iris_aug, n=6)
+head(iris, n=3)
 
+
+# demonstrate the reverse transform
 iris_back <- blocks_to_rowrecs(
   iris_aug,
   keyColumns = c("iris_id", "Species"),
   controlTable
 )
 
-head(iris_back, n=3)
+iris_back
 ```
+
+The control table on the `blocks_to_rowrecs()` transform is the exact same control table as in the `rowrecs_to_blocks()` transform, just with the following reversed point of view.
 
 <img src="blocks_to_rowrecs.png" width="600">
 
-
 `cdata` considers the row-record a universal form.  Just about any data shape can be transformed to any other by:
 
- * (optionally) Combining columns
- * Performing a `blocks_to_rowrecs()` step.
- * Performing a `rowrecs_to_blocks()` step.
- * (optionally) Splitting some columns.
+ * (optionally) Combining columns (as new column names in the soon to come row records must come from values of a single column).
+ * Performing a `blocks_to_rowrecs()` step (moving all data for each arbitrarily shaped block record into a single row).
+ * Performing a `rowrecs_to_blocks()` step (moving all data from each row into a *new* arbitrarily shaped block record).
+ * (optionally) Splitting some columns (as only a single inside block key column is produced by `rowrecs_to_blocks()`, this step us not often needed).
  
-However, for most practical applications we have seen a single `blocks_to_rowrecs()` step or `rowrecs_to_blocks()` step is sufficient.
+For most practical applications we have seen a single `blocks_to_rowrecs()` step or `rowrecs_to_blocks()` step is usually sufficient.
 
-This differs from `reshape2` where the `melt()` to "molten" (or thin RDF-triple like) is the universal intermediate form that one then `dcast()`s into desired arrangements.
+This differs from `reshape2` where the `melt()` to "molten" (or thin [RDF-triple](https://en.wikipedia.org/wiki/Semantic_triple)-like) is used as the universal intermediate form that one then `dcast()`s into desired arrangements.
 
+The act of [designing a transform control table](https://winvector.github.io/cdata/articles/design.html) to solve a problem already exposes a lot of problem structure:
 
-
-The act of designing a control table to solve a problem exposes a lot of problem structure:
-
- * If the control table has two columns then the operation could be implemented as a `tidyr` `gather()` or `spread()`.
+ * If the control table has two columns then the operation could be implemented as a single `tidyr` `gather()` or `spread()`.
  * If the control table has `k` rows then the `rowrecs_to_blocks()` direction could be implemented as `k-1` `rbind()`s.
 
-A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
+A tutorial on *how* to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
 
 Some additional tutorials on `cdata` data transforms can are given below:
 

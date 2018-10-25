@@ -19,8 +19,7 @@ knitr::opts_chunk$set(
 The question comes up: how do you design the control table
 that implements a given transform.
 
-Let's discuss that with an example: [plotting the `iris` data
-faceted](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+Let's discuss that with an example: ["plotting the `iris` data faceted""](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 To produce the following graph with `ggplot2` 
 
@@ -41,26 +40,35 @@ So we want to transform one to the other before plotting.
 
 <img src="design_3.png" width="600">
 
+This new block record is partially keyed by the `flower_part` 
+column (which tells us which pace of a record a row corresponds to)
+and could be also per-record keyed by an `iris_id` (which we are not
+adding, as we do not need it for our graphing task, adding the
+per-record id makes the transform convertible and is shown 
+[here](https://winvector.github.io/cdata/articles/blocksrecs.html)).
+
 There are a great number of ways to achieve the above transform. 
 We are going to concentrate on the `cdata` methodology.  
 Notice we are moving data from an "all of the record is in one row"
-to "the meaningful record unit in a block across several rows".
+to "the meaningful record unit is a block across several rows".
 In `cdata` this means we want to perform a `rowrecs_to_blocks()` 
 transform.  To do this we start by labeling the roles of different portion of
-the data we want and headers in our desired result record.  In particular we identify:
+the block oriented data.  In particular we identify:
 
- * Columns we want copied as additional row information (or even as partial row keys).
- * An additional partial row key column.
- * Levels we expect in the new partial row key column.
- * New column names for the new `data.frame`.
+ * Columns we want copied as additional row information (in this case `Species`, but often a per-record index or key).
+ * The additional key that identifies parts of each multi-row record (in this case `flower_part`).
+ * Levels we expect in the new record portion key column.
+ * New column names for the new `data.frame`, these are where values are in the block record data.
+ * Re-label the block of values as "column names from the original data frame" as we need to specify which columns these example values are coming from.
  
-We show this below.  
+We show this labeling below.  
 
 <img src="design_4.png" width="600">
 
-We then fill this information into a new data structure we call the control table.
+Notice we have marked the measurements `1.4, 0.2, 5.1, 3.5` as "column names", not values.  That is because
+we must show which columns these values are coming from.
 
-The rules are:
+This annotated example record is the guide for building what we call the transform control table.  We build up the transform control table following these rules:
 
   * The key column is the first column of the control table.
   * The key levels we wish to track are values in the key column.
@@ -70,7 +78,7 @@ The rules are:
 
 <img src="design_5.png" width="600">
 
-We then translate this diagram into a `controlTabl` `data.frame` and `columnsToCopy` vector.
+The `R` version of the above is specified as follows:
 
 ```{r}
 (controlTable <- wrapr::qchar_frame(
@@ -91,11 +99,12 @@ iris_aug <- rowrecs_to_blocks(
   iris,
   controlTable = controlTable,
   columnsToCopy = columnsToCopy) 
+
 head(iris_aug)
 ```
   
   
-And that completes the example plot as described [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+The data is now ready to plot using `ggplot2` as was shown  [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 Designing a `rowrecs_to_blocks` transform is even easier, as the `controlTable` has the same
 shape as the record block (assuming the record partial key controlling column is the first column).  All 
@@ -121,13 +130,17 @@ print(ct)
 ```
 
 
-Though to invert such a transform we would need additional keys showing which rows together form a record (which we demonstrate [here](https://winvector.github.io/cdata/articles/blocksrecs.html)).
+Though to actually move back from block records to row records we would need additional keys showing *which* rows together form a record (which we demonstrate [here](https://winvector.github.io/cdata/articles/blocksrecs.html)).
 
-Notice having an example record in each form (`iris_aug[1:2, c("flower_part", "Length", "Width")]` and `iris[1,]`) is enough to build up the control table (either by machine on using pencil and paper). In practice: we *highly* recommend looking at your data, writing down what one record on each side of the transform would look like, and then using that to fill out the control table on paper.
+Notice in both cases having examples of the before and after form of the transform is the guide to building the transform specification (the transform control table). In practice: we *highly* recommend looking at your data, writing down what one record on each side of the transform would look like, and then using that to fill out the control table on paper.  
+
+The exercise of examining designing a control table really opens your eye to how data is moving in such transforms and exposes a lot of structure of data transforms.  For example:
+
+ * If the control table has two columns then the operation could be implemented as a single `tidyr` `gather()` or `spread()`.
+ * If the control table has `k` rows then the `rowrecs_to_blocks()` direction could be implemented as `k-1` `rbind()`s.
 
 
-Some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
-
+Some discussion of the nature of block records and row records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
 
 Some additional tutorials on `cdata` data transforms can are given below:
 

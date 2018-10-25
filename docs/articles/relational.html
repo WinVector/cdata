@@ -88,7 +88,7 @@
       <h1>Connection to Relations Operators</h1>
                         <h4 class="author">John Mount</h4>
             
-            <h4 class="date">2018-10-23</h4>
+            <h4 class="date">2018-10-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/relational.Rmd"><code>vignettes/relational.Rmd</code></a></small>
       <div class="hidden name"><code>relational.Rmd</code></div>
@@ -103,9 +103,9 @@
 <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> is a variation of a relational-join of the data with the control table. This is why you get one row per pair of original data rows and control table rows.</li>
 <li>
 <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> is essentially an aggregation or relational-projection (actually even a coalesce) over a widened table. This is why this operation decreases the number of rows.</li>
-<li>The <code>controlTable</code> is a picture of of one side of the transform (and a wide row is the other).</li>
+<li>The <code>controlTable</code> is a picture of one side of the transform (and a wide row is the other).</li>
 </ul>
-<p>The sense we mean the control table is a picture of the transform is made a bit more obvious if we apply the control table to itself.</p>
+<p>The sense we mean the control table is a picture of the transform from <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">“plotting the <code>iris</code> data faceted”</a> is made a bit more obvious if we apply the control table to itself.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cdata)
 
 iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
