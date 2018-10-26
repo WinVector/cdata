@@ -97,8 +97,7 @@ iris_aug <- rowrecs_to_blocks(
   controlTable,
   columnsToCopy = columnsToCopy)
 
-head(iris, n=3)
-
+iris_aug
 
 # demonstrate the reverse transform
 iris_back <- blocks_to_rowrecs(
