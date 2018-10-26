@@ -88,7 +88,7 @@
       <h1>Designing Transforms for Data Reshaping with cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2018-10-25</h4>
+            <h4 class="date">2018-10-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/design.Rmd"><code>vignettes/design.Rmd</code></a></small>
       <div class="hidden name"><code>design.Rmd</code></div>
@@ -104,8 +104,8 @@
 <p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263"><em>The Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley , 2003</a></p>
 </blockquote>
 <p>The design principle expressed by this rule is that it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.</p>
-<p>We showed in <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">the last post</a> how <code>cdata</code> takes a transform control table to specify how you want your data reshaped. The question then becomes: how do you come up with the transform control table?</p>
-<p>Let’s discuss that using the example from the post: <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">“plotting the <code>iris</code> data faceted”</a>.</p>
+<p>We showed in <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">this article</a> how <code>cdata</code> takes a transform control table to specify how you want your data reshaped. The question then becomes: how do you come up with the transform control table?</p>
+<p>Let’s discuss that using the example from the article: <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">“plotting the <code>iris</code> data faceted”</a>.</p>
 <p>The goal is to produce the following graph with <code>ggplot2</code></p>
 <p><img src="iris_plot.png"></p>
 <p>In order to do this, one wants data that looks like the following:</p>

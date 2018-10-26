@@ -28,10 +28,10 @@ data re-shaping.
 
 The design principle expressed by this rule is that it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
 
-We showed in [the last post](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/) how `cdata` takes a transform control table to specify how you want your data reshaped.
+We showed in [this article](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/) how `cdata` takes a transform control table to specify how you want your data reshaped.
 The question then becomes: how do you come up with the transform control table?
 
-Let's discuss that using the example from the post: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+Let's discuss that using the example from the article: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
 The goal is to produce the following graph with `ggplot2` 
 
