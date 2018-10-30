@@ -45,7 +45,7 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 ```
 
-![](README_files/figure-markdown_github/ex0-1.png)
+![](tools/README_files/figure-markdown_github/ex0-1.png)
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
 And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
@@ -98,7 +98,7 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   xlab(NULL)
 ```
 
-![](README_files/figure-markdown_github/ex0_1-1.png)
+![](tools/README_files/figure-markdown_github/ex0_1-1.png)
 
 The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
 
