@@ -88,7 +88,7 @@
       <h1>Block Records and Row Records</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2018-10-26</h4>
+            <h4 class="date">2018-11-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/blocksrecs.Rmd"><code>vignettes/blocksrecs.Rmd</code></a></small>
       <div class="hidden name"><code>blocksrecs.Rmd</code></div>
@@ -97,7 +97,7 @@
 
     
     
-<p>The theory of <code>cdata</code> data transforms is based on the principles:</p>
+<p>The theory of <a href="https://winvector.github.io/cdata/"><code>cdata</code></a> data transforms is based on the principles:</p>
 <ul>
 <li>data has coordinates</li>
 <li>data is naturally grouped into records.</li>
@@ -189,6 +189,7 @@ iris_back
 <span class="co">#&gt; 3       3  setosa          1.3         0.2          4.7         3.2</span></code></pre></div>
 <p>The control table on the <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> transform is the exact same control table as in the <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> transform, just with the following reversed point of view.</p>
 <p><img src="blocks_to_rowrecs.png" width="600"></p>
+<p>Notice we use the same control table in both directions: what changes is the interpretations of various regions of the control table.</p>
 <p><code>cdata</code> considers the row-record a universal form. Just about any data shape can be transformed to any other by:</p>
 <ul>
 <li>(optionally) Combining columns (as new column names in the soon to come row records must come from values of a single column).</li>

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The theory of `cdata` data transforms is based on the principles:
+The theory of [`cdata`](https://winvector.github.io/cdata/) data transforms is based on the principles:
 
   * data has coordinates 
   * data is naturally grouped into records.
@@ -112,6 +112,8 @@ iris_back
 The control table on the `blocks_to_rowrecs()` transform is the exact same control table as in the `rowrecs_to_blocks()` transform, just with the following reversed point of view.
 
 <img src="blocks_to_rowrecs.png" width="600">
+
+Notice we use the same control table in both directions: what changes is the interpretations of various regions of the control table.
 
 `cdata` considers the row-record a universal form.  Just about any data shape can be transformed to any other by:
 
