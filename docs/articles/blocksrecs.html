@@ -85,7 +85,7 @@
       <h1>Block Records and Row Records</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2018-11-01</h4>
+            <h4 class="date">2018-11-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/blocksrecs.Rmd"><code>vignettes/blocksrecs.Rmd</code></a></small>
       <div class="hidden name"><code>blocksrecs.Rmd</code></div>
@@ -106,7 +106,7 @@
 <blockquote>
 <p>Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.</p>
 </blockquote>
-<p>The coordinatized data concept: is the exact <em>current</em> data realization is incidental. One can perform a data <em>change of basis</em> to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).</p>
+<p>The coordinatized data concept is that the exact <em>current</em> data realization is incidental. One can perform a data <em>change of basis</em> to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).</p>
 <p>The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to <a href="https://en.wikipedia.org/wiki/Record-oriented_filesystem">record-oriented filesystems</a>, and perhaps living on in JSON nested format.</p>
 <p>The entirety of the <code>cdata</code> package is to supply transforms between what we call “row records” (records that happen to be implemented as a single row) and block records (records that span multiple rows). These two methods are:</p>
 <ul>

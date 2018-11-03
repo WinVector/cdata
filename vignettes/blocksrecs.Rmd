@@ -27,7 +27,7 @@ The idea of data coordinates is related to [Codd's 2nd rule](https://en.wikipedi
   
 > Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
 
-The coordinatized data concept: is the exact *current* data realization is incidental.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
+The coordinatized data concept is that the exact *current* data realization is incidental.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
 
 The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested format.
 
