@@ -3,6 +3,7 @@ Type: Package
 Title: Fluid Data Transformations
 Version: 1.0.4
 Date: 2018-10-25
+Priority: recommended
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -17,7 +18,7 @@ Description: Supplies higher-order fluid data transform operators that include p
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Depends:
   R (>= 3.4.0)
 Imports:
