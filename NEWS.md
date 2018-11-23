@@ -1,8 +1,9 @@
 
-# cdata 1.0.4 2018/10/25
+# cdata 1.0.4 2018/11/23
 
  * More vignettes.
  * Improve doc cross-linking.
+ * Switch to new f_df signature.
 
 # cdata 1.0.3 2018/10/20
 

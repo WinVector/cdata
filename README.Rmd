@@ -120,7 +120,7 @@ And a quick database example:
 library("cdata")
 library("rquery")
 
-use_spark <- TRUE
+use_spark <- FALSE
 
 if(use_spark) {
   my_db <- sparklyr::spark_connect(version='2.2.0', 
@@ -184,11 +184,7 @@ Install via CRAN:
 install.packages("cdata")
 ```
 
-Or from GitHub using devtools:
 
-```{r, eval=FALSE}
-devtools::install_github("WinVector/cdata")
-```
 
 Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on). 
 

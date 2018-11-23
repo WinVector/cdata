@@ -71,7 +71,7 @@ build_pivot_control.relop <- function(table,
                        overwrite = TRUE,
                        temporary = temporary)
   }
-  f_df <- function(d) {
+  f_df <- function(d, nd = NULL) {
     build_pivot_control.default(table = d,
                                 columnToTakeKeysFrom = columnToTakeKeysFrom,
                                 columnToTakeValuesFrom = columnToTakeValuesFrom,
@@ -81,6 +81,7 @@ build_pivot_control.relop <- function(table,
   nd <- rquery::non_sql_node(table,
                              f_db = f_db,
                              f_df = f_df,
+                             f_dt = NULL,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
@@ -172,7 +173,7 @@ unpivot_to_blocks.relop <- function(data,
                         temporary = temporary,
                         resultName = outgoing_table_name)
   }
-  f_df <- function(d) {
+  f_df <- function(d, nd = NULL) {
     unpivot_to_blocks.default(data = d,
                               nameForNewKeyColumn = nameForNewKeyColumn,
                               nameForNewValueColumn = nameForNewValueColumn,
@@ -182,6 +183,7 @@ unpivot_to_blocks.relop <- function(data,
   nd <- rquery::non_sql_node(data,
                              f_db = f_db,
                              f_df = f_df,
+                             f_dt = NULL,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
@@ -283,7 +285,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                         temporary = temporary,
                         resultName = outgoing_table_name)
   }
-  f_df <- function(d) {
+  f_df <- function(d, nd = NULL) {
     blocks_to_rowrecs.default(tallTable = d,
                               keyColumns = keyColumns,
                               controlTable = controlTable,
@@ -295,6 +297,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
   nd <- rquery::non_sql_node(tallTable,
                              f_db = f_db,
                              f_df = f_df,
+                             f_dt = NULL,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
@@ -384,7 +387,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
                         temporary = temporary,
                         resultName = outgoing_table_name)
   }
-  f_df <- function(d) {
+  f_df <- function(d, nd = NULL) {
     rowrecs_to_blocks.default(wideTable = d,
                               controlTable = controlTable,
                               checkNames = checkNames,
@@ -395,6 +398,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
   nd <- rquery::non_sql_node(wideTable,
                              f_db = f_db,
                              f_df = f_df,
+                             f_dt = NULL,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
