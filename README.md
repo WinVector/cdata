@@ -45,7 +45,7 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 ```
 
-![](README_files/figure-markdown_github/ex0-1.png)
+![](tools/README-ex0-1.png)
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
 And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
@@ -55,6 +55,7 @@ And some discussion of the nature of records in `cdata` can be found [here](http
 We can also exhibit a larger example of using `cdata` to create a scatter-plot matrix, or pair plot:
 
 ``` r
+
 iris <- data.frame(iris)
 
 library("ggplot2")
@@ -98,7 +99,7 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   xlab(NULL)
 ```
 
-![](README_files/figure-markdown_github/ex0_1-1.png)
+![](tools/README-ex0_1-1.png)
 
 The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
 
@@ -130,35 +131,25 @@ DBI::dbWriteTable(my_db,
                   d,
                   temporary = TRUE)
 rstr(my_db, 'd')
-```
-
-    ## table `d` SQLiteConnection 
-    ##  nrow: 2 
-    ## 'data.frame':    2 obs. of  2 variables:
-    ##  $ meas: chr  "AUC" "R2"
-    ##  $ val : num  0.6 0.2
-
-``` r
+ #  table `d` SQLiteConnection 
+ #   nrow: 2 
+ #  'data.frame':   2 obs. of  2 variables:
+ #   $ meas: chr  "AUC" "R2"
+ #   $ val : num  0.6 0.2
 td <- db_td(my_db, "d")
 td
-```
+ #  [1] "table(`d`; meas, val)"
 
-    ## [1] "table(`d`; meas, val)"
-
-``` r
 cT <- td %.>%
   build_pivot_control(.,
                       columnToTakeKeysFrom= 'meas',
                       columnToTakeValuesFrom= 'val') %.>%
   execute(my_db, .)
 print(cT)
-```
+ #    meas val
+ #  1  AUC AUC
+ #  2   R2  R2
 
-    ##   meas val
-    ## 1  AUC AUC
-    ## 2   R2  R2
-
-``` r
 tab <- td %.>%
   blocks_to_rowrecs(.,
                     keyColumns = NULL,
@@ -167,21 +158,15 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
-```
-
-    ## [1] "table(`rquery_mat_36682059173562838551_0000000000`; AUC, R2)"
-
-``` r
+ #  [1] "table(`rquery_mat_16755845500748294500_0000000000`; AUC, R2)"
+  
 rstr(my_db, tab)
-```
+ #  table `rquery_mat_16755845500748294500_0000000000` SQLiteConnection 
+ #   nrow: 1 
+ #  'data.frame':   1 obs. of  2 variables:
+ #   $ AUC: num 0.6
+ #   $ R2 : num 0.2
 
-    ## table `rquery_mat_36682059173562838551_0000000000` SQLiteConnection 
-    ##  nrow: 1 
-    ## 'data.frame':    1 obs. of  2 variables:
-    ##  $ AUC: num 0.6
-    ##  $ R2 : num 0.2
-
-``` r
 if(use_spark) {
   sparklyr::spark_disconnect(my_db)
 } else {

@@ -4,6 +4,16 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = " # ",
+  fig.path = "tools/README-"
+)
+```
+
+
 [`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to the so-called "Rule of Representation":
 
 > Fold knowledge into data, so program logic can be stupid and robust.
@@ -23,13 +33,8 @@ Briefly: `cdata` supplies data transform operators that:
 
 A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
-```{r opts, include=FALSE, warning=FALSE, message=FALSE}
-library("knitr")
-opts_knit$set(base.dir = 'tools')
-```
 
 ```{r ex0}
-
 iris <- data.frame(iris)
 
 library("ggplot2")

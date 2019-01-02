@@ -128,12 +128,13 @@ iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowre
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
-<p><img src="index_files/figure-html/ex0-1.png" width="700"></p>
+<p><img src="tools/README-ex0-1.png" width="700"></p>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.<br>
 And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
 <hr>
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+iris &lt;-<span class="st"> </span><span class="kw">data.frame</span>(iris)
 
 <span class="kw">library</span>(<span class="st">"ggplot2"</span>)
 <span class="kw">library</span>(<span class="st">"cdata"</span>)
@@ -174,7 +175,7 @@ iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
-<p><img src="index_files/figure-html/ex0_1-1.png" width="700"></p>
+<p><img src="tools/README-ex0_1-1.png" width="700"></p>
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <p>And a quick database example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"cdata"</span>)
@@ -201,40 +202,44 @@ DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation
                   <span class="st">'d'</span>,
                   d,
                   <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
-<pre><code>## table `d` SQLiteConnection 
-##  nrow: 2 
-## 'data.frame':    2 obs. of  2 variables:
-##  $ meas: chr  "AUC" "R2"
-##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">td &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/db_td">db_td</a></span>(my_db, <span class="st">"d"</span>)
-td</code></pre></div>
-<pre><code>## [1] "table(`d`; meas, val)"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, <span class="st">'d'</span>)
+ <span class="co">#  table `d` SQLiteConnection </span>
+ <span class="co">#   nrow: 2 </span>
+ <span class="co">#  'data.frame':   2 obs. of  2 variables:</span>
+ <span class="co">#   $ meas: chr  "AUC" "R2"</span>
+ <span class="co">#   $ val : num  0.6 0.2</span>
+td &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/db_td">db_td</a></span>(my_db, <span class="st">"d"</span>)
+td
+ <span class="co">#  [1] "table(`d`; meas, val)"</span>
+
+cT &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/build_pivot_control.html">build_pivot_control</a></span>(.,
                       <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
                       <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>) <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(my_db, .)
-<span class="kw">print</span>(cT)</code></pre></div>
-<pre><code>##   meas val
-## 1  AUC AUC
-## 2   R2  R2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
+<span class="kw">print</span>(cT)
+ <span class="co">#    meas val</span>
+ <span class="co">#  1  AUC AUC</span>
+ <span class="co">#  2   R2  R2</span>
+
+tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(.,
                     <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
                     <span class="dt">controlTable =</span> cT,
                     <span class="dt">temporary =</span> <span class="ot">FALSE</span>) <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
-<span class="kw">print</span>(tab)</code></pre></div>
-<pre><code>## [1] "table(`rquery_mat_72989696858824590687_0000000000`; AUC, R2)"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `rquery_mat_72989696858824590687_0000000000` SQLiteConnection 
-##  nrow: 1 
-## 'data.frame':    1 obs. of  2 variables:
-##  $ AUC: num 0.6
-##  $ R2 : num 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(use_spark) {
+<span class="kw">print</span>(tab)
+ <span class="co">#  [1] "table(`rquery_mat_16434954927434759999_0000000000`; AUC, R2)"</span>
+  
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
+ <span class="co">#  table `rquery_mat_16434954927434759999_0000000000` SQLiteConnection </span>
+ <span class="co">#   nrow: 1 </span>
+ <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
+ <span class="co">#   $ AUC: num 0.6</span>
+ <span class="co">#   $ R2 : num 0.2</span>
+
+<span class="cf">if</span>(use_spark) {
   sparklyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sparklyr/topics/spark-connections">spark_disconnect</a></span>(my_db)
 } <span class="cf">else</span> {
   DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)
