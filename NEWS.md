@@ -3,6 +3,7 @@
 
  * More vignettes.
  * Improve doc cross-linking.
+ * Switch to new f_df signature.
 
 # cdata 1.0.3 2018/10/20
 
