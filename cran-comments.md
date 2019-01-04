@@ -20,8 +20,21 @@
 
 ### Windows
 
+    rhub::check_for_cran()
+    447#> * using R Under development (unstable) (2018-12-26 r75909)
+    448#> * using platform: x86_64-w64-mingw32 (64-bit)
+    449#> * using session charset: ISO8859-1
+    450#> * using option '--as-cran'
+    451#> * checking for file 'cdata/DESCRIPTION' ... OK
+    452#> * checking extension type ... Package
+    453#> * this is package 'cdata' version '1.0.4'
+    454#> * package encoding: UTF-8
+    455#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    456#> Maintainer: 'John Mount '
+    510#> Status: OK
+
     devtools::build_win()
- 
+    (down)
     
 ### Linux
 
@@ -46,3 +59,4 @@
     devtools::revdep_check()
     Checking 1 packages: WVPlots
     Checked WVPlots: 0 errors | 0 warnings | 0 notes
+    
