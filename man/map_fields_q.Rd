@@ -13,7 +13,7 @@ map_fields_q(dname, cname, mname, my_db, rname)
 
 \item{mname}{name of table of data describing the mapping (cname column is source, derived columns are destinations).}
 
-\item{my_db}{DBI database handle.}
+\item{my_db}{database handle.}
 
 \item{rname}{name of result table.}
 }

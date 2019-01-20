@@ -74,7 +74,7 @@ if (requireNamespace("DBI", quietly = TRUE) &&
 
   # un-pivot example
   d <- data.frame(AUC = 0.6, R2 = 0.2)
-  DBI::dbWriteTable(my_db,
+  rquery::rq_copy_to(my_db,
                     'd',
                     d,
                     overwrite = TRUE,

@@ -37,7 +37,7 @@ if (requireNamespace("DBI", quietly = TRUE) &&
   d <- data.frame(measType = c("wt", "ht"),
                   measValue = c(150, 6),
                   stringsAsFactors = FALSE)
-  DBI::dbWriteTable(my_db,
+  rquery::rq_copy_to(my_db,
                     'd',
                     d,
                     overwrite = TRUE,

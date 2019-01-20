@@ -4,7 +4,7 @@
 #' @param dname name of table to re-map.
 #' @param cname name of column to re-map.
 #' @param mname name of table of data describing the mapping (cname column is source, derived columns are destinations).
-#' @param my_db DBI database handle.
+#' @param my_db database handle.
 #' @param rname name of result table.
 #' @return re-mapped table
 #'
@@ -44,12 +44,9 @@
 #' @export
 #'
 map_fields_q <- function(dname, cname, mname, my_db, rname) {
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::map_fields_q requires DBI package")
-  }
   dests <- vapply(setdiff(cols(my_db,mname), cname),
                   function(di) {
-                    DBI::dbQuoteIdentifier(my_db, di)
+                    rquery::quote_identifier(my_db, di)
                   }, character(1))
   qt <- paste0("m.",
                dests)
@@ -58,14 +55,14 @@ map_fields_q <- function(dname, cname, mname, my_db, rname) {
               " AS SELECT d.*, ",
               paste(qt, collapse = ", "),
               " FROM ",
-              DBI::dbQuoteIdentifier(my_db, dname),
+              rquery::quote_identifier(my_db, dname),
               " d LEFT JOIN ",
-              DBI::dbQuoteIdentifier(my_db, mname),
+              rquery::quote_identifier(my_db, mname),
               " m ON ",
-              " d.", DBI::dbQuoteIdentifier(my_db, cname),
+              " d.", rquery::quote_identifier(my_db, cname),
               " = ",
-              " m.", DBI::dbQuoteIdentifier(my_db, cname))
-  DBI::dbExecute(my_db, q)
+              " m.", rquery::quote_identifier(my_db, cname))
+  rquery::rq_execute(my_db, q)
   rname
 }
 

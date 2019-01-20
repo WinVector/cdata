@@ -85,7 +85,7 @@ knitr::kable(rowrecs)
 
 We have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).
 
-In `cdata` `1.0.5` or newer we can make things even easier and use a [conveneince function that combines these steps](https://winvector.github.io/cdata/reference/convert_records.html).
+In `cdata` `1.0.5` or newer we can make things even easier and use a [convenience function that combines these steps](https://winvector.github.io/cdata/reference/convert_records.html).
 
 ```{r}
 t2 <- convert_records(
@@ -111,6 +111,25 @@ ops <- table_desciption %.>%
 cat(format(ops))
 
 rquery::column_names(ops)
+
+if(requireNamespace("DBI", quietly = TRUE) &&
+   requireNamespace("RSQLite", quietly = TRUE)) {
+  raw_connection <- DBI::dbConnect(RSQLite::SQLite(), 
+                                   ":memory:")
+  RSQLite::initExtension(raw_connection)
+  db <- rquery::rquery_db_info(
+    connection = raw_connection,
+    is_dbi = TRUE,
+    connection_options = rquery::rq_connection_tests(raw_connection))
+  
+  db_td <- rquery::rq_copy_to(db, "data", data)
+  
+  ops %.>% 
+    db %.>% 
+    print(.)
+  
+  DBI::dbDisconnect(raw_connection)
+}
 ```
 
 

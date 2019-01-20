@@ -286,7 +286,7 @@ knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentati
 </tbody>
 </table>
 <p>We have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).</p>
-<p>In <code>cdata</code> <code>1.0.5</code> or newer we can make things even easier and use a <a href="https://winvector.github.io/cdata/reference/convert_records.html">conveneince function that combines these steps</a>.</p>
+<p>In <code>cdata</code> <code>1.0.5</code> or newer we can make things even easier and use a <a href="https://winvector.github.io/cdata/reference/convert_records.html">convenience function that combines these steps</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(
   data,
   <span class="dt">keyColumns =</span> keyColumns,
@@ -367,7 +367,33 @@ ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</spa
 <span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span>
 
 rquery<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops)
-<span class="co">#&gt; [1] "record_id" "column"    "row1"      "row2"      "row3"</span></code></pre></div>
+<span class="co">#&gt; [1] "record_id" "column"    "row1"      "row2"      "row3"</span>
+
+<span class="cf">if</span>(<span class="kw">requireNamespace</span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
+<span class="st">   </span><span class="kw">requireNamespace</span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
+  raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
+                                   <span class="st">":memory:"</span>)
+  RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)
+  db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(
+    <span class="dt">connection =</span> raw_connection,
+    <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,
+    <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))
+  
+  db_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"data"</span>, data)
+  
+  ops <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">    </span>db <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">print</span>(.)
+  
+  DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)
+}
+<span class="co">#&gt;   record_id column row1 row2 row3</span>
+<span class="co">#&gt; 1         1   col1    1    4    7</span>
+<span class="co">#&gt; 2         1   col2    2    5    8</span>
+<span class="co">#&gt; 3         1   col3    3    6    9</span>
+<span class="co">#&gt; 4         2   col1   11   14   17</span>
+<span class="co">#&gt; 5         2   col2   12   15   18</span>
+<span class="co">#&gt; 6         2   col3   13   16   19</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

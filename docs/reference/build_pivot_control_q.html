@@ -183,7 +183,7 @@
   <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>measType</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
                   <span class='kw'>measValue</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
                   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/DBI/topics/dbWriteTable'>dbWriteTable</a></span>(<span class='no'>my_db</span>,
+  <span class='kw pkg'>rquery</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/rquery/topics/rq_copy_to'>rq_copy_to</a></span>(<span class='no'>my_db</span>,
                     <span class='st'>'d'</span>,
                     <span class='no'>d</span>,
                     <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,

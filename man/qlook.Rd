@@ -7,7 +7,7 @@
 qlook(my_db, tableName, displayRows = 10, countRows = TRUE)
 }
 \arguments{
-\item{my_db}{DBI database handle}
+\item{my_db}{database handle}
 
 \item{tableName}{name of table to look at}
 
@@ -26,7 +26,7 @@ Quick look at remote data
 if ( requireNamespace("DBI", quietly = TRUE) &&
   requireNamespace("RSQLite", quietly = TRUE)) {
   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  DBI::dbWriteTable(my_db,
+  rquery::rq_copy_to(my_db,
                     'd',
                     data.frame(AUC = 0.6, R2 = 0.2),
                     overwrite = TRUE,

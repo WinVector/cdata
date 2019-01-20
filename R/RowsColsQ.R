@@ -53,7 +53,7 @@ checkControlTable <- function(controlTable, strict) {
 
 #' List columns of a table
 #'
-#' @param my_db DBI database connection
+#' @param my_db database connection
 #' @param tableName character name of table
 #' @return list of column names
 #'
@@ -62,7 +62,7 @@ checkControlTable <- function(controlTable, strict) {
 #' if (  requireNamespace("DBI", quietly = TRUE) &&
 #'     requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#'   DBI::dbWriteTable(my_db,
+#'   rquery::rq_copy_to(my_db,
 #'                     'd',
 #'                     data.frame(AUC = 0.6, R2 = 0.2, nope = -5),
 #'                     overwrite = TRUE,
@@ -81,25 +81,12 @@ checkControlTable <- function(controlTable, strict) {
 #' @noRd
 #'
 cols <- function(my_db, tableName) {
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::cols requires DBI package")
-  }
-  # comment out block fails intermitnently, and sometimes gives wrong results
-  # filed as: https://github.com/tidyverse/dplyr/issues/3204
-  # tryCatch(
-  #   return(DBI::dbListFields(my_db, tableName)),
-  #   error = function(e) { NULL })
-  # below is going to have issues to to R-column name conversion!
-  q <- paste0("SELECT * FROM ",
-              DBI::dbQuoteIdentifier(my_db, tableName),
-              " LIMIT 1")
-  v <- DBI::dbGetQuery(my_db, q)
-  colnames(v)
+  rquery::rq_colnames(my_db, tableName)
 }
 
 #' Quick look at remote data
 #'
-#' @param my_db DBI database handle
+#' @param my_db database handle
 #' @param tableName name of table to look at
 #' @param displayRows number of rows to sample
 #' @param countRows logical, if TRUE return row count.
@@ -110,7 +97,7 @@ cols <- function(my_db, tableName) {
 #' if ( requireNamespace("DBI", quietly = TRUE) &&
 #'   requireNamespace("RSQLite", quietly = TRUE)) {
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#'   DBI::dbWriteTable(my_db,
+#'   rquery::rq_copy_to(my_db,
 #'                     'd',
 #'                     data.frame(AUC = 0.6, R2 = 0.2),
 #'                     overwrite = TRUE,
@@ -124,21 +111,18 @@ cols <- function(my_db, tableName) {
 qlook <- function(my_db, tableName,
                   displayRows = 10,
                   countRows = TRUE) {
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::qlook requires DBI package")
-  }
-  h <- DBI::dbGetQuery(my_db,
+  h <- rquery::rq_get_query(my_db,
                        paste0("SELECT * FROM ",
-                              DBI::dbQuoteIdentifier(my_db, tableName),
+                              rquery::quote_identifier(my_db, tableName),
                               " LIMIT ", displayRows))
   cat(paste('table',
-            DBI::dbQuoteIdentifier(my_db, tableName),
+            rquery::quote_identifier(my_db, tableName),
             paste(class(my_db), collapse = ' '),
             '\n'))
   if(countRows) {
-    nrow <- DBI::dbGetQuery(my_db,
+    nrow <- rquery::rq_get_query(my_db,
                             paste0("SELECT COUNT(1) FROM ",
-                                   DBI::dbQuoteIdentifier(my_db, tableName)))[1,1, drop=TRUE]
+                                   rquery::quote_identifier(my_db, tableName)))[1,1, drop=TRUE]
     nrow <- as.numeric(nrow) # defend against Rpostgres integer64
     cat(paste(" nrow:", nrow, '\n'))
     if(nrow>displayRows) {
@@ -206,7 +190,7 @@ qlook <- function(my_db, tableName,
 #'
 #'   # un-pivot example
 #'   d <- data.frame(AUC = 0.6, R2 = 0.2)
-#'   DBI::dbWriteTable(my_db,
+#'   rquery::rq_copy_to(my_db,
 #'                     'd',
 #'                     d,
 #'                     overwrite = TRUE,
@@ -234,9 +218,6 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 temporary = FALSE,
                                 resultName = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_q")
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::rowrecs_to_blocks_q requires DBI package")
-  }
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
       stop("rowrecs_to_blocks_q: columnsToCopy must be character")
@@ -262,7 +243,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   }
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  DBI::dbWriteTable(my_db,
+  rquery::rq_copy_to(my_db,
                       ctabName,
                       controlTable)
   if(is.null(resultName)) {
@@ -275,7 +256,7 @@ rowrecs_to_blocks_q <- function(wideTable,
     if(is.numeric(defaultValue)) {
       missingCaseTerm <- as.character(defaultValue)
     } else {
-      missingCaseTerm <- DBI::dbQuoteString(paste(as.character(defaultValue),
+      missingCaseTerm <- rquery::quote_string(paste(as.character(defaultValue),
                                                   collapse = ' '))
     }
   }
@@ -288,11 +269,11 @@ rowrecs_to_blocks_q <- function(wideTable,
                                             return(NULL)
                                           }
                                           paste0(' WHEN b.',
-                                                 DBI::dbQuoteIdentifier(my_db, colnames(controlTable)[1]),
+                                                 rquery::quote_identifier(my_db, colnames(controlTable)[1]),
                                                  ' = ',
-                                                 DBI::dbQuoteString(my_db, controlTable[i,1,drop=TRUE]),
+                                                 rquery::quote_string(my_db, controlTable[i,1,drop=TRUE]),
                                                  ' THEN a.',
-                                                 DBI::dbQuoteIdentifier(my_db, cij))
+                                                 rquery::quote_identifier(my_db, cij))
                                         })
                         whens <- as.character(Filter(function(x) { !is.null(x) },
                                                      whens))
@@ -304,34 +285,34 @@ rowrecs_to_blocks_q <- function(wideTable,
                                            ' ELSE ',
                                            missingCaseTerm,
                                            ' END AS ',
-                                           DBI::dbQuoteIdentifier(my_db, colnames(controlTable)[j]))
+                                           rquery::quote_identifier(my_db, colnames(controlTable)[j]))
                       })
   casestmts <- as.character(Filter(function(x) { !is.null(x) },
                                    casestmts))
   copystmts <- NULL
   if(length(columnsToCopy)>0) {
-    copystmts <- paste0('a.', DBI::dbQuoteIdentifier(my_db, columnsToCopy))
+    copystmts <- paste0('a.', rquery::quote_identifier(my_db, columnsToCopy))
   }
-  groupstmt <- paste0('b.', DBI::dbQuoteIdentifier(my_db, colnames(controlTable)[1]))
+  groupstmt <- paste0('b.', rquery::quote_identifier(my_db, colnames(controlTable)[1]))
   # deliberate cross join
   qs <-  paste0(" SELECT ",
                 paste(c(copystmts, groupstmt, casestmts), collapse = ', '),
                 ' FROM ',
-                DBI::dbQuoteIdentifier(my_db, wideTable),
+                rquery::quote_identifier(my_db, wideTable),
                 ' a CROSS JOIN ',
-                DBI::dbQuoteIdentifier(my_db, ctabName),
+                rquery::quote_identifier(my_db, ctabName),
                 ' b ')
   q <-  paste0("CREATE ",
                ifelse(temporary, "TEMPORARY", ""),
                " TABLE ",
-               DBI::dbQuoteIdentifier(my_db, resName),
+               rquery::quote_identifier(my_db, resName),
                " AS ",
                qs)
   if(showQuery) {
     print(q)
   }
-  DBI::dbExecute(my_db, q)
-  DBI::dbRemoveTable(my_db, ctabName)
+  rquery::rq_execute(my_db, q)
+  rquery::rq_remove_table(my_db, ctabName)
   resName
 }
 
@@ -362,7 +343,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 #'   d <- data.frame(measType = c("wt", "ht"),
 #'                   measValue = c(150, 6),
 #'                   stringsAsFactors = FALSE)
-#'   DBI::dbWriteTable(my_db,
+#'   rquery::rq_copy_to(my_db,
 #'                     'd',
 #'                     d,
 #'                     overwrite = TRUE,
@@ -383,16 +364,13 @@ build_pivot_control_q <- function(tableName,
                                   prefix = columnToTakeKeysFrom,
                                   sep = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::build_pivot_control_q")
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::build_pivot_control_q requires DBI package")
-  }
   q <- paste0("SELECT ",
-              DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom),
+              rquery::quote_identifier(my_db, columnToTakeKeysFrom),
               " FROM ",
-              DBI::dbQuoteIdentifier(my_db, tableName),
+              rquery::quote_identifier(my_db, tableName),
               " GROUP BY ",
-              DBI::dbQuoteIdentifier(my_db, columnToTakeKeysFrom))
-  controlTable <- DBI::dbGetQuery(my_db, q)
+              rquery::quote_identifier(my_db, columnToTakeKeysFrom))
+  controlTable <- rquery::rq_get_query(my_db, q)
   controlTable[[columnToTakeKeysFrom]] <- as.character(controlTable[[columnToTakeKeysFrom]])
   controlTable[[columnToTakeValuesFrom]] <- controlTable[[columnToTakeKeysFrom]]
   if(!is.null(sep)) {
@@ -460,7 +438,7 @@ build_pivot_control_q <- function(tableName,
 #'   my_db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 #'   # pivot example
 #'   d <- data.frame(meas = c('AUC', 'R2'), val = c(0.6, 0.2))
-#'   DBI::dbWriteTable(my_db,
+#'   rquery::rq_copy_to(my_db,
 #'                     'd',
 #'                     d,
 #'                     temporary = TRUE)
@@ -493,9 +471,6 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 temporary = FALSE,
                                 resultName = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_q")
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("cdata::blocks_to_rowrecs_q requires DBI package")
-  }
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
       stop("blocks_to_rowrecs_q: keyColumns must be character")
@@ -524,7 +499,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   }
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  DBI::dbWriteTable(my_db,
+  rquery::rq_copy_to(my_db,
                       ctabName,
                       controlTable)
   if(is.null(resultName)) {
@@ -537,7 +512,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     if(is.numeric(defaultValue)) {
       missingCaseTerm <- as.character(defaultValue)
     } else {
-      missingCaseTerm <- DBI::dbQuoteString(paste(as.character(defaultValue),
+      missingCaseTerm <- rquery::quote_string(paste(as.character(defaultValue),
                                                   collapse = ' '))
     }
   }
@@ -556,15 +531,15 @@ blocks_to_rowrecs_q <- function(tallTable,
       if((!is.null(cij))&&(!is.na(cij))) {
         collectstmts[[collectN]] <- paste0("MAX( CASE WHEN ", # pseudo aggregator
                                            "a.",
-                                           DBI::dbQuoteIdentifier(my_db, colnames(controlTable)[[1]]),
+                                           rquery::quote_identifier(my_db, colnames(controlTable)[[1]]),
                                            " = ",
-                                           DBI::dbQuoteString(my_db, controlTable[i,1,drop=TRUE]),
+                                           rquery::quote_string(my_db, controlTable[i,1,drop=TRUE]),
                                            " THEN a.",
-                                           DBI::dbQuoteIdentifier(my_db, colnames(controlTable)[[j]]),
+                                           rquery::quote_identifier(my_db, colnames(controlTable)[[j]]),
                                            " ELSE ",
                                            missingCaseTerm,
                                            " END ) ",
-                                           DBI::dbQuoteIdentifier(my_db, cij))
+                                           rquery::quote_identifier(my_db, cij))
         saw[[cij]] <- TRUE
       }
       collectN <- collectN + 1
@@ -578,24 +553,24 @@ blocks_to_rowrecs_q <- function(tallTable,
   copystmts <- NULL
   if(length(columnsToCopy)>0) {
     copystmts <- paste0('MAX(a.',
-                        DBI::dbQuoteIdentifier(my_db, columnsToCopy),
+                        rquery::quote_identifier(my_db, columnsToCopy),
                         ') ',
-                        DBI::dbQuoteIdentifier(my_db, columnsToCopy))
+                        rquery::quote_identifier(my_db, columnsToCopy))
   }
   groupterms <- NULL
   groupstmts <- NULL
   if(length(keyColumns)>0) {
-    groupterms <- paste0('a.', DBI::dbQuoteIdentifier(my_db, keyColumns))
+    groupterms <- paste0('a.', rquery::quote_identifier(my_db, keyColumns))
     groupstmts <- paste0('a.',
-                         DBI::dbQuoteIdentifier(my_db, keyColumns),
+                         rquery::quote_identifier(my_db, keyColumns),
                          ' ',
-                         DBI::dbQuoteIdentifier(my_db, keyColumns))
+                         rquery::quote_identifier(my_db, keyColumns))
   }
   # deliberate cross join
   qs <-  paste0(" SELECT ",
                 paste(c(groupstmts, copystmts, collectstmts), collapse = ', '),
                 ' FROM ',
-                DBI::dbQuoteIdentifier(my_db, tallTable),
+                rquery::quote_identifier(my_db, tallTable),
                 ' a ')
   if(length(groupstmts)>0) {
     qs <- paste0(qs,
@@ -605,14 +580,14 @@ blocks_to_rowrecs_q <- function(tallTable,
   q <-  paste0("CREATE ",
                ifelse(temporary, "TEMPORARY", ""),
                " TABLE ",
-               DBI::dbQuoteIdentifier(my_db, resName),
+               rquery::quote_identifier(my_db, resName),
                " AS ",
                qs)
   if(showQuery) {
     print(q)
   }
-  DBI::dbExecute(my_db, q)
-  DBI::dbRemoveTable(my_db, ctabName)
+  rquery::rq_execute(my_db, q)
+  rquery::rq_remove_table(my_db, ctabName)
   resName
 }
 
