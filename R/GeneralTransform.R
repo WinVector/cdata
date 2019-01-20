@@ -79,7 +79,7 @@ convert_records <- function(table,
                             checkKeys = FALSE,
                             strict = FALSE,
                             use_data_table = FALSE,
-                            tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
+                            tmp_name_source = wrapr::mk_tmp_name_source("crec"),
                             temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::convert_records")
   if(!is.data.frame(incoming_shape)) {

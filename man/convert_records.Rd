@@ -7,7 +7,7 @@
 convert_records(table, incoming_shape, outgoing_shape, ...,
   keyColumns = NULL, columnsToCopy_in = NULL, checkNames = TRUE,
   checkKeys = FALSE, strict = FALSE, use_data_table = FALSE,
-  tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
+  tmp_name_source = wrapr::mk_tmp_name_source("crec"),
   temporary = TRUE)
 }
 \arguments{
