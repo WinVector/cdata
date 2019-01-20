@@ -49,7 +49,18 @@
 ### Linux
 
     R CMD check --as-cran cdata_1.0.5.tar.gz 
-
+    rhub::check_for_cran()
+    1398#> * using R version 3.4.4 (2018-03-15)
+    1399#> * using platform: x86_64-pc-linux-gnu (64-bit)
+    1400#> * using session charset: UTF-8
+    1401#> * using option ‘--as-cran’
+    1402#> * checking for file ‘cdata/DESCRIPTION’ ... OK
+    1403#> * checking extension type ... Package
+    1404#> * this is package ‘cdata’ version ‘1.0.5’
+    1405#> * package encoding: UTF-8
+    1406#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    1407#> Maintainer: ‘John Mount ’
+    1460#> Status: OK
 
 ## Downstream dependencies
 
