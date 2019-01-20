@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.5</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Map a set of columns to rows (takes a <code>data.frame</code>).</h1>
-    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/relops.R'><code>R/relops.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/DefOps.R'><code>R/DefOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/relops.R'><code>R/relops.R</code></a></small>
     <div class="hidden name"><code>rowrecs_to_blocks.Rd</code></div>
     </div>
 
@@ -128,17 +128,21 @@
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
   <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"rrtobd"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>wideTable</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
-  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>use_data_table</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
@@ -183,7 +187,7 @@
     </tr>
     <tr>
       <th>temporary</th>
-      <td><p>logical, if TRUE make result temporary.</p></td>
+      <td><p>logical, if TRUE use temporary tables</p></td>
     </tr>
     </table>
     

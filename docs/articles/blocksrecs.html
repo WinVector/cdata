@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.5</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1>Block Records and Row Records</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-01-04</h4>
+            <h4 class="date">2019-01-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata//blob/master/vignettes/blocksrecs.Rmd"><code>vignettes/blocksrecs.Rmd</code></a></small>
       <div class="hidden name"><code>blocksrecs.Rmd</code></div>
@@ -176,10 +176,10 @@ iris_back &lt;-<span class="st"> </span><span class="kw"><a href="../reference/b
 )
 
 iris_back
-<span class="co">#&gt;   iris_id Species Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="co">#&gt; 1       1  setosa          1.4         0.2          5.1         3.5</span>
-<span class="co">#&gt; 2       2  setosa          1.4         0.2          4.9         3.0</span>
-<span class="co">#&gt; 3       3  setosa          1.3         0.2          4.7         3.2</span></code></pre></div>
+<span class="co">#&gt;   iris_id Species Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
+<span class="co">#&gt; 1       1  setosa          1.4          5.1         0.2         3.5</span>
+<span class="co">#&gt; 2       2  setosa          1.4          4.9         0.2         3.0</span>
+<span class="co">#&gt; 3       3  setosa          1.3          4.7         0.2         3.2</span></code></pre></div>
 <p>Notice we use the same control table in both directions: what changes is the interpretations of various regions of the control table.</p>
 <p>The control table is a picture of the transform in the sense that it transforms it self into a row, and that row back into itself. We show this here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># transform the row into a control table</span>
@@ -187,8 +187,8 @@ row &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_
                          <span class="dt">keyColumns =</span> <span class="ot">NULL</span>, 
                          <span class="dt">controlTable =</span> controlTable)
 <span class="kw">print</span>(row)
-<span class="co">#&gt;   Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="co">#&gt; 1 Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
+<span class="co">#&gt;   Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
+<span class="co">#&gt; 1 Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
 
 <span class="co"># recover the controlTable from the row</span>
 <span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(row,

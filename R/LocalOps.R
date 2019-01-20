@@ -8,38 +8,7 @@
 NULL
 
 
-#' Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a \code{data.frame}.
-#'
-#' Some discussion and examples can be found here: \url{https://winvector.github.io/FluidData/FluidData.html}.
-#'
-#' @param table data.frame to scan for new column names (in-memory data.frame).
-#' @param columnToTakeKeysFrom character name of column build new column names from.
-#' @param columnToTakeValuesFrom character name of column to get values from.
-#' @param ... not used, force later args to be by name
-#' @param prefix column name prefix (only used when sep is not NULL)
-#' @param sep separator to build complex column names.
-#' @return control table
-#'
-#' @seealso \code{\link{blocks_to_rowrecs}}
-#'
-#' @examples
-#'
-#'   d <- data.frame(measType = c("wt", "ht"),
-#'                   measValue = c(150, 6),
-#'                   stringsAsFactors = FALSE)
-#'   build_pivot_control(d,
-#'                       'measType', 'measValue',
-#'                       sep = '_')
-#'
-#' @export
-build_pivot_control <- function(table,
-                                columnToTakeKeysFrom,
-                                columnToTakeValuesFrom,
-                                ...,
-                                prefix = columnToTakeKeysFrom,
-                                sep = NULL) {
-  UseMethod("build_pivot_control")
-}
+
 
 #' @export
 #' @rdname build_pivot_control
@@ -48,7 +17,9 @@ build_pivot_control.default <- function(table,
                                         columnToTakeValuesFrom,
                                         ...,
                                         prefix = columnToTakeKeysFrom,
-                                        sep = NULL) {
+                                        sep = NULL,
+                                        tmp_name_source = wrapr::mk_tmp_name_source("bpcd"),
+                                        temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::build_pivot_control")
   if(!is.data.frame(table)) {
     stop("build_pivot_control.default table should be a data.frame")
@@ -130,68 +101,6 @@ build_transform_maps <- function(controlTable) {
 }
 
 
-#' Map a set of columns to rows (takes a \code{data.frame}).
-#'
-#' Transform data facts from columns into additional rows controlTable.
-#'
-#'
-#' This is using the theory of "fluid data"
-#' (\url{https://github.com/WinVector/cdata}), which includes the
-#' principle that each data cell has coordinates independent of the
-#' storage details and storage detail dependent coordinates (usually
-#' row-id, column-id, and group-id) can be re-derived at will (the
-#' other principle is that there may not be "one true preferred data
-#' shape" and many re-shapings of data may be needed to match data to
-#' different algorithms and methods).
-#'
-#' The controlTable defines the names of each data element in the two notations:
-#' the notation of the tall table (which is row oriented)
-#' and the notation of the wide table (which is column oriented).
-#' controlTable[ , 1] (the group label) cross colnames(controlTable)
-#' (the column labels) are names of data cells in the long form.
-#' controlTable[ , 2:ncol(controlTable)] (column labels)
-#' are names of data cells in the wide form.
-#' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropriate query over the data.
-#'
-#' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/FluidData/FluidData.html} and
-#' here \url{https://github.com/WinVector/cdata}.
-#'
-#' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
-#' @param controlTable table specifying mapping (local data frame).
-#' @param ... force later arguments to be by name.
-#' @param columnsToCopy character array of column names to copy.
-#' @param checkNames logical, if TRUE check names.
-#' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
-#' @param strict logical, if TRUE check control table name forms.
-#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
-#' @return long table built by mapping wideTable to one row per group
-#'
-#' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs}}
-#'
-#' @examples
-#'
-#'   # un-pivot example
-#'   d <- data.frame(AUC = 0.6, R2 = 0.2)
-#'   cT <- build_unpivot_control(nameForNewKeyColumn= 'meas',
-#'                               nameForNewValueColumn= 'val',
-#'                               columnsToTakeFrom= c('AUC', 'R2'))
-#'   rowrecs_to_blocks(d, cT)
-#'
-#'
-#' @export
-#'
-rowrecs_to_blocks <- function(wideTable,
-                              controlTable,
-                              ...,
-                              checkNames = TRUE,
-                              checkKeys = FALSE,
-                              strict = FALSE,
-                              columnsToCopy = NULL,
-                              use_data_table = FALSE) {
-  UseMethod("rowrecs_to_blocks")
-}
 
 #' @export
 #' @rdname rowrecs_to_blocks
@@ -202,7 +111,9 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       checkKeys = FALSE,
                                       strict = FALSE,
                                       columnsToCopy = NULL,
-                                      use_data_table = FALSE) {
+                                      use_data_table = FALSE,
+                                      tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
+                                      temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
@@ -297,74 +208,6 @@ rowrecs_to_blocks.default <- function(wideTable,
 }
 
 
-#' Map sets rows to columns (takes a \code{data.frame}).
-#'
-#' Transform data facts from rows into additional columns using controlTable.
-#'
-#'
-#' This is using the theory of "fluid data"n
-#' (\url{https://github.com/WinVector/cdata}), which includes the
-#' principle that each data cell has coordinates independent of the
-#' storage details and storage detail dependent coordinates (usually
-#' row-id, column-id, and group-id) can be re-derived at will (the
-#' other principle is that there may not be "one true preferred data
-#' shape" and many re-shapings of data may be needed to match data to
-#' different algorithms and methods).
-#'
-#' The controlTable defines the names of each data element in the two notations:
-#' the notation of the tall table (which is row oriented)
-#' and the notation of the wide table (which is column oriented).
-#' controlTable[ , 1] (the group label) cross colnames(controlTable)
-#' (the column labels) are names of data cells in the long form.
-#' controlTable[ , 2:ncol(controlTable)] (column labels)
-#' are names of data cells in the wide form.
-#' To get behavior similar to tidyr::gather/spread one builds the control table
-#' by running an appropriate query over the data.
-#'
-#' Some discussion and examples can be found here:
-#' \url{https://winvector.github.io/FluidData/FluidData.html} and
-#' here \url{https://github.com/WinVector/cdata}.
-#'
-#' @param tallTable data.frame containing data to be mapped (in-memory data.frame).
-#' @param keyColumns character vector of column defining row groups
-#' @param controlTable table specifying mapping (local data frame)
-#' @param ... force later arguments to be by name.
-#' @param columnsToCopy character, extra columns to copy.
-#' @param checkNames logical, if TRUE check names.
-#' @param checkKeys logical, if TRUE check keyColumns uniquely identify blocks (required).
-#' @param strict logical, if TRUE check control table name forms
-#' @param use_data_table logical if TRUE try to use data.table for the pivots.
-#' @return wide table built by mapping key-grouped tallTable rows to one row per group
-#'
-#' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks}}
-#'
-#' @examples
-#'
-#'   # pivot example
-#'   d <- data.frame(meas = c('AUC', 'R2'),
-#'                   val = c(0.6, 0.2))
-#'
-#'   cT <- build_pivot_control(d,
-#'                             columnToTakeKeysFrom= 'meas',
-#'                             columnToTakeValuesFrom= 'val')
-#'   blocks_to_rowrecs(d,
-#'                     keyColumns = NULL,
-#'                     controlTable = cT)
-#'
-#' @export
-#'
-blocks_to_rowrecs <- function(tallTable,
-                              keyColumns,
-                              controlTable,
-                              ...,
-                              columnsToCopy = NULL,
-                              checkNames = TRUE,
-                              checkKeys = TRUE,
-                              strict = FALSE,
-                              use_data_table = FALSE) {
-  UseMethod("blocks_to_rowrecs")
-}
-
 #' @export
 #' @rdname blocks_to_rowrecs
 blocks_to_rowrecs.default <- function(tallTable,
@@ -375,7 +218,9 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       checkNames = TRUE,
                                       checkKeys = TRUE,
                                       strict = FALSE,
-                                      use_data_table = TRUE) {
+                                      use_data_table = FALSE,
+                                      tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
+                                      temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")

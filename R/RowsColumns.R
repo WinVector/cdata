@@ -128,50 +128,6 @@ checkColsFormUniqueKeys <- function(data, keyColNames) {
 
 
 
-#' Move values from columns to rows (anti-pivot, or "shred").
-#'
-#' This is a convenience notation for \code{rowrecs_to_blocks}.
-#' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
-#'
-#'
-#' @param data data.frame to work with.
-#' @param nameForNewKeyColumn character name of column to write new keys in.
-#' @param nameForNewValueColumn character name of column to write new values in.
-#' @param columnsToTakeFrom character array names of columns to take values from.
-#' @param ... force later arguments to bind by name.
-#' @param nameForNewClassColumn optional name to land original cell classes to.
-#' @param checkNames logical, if TRUE check names.
-#' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
-#' @param strict logical, if TRUE check control table name forms.
-#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
-#' @return new data.frame with values moved to rows.
-#'
-#' @seealso \code{\link{pivot_to_rowrecs}}, \code{\link{rowrecs_to_blocks}}
-#'
-#' @examples
-#'
-#'   d <- data.frame(AUC= 0.6, R2= 0.2)
-#'   unpivot_to_blocks(d,
-#'                     nameForNewKeyColumn= 'meas',
-#'                     nameForNewValueColumn= 'val',
-#'                     columnsToTakeFrom= c('AUC', 'R2')) %.>%
-#'      print(.)
-#'
-#' @export
-#'
-#'
-unpivot_to_blocks <- function(data,
-                              nameForNewKeyColumn,
-                              nameForNewValueColumn,
-                              columnsToTakeFrom,
-                              ...,
-                              nameForNewClassColumn = NULL,
-                              checkNames = TRUE,
-                              checkKeys = FALSE,
-                              strict = FALSE,
-                              use_data_table = FALSE) {
-  UseMethod("unpivot_to_blocks")
-}
 
 #' @export
 #' @rdname unpivot_to_blocks

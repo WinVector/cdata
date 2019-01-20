@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.5</span>
       </span>
     </div>
 
@@ -116,7 +116,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a <code>data.frame</code>.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/relops.R'><code>R/relops.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata//blob/master/R/DefOps.R'><code>R/DefOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata//blob/master/R/relops.R'><code>R/relops.R</code></a></small>
     <div class="hidden name"><code>build_pivot_control.Rd</code></div>
     </div>
 
@@ -127,12 +127,15 @@
     </div>
 
     <pre class="usage"><span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>, <span class='no'>columnToTakeValuesFrom</span>,
-  <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>,
   <span class='no'>columnToTakeValuesFrom</span>, <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"bpcd"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>,

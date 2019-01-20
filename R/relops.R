@@ -1,6 +1,6 @@
 
-#' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param temporary logical, if TRUE use temporary tables
+#' build_pivot_control.relop
+#'
 #' @examples
 #'
 #' d <- data.frame(measType = c("wt", "ht"),
@@ -96,9 +96,7 @@ build_pivot_control.relop <- function(table,
 }
 
 
-
-#' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param temporary logical, if TRUE make result temporary.
+#' unpivot_to_blocks.relop
 #'
 #' @examples
 #'
@@ -198,8 +196,7 @@ unpivot_to_blocks.relop <- function(data,
 }
 
 
-#' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param temporary logical, if TRUE make result temporary.
+#' blocks_to_rowrecs.relop
 #'
 #' @examples
 #'
@@ -245,7 +242,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                                     columnsToCopy = NULL,
                                     checkNames = TRUE,
                                     strict = FALSE,
-                                    use_data_table = TRUE,
+                                    use_data_table = FALSE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                                     temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
@@ -308,8 +305,8 @@ blocks_to_rowrecs.relop <- function(tallTable,
 }
 
 
-#' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
-#' @param temporary logical, if TRUE make result temporary.
+#' rowrecs_to_blocks.relop
+#'
 #'
 #' @examples
 #'
@@ -349,9 +346,10 @@ rowrecs_to_blocks.relop <- function(wideTable,
                                     controlTable,
                                     ...,
                                     checkNames = TRUE,
+                                    checkKeys = FALSE,
                                     strict = FALSE,
                                     columnsToCopy = NULL,
-                                    use_data_table = TRUE,
+                                    use_data_table = FALSE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                                     temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
