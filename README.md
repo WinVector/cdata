@@ -158,10 +158,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_81096626723647850467_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_07116427381819912514_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_81096626723647850467_0000000000` SQLiteConnection 
+ #  table `rquery_mat_07116427381819912514_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6
@@ -184,6 +184,12 @@ Install via CRAN:
 
 ``` r
 install.packages("cdata")
+```
+
+Or you can get the latest development version with
+
+``` r
+devtools::install_github("WinVector/cdata")
 ```
 
 Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).
