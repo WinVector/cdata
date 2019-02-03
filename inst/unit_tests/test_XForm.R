@@ -1,8 +1,5 @@
-library('cdata')
 
-context("xform")
-
-test_that("testXForm.R", {
+test_XForm <- function() {
   # Example from: http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html
 
   # non-trivial control table
@@ -16,14 +13,14 @@ test_that("testXForm.R", {
   longform = build_frame(
     "loss", "acc", "val_loss", "val_acc" |
     "loss", "acc", "val_loss", "val_acc" )
-  testthat::expect_equal(sort(colnames(longform)), sort(colnames(rowrec)))
-  testthat::expect_equal(longform, rowrec[, colnames(longform), drop=FALSE])
+  RUnit::checkEquals(sort(colnames(longform)), sort(colnames(rowrec)))
+  RUnit::checkEquals(longform, rowrec[, colnames(longform), drop=FALSE])
 
   blockrec <- rowrecs_to_blocks(rowrec, controlTable)
   blockrec <- blockrec[order(blockrec$measure, decreasing = TRUE), , drop = FALSE]
   rownames(blockrec) <- NULL
-  testthat::expect_equal(sort(colnames(controlTable)), sort(colnames(blockrec)))
-  testthat::expect_equal(controlTable, blockrec[ , colnames(controlTable), drop=FALSE])
+  RUnit::checkEquals(sort(colnames(controlTable)), sort(colnames(blockrec)))
+  RUnit::checkEquals(controlTable, blockrec[ , colnames(controlTable), drop=FALSE])
 
   # operating on example data
   dOrig <- build_frame(
@@ -97,11 +94,11 @@ test_that("testXForm.R", {
   dBlocks <- dBlocks[order(dBlocks$epoch, dBlocks$measure), , drop = FALSE]
   dBlocks <- dBlocks[, colnames(dReady), drop = FALSE]
   rownames(dBlocks) <- NULL
-  testthat::expect_equal(dReady, dBlocks)
+  RUnit::checkEquals(dReady, dBlocks)
   dBack <- blocks_to_rowrecs(dBlocks, "epoch", controlTable)
   dBack <- dBack[order(dBack$epoch), , drop = FALSE]
   dBack <- dBack[, colnames(dOrig), drop = FALSE]
-  expect_equal(dOrig, dBack)
+  RUnit::checkEquals(dOrig, dBack)
 
   # same tests on db path
   if (requireNamespace("RSQLite", quietly = TRUE) &&
@@ -126,7 +123,7 @@ test_that("testXForm.R", {
     tab1 <- tab1[order(tab1$epoch, tab1$measure), , drop = FALSE]
     tab1 <- tab1[, colnames(dReady), drop = FALSE]
     rownames(tab1) <- NULL
-    expect_equal(dReady, tab1)
+    RUnit::checkEquals(dReady, tab1)
 
     tab2_name <- blocks_to_rowrecs_q('dReady',
                                keyColumns = "epoch",
@@ -137,10 +134,10 @@ test_that("testXForm.R", {
     tab2 <- tab2[order(tab2$epoch), , drop = FALSE]
     tab2 <- tab2[, colnames(dOrig), drop = FALSE]
     rownames(tab2) <- NULL
-    expect_equal(dOrig, tab2)
+    RUnit::checkEquals(dOrig, tab2)
 
     DBI::dbDisconnect(my_db)
   }
 
-
-})
+  invisible(NULL)
+}

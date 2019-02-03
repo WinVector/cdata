@@ -1,9 +1,7 @@
-library('cdata')
 
-context("chicks")
-
-test_that("test_chicks.R", {
-  lst <- readRDS("chickw.RDS")
+test_chicks <- function() {
+  dir <- system.file("unit_tests", package = "cdata", mustWork = TRUE)
+  lst <- readRDS(paste(dir, "chickw.RDS", sep = "/"))
   ChickWeight <- lst$ChickWeight
   ChickWeight_wide <- lst$ChickWeight_wide
 
@@ -14,5 +12,7 @@ test_that("test_chicks.R", {
     rowKeyColumns = "Chick")
   ChickWeight_wide2 <- ChickWeight_wide2[order(ChickWeight_wide2$Chick), , drop = FALSE]
   row.names(ChickWeight_wide2) <- NULL
-  testthat::expect(isTRUE(all.equal(ChickWeight_wide, ChickWeight_wide2)), failure_message = "mismatch")
-})
+  RUnit::checkTrue(isTRUE(all.equal(ChickWeight_wide, ChickWeight_wide2)))
+
+  invisible(NULL)
+}

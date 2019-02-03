@@ -1,8 +1,5 @@
-library('cdata')
 
-context("rowColOps")
-
-test_that("testRowColOps.R", {
+test_RowColOps <- function() {
     # some small corner cases
 
     d <- data.frame(AUC = 0.6, R2 = 0.2)
@@ -14,7 +11,7 @@ test_that("testRowColOps.R", {
     ex <- data.frame(meas = c('AUC', 'R2'),
                      val = c(0.6, 0.2),
                      stringsAsFactors = FALSE)
-    expect_equivalent(ex,
+    RUnit::checkEquals(ex,
                       res[, colnames(ex), drop = FALSE])
 
     d <- data.frame(meas = c('AUC', 'R2'),
@@ -26,7 +23,7 @@ test_that("testRowColOps.R", {
     ex <- data.frame(AUC = 0.6,
                      R2 = 0.2,
                      stringsAsFactors = FALSE)
-    expect_equivalent(ex,
+    RUnit::checkEquals(ex,
                       res[, colnames(ex), drop = FALSE])
 
     d <- data.frame(key = c('a', 'a'),
@@ -41,6 +38,8 @@ test_that("testRowColOps.R", {
                      AUC = 0.6,
                      R2 = 0.2,
                      stringsAsFactors = FALSE)
-    expect_equivalent(ex,
+    RUnit::checkEquals(ex,
                       res[, colnames(ex), drop = FALSE])
-})
+
+    invisible(NULL)
+}

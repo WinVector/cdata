@@ -1,9 +1,7 @@
-library('cdata')
 
-context("seatbelts")
-
-test_that("test_seatbelts.R", {
-  lst <- readRDS("seatbelts.RDS")
+test_seatbelts <- function() {
+  dir <- system.file("unit_tests", package = "cdata", mustWork = TRUE)
+  lst <- readRDS(paste(dir, "seatbelts.RDS", sep = "/"))
   seatbelts <- lst$seatbelts
   seatbelts_long <- lst$seatbelts_long
 
@@ -14,5 +12,7 @@ test_that("test_seatbelts.R", {
     columnsToTakeFrom = c("DriversKilled", "front", "rear"))
   seatbelts_long2 <- seatbelts_long2[wrapr::orderv(seatbelts_long2), , drop = FALSE]
   row.names(seatbelts_long2) <- NULL
-  testthat::expect(isTRUE(all.equal(seatbelts_long, seatbelts_long2)), failure_message = "mismatch")
-})
+  RUnit::checkTrue(isTRUE(all.equal(seatbelts_long, seatbelts_long2)))
+
+  invisible(NULL)
+}
