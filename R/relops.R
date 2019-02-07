@@ -242,7 +242,6 @@ blocks_to_rowrecs.relop <- function(tallTable,
                                     columnsToCopy = NULL,
                                     checkNames = TRUE,
                                     strict = FALSE,
-                                    use_data_table = FALSE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                                     temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
@@ -257,7 +256,6 @@ blocks_to_rowrecs.relop <- function(tallTable,
   force(controlTable)
   force(columnsToCopy)
   force(checkNames)
-  force(use_data_table)
   force(strict)
   force(tmp_name_source)
   force(temporary)
@@ -288,8 +286,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                               controlTable = controlTable,
                               columnsToCopy = columnsToCopy,
                               checkNames = checkNames,
-                              strict = strict,
-                              use_data_table = use_data_table)
+                              strict = strict)
   }
   nd <- rquery::non_sql_node(tallTable,
                              f_db = f_db,
@@ -349,7 +346,6 @@ rowrecs_to_blocks.relop <- function(wideTable,
                                     checkKeys = FALSE,
                                     strict = FALSE,
                                     columnsToCopy = NULL,
-                                    use_data_table = FALSE,
                                     tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                                     temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
@@ -363,7 +359,6 @@ rowrecs_to_blocks.relop <- function(wideTable,
   force(controlTable)
   force(columnsToCopy)
   force(checkNames)
-  force(use_data_table)
   force(strict)
   force(tmp_name_source)
   force(temporary)
@@ -390,8 +385,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
                               controlTable = controlTable,
                               checkNames = checkNames,
                               strict = strict,
-                              columnsToCopy = columnsToCopy,
-                              use_data_table = use_data_table)
+                              columnsToCopy = columnsToCopy)
   }
   nd <- rquery::non_sql_node(wideTable,
                              f_db = f_db,

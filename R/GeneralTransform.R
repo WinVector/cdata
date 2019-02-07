@@ -10,7 +10,6 @@
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
 #' @param strict logical, if TRUE check control table name forms.
-#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
 #' @return processing pipeline or transformed table
@@ -78,7 +77,6 @@ convert_records <- function(table,
                             checkNames = TRUE,
                             checkKeys = FALSE,
                             strict = FALSE,
-                            use_data_table = FALSE,
                             tmp_name_source = wrapr::mk_tmp_name_source("crec"),
                             temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::convert_records")
@@ -95,7 +93,6 @@ convert_records <- function(table,
     columnsToCopy = columnsToCopy_in,
     checkNames = checkNames,
     strict = strict,
-    use_data_table = use_data_table,
     tmp_name_source = tmp_name_source,
     temporary = temporary)
   result <- rowrecs_to_blocks(
@@ -105,7 +102,6 @@ convert_records <- function(table,
     checkKeys = checkKeys,
     strict = strict,
     columnsToCopy = c(keyColumns, columnsToCopy_in),
-    use_data_table = use_data_table,
     tmp_name_source = tmp_name_source,
     temporary = temporary)
   result

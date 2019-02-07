@@ -75,7 +75,6 @@ build_pivot_control <- function(table,
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
 #' @param strict logical, if TRUE check control table name forms.
-#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
 #' @return long table built by mapping wideTable to one row per group
@@ -101,7 +100,6 @@ rowrecs_to_blocks <- function(wideTable,
                               checkKeys = FALSE,
                               strict = FALSE,
                               columnsToCopy = NULL,
-                              use_data_table = FALSE,
                               tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                               temporary = TRUE) {
   UseMethod("rowrecs_to_blocks")
@@ -146,7 +144,6 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check keyColumns uniquely identify blocks (required).
 #' @param strict logical, if TRUE check control table name forms
-#' @param use_data_table logical if TRUE try to use data.table for the pivots.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
@@ -176,7 +173,6 @@ blocks_to_rowrecs <- function(tallTable,
                               checkNames = TRUE,
                               checkKeys = TRUE,
                               strict = FALSE,
-                              use_data_table = FALSE,
                               tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                               temporary = TRUE) {
   UseMethod("blocks_to_rowrecs")
@@ -201,7 +197,6 @@ blocks_to_rowrecs <- function(tallTable,
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
 #' @param strict logical, if TRUE check control table name forms.
-#' @param use_data_table logical if TRUE try to use data.table for the un-pivots.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE make result temporary.
 #' @return new data.frame with values moved to rows.
@@ -229,7 +224,6 @@ unpivot_to_blocks <- function(data,
                               checkNames = TRUE,
                               checkKeys = FALSE,
                               strict = FALSE,
-                              use_data_table = FALSE,
                               tmp_name_source = wrapr::mk_tmp_name_source("upb"),
                               temporary = TRUE) {
   UseMethod("unpivot_to_blocks")

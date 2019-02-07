@@ -8,19 +8,18 @@
 \usage{
 rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
   checkKeys = FALSE, strict = FALSE, columnsToCopy = NULL,
-  use_data_table = FALSE,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE)
 
 \method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  columnsToCopy = NULL, use_data_table = FALSE,
+  columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
   temporary = TRUE)
 
 \method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  columnsToCopy = NULL, use_data_table = FALSE,
+  columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE)
 }
@@ -38,8 +37,6 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
 \item{strict}{logical, if TRUE check control table name forms.}
 
 \item{columnsToCopy}{character array of column names to copy.}
-
-\item{use_data_table}{logical if TRUE try to use data.table for the un-pivots.}
 
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 

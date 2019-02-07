@@ -111,7 +111,6 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       checkKeys = FALSE,
                                       strict = FALSE,
                                       columnsToCopy = NULL,
-                                      use_data_table = FALSE,
                                       tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
                                       temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
@@ -145,31 +144,6 @@ rowrecs_to_blocks.default <- function(wideTable,
         stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
       }
     }
-  }
-
-  if( use_data_table &&
-      requireNamespace("data.table", quietly = TRUE) ) {
-    maps <- build_transform_maps(controlTable)
-
-    # from rowrec to one value per row form (triple-like)
-    d_thin_r <- data.table::melt.data.table(data.table::as.data.table(wideTable),
-                                            variable.name = "cdata_cell_label",
-                                            value.name = "cdata_cell_value",
-                                            id.vars = columnsToCopy,
-                                            measure.vars = maps$cells)
-    d_thin_r$cdata_row_label <- maps$cells_to_row_labels[d_thin_r$cdata_cell_label]
-    d_thin_r$cdata_col_label <- maps$cells_to_col_labels[d_thin_r$cdata_cell_label]
-
-    # cast to block form, note: if cdata_col_label isn't varying then don't need this step.
-    f <- paste0(paste(c(columnsToCopy, "cdata_row_label"), collapse = " + "), " ~ ", "cdata_col_label")
-    r <- data.table::dcast.data.table(d_thin_r, as.formula(f), value.var = "cdata_cell_value")
-    colnames(r)[which(colnames(r)=="cdata_row_label")] <- colnames(controlTable)[[1]]
-    rownames(r) <- NULL
-    return(as.data.frame(r))
-  }
-
-  if( use_data_table ) {
-    warning("cdata::rowrecs_to_blocks use_data_table==TRUE requires data.table package")
   }
 
   # fall back to local impl
@@ -218,7 +192,6 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       checkNames = TRUE,
                                       checkKeys = TRUE,
                                       strict = FALSE,
-                                      use_data_table = FALSE,
                                       tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
                                       temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
@@ -267,36 +240,6 @@ blocks_to_rowrecs.default <- function(tallTable,
       }
     }
   }
-
-  if( use_data_table &&
-      requireNamespace("data.table", quietly = TRUE) ) {
-    maps <- build_transform_maps(controlTable)
-
-    # from block form to one value per row form (triple-like)
-    d_thin_b <- data.table::melt.data.table(data.table::as.data.table(tallTable),
-                                            variable.name = "cdata_col_label",
-                                            value.name = "cdata_cell_value",
-                                            id.vars = c(keyColumns, colnames(controlTable)[[1]]),
-                                            measure.vars = colnames(controlTable)[-1])
-    d_thin_b$cdata_row_label <- d_thin_b[[colnames(controlTable)[[1]]]]
-    d_thin_b[[colnames(controlTable)[[1]]]] <- NULL
-    d_thin_b$cdata_cell_label <- maps$rows_cols_to_cells[paste(d_thin_b$cdata_row_label, ",", d_thin_b$cdata_col_label)]
-
-    # cast to rowrec form
-    f <- paste0(paste(keyColumns, collapse = " + "), " ~ ", "cdata_cell_label")
-    r <- data.table::dcast.data.table(d_thin_b, as.formula(f), value.var = "cdata_cell_value")
-    if(clear_key_column) {
-      r$cdata_key_column <- NULL
-    }
-    rownames(r) <- NULL
-    return(as.data.frame(r))
-  }
-
-  if( use_data_table ) {
-    warning("cdata::blocks_to_rowrecs use_data_table==TRUE requires data.table package")
-  }
-
-  # fall back to local impl
 
   # make simple grouping keys
   tallTable$cdata_group_key_col <- 1
