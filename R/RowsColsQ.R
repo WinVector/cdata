@@ -19,9 +19,6 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(any(is.na(colnames(controlTable)))) {
     return("control table column names must not be NA")
   }
-  if(any(is.na(controlTable))) {
-    return("control table values must not be NA")
-  }
   if( (length(controlTableKeys)<1) || (!is.character(controlTableKeys)) ) {
     return("controlTableKeys must be non-empty character")
   }
@@ -38,8 +35,11 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(!all(classes=='character')) {
     return("all control table columns must be character")
   }
-  if(anyDuplicated(controlTable[, controlTableKeys, drop = FALSE])>0) {
+  if(!checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
     return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
+  }
+  if(any(is.na(controlTable[, controlTableKeys, drop = FALSE]))) {
+    return("control table key must not be NA")
   }
   toCheck <- list(
     "column names" = colnames(controlTable),
@@ -53,9 +53,6 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
     }
     if(!is.character(vals)) {
       return(paste("all control table", ci, "must be character"))
-    }
-    if(any(is.na(vals))) {
-      return(paste("all control table", ci, "must not be NA"))
     }
     if(any(nchar(vals)<=0)) {
       return(paste("all control table", ci, "must not be empty strings"))

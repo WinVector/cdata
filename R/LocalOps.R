@@ -96,17 +96,14 @@ rowrecs_to_blocks.default <- function(wideTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks", cCheck))
   }
-  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
-    # TODO: extend code and remove this check
-    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
-  }
   bad_copy_cols <- setdiff(columnsToCopy, colnames(wideTable))
   if(length(bad_copy_cols)>0) {
     stop(paste0("cdata::rowrecs_to_blocks bad columnsToCopy: ",
                 paste(bad_copy_cols, collapse = ", ")))
   }
+  controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames || checkKeys) {
-    interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
+    interiorCells <- unlist(controlTable[, controlTableValueColumns], use.names = FALSE)
     interiorCells <- interiorCells[!is.na(interiorCells)]
     wideTableColnames <- colnames(wideTable)
     badCells <- setdiff(interiorCells, wideTableColnames)
@@ -121,34 +118,34 @@ rowrecs_to_blocks.default <- function(wideTable,
     }
   }
 
-  # fall back to local impl
-
   n_row_in <- nrow(wideTable)
   n_rep <- nrow(controlTable)
   n_row_res <- n_rep*n_row_in
   # build and start filling in result
   res <- data.frame(x = seq_len(n_row_in))
   res[['x']] <- NULL
-  for(ci in columnsToCopy) {
-    res[[ci]] <- wideTable[[ci]]
+  for(cn in columnsToCopy) {
+    res[[cn]] <- wideTable[[cn]]
   }
-  res[[colnames(controlTable)[[1]]]] <- NA_character_
-  for(ci in 2:ncol(controlTable)) {
-    cn <- colnames(controlTable)[[ci]]
-    res[[cn]] <- wideTable[[controlTable[2, ci, drop = TRUE]]]
+  for(cn in controlTableKeys) {
+    res[[cn]] <- NA_character_
+  }
+  for(cn in controlTableValueColumns) {
+    res[[cn]] <- wideTable[[controlTable[2, cn, drop = TRUE]]]
     # TODO: check this keeps class and works with dates
     res[[cn]][seq_len(n_row_in)] <- NA
   }
   # cross product with control table
   res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE]
   rownames(res) <- NULL
-  res[[colnames(controlTable)[[1]]]] <- rep(controlTable[[1]], n_row_in)
+  for(cn in controlTableKeys) {
+    res[[cn]] <- rep(controlTable[[cn]], n_row_in)
+  }
   # fill in values
-  for(ci in 2:ncol(controlTable)) {
-    cn <- colnames(controlTable)[[ci]]
+  for(cn in controlTableValueColumns) {
     for(i in seq_len(n_rep)) {
       indxs <- i + n_rep*(0:(n_row_in-1))
-      col <- controlTable[i, ci, drop = TRUE]
+      col <- controlTable[i, cn, drop = TRUE]
       res[[cn]][indxs] <- wideTable[[col]]
     }
   }
