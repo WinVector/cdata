@@ -33,8 +33,8 @@ test_composite_control_keys <- function() {
   RUnit::checkEquals(sort(colnames(expect)), sort(colnames(res)))
   res <- res[, colnames(expect), drop = FALSE]
 
-  expect <- expect[wrapr::orderv(expect[, c("Part", "Measure")]), , drop = FALSE]
-  res <- res[wrapr::orderv(res[, c("Part", "Measure")]), , drop = FALSE]
+  expect <- expect[wrapr::orderv(expect[, c("id", "Species", "Part", "Measure")]), , drop = FALSE]
+  res <- res[wrapr::orderv(res[, c("id", "Species", "Part", "Measure")]), , drop = FALSE]
   RUnit::checkEquals(expect, res)
 
   back <- blocks_to_rowrecs(res,
