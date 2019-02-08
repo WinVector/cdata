@@ -3,9 +3,8 @@
 pkg = "cdata"
 
 # This file is distributed without license requirements, feel free to alter/copy.
-if(requireNamespace("RUnit", quietly = TRUE) &&
-   requireNamespace("wrapr", quietly = TRUE)) {
+if(requireNamespace("RUnit", quietly = TRUE)) {
   # library("RUnit") # uncomment this if you want RUnit attached during testing
   library(pkg, character.only = TRUE)
-  wrapr::run_package_tests(pkg, verbose = TRUE, require_RUnit_attached = FALSE)
+  cdata::run_cdata_tests(verbose = TRUE, require_RUnit_attached = FALSE)
 }

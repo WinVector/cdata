@@ -132,7 +132,7 @@ iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowre
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
-<p><img src="tools/README-ex0-1.png" width="700"></p>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.<br>
 And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
 <hr>
@@ -179,7 +179,7 @@ iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
-<p><img src="tools/README-ex0_1-1.png" width="700"></p>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <p>And a quick database example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
@@ -234,10 +234,10 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(tab)
- <span class="co">#  [1] "table(`rquery_mat_51168017973290330494_0000000000`; AUC, R2)"</span>
+ <span class="co">#  [1] "table(`rquery_mat_51532007644753986390_0000000000`; AUC, R2)"</span>
   
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
- <span class="co">#  table `rquery_mat_51168017973290330494_0000000000` SQLiteConnection </span>
+ <span class="co">#  table `rquery_mat_51532007644753986390_0000000000` SQLiteConnection </span>
  <span class="co">#   nrow: 1 </span>
  <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
  <span class="co">#   $ AUC: num 0.6</span>

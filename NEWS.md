@@ -1,5 +1,5 @@
 
-# cdata 1.0.6 2019/02/07
+# cdata 1.0.6 2019/02/08
 
  * Move to RUnit.
  * Less direct data.table.
