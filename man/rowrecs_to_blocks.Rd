@@ -7,19 +7,20 @@
 \title{Map a set of columns to rows (takes a \code{data.frame}).}
 \usage{
 rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
-  checkKeys = FALSE, strict = FALSE, columnsToCopy = NULL,
+  checkKeys = FALSE, strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE)
 
 \method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  columnsToCopy = NULL,
+  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
   temporary = TRUE)
 
 \method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  columnsToCopy = NULL,
+  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE)
 }
@@ -35,6 +36,8 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
 \item{checkKeys}{logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).}
 
 \item{strict}{logical, if TRUE check control table name forms.}
+
+\item{controlTableKeys}{character, which column names of the control table are considered to be keys.}
 
 \item{columnsToCopy}{character array of column names to copy.}
 

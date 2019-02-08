@@ -75,6 +75,7 @@ build_pivot_control <- function(table,
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).
 #' @param strict logical, if TRUE check control table name forms.
+#' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
 #' @return long table built by mapping wideTable to one row per group
@@ -99,6 +100,7 @@ rowrecs_to_blocks <- function(wideTable,
                               checkNames = TRUE,
                               checkKeys = FALSE,
                               strict = FALSE,
+                              controlTableKeys = colnames(controlTable)[[1]],
                               columnsToCopy = NULL,
                               tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                               temporary = TRUE) {
@@ -144,6 +146,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param checkNames logical, if TRUE check names.
 #' @param checkKeys logical, if TRUE check keyColumns uniquely identify blocks (required).
 #' @param strict logical, if TRUE check control table name forms
+#' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
@@ -173,6 +176,7 @@ blocks_to_rowrecs <- function(tallTable,
                               checkNames = TRUE,
                               checkKeys = TRUE,
                               strict = FALSE,
+                              controlTableKeys = colnames(controlTable)[[1]],
                               tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                               temporary = TRUE) {
   UseMethod("blocks_to_rowrecs")

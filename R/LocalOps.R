@@ -70,36 +70,6 @@ build_unpivot_control <- function(nameForNewKeyColumn,
 }
 
 
-# unpack control table into maps
-build_transform_maps <- function(controlTable) {
-  cCheck <- checkControlTable(controlTable, FALSE)
-  if(!is.null(cCheck)) {
-    stop(paste("cdata:::build_transform_maps", cCheck))
-  }
-  # use control table to get into a triple-form (only one data column, all others keys).
-  cells <- as.character(unlist(unlist(controlTable[, -1])))
-  cells_to_row_labels <- controlTable
-  for(i in 1:nrow(controlTable)) {
-    cells_to_row_labels[i, ] <- cells_to_row_labels[i, 1]
-  }
-  cells_to_row_labels <- as.character(unlist(cells_to_row_labels[, -1]))
-  names(cells_to_row_labels) <- cells
-  cells_to_col_labels <- controlTable
-  for(j in 2:ncol(controlTable)) {
-    cells_to_col_labels[, j] <- colnames(controlTable)[[j]]
-  }
-  cells_to_col_labels <- as.character(unlist(cells_to_col_labels[, -1]))
-  names(cells_to_col_labels) <- cells
-  rows_cols_to_cells <- cells
-  names(rows_cols_to_cells) <- paste(cells_to_row_labels, ",", cells_to_col_labels)
-  list(
-    cells = cells,
-    cells_to_row_labels = cells_to_row_labels,
-    cells_to_col_labels = cells_to_col_labels,
-    rows_cols_to_cells = rows_cols_to_cells
-  )
-}
-
 
 
 #' @export
@@ -110,6 +80,7 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       checkNames = TRUE,
                                       checkKeys = FALSE,
                                       strict = FALSE,
+                                      controlTableKeys = colnames(controlTable)[[1]],
                                       columnsToCopy = NULL,
                                       tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
                                       temporary = TRUE) {
@@ -121,7 +92,7 @@ rowrecs_to_blocks.default <- function(wideTable,
     stop("cdata::rowrecs_to_blocks controlTable should be a data.frame")
   }
   rownames(wideTable) <- NULL
-  cCheck <- checkControlTable(controlTable, strict)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks", cCheck))
   }
@@ -192,6 +163,7 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       checkNames = TRUE,
                                       checkKeys = TRUE,
                                       strict = FALSE,
+                                      controlTableKeys = colnames(controlTable)[[1]],
                                       tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
                                       temporary = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
@@ -214,7 +186,7 @@ blocks_to_rowrecs.default <- function(tallTable,
     stop(paste0("cdata::blocks_to_rowrecs bad keyColumns: ",
                 paste(bad_key_cols, collapse = ", ")))
   }
-  cCheck <- checkControlTable(controlTable, strict)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs", cCheck))
   }

@@ -189,12 +189,6 @@ Install via CRAN:
 install.packages("cdata")
 ```
 
-Or you can get the latest development version with
-
-```{r, eval=FALSE}
-devtools::install_github("WinVector/cdata")
-```
-
 
 
 Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on). 

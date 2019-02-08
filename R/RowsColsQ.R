@@ -9,15 +9,25 @@
 
 
 # confirm control table structure
-checkControlTable <- function(controlTable, strict) {
+checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(!is.data.frame(controlTable)) {
     return("control table must be a data.frame")
+  }
+  if( (length(controlTableKeys)<1) || (!is.character(controlTableKeys)) ) {
+    return("controlTableKeys must be non-empty character")
   }
   if(nrow(controlTable)<1) {
     return("control table must have at least 1 row")
   }
-  if(ncol(controlTable)<2) {
-    return("control table must have at least 2 columns")
+  if(ncol(controlTable)<=length(controlTableKeys)) {
+    return("control table must have more columns than controlTableKeys")
+  }
+  if(length(setdiff(controlTableKeys, colnames(controlTable)))>0) {
+    return("all controlTableKeys must be controlTable column names")
+  }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    return("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
   }
   classes <- vapply(controlTable, class, character(1))
   if(!all(classes=='character')) {
@@ -173,6 +183,7 @@ qlook <- function(my_db, tableName,
 #' @param columnsToCopy character array of column names to copy
 #' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param strict logical, if TRUE check control table name forms
+#' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
@@ -212,6 +223,7 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 columnsToCopy = NULL,
                                 tempNameGenerator = mk_tmp_name_source('mvtrq'),
                                 strict = FALSE,
+                                controlTableKeys = colnames(controlTable)[[1]],
                                 checkNames = TRUE,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
@@ -227,7 +239,7 @@ rowrecs_to_blocks_q <- function(wideTable,
     stop("rowrecs_to_blocks_q: wideTable must be the name of a remote table")
   }
   controlTable <- as.data.frame(controlTable)
-  cCheck <- checkControlTable(controlTable, strict)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks_q", cCheck))
   }
@@ -421,6 +433,7 @@ build_pivot_control_q <- function(tableName,
 #' @param columnsToCopy character list of column names to copy
 #' @param tempNameGenerator a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param strict logical, if TRUE check control table name forms
+#' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param checkNames logical, if TRUE check names
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
@@ -464,6 +477,7 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 columnsToCopy = NULL,
                                 tempNameGenerator = mk_tmp_name_source('mvtcq'),
                                 strict = FALSE,
+                                controlTableKeys = colnames(controlTable)[[1]],
                                 checkNames = TRUE,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
@@ -485,7 +499,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     stop("blocks_to_rowrecs_q: tallTable must be the name of a remote table")
   }
   controlTable <- as.data.frame(controlTable)
-  cCheck <- checkControlTable(controlTable, strict)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs_q", cCheck))
   }

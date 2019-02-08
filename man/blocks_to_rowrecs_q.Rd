@@ -7,8 +7,9 @@
 blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
   columnsToCopy = NULL,
   tempNameGenerator = mk_tmp_name_source("mvtcq"), strict = FALSE,
-  checkNames = TRUE, showQuery = FALSE, defaultValue = NULL,
-  dropDups = FALSE, temporary = FALSE, resultName = NULL)
+  controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
+  showQuery = FALSE, defaultValue = NULL, dropDups = FALSE,
+  temporary = FALSE, resultName = NULL)
 }
 \arguments{
 \item{tallTable}{name of table containing data to be mapped (db/Spark data)}
@@ -26,6 +27,8 @@ blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
 \item{tempNameGenerator}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
 \item{strict}{logical, if TRUE check control table name forms}
+
+\item{controlTableKeys}{character, which column names of the control table are considered to be keys.}
 
 \item{checkNames}{logical, if TRUE check names}
 

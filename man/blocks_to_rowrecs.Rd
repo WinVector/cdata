@@ -8,16 +8,19 @@
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
-  strict = FALSE, tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
+  strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
+  tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
   temporary = TRUE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
   ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
-  strict = FALSE, tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
+  strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
+  tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
   temporary = TRUE)
 
 \method{blocks_to_rowrecs}{relop}(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
   temporary = TRUE)
 }
@@ -37,6 +40,8 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 \item{checkKeys}{logical, if TRUE check keyColumns uniquely identify blocks (required).}
 
 \item{strict}{logical, if TRUE check control table name forms}
+
+\item{controlTableKeys}{character, which column names of the control table are considered to be keys.}
 
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
