@@ -232,11 +232,11 @@ blocks_to_rowrecs.default <- function(tallTable,
   # fill in values
   tallTable$composite_meas_col <- do.call(paste,
                                           c(
-                                            as.list(tallTable[, controlTableKeys]),
+                                            as.list(tallTable[, controlTableKeys, drop = FALSE]),
                                             list(sep = " CDATA_K_SEP ")))
   controlTable$composite_meas_col <- do.call(paste,
                                           c(
-                                            as.list(controlTable[, controlTableKeys]),
+                                            as.list(controlTable[, controlTableKeys, drop = FALSE]),
                                             list(sep = " CDATA_K_SEP ")))
   n_rep <- nrow(controlTable)
   for(cn in controlTableValueColumns) {
