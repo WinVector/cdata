@@ -96,6 +96,10 @@ rowrecs_to_blocks.default <- function(wideTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks", cCheck))
   }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
+  }
   bad_copy_cols <- setdiff(columnsToCopy, colnames(wideTable))
   if(length(bad_copy_cols)>0) {
     stop(paste0("cdata::rowrecs_to_blocks bad columnsToCopy: ",
@@ -189,6 +193,10 @@ blocks_to_rowrecs.default <- function(tallTable,
   cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs", cCheck))
+  }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
   }
   if(checkNames || checkKeys) {
     tallTableColnames <- colnames(tallTable)

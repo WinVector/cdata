@@ -262,6 +262,14 @@ blocks_to_rowrecs.relop <- function(tallTable,
   force(controlTableKeys)
   force(tmp_name_source)
   force(temporary)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
+  if(!is.null(cCheck)) {
+    stop(paste("cdata::blocks_to_rowrecs.relop", cCheck))
+  }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
+  }
   incoming_table_name = tmp_name_source()
   outgoing_table_name = tmp_name_source()
   columns_produced <- c(keyColumns,
@@ -369,6 +377,14 @@ rowrecs_to_blocks.relop <- function(wideTable,
   force(controlTableKeys)
   force(tmp_name_source)
   force(temporary)
+  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
+  if(!is.null(cCheck)) {
+    stop(paste("cdata::rowrecs_to_blocks.relop", cCheck))
+  }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
+  }
   incoming_table_name = tmp_name_source()
   outgoing_table_name = tmp_name_source()
   columns_produced <- c(columnsToCopy, colnames(controlTable))

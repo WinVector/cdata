@@ -243,6 +243,10 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks_q", cCheck))
   }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
+  }
   if(checkNames) {
     interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
     interiorCells <- interiorCells[!is.na(interiorCells)]
@@ -502,6 +506,10 @@ blocks_to_rowrecs_q <- function(tallTable,
   cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs_q", cCheck))
+  }
+  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
+    # TODO: extend code and remove this check
+    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
   }
   if(checkNames) {
     tallTableColnames <- cols(my_db, tallTable)
