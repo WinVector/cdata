@@ -18,8 +18,7 @@ test_check <- function() {
                               columnsToTakeFrom = c("adj_sd", "naive_sd"))
   RUnit::checkException(rp <- rowrecs_to_blocks(res,
                                                 controlTable = cT,
-                                                checkKeys = TRUE,
-                                                use_data_table = FALSE))
+                                                checkKeys = TRUE))
   d1 <- rowrecs_to_blocks(res,
                           controlTable = cT)
   d2 <- unpivot_to_blocks(res,
