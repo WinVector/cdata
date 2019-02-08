@@ -191,10 +191,7 @@ blocks_to_rowrecs.default <- function(tallTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs", cCheck))
   }
-  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
-    # TODO: extend code and remove this check
-    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
-  }
+  controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames || checkKeys) {
     tallTableColnames <- colnames(tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
@@ -203,13 +200,9 @@ blocks_to_rowrecs.default <- function(tallTable,
                  paste(badCells, collapse = ', ')))
     }
     if(checkKeys) {
-      # keys plot colnames(controlTable)[[1]] should uniquely identify rows
-      if(!checkColsFormUniqueKeys(tallTable, c(keyColumns, colnames(controlTable)[[1]]))) {
-        stop("cdata::blocks_to_rowrecs: keyColumns plus first column of control table do not uniquely key rows")
-      }
-      # only values expected in controlTable[[1]] should be in tallTable[[colnames(controlTable)[[1]]]]
-      bkeys <- controlTable[[1]]
-      bseen <- unique(tallTable[[colnames(controlTable)[[1]]]])
+      # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
+      bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
+      bseen <- unique(unlist(tallTable[, controlTableKeys], use.names = FALSE))
       bnovel <- setdiff(bseen, bkeys)
       if(length(bnovel)>0) {
         stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
@@ -234,14 +227,20 @@ blocks_to_rowrecs.default <- function(tallTable,
   rownames(res) <- NULL
   n_res <- nrow(res)
   # fill in values
-  meas_col <- colnames(controlTable)[[1]]
+  tallTable$composite_meas_col <- do.call(paste,
+                                          c(
+                                            as.list(tallTable[, controlTableKeys]),
+                                            list(sep = " CDATA_K_SEP ")))
+  controlTable$composite_meas_col <- do.call(paste,
+                                          c(
+                                            as.list(controlTable[, controlTableKeys]),
+                                            list(sep = " CDATA_K_SEP ")))
   n_rep <- nrow(controlTable)
-  for(ci in 2:ncol(controlTable)) {
-    cn <- colnames(controlTable)[[ci]]
+  for(cn in controlTableValueColumns) {
     for(i in seq_len(n_rep)) {
-      srccol <- controlTable[i, 1, drop = TRUE]
+      srccol <- controlTable$composite_meas_col[[i]]
       destcol <- controlTable[[cn]][i]
-      indxs <- which(tallTable[[meas_col]] == srccol)
+      indxs <- which(tallTable$composite_meas_col == srccol)
       vals <- tallTable[[cn]][indxs]
       res[[destcol]] <- vals[[1]]
       res[[destcol]][seq_len(n_res)] <- NA
