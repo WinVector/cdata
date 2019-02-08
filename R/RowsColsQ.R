@@ -13,6 +13,15 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(!is.data.frame(controlTable)) {
     return("control table must be a data.frame")
   }
+  if(length(colnames(controlTable)) != length(unique(colnames(controlTable)))) {
+    return("control table columns must be unique")
+  }
+  if(any(is.na(colnames(controlTable)))) {
+    return("control table column names must not be NA")
+  }
+  if(any(is.na(controlTable))) {
+    return("control table values must not be NA")
+  }
   if( (length(controlTableKeys)<1) || (!is.character(controlTableKeys)) ) {
     return("controlTableKeys must be non-empty character")
   }
@@ -25,25 +34,31 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(length(setdiff(controlTableKeys, colnames(controlTable)))>0) {
     return("all controlTableKeys must be controlTable column names")
   }
-  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
-    # TODO: extend code and remove this check
-    return("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
-  }
   classes <- vapply(controlTable, class, character(1))
   if(!all(classes=='character')) {
     return("all control table columns must be character")
   }
+  if(anyDuplicated(controlTable[, controlTableKeys, drop = FALSE])>0) {
+    return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
+  }
   toCheck <- list(
     "column names" = colnames(controlTable),
-    "group ids" = controlTable[, 1, drop=TRUE]
+    "keys" = unlist(controlTable[, controlTableKeys], use.names = FALSE),
+    "values" = unlist(controlTable, use.names = FALSE) # overlaps, but keys will catch first
   )
   for(ci in names(toCheck)) {
     vals <- toCheck[[ci]]
+    if(length(vals)<=0) {
+      return(paste("control table", ci, "must not be empty"))
+    }
+    if(!is.character(vals)) {
+      return(paste("all control table", ci, "must be character"))
+    }
     if(any(is.na(vals))) {
       return(paste("all control table", ci, "must not be NA"))
     }
-    if(length(unique(vals))!=length(vals)) {
-      return(paste("all control table", ci, "must be distinct"))
+    if(any(nchar(vals)<=0)) {
+      return(paste("all control table", ci, "must not be empty strings"))
     }
     if(strict) {
       if(length(grep(".", vals, fixed=TRUE))>0) {

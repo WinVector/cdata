@@ -134,6 +134,8 @@
     <pre class="usage"><span class='fu'>convert_records</span>(<span class='no'>table</span>, <span class='no'>incoming_shape</span>, <span class='no'>outgoing_shape</span>, <span class='no'>...</span>,
   <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>columnsToCopy_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>incoming_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>incoming_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
+  <span class='kw'>outgoing_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>outgoing_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"crec"</span>),
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
@@ -175,6 +177,14 @@
     <tr>
       <th>strict</th>
       <td><p>logical, if TRUE check control table name forms.</p></td>
+    </tr>
+    <tr>
+      <th>incoming_controlTableKeys</th>
+      <td><p>character, which column names of the incoming control table are considered to be keys.</p></td>
+    </tr>
+    <tr>
+      <th>outgoing_controlTableKeys</th>
+      <td><p>character, which column names of the outgoing control table are considered to be keys.</p></td>
     </tr>
     <tr>
       <th>tmp_name_source</th>

@@ -234,10 +234,10 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(tab)
- <span class="co">#  [1] "table(`rquery_mat_51532007644753986390_0000000000`; AUC, R2)"</span>
+ <span class="co">#  [1] "table(`rquery_mat_94554206223548692568_0000000000`; AUC, R2)"</span>
   
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
- <span class="co">#  table `rquery_mat_51532007644753986390_0000000000` SQLiteConnection </span>
+ <span class="co">#  table `rquery_mat_94554206223548692568_0000000000` SQLiteConnection </span>
  <span class="co">#   nrow: 1 </span>
  <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
  <span class="co">#   $ AUC: num 0.6</span>
@@ -253,8 +253,6 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <hr>
 <p>Install via CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"cdata"</span>)</code></pre></div>
-<p>Or you can get the latest development version with</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"WinVector/cdata"</span>)</code></pre></div>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
   </div>
 
