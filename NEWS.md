@@ -3,6 +3,7 @@
 
  * Move to RUnit.
  * Less direct data.table.
+ * More generality in control table keys.
 
 # cdata 1.0.5 2019/01/20
 
