@@ -92,7 +92,7 @@
       <h1>Control Table Keys</h1>
                         <h4 class="author">John Mount</h4>
             
-            <h4 class="date">2019-02-08</h4>
+            <h4 class="date">2019-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/control_table_keys.Rmd"><code>vignettes/control_table_keys.Rmd</code></a></small>
       <div class="hidden name"><code>control_table_keys.Rmd</code></div>
@@ -221,7 +221,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <p>With multiple control table keys this is easy.</p>
-<p>First define the control table specifying what a single row looks like after transformation.</p>
+<p>First define the control table specifying what a single row-record looks like after transformation to a multi-row block-record.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control_table &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
   Part,  Measure, Value        <span class="op">|</span>
 <span class="st">  </span>Sepal, Length,  Sepal.Length <span class="op">|</span>
