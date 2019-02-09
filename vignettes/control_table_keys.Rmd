@@ -52,7 +52,7 @@ knitr::kable(expect)
 
 With multiple control table keys this is easy.
 
-First define the control table specifying what a single row looks like after transformation.
+First define the control table specifying what a single row-record looks like after transformation to a multi-row block-record.
 
 ```{r}
 control_table <- wrapr::qchar_frame(
