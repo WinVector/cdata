@@ -1,0 +1,102 @@
+---
+title: "Control Table Keys"
+author: "John Mount"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Control Table Keys}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In our [`cdata`](https://github.com/WinVector/cdata) [`R`](https://www.r-project.org) package and training materials we emphasize the [record-oriented thinking](https://winvector.github.io/cdata/articles/blocksrecs.html) and [how to design a transform control table](https://winvector.github.io/cdata/articles/design.html).  We now have an additional exciting new feature: control table keys.
+
+The user can now control which columns of a `cdata` control table are the keys, including now using composite keys (that is keys that are spread across more than one column).  This is easiest to demonstrate with an example.
+
+Consider the simple data frame (the first couple of rows of the famous `iris` data set).
+
+```{r}
+library("cdata")
+
+d <- wrapr::build_frame(
+  "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species", "id" |
+  5.1           , 3.5          , 1.4           , 0.2          , "setosa" , 1L   |
+  4.9           , 3            , 1.4           , 0.2          , "setosa" , 2L   )
+
+knitr::kable(d)
+```
+
+Suppose we wish to land the dimensions of different irises in rows keyed by two columns: `Part` and `Measure`. That is we want the data to look like the following.
+
+```{r}
+expect <- wrapr::build_frame(
+  "id", "Species", "Part" , "Measure", "Value" |
+  1L  , "setosa" , "Sepal", "Length" , 5.1     |
+  1L  , "setosa" , "Sepal", "Width"  , 3.5     |
+  1L  , "setosa" , "Petal", "Length" , 1.4     |
+  1L  , "setosa" , "Petal", "Width"  , 0.2     |
+  2L  , "setosa" , "Sepal", "Length" , 4.9     |
+  2L  , "setosa" , "Sepal", "Width"  , 3       |
+  2L  , "setosa" , "Petal", "Length" , 1.4     |
+  2L  , "setosa" , "Petal", "Width"  , 0.2     )
+
+knitr::kable(expect)
+```
+
+With multiple control table keys this is easy.
+
+First define the control table specifying what a single row looks like after transformation.
+
+```{r}
+control_table <- wrapr::qchar_frame(
+  Part,  Measure, Value        |
+  Sepal, Length,  Sepal.Length |
+  Sepal, Width,   Sepal.Width  |
+  Petal, Length,  Petal.Length |
+  Petal, Width,   Petal.Width  )
+
+knitr::kable(control_table)
+```
+
+And then have `cdata::rowrecs_to_blocks()` perform the transform.  Notice we are specifying that the columns `Part` and `Measure` are the control table row-keys.
+
+```{r}
+res <- rowrecs_to_blocks(
+  d,
+  control_table,
+  controlTableKeys = c("Part", "Measure"),
+  columnsToCopy = c("id", "Species"))
+
+knitr::kable(res)
+```
+
+And, as one comes to expect with coordinatized/fluid-data transforms, the process is easy to reverse.
+
+```{r}
+back <- blocks_to_rowrecs(
+  res,
+  keyColumns = c("id", "Species"),
+  control_table,
+  controlTableKeys = c("Part", "Measure"))
+
+knitr::kable(back)
+```
+
+The `cdata` unit test include the following variations of the above example:
+
+  * [A simple "there and back example"](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_there_and_back.R).
+  * [The "there and back" example on a database](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_there_and_back_db.R).
+  * [A composite control keys example](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_composite_control_keys.R) (this demo).
+  * [The composite control keys example on a database](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_composite_control_keys_db.R).
+  
+We think `cdata` (and the accompanying [fluid data methodology](http://winvector.github.io/FluidData/FluidData.html), plus [extensions](https://winvector.github.io/cdata/articles/general_transform.html)) is a very deep and powerful way of wrangling data.  Once you take the time to learn the methodology (which is "draw what you want to happen to one record, type that in as your control table, and you are done!") it is very easy to use.
+
+
+  
