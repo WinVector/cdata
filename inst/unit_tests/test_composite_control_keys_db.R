@@ -33,8 +33,9 @@ test_composite_control_keys_db <- function() {
                               control_table,
                               controlTableKeys = c("Part", "Measure"),
                               columnsToCopy = c("id", "Species"))
-  res <- rquery::execute(db, res_db)
+  res_t <- rquery::materialize(db, res_db)
   res_sql <- rquery::to_sql(res_db, db)
+  res <- rquery::execute(db, res_t)
 
   expect <- wrapr::build_frame(
     "id", "Species", "Part" , "Measure", "Value" |
@@ -58,8 +59,9 @@ test_composite_control_keys_db <- function() {
                                keyColumns = c("id", "Species"),
                                control_table,
                                controlTableKeys = c("Part", "Measure"))
-  back <- rquery::execute(db, back_db)
+  back_t <- rquery::materialize(db, back_db)
   back_sql <- rquery::to_sql(back_db, db)
+  back <- rquery::execute(db, back_t)
 
   RUnit::checkEquals(sort(colnames(d)), sort(colnames(back)))
   back <- back[, colnames(d), drop = FALSE]

@@ -32,8 +32,9 @@ test_there_and_back_db <- function() {
   res_db <- rowrecs_to_blocks(d_db,
                               control_table,
                               columnsToCopy = c("id", "Species"))
-  res <- rquery::execute(db, res_db)
+  res_t <- rquery::materialize(db, res_db)
   res_sql <- rquery::to_sql(res_db, db)
+  res <- rquery::execute(db, res_t)
 
   expect <- wrapr::build_frame(
     "id", "Species", "Measure"     , "Value" |
@@ -56,7 +57,9 @@ test_there_and_back_db <- function() {
   back_db <- blocks_to_rowrecs(res_db,
                             keyColumns = c("id", "Species"),
                             control_table)
-  back <- rquery::execute(db, back_db)
+  back_t <- rquery::materialize(db, back_db)
+  back_sql <- rquery::to_sql(back_db, db)
+  back <- rquery::execute(db, back_t)
 
   RUnit::checkEquals(sort(colnames(d)), sort(colnames(back)))
   back <- back[, colnames(d), drop = FALSE]
@@ -64,8 +67,6 @@ test_there_and_back_db <- function() {
   d <- d[wrapr::orderv(d), , drop = FALSE]
   back <- back[wrapr::orderv(back), , drop = FALSE]
   RUnit::checkEquals(d, back)
-
-  back_sql <- rquery::to_sql(back_db, db)
 
   DBI::dbDisconnect(raw_connection)
 }
