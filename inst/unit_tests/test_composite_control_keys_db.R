@@ -16,36 +16,36 @@ test_composite_control_keys_db <- function() {
                                connection_options = dbopts)
   d <- wrapr::build_frame(
     "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species", "id" |
-    5.1           , 3.5          , 1.4           , 0.2          , "setosa" , 1L   |
-    4.9           , 3            , 1.4           , 0.2          , "setosa" , 2L   )
+      5.1           , 3.5          , 1.4           , 0.2          , "setosa" , 1L   |
+      4.9           , 3            , 1.4           , 0.2          , "setosa" , 2L   )
   d_db <- rquery::rq_copy_to(db, "d", d,
                              temporary = TRUE,
                              overwrite = TRUE)
 
   control_table <- wrapr::qchar_frame(
     Part,  Measure, Value        |
-    Sepal, Length,  Sepal.Length |
-    Sepal, Width,   Sepal.Width  |
-    Petal, Length,  Petal.Length |
-    Petal, Width,   Petal.Width  )
+      Sepal, Length,  Sepal.Length |
+      Sepal, Width,   Sepal.Width  |
+      Petal, Length,  Petal.Length |
+      Petal, Width,   Petal.Width  )
 
   res_db <- rowrecs_to_blocks(d_db,
-                           control_table,
-                           controlTableKeys = c("Part", "Measure"),
-                           columnsToCopy = c("id", "Species"))
+                              control_table,
+                              controlTableKeys = c("Part", "Measure"),
+                              columnsToCopy = c("id", "Species"))
   res <- rquery::execute(db, res_db)
   res_sql <- rquery::to_sql(res_db, db)
 
   expect <- wrapr::build_frame(
     "id", "Species", "Part" , "Measure", "Value" |
-    1L  , "setosa" , "Sepal", "Length" , 5.1     |
-    1L  , "setosa" , "Sepal", "Width"  , 3.5     |
-    1L  , "setosa" , "Petal", "Length" , 1.4     |
-    1L  , "setosa" , "Petal", "Width"  , 0.2     |
-    2L  , "setosa" , "Sepal", "Length" , 4.9     |
-    2L  , "setosa" , "Sepal", "Width"  , 3       |
-    2L  , "setosa" , "Petal", "Length" , 1.4     |
-    2L  , "setosa" , "Petal", "Width"  , 0.2     )
+      1L  , "setosa" , "Sepal", "Length" , 5.1     |
+      1L  , "setosa" , "Sepal", "Width"  , 3.5     |
+      1L  , "setosa" , "Petal", "Length" , 1.4     |
+      1L  , "setosa" , "Petal", "Width"  , 0.2     |
+      2L  , "setosa" , "Sepal", "Length" , 4.9     |
+      2L  , "setosa" , "Sepal", "Width"  , 3       |
+      2L  , "setosa" , "Petal", "Length" , 1.4     |
+      2L  , "setosa" , "Petal", "Width"  , 0.2     )
 
   RUnit::checkEquals(sort(colnames(expect)), sort(colnames(res)))
   res <- res[, colnames(expect), drop = FALSE]
@@ -55,9 +55,9 @@ test_composite_control_keys_db <- function() {
   RUnit::checkEquals(expect, res)
 
   back_db <- blocks_to_rowrecs(res_db,
-                            keyColumns = c("id", "Species"),
-                            control_table,
-                            controlTableKeys = c("Part", "Measure"))
+                               keyColumns = c("id", "Species"),
+                               control_table,
+                               controlTableKeys = c("Part", "Measure"))
   back <- rquery::execute(db, back_db)
   back_sql <- rquery::to_sql(back_db, db)
 

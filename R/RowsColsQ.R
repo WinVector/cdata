@@ -255,12 +255,9 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::rowrecs_to_blocks_q", cCheck))
   }
-  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
-    # TODO: extend code and remove this check
-    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
-  }
+  controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames) {
-    interiorCells <- as.vector(as.matrix(controlTable[,2:ncol(controlTable)]))
+    interiorCells <- unlist(controlTable[, controlTableValueColumns], use.names = FALSE)
     interiorCells <- interiorCells[!is.na(interiorCells)]
     wideTableColnames <- cols(my_db, wideTable)
     badCells <- setdiff(interiorCells, wideTableColnames)
@@ -288,18 +285,25 @@ rowrecs_to_blocks_q <- function(wideTable,
                                                   collapse = ' '))
     }
   }
-  casestmts <- lapply(2:ncol(controlTable),
-                      function(j) {
+  control_key_indices <- match(c("Part", "Measure"), colnames(controlTable))
+  casestmts <- lapply(controlTableValueColumns,
+                      function(cj) {
                         whens <- lapply(seq_len(nrow(controlTable)),
                                         function(i) {
-                                          cij <- controlTable[i,j,drop=TRUE]
+                                          cij <- controlTable[i,cj,drop=TRUE]
                                           if(is.null(cij) || is.na(cij)) {
                                             return(NULL)
                                           }
-                                          paste0(' WHEN b.',
-                                                 rquery::quote_identifier(my_db, colnames(controlTable)[1]),
-                                                 ' = ',
-                                                 rquery::quote_string(my_db, controlTable[i,1,drop=TRUE]),
+                                          match_stmts <- vapply(
+                                            control_key_indices,
+                                            function(j2) {
+                                              paste0('b.',
+                                                     rquery::quote_identifier(my_db, colnames(controlTable)[j2]),
+                                                     ' = ',
+                                                     rquery::quote_string(my_db, controlTable[i,j2,drop=TRUE]))
+                                            }, character(1))
+                                          paste0(' WHEN ',
+                                                 paste(match_stmts, collapse = " AND "),
                                                  ' THEN a.',
                                                  rquery::quote_identifier(my_db, cij))
                                         })
@@ -313,7 +317,7 @@ rowrecs_to_blocks_q <- function(wideTable,
                                            ' ELSE ',
                                            missingCaseTerm,
                                            ' END AS ',
-                                           rquery::quote_identifier(my_db, colnames(controlTable)[j]))
+                                           rquery::quote_identifier(my_db, cj))
                       })
   casestmts <- as.character(Filter(function(x) { !is.null(x) },
                                    casestmts))
@@ -321,10 +325,10 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(length(columnsToCopy)>0) {
     copystmts <- paste0('a.', rquery::quote_identifier(my_db, columnsToCopy))
   }
-  groupstmt <- paste0('b.', rquery::quote_identifier(my_db, colnames(controlTable)[1]))
+  groupstmts <- paste0('b.', rquery::quote_identifier(my_db, controlTableKeys))
   # deliberate cross join
   qs <-  paste0(" SELECT ",
-                paste(c(copystmts, groupstmt, casestmts), collapse = ', '),
+                paste(c(copystmts, groupstmts, casestmts), collapse = ', '),
                 ' FROM ',
                 rquery::quote_identifier(my_db, wideTable),
                 ' a CROSS JOIN ',
@@ -523,6 +527,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     # TODO: extend code and remove this check
     stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
   }
+  controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames) {
     tallTableColnames <- cols(my_db, tallTable)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
