@@ -285,7 +285,7 @@ rowrecs_to_blocks_q <- function(wideTable,
                                                   collapse = ' '))
     }
   }
-  control_key_indices <- match(c("Part", "Measure"), colnames(controlTable))
+  control_key_indices <- match(controlTableKeys, colnames(controlTable))
   casestmts <- lapply(controlTableValueColumns,
                       function(cj) {
                         whens <- lapply(seq_len(nrow(controlTable)),
@@ -523,10 +523,6 @@ blocks_to_rowrecs_q <- function(tallTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs_q", cCheck))
   }
-  if( (length(controlTableKeys)!=1) || (!isTRUE(controlTableKeys==colnames(controlTable)[[1]])) ) {
-    # TODO: extend code and remove this check
-    stop("for now (soon to change) controlTableKeys must be exactly the first column name of controlTable")
-  }
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames) {
     tallTableColnames <- cols(my_db, tallTable)
@@ -555,26 +551,32 @@ blocks_to_rowrecs_q <- function(tallTable,
                                                   collapse = ' '))
     }
   }
+  control_key_indices <- match(controlTableKeys, colnames(controlTable))
   collectstmts <- vector(mode = 'list',
                          length = nrow(controlTable) * (ncol(controlTable)-1))
   collectN <- 1
   saw <- list()
   for(i in seq_len(nrow(controlTable))) {
-    for(j in 2:ncol(controlTable)) {
-      cij <- controlTable[i,j,drop=TRUE]
+    for(cj in controlTableValueColumns) {
+      cij <- controlTable[i,cj,drop=TRUE]
       if((!is.null(cij))&&(!is.na(cij))) {
         if(dropDups && (cij %in% names(saw))) {
           cij <- NA
         }
       }
       if((!is.null(cij))&&(!is.na(cij))) {
+        match_stmts <- vapply(
+          control_key_indices,
+          function(j2) {
+            paste0('a.',
+                   rquery::quote_identifier(my_db, colnames(controlTable)[j2]),
+                   ' = ',
+                   rquery::quote_string(my_db, controlTable[i,j2,drop=TRUE]))
+          }, character(1))
         collectstmts[[collectN]] <- paste0("MAX( CASE WHEN ", # pseudo aggregator
-                                           "a.",
-                                           rquery::quote_identifier(my_db, colnames(controlTable)[[1]]),
-                                           " = ",
-                                           rquery::quote_string(my_db, controlTable[i,1,drop=TRUE]),
+                                           paste(match_stmts, collapse = " AND "),
                                            " THEN a.",
-                                           rquery::quote_identifier(my_db, colnames(controlTable)[[j]]),
+                                           rquery::quote_identifier(my_db, cj),
                                            " ELSE ",
                                            missingCaseTerm,
                                            " END ) ",
