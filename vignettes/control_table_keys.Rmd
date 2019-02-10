@@ -64,7 +64,7 @@ control_table <- wrapr::qchar_frame(
   Petal, Width,   "Petal.Width"  )
 ```
 
-We have designed out our desired transform above (as taught [here](https://winvector.github.io/cdata/articles/design.html)). We are introducing a new convention of putting the non-key values in quotes (even though `wrapr::qcar_frame()` does not need this).  Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.
+We have designed our desired transform above (as taught [here](https://winvector.github.io/cdata/articles/design.html)). We are introducing a new convention of putting the non-key values in quotes (even though `wrapr::qcar_frame()` does not need this).  Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.
 
 We can now have `cdata::rowrecs_to_blocks()` perform the transform.  Notice we are specifying that the columns `Part` and `Measure` are the control table row-keys.
 

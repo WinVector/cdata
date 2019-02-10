@@ -92,7 +92,7 @@
       <h1>Control Table Keys</h1>
                         <h4 class="author">John Mount</h4>
             
-            <h4 class="date">2019-02-09</h4>
+            <h4 class="date">2019-02-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/control_table_keys.Rmd"><code>vignettes/control_table_keys.Rmd</code></a></small>
       <div class="hidden name"><code>control_table_keys.Rmd</code></div>
@@ -229,7 +229,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <span class="st">  </span>Sepal, Width,   <span class="st">"Sepal.Width"</span>  <span class="op">|</span>
 <span class="st">  </span>Petal, Length,  <span class="st">"Petal.Length"</span> <span class="op">|</span>
 <span class="st">  </span>Petal, Width,   <span class="st">"Petal.Width"</span>  )</code></pre></div>
-<p>We have designed out our desired transform above (as taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). We are introducing a new convention of putting the non-key values in quotes (even though <code>wrapr::qcar_frame()</code> does not need this). Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.</p>
+<p>We have designed our desired transform above (as taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). We are introducing a new convention of putting the non-key values in quotes (even though <code>wrapr::qcar_frame()</code> does not need this). Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.</p>
 <p>We can now have <code><a href="../reference/rowrecs_to_blocks.html">cdata::rowrecs_to_blocks()</a></code> perform the transform. Notice we are specifying that the columns <code>Part</code> and <code>Measure</code> are the control table row-keys.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
   d,
