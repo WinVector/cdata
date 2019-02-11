@@ -17,8 +17,9 @@ knitr::opts_chunk$set(
 ```
 
 One of the design goals of the [`cdata`](https://github.com/WinVector/cdata) [`R`](https://www.r-project.org) package
-is that very powerful and arbitrary record transforms should be convenient and take only one or two steps.  In fact
-it is the goal to take just about any record shape to any other in two steps: first convert to row-records, then re-block the data into arbitrary record shapes (please see [here](https://winvector.github.io/cdata/articles/blocksrecs.html) and [here](https://winvector.github.io/cdata/articles/design.html) for the concepts).
+is that data occurs in records, and records may be a pattern of cells in a groups of rows.
+
+The allows `cdata` to support very powerful and arbitrary record transforms in one or two steps.  Using "row records" (that is records that are exactly one row) as an intermediate lets us take just about any record shape to just about any record shape: first convert to row-records, then re-block the data into arbitrary record shapes (please see [here](https://winvector.github.io/cdata/articles/blocksrecs.html) and [here](https://winvector.github.io/cdata/articles/design.html) for the concepts).
 
 But as with all general ideas, it is much easier to see what we mean by the above with a concrete example.  Let's consider the following artificial (but simple) example.  Suppose we have the following data.
 
