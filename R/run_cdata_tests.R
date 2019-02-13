@@ -66,7 +66,9 @@ run_cdata_tests <- function(...,
   test_suite <- RUnit::defineTestSuite(name = paste(pkg, "unit tests"),
                                        dirs = test_dirs,
                                        testFileRegexp = "^test_.+\\.R$",
-                                       testFuncRegexp = "^test_.+$")
+                                       testFuncRegexp = "^test_.+$",
+                                       rngKind = rngKind,
+                                       rngNormalKind = rngNormalKind)
   test_results <- RUnit::runTestSuite(test_suite,
                                       verbose = verbose,
                                       gcBeforeTest = FALSE)
