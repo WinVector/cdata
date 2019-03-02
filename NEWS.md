@@ -1,4 +1,8 @@
 
+# cdata 1.0.7 2019/03/02
+
+ * Move to wrapr tests.
+ 
 # cdata 1.0.6 2019/02/14
 
  * More generality in control table keys.
