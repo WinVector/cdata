@@ -157,6 +157,7 @@ rowrecs_to_blocks.default <- function(wideTable,
 }
 
 
+
 #' @export
 #' @rdname blocks_to_rowrecs
 blocks_to_rowrecs.default <- function(tallTable,
@@ -210,6 +211,10 @@ blocks_to_rowrecs.default <- function(tallTable,
       if(length(bnovel)>0) {
         stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
                    paste(bnovel, collapse = ', ')))
+      }
+      # check keyColumns plus controltable keys key data
+      if(!checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
+         stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not unique index data"))
       }
     }
   }

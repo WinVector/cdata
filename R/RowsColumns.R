@@ -33,7 +33,12 @@ has_no_dup_rows <- function(data) {
   rownames(data) <- NULL
   new_value <- c(TRUE, rep(FALSE, ndata-1))
   for(ki in keyColNames) {
-    di <- c(TRUE, data[[ki]][-1]!=data[[ki]][-ndata])
+    cA <- data[[ki]][-1]
+    cB <- data[[ki]][-ndata]
+    cAn <- is.na(cA)
+    cBn <- is.na(cB)
+    check <- ifelse(cAn | cBn, cAn != cBn, cA != cB)
+    di <- c(TRUE, check)
     new_value <- new_value | di
   }
   return(isTRUE(all(new_value)))
