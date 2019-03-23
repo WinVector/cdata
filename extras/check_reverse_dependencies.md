@@ -22,7 +22,7 @@ setwd(td)
 print(td)
 ```
 
-    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//RtmpXDo6ez"
+    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//RtmpZHfNE0"
 
 ``` r
 options(repos = c(CRAN="https://cloud.r-project.org"))
@@ -47,7 +47,7 @@ if(!is.null(parallelCluster)) {
 }
 ```
 
-    ## WVPlots_1.0.8 started at 2019-02-14 15:23:12 success at 2019-02-14 15:24:14 (1/0/0)
+    ## WVPlots_1.0.9 started at 2019-03-23 09:18:51 success at 2019-03-23 09:19:51 (1/0/0)
 
     ## [1] id     title  status
     ## <0 rows> (or 0-length row.names)
@@ -57,8 +57,8 @@ summariseQueue(package=package, directory=td)
 ```
 
     ## Test of cdata had 1 successes, 0 failures, and 0 skipped packages. 
-    ## Ran from 2019-02-14 15:23:12 to 2019-02-14 15:24:14 for 1.033 mins 
-    ## Average of 62 secs relative to 61.734 secs using 1 runners
+    ## Ran from 2019-03-23 09:18:51 to 2019-03-23 09:19:51 for 1 mins 
+    ## Average of 60 secs relative to 59.688 secs using 1 runners
     ## 
     ## Failed packages:   
     ## 
