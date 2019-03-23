@@ -35,11 +35,11 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(!all(classes=='character')) {
     return("all control table columns must be character")
   }
-  if(!checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
-    return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
-  }
   if(any(is.na(controlTable[, controlTableKeys, drop = FALSE]))) {
     return("control table key must not be NA")
+  }
+  if(!checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
+    return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
   }
   toCheck <- list(
     "column names" = colnames(controlTable),
