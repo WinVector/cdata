@@ -102,6 +102,15 @@ test_checks_2 <- function() {
                              columnsToTakeFrom = c("AUC", "R2"),
                              checkKeys = TRUE)
   })
+  RUnit::checkException({
+  cT <- cdata::build_unpivot_control(nameForNewKeyColumn = "meas",
+                                     nameForNewValueColumn = "value",
+                                     columnsToTakeFrom = c("AUC", "R2"))
+  cdata::rowrecs_to_blocks(z,
+                           controlTable = cT,
+                           columnsToCopy = "meas",
+                           checkKeys = TRUE)
+  })
 
   invisible(NULL)
 }
