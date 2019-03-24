@@ -1,4 +1,8 @@
 
+# cdata 1.0.8 2019/03/24
+
+ * More column collision checks.
+
 # cdata 1.0.7 2019/03/23
 
  * Move to wrapr tests.

@@ -195,6 +195,20 @@ blocks_to_rowrecs.default <- function(tallTable,
   if(!is.null(cCheck)) {
     stop(paste("cdata::blocks_to_rowrecs", cCheck))
   }
+  # look for column production collisions
+  double_copied <- as.character(intersect(keyColumns, columnsToCopy))
+  if(length(double_copied)>0) {
+    stop(paste("cdata::blocks_to_rowrecs common columns in keyColumns and columnsToCopy:",
+               paste(double_copied, collapse = ", ")))
+  }
+  producing_columns <- as.character(unique(unlist(controlTable[, controlTableKeys, drop=FALSE])))
+  surviving_columns <- as.character(unique(keyColumns, columnsToCopy))
+  collisions <- intersect(producing_columns, surviving_columns)
+  if(length(collisions)>0) {
+    stop(paste("cdata::blocks_to_rowrecs columns being produced collide with copied columns:",
+               paste(collisions, collapse = ", ")))
+  }
+  # check more
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames || checkKeys) {
     tallTableColnames <- colnames(tallTable)

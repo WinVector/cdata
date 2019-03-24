@@ -177,10 +177,10 @@ unpivot_to_blocks.default <- function(data,
     }
   }
   if(nameForNewKeyColumn %in% cn) {
-    stop("cdata::unpivot_to_blocks nameForNewKeyColumn must not be a column name")
+    stop("cdata::unpivot_to_blocks nameForNewKeyColumn must not be an existing column name")
   }
   if(nameForNewValueColumn %in% cn) {
-    stop("cdata::unpivot_to_blocks nameForNewValueColumn must not be a column name")
+    stop("cdata::unpivot_to_blocks nameForNewValueColumn must not be an existing column name")
   }
   if(nameForNewKeyColumn==nameForNewValueColumn) {
     stop("cdata::unpivot_to_blocks nameForNewKeyColumn must not equal nameForNewValueColumn")
@@ -274,10 +274,10 @@ pivot_to_rowrecs <- function(data,
     }
   }
   if(!(columnToTakeKeysFrom %in% cn)) {
-    stop("cdata::pivot_to_rowrecs columnToTakeKeysFrom must be a column name")
+    stop("cdata::pivot_to_rowrecs columnToTakeKeysFrom must be an existing column name")
   }
   if(!(columnToTakeValuesFrom %in% cn)) {
-    stop("cdata::pivot_to_rowrecs columnToTakeValuesFrom must be a column name")
+    stop("cdata::pivot_to_rowrecs columnToTakeValuesFrom must be an existing column name")
   }
   # if(columnToTakeKeysFrom==columnToTakeValuesFrom) {
   #   stop("cdata::pivot_to_rowrecs columnToTakeKeysFrom must not equal columnToTakeValuesFrom")
