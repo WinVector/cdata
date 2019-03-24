@@ -91,42 +91,21 @@ rowrecs_to_blocks.default <- function(wideTable,
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
   }
-  if(!is.data.frame(controlTable)) {
-    stop("cdata::rowrecs_to_blocks controlTable should be a data.frame")
-  }
+
+  check_rowrecs_to_blocks_args(wideTable_columns = colnames(wideTable),
+                               controlTable = controlTable,
+                               checkNames = checkNames,
+                               strict = strict,
+                               controlTableKeys = controlTableKeys,
+                               columnsToCopy = columnsToCopy)
+
   rownames(wideTable) <- NULL
-  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
-  if(!is.null(cCheck)) {
-    stop(paste("cdata::rowrecs_to_blocks", cCheck))
-  }
-  bad_copy_cols <- setdiff(columnsToCopy, colnames(wideTable))
-  if(length(bad_copy_cols)>0) {
-    stop(paste0("cdata::rowrecs_to_blocks bad columnsToCopy: ",
-                paste(bad_copy_cols, collapse = ", ")))
-  }
-  # check for production collisions
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
-  producing_columns <- controlTableKeys
-  surviving_columns <- columnsToCopy
-  collisions <- intersect(producing_columns, surviving_columns)
-  if(length(collisions)>0) {
-    stop(paste("cdata::rowrecs_to_blocks columns being produced collide with copied columns:",
-               paste(collisions, collapse = ", ")))
-  }
+
   # check more
-  if(checkNames || checkKeys) {
-    interiorCells <- unlist(controlTable[, controlTableValueColumns], use.names = FALSE)
-    interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- colnames(wideTable)
-    badCells <- setdiff(interiorCells, wideTableColnames)
-    if(length(badCells)>0) {
-      stop(paste("cdata::rowrecs_to_blocks: control table entries that are not wideTable column names:",
-                 paste(badCells, collapse = ', ')))
-    }
-    if(checkKeys) {
-      if(!checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
-        stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
-      }
+  if(checkKeys) {
+    if(!checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
+      stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
     }
   }
 
@@ -184,9 +163,15 @@ blocks_to_rowrecs.default <- function(tallTable,
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")
   }
-  if(!is.data.frame(controlTable)) {
-    stop("cdata::blocks_to_rowrecs controlTable should be a data.frame")
-  }
+
+  check_blocks_to_rowrecs_args(tallTable_columns = colnames(tallTable),
+                               keyColumns = keyColumns,
+                               controlTable = controlTable,
+                               columnsToCopy = columnsToCopy,
+                               checkNames = checkNames,
+                               strict = strict,
+                               controlTableKeys = controlTableKeys)
+
   rownames(tallTable) <- NULL
   clear_key_column <- FALSE
   if(length(keyColumns)<=0) {
@@ -195,54 +180,21 @@ blocks_to_rowrecs.default <- function(tallTable,
     keyColumns <- "cdata_key_column"
     clear_key_column <- TRUE
   }
-  bad_key_cols <- setdiff(keyColumns, colnames(tallTable))
-  if(length(bad_key_cols)>0) {
-    stop(paste0("cdata::blocks_to_rowrecs bad keyColumns: ",
-                paste(bad_key_cols, collapse = ", ")))
-  }
-  cCheck <- checkControlTable(controlTable, controlTableKeys, strict)
-  if(!is.null(cCheck)) {
-    stop(paste("cdata::blocks_to_rowrecs", cCheck))
-  }
-  # check control table is uniquely keyed
-  if(!checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
-    stop("cdata::blocks_to_rowrecs control table not keyed by controlTableKey columns")
-  }
-  # look for column production collisions
-  double_copied <- as.character(intersect(keyColumns, columnsToCopy))
-  if(length(double_copied)>0) {
-    stop(paste("cdata::blocks_to_rowrecs common columns in keyColumns and columnsToCopy:",
-               paste(double_copied, collapse = ", ")))
-  }
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
-  producing_columns <- as.character(unique(unlist(controlTable[, controlTableValueColumns, drop=FALSE])))
-  surviving_columns <- as.character(unique(c(keyColumns, columnsToCopy)))
-  collisions <- intersect(producing_columns, surviving_columns)
-  if(length(collisions)>0) {
-    stop(paste("cdata::blocks_to_rowrecs columns being produced collide with copied columns:",
-               paste(collisions, collapse = ", ")))
-  }
+
   # check more
-  if(checkNames || checkKeys) {
-    tallTableColnames <- colnames(tallTable)
-    badCells <- setdiff(colnames(controlTable), tallTableColnames)
-    if(length(badCells)>0) {
-      stop(paste("cdata::blocks_to_rowrecs: control table column names that are not tallTable column names:",
-                 paste(badCells, collapse = ', ')))
+  if(checkKeys) {
+    # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
+    bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
+    bseen <- unique(unlist(tallTable[, controlTableKeys], use.names = FALSE))
+    bnovel <- setdiff(bseen, bkeys)
+    if(length(bnovel)>0) {
+      stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
+                 paste(bnovel, collapse = ', ')))
     }
-    if(checkKeys) {
-      # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
-      bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
-      bseen <- unique(unlist(tallTable[, controlTableKeys], use.names = FALSE))
-      bnovel <- setdiff(bseen, bkeys)
-      if(length(bnovel)>0) {
-        stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
-                   paste(bnovel, collapse = ', ')))
-      }
-      # check keyColumns plus controltable keys key data
-      if(!checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
-         stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not unique index data"))
-      }
+    # check keyColumns plus controltable keys key data
+    if(!checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
+      stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not unique index data"))
     }
   }
 
@@ -263,13 +215,11 @@ blocks_to_rowrecs.default <- function(tallTable,
   n_res <- nrow(res)
   # fill in values
   tallTable$composite_meas_col <- do.call(paste,
-                                          c(
-                                            as.list(tallTable[, controlTableKeys, drop = FALSE]),
+                                          c(as.list(tallTable[, controlTableKeys, drop = FALSE]),
                                             list(sep = " CDATA_K_SEP ")))
   controlTable$composite_meas_col <- do.call(paste,
-                                          c(
-                                            as.list(controlTable[, controlTableKeys, drop = FALSE]),
-                                            list(sep = " CDATA_K_SEP ")))
+                                             c(as.list(controlTable[, controlTableKeys, drop = FALSE]),
+                                               list(sep = " CDATA_K_SEP ")))
   n_rep <- nrow(controlTable)
   for(cn in controlTableValueColumns) {
     for(i in seq_len(n_rep)) {

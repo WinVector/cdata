@@ -8,67 +8,6 @@
 
 
 
-# confirm control table structure
-checkControlTable <- function(controlTable, controlTableKeys, strict) {
-  if(!is.data.frame(controlTable)) {
-    return("control table must be a data.frame")
-  }
-  if(length(colnames(controlTable)) != length(unique(colnames(controlTable)))) {
-    return("control table columns must be unique")
-  }
-  if(any(is.na(colnames(controlTable)))) {
-    return("control table column names must not be NA")
-  }
-  if( (length(controlTableKeys)<1) || (!is.character(controlTableKeys)) ) {
-    return("controlTableKeys must be non-empty character")
-  }
-  if(nrow(controlTable)<1) {
-    return("control table must have at least 1 row")
-  }
-  if(ncol(controlTable)<=length(controlTableKeys)) {
-    return("control table must have more columns than controlTableKeys")
-  }
-  if(length(setdiff(controlTableKeys, colnames(controlTable)))>0) {
-    return("all controlTableKeys must be controlTable column names")
-  }
-  classes <- vapply(controlTable, class, character(1))
-  if(!all(classes=='character')) {
-    return("all control table columns must be character")
-  }
-  if(any(is.na(controlTable[, controlTableKeys, drop = FALSE]))) {
-    return("control table key must not be NA")
-  }
-  if(!checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
-    return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
-  }
-  toCheck <- list(
-    "column names" = colnames(controlTable),
-    "keys" = unlist(controlTable[, controlTableKeys], use.names = FALSE),
-    "values" = unlist(controlTable, use.names = FALSE) # overlaps, but keys will catch first
-  )
-  for(ci in names(toCheck)) {
-    vals <- toCheck[[ci]]
-    if(length(vals)<=0) {
-      return(paste("control table", ci, "must not be empty"))
-    }
-    if(!is.character(vals)) {
-      return(paste("all control table", ci, "must be character"))
-    }
-    if(any(nchar(vals)<=0)) {
-      return(paste("all control table", ci, "must not be empty strings"))
-    }
-    if(strict) {
-      if(length(grep(".", vals, fixed=TRUE))>0) {
-        return(paste("all control table", ci ,"must '.'-free"))
-      }
-      if(!all(vals==make.names(vals))) {
-        return(paste("all control table", ci ,"must be valid R variable names"))
-      }
-    }
-  }
-  return(NULL) # good
-}
-
 
 
 
