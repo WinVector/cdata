@@ -15,7 +15,7 @@ test_checks_2 <- function() {
     "id", "AUC"   , "R2"     |
     1   , 0.7     , NA_real_ |
     2   , NA_real_, 0.3      )
-  RUnit::checkTrue(check_equiv_frames(expect, r))
+  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
 
   # NA in id column works as a values
   d1 <- wrapr::build_frame(
@@ -32,7 +32,7 @@ test_checks_2 <- function() {
     "id"    , "AUC", "R2"     |
     1       , 0.7  , NA_real_ |
     NA_real_, 0.62 , 0.3      )
-  RUnit::checkTrue(check_equiv_frames(expect, r))
+  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
 
   # NA in measure column not allowed
   d2 <- wrapr::build_frame(
@@ -78,7 +78,7 @@ test_checks_2 <- function() {
     1   , "R2"  , NA_real_ |
     2   , "AUC" , NA_real_ |
     2   , "R2"  , 0.3      )
-  RUnit::checkTrue(check_equiv_frames(expect, r))
+  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
 
   # don't allow duplicates
   z <- wrapr::build_frame(

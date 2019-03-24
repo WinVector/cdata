@@ -21,7 +21,7 @@ RoxygenNote: 6.1.1
 Depends:
   R (>= 3.4.0)
 Imports:
-  wrapr (>= 1.8.4),
+  wrapr (>= 1.8.5),
   rquery (>= 1.3.2),
   stats
 Suggests: 

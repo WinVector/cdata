@@ -104,7 +104,7 @@ rowrecs_to_blocks.default <- function(wideTable,
 
   # check more
   if(checkKeys) {
-    if(!checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
+    if(!wrapr::checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
       stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
     }
   }
@@ -193,7 +193,7 @@ blocks_to_rowrecs.default <- function(tallTable,
                  paste(bnovel, collapse = ', ')))
     }
     # check keyColumns plus controltable keys key data
-    if(!checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
+    if(!wrapr::checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
       stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not unique index data"))
     }
   }
