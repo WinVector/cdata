@@ -284,3 +284,34 @@ check_blocks_to_rowrecs_args <- function(...,
   }
 }
 
+#' Check two data.frames are equivilent after sorting columns and rows
+#'
+#' @param d1 data.frame 1
+#' @param d2 data.frame 2
+#' @return logical TRUE if equivilent
+#'
+#' @export
+#' @keywords internal
+#'
+check_equiv_frames <- function(d1, d2) {
+  if( (!is.data.frame(d1)) || (!is.data.frame(d2)) ) {
+    return(FALSE)
+  }
+  d1 <- data.frame(d1)
+  d2 <- data.frame(d2)
+  if((nrow(d1)!=nrow(d2)) || (ncol(d1)!=ncol(d2))) {
+    return(FALSE)
+  }
+  cols <- sort(colnames(d1))
+  c2 <- sort(colnames(d2))
+  if(!isTRUE(all.equal(cols, c2))) {
+    return(FALSE)
+  }
+  d1 <- d1[, cols, drop=FALSE]
+  d1 <- d1[wrapr::orderv(d1), , drop=FALSE]
+  rownames(d1) <- NULL
+  d2 <- d2[, cols, drop=FALSE]
+  d2 <- d2[wrapr::orderv(d2), , drop=FALSE]
+  rownames(d2) <- NULL
+  return(isTRUE(all.equal(d1, d2)))
+}
