@@ -213,8 +213,6 @@ check_rowrecs_to_blocks_args <- function(...,
     stop(paste0("cdata::check_rowrecs_to_blocks_args bad columnsToCopy: ",
                 paste(bad_copy_cols, collapse = ", ")))
   }
-  # check keying is present
-  # TODO: impl
   # check for production collisions
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   producing_columns <- controlTableKeys
