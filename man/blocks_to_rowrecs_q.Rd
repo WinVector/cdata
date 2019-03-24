@@ -100,3 +100,4 @@ if (requireNamespace("DBI", quietly = TRUE) &&
 \seealso{
 \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
 }
+\keyword{internal}

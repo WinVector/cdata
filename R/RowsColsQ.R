@@ -40,6 +40,7 @@
 #' }
 #'
 #' @noRd
+#' @keywords internal
 #'
 cols <- function(my_db, tableName) {
   rquery::rq_colnames(my_db, tableName)
@@ -68,6 +69,7 @@ cols <- function(my_db, tableName) {
 #' }
 #'
 #' @export
+#' @keywords internal
 #'
 qlook <- function(my_db, tableName,
                   displayRows = 10,
@@ -166,6 +168,7 @@ qlook <- function(my_db, tableName,
 #' }
 #'
 #' @export
+#' @keywords internal
 #'
 rowrecs_to_blocks_q <- function(wideTable,
                                 controlTable,
@@ -327,6 +330,8 @@ rowrecs_to_blocks_q <- function(wideTable,
 #' }
 #'
 #' @export
+#' @keywords internal
+#'
 build_pivot_control_q <- function(tableName,
                                   columnToTakeKeysFrom,
                                   columnToTakeValuesFrom,
@@ -427,6 +432,7 @@ build_pivot_control_q <- function(tableName,
 #' }
 #'
 #' @export
+#' @keywords internal
 #'
 blocks_to_rowrecs_q <- function(tallTable,
                                 keyColumns,

@@ -250,9 +250,13 @@ blocks_to_rowrecs.relop <- function(tallTable,
   if(!("relop" %in% class(tallTable))) {
     stop("cdata::blocks_to_rowrecs.relop tallTable must be of class relop")
   }
-  if(!is.data.frame(controlTable)) {
-    stop("cdata::blocks_to_rowrecs controlTable should be a data.frame")
-  }
+  check_blocks_to_rowrecs_args(tallTable_columns = rquery::column_names(tallTable),
+                               keyColumns = keyColumns,
+                               controlTable = controlTable,
+                               columnsToCopy = columnsToCopy,
+                               checkNames = checkNames,
+                               strict = strict,
+                               controlTableKeys = controlTableKeys)
   force(tallTable)
   force(keyColumns)
   force(controlTable)
@@ -363,9 +367,12 @@ rowrecs_to_blocks.relop <- function(wideTable,
   if(!("relop" %in% class(wideTable))) {
     stop("cdata::rowrecs_to_blocks.relop wideTable should be of class relop")
   }
-  if(!is.data.frame(controlTable)) {
-    stop("cdata::rowrecs_to_blocks controlTable should be a data.frame")
-  }
+  check_rowrecs_to_blocks_args(wideTable_columns = rquery::column_names(wideTable),
+                               controlTable = controlTable,
+                               checkNames = checkNames,
+                               strict = strict,
+                               controlTableKeys = controlTableKeys,
+                               columnsToCopy = columnsToCopy)
   force(wideTable)
   force(controlTable)
   force(columnsToCopy)

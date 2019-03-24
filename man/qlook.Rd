@@ -36,3 +36,4 @@ if ( requireNamespace("DBI", quietly = TRUE) &&
 }
 
 }
+\keyword{internal}

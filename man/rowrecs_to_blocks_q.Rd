@@ -94,3 +94,4 @@ if (requireNamespace("DBI", quietly = TRUE) &&
 \seealso{
 \code{\link{build_unpivot_control}},  \code{\link{rowrecs_to_blocks}}
 }
+\keyword{internal}
