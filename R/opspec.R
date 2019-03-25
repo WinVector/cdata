@@ -44,9 +44,9 @@ NULL
 #' @export
 #'
 new_record_spec <- function(controlTable,
-                           ...,
-                           recordKeys = character(0),
-                           controlTableKeys = colnames(controlTable)[[1]]) {
+                            ...,
+                            recordKeys = character(0),
+                            controlTableKeys = colnames(controlTable)[[1]]) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::new_record_spec")
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
@@ -185,3 +185,55 @@ new_record_spec <- function(controlTable,
   }
   stop("cdata::`%pivot%`: one argument must be of class cdata_record_spec")
 }
+
+
+# pipe interface
+
+
+#' @export
+#'
+t.cdata_record_spec <- function(x) {
+  class(x) <- "cdata_record_spec_reverse"
+  return(x)
+}
+
+#' @export
+#'
+t.cdata_record_spec_reverse <- function(x) {
+  class(x) <- "cdata_record_spec"
+  return(x)
+}
+
+#' @export
+#'
+apply_right.cdata_record_spec <- function(pipe_left_arg,
+                                          pipe_right_arg,
+                                          pipe_environment,
+                                          left_arg_name,
+                                          pipe_string,
+                                          right_arg_name) {
+  table <- pipe_left_arg
+  record_spec <- pipe_right_arg
+  rowrecs_to_blocks(wideTable = table,
+                    controlTable = record_spec$controlTable,
+                    controlTableKeys = record_spec$controlTableKeys,
+                    columnsToCopy = record_spec$recordKeys)
+}
+
+#' @export
+#'
+apply_right.cdata_record_spec_reverse <- function(pipe_left_arg,
+                                                  pipe_right_arg,
+                                                  pipe_environment,
+                                                  left_arg_name,
+                                                  pipe_string,
+                                                  right_arg_name) {
+  table <- pipe_left_arg
+  record_spec <- pipe_right_arg
+  blocks_to_rowrecs(tallTable = table,
+                    keyColumns = record_spec$recordKeys,
+                    controlTable = record_spec$controlTable,
+                    controlTableKeys = record_spec$controlTableKeys)
+}
+
+
