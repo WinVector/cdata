@@ -2,7 +2,7 @@
 % Please edit documentation in R/opspec.R
 \name{\%**\%}
 \alias{\%**\%}
-\title{Multiply row records into block records.}
+\title{Multiply/join row records into block records.}
 \usage{
 table \%**\% record_spec
 }
@@ -16,4 +16,21 @@ rowrecs_to_blocks() result.
 }
 \description{
 Call \code{rowrecs_to_blocks()}.
+}
+\examples{
+
+d <- z <- wrapr::build_frame(
+  "id", "AUC", "R2" |
+  1   , 0.7  , 0.4  |
+  2   , 0.8  , 0.5  )
+
+record_spec <- new_record_spec(
+  wrapr::qchar_frame(
+    measure, value |
+    AUC    , "AUC" |
+    R2     , "R2"  ),
+  recordKeys = "id")
+
+d \%**\% record_spec
+
 }

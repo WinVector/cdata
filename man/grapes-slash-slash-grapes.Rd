@@ -2,7 +2,7 @@
 % Please edit documentation in R/opspec.R
 \name{\%//\%}
 \alias{\%//\%}
-\title{Divide or aggregate block records into row records.}
+\title{Aggregate/project block records into row records.}
 \usage{
 table \%//\% record_spec
 }
@@ -16,4 +16,23 @@ blocks_to_rowrecs() result.
 }
 \description{
 Call \code{blocks_to_rowrecs()}.
+}
+\examples{
+
+d <- wrapr::build_frame(
+  "id", "measure", "value" |
+  1   , "AUC"    , 0.7     |
+  1   , "R2"     , 0.4     |
+  2   , "AUC"    , 0.8     |
+  2   , "R2"     , 0.5     )
+
+record_spec <- new_record_spec(
+  wrapr::qchar_frame(
+    measure, value |
+    AUC    , "AUC" |
+    R2     , "R2"  ),
+  recordKeys = "id")
+
+d \%//\% record_spec
+
 }

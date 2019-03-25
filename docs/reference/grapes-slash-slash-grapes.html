@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Divide or aggregate block records into row records. — %//% • cdata</title>
+<title>Aggregate/project block records into row records. — %//% • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,7 @@
 
 
 
-<meta property="og:title" content="Divide or aggregate block records into row records. — %//%" />
+<meta property="og:title" content="Aggregate/project block records into row records. — %//%" />
 
 <meta property="og:description" content="Call blocks_to_rowrecs()." />
 <meta name="twitter:card" content="summary" />
@@ -126,7 +126,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Divide or aggregate block records into row records.</h1>
+    <h1>Aggregate/project block records into row records.</h1>
     <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/opspec.R'><code>R/opspec.R</code></a></small>
     <div class="hidden name"><code>grapes-slash-slash-grapes.Rd</code></div>
     </div>
@@ -157,6 +157,26 @@
     <p>blocks_to_rowrecs() result.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/build_frame'>build_frame</a></span>(
+  <span class='st'>"id"</span>, <span class='st'>"measure"</span>, <span class='st'>"value"</span> <span class='kw'>|</span>
+  <span class='fl'>1</span>   , <span class='st'>"AUC"</span>    , <span class='fl'>0.7</span>     <span class='kw'>|</span>
+  <span class='fl'>1</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.4</span>     <span class='kw'>|</span>
+  <span class='fl'>2</span>   , <span class='st'>"AUC"</span>    , <span class='fl'>0.8</span>     <span class='kw'>|</span>
+  <span class='fl'>2</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.5</span>     )
+
+<span class='no'>record_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new_record_spec.html'>new_record_spec</a></span>(
+  <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame'>qchar_frame</a></span>(
+    <span class='no'>measure</span>, <span class='no'>value</span> <span class='kw'>|</span>
+    <span class='no'>AUC</span>    , <span class='st'>"AUC"</span> <span class='kw'>|</span>
+    <span class='no'>R2</span>     , <span class='st'>"R2"</span>  ),
+  <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
+
+<span class='no'>d</span> <span class='kw'>%//%</span> <span class='no'>record_spec</span></div><div class='output co'>#&gt;   id AUC  R2
+#&gt; 1  1 0.7 0.4
+#&gt; 2  2 0.8 0.5</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -164,7 +184,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
