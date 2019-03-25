@@ -92,7 +92,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-03-24</h4>
+            <h4 class="date">2019-03-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -371,7 +371,7 @@ ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</spa
 <span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%</span>
 <span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span>
 
-rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops)
+rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops) 
 <span class="co">#&gt; [1] "record_id" "column"    "row1"      "row2"      "row3"</span>
 
 <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
@@ -388,17 +388,21 @@ rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumenta
   
   ops <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="st">    </span>db <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">    </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.) <span class="op">%.&gt;%</span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(.)
   
   DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)
 }
-<span class="co">#&gt;   record_id column row1 row2 row3</span>
-<span class="co">#&gt; 1         1   col1    1    4    7</span>
-<span class="co">#&gt; 2         1   col2    2    5    8</span>
-<span class="co">#&gt; 3         1   col3    3    6    9</span>
-<span class="co">#&gt; 4         2   col1   11   14   17</span>
-<span class="co">#&gt; 5         2   col2   12   15   18</span>
-<span class="co">#&gt; 6         2   col3   13   16   19</span></code></pre></div>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  record_id  column    row1   row2   row3</span>
+<span class="co">#&gt; ----------  -------  -----  -----  -----</span>
+<span class="co">#&gt;          1  col1         1      4      7</span>
+<span class="co">#&gt;          1  col2         2      5      8</span>
+<span class="co">#&gt;          1  col3         3      6      9</span>
+<span class="co">#&gt;          2  col1        11     14     17</span>
+<span class="co">#&gt;          2  col2        12     15     18</span>
+<span class="co">#&gt;          2  col3        13     16     19</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

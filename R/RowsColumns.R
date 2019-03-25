@@ -86,7 +86,7 @@ unpivot_to_blocks.default <- function(data,
 #' Move values from rows to columns (pivot).
 #'
 #' This is a convenience notation for \code{blocks_to_rowrecs}.
-#' For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
+#' For a tutorial please try \url{https://winvector.github.io/cdata/articles/blocksrecs.html}.
 #'
 #'
 #' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).

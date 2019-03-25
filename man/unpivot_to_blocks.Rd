@@ -49,7 +49,7 @@ new data.frame with values moved to rows.
 }
 \description{
 This is a convenience notation for \code{rowrecs_to_blocks}.
-For a tutorial please try \code{vignette('RowsAndColumns', package='cdata')}.
+For a tutorial please try \url{https://winvector.github.io/cdata/articles/blocksrecs.html}.
 }
 \examples{
 
