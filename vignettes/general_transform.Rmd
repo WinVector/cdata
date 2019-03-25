@@ -111,7 +111,7 @@ ops <- table_desciption %.>%
 
 cat(format(ops))
 
-rquery::column_names(ops)
+rquery::column_names(ops) 
 
 if(requireNamespace("DBI", quietly = TRUE) &&
    requireNamespace("RSQLite", quietly = TRUE)) {
@@ -127,6 +127,7 @@ if(requireNamespace("DBI", quietly = TRUE) &&
   
   ops %.>% 
     db %.>% 
+    knitr::kable(.) %.>%
     print(.)
   
   DBI::dbDisconnect(raw_connection)
