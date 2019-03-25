@@ -9,6 +9,7 @@ NULL
 #' extra row keys, and control table keys.
 #'
 #' @param controlTable an all character data frame or cdata pivot control.
+#' @param ... not used, force later arguments to bind by name.
 #' @param recordKeys vector of columns identifying records.
 #' @param controlTableKeys vector of keying columns of the controlTable.
 #' @return a record specification object
@@ -19,6 +20,7 @@ new_record_spec <- function(controlTable,
                            ...,
                            recordKeys = character(0),
                            controlTableKeys = colnames(controlTable)[[1]]) {
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::new_record_spec")
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
     stop(paste("cdata::new_record_spec", ck))

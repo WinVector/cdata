@@ -10,6 +10,8 @@ new_record_spec(controlTable, ..., recordKeys = character(0),
 \arguments{
 \item{controlTable}{an all character data frame or cdata pivot control.}
 
+\item{...}{not used, force later arguments to bind by name.}
+
 \item{recordKeys}{vector of columns identifying records.}
 
 \item{controlTableKeys}{vector of keying columns of the controlTable.}
