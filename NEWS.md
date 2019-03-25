@@ -2,6 +2,7 @@
 # cdata 1.0.8 2019/03/25
 
  * More column collision checks.
+ * Operator notation.
 
 # cdata 1.0.7 2019/03/23
 

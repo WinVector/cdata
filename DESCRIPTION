@@ -23,6 +23,7 @@ Depends:
 Imports:
   wrapr (>= 1.8.5),
   rquery (>= 1.3.2),
+  methods,
   stats
 Suggests: 
     DBI,

@@ -1,0 +1,75 @@
+---
+title: "Operators"
+author: "John Mount, Nina Zumel"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+As of `cdata` version `1.0.8` `cdata` implements an operator notation for data transform.
+
+The idea is simple, yet powerful.
+
+First let's start with some data.
+
+```{r}
+
+d <- wrapr::build_frame(
+  "id", "measure", "value" |
+    1   , "AUC"    , 0.7     |
+    1   , "R2"     , 0.4     |
+    2   , "AUC"    , 0.8     |
+    2   , "R2"     , 0.5     )
+
+knitr::kable(d)
+```
+
+In the above data we have two measurements each for two individuals (individuals identified by the "`id`" column).  Using `cdata`'s `new_record_spec()` method we can capture a description of this record structure.
+
+```{r}
+library("cdata")
+
+record_spec <- new_record_spec(
+  wrapr::build_frame(
+    "measure", "value" |
+    "AUC"    , "AUC" |
+    "R2"     , "R2"  ),
+  recordKeys = "id")
+
+print(record_spec)
+```
+
+Once we have this specification we can transform the data using operator notation.
+
+We can collect the record blocks into rows by a "division" (or aggregation/projection) step.
+
+```{r}
+knitr::kable(d)
+
+d2 <- d %//% record_spec
+
+knitr::kable(d2)
+```
+
+We can expand record rows into blocks by a "multiplication" (or join) step.
+
+```{r}
+knitr::kable(d2)
+
+d3 <- d2 %**% record_spec
+
+knitr::kable(d3)
+```
+
+And that is trully fluid data manipulation.
+

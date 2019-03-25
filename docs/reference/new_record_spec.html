@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • cdata</title>
+<title>Create a record specification. — new_record_spec • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Create a record specification. — new_record_spec" />
+
+<meta property="og:description" content="Create a record specification object that holds the pivot control table, spefication of
+extra row keys, and control table keys." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -121,120 +125,54 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Create a record specification.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/opspec.R'><code>R/opspec.R</code></a></small>
+    <div class="hidden name"><code>new_record_spec.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Create a record specification object that holds the pivot control table, spefication of
+extra row keys, and control table keys.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> </p>
-        </td>
-        <td><p>Map sets rows to columns (takes a <code>data.frame</code>).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="build_pivot_control.html">build_pivot_control()</a></code> </p>
-        </td>
-        <td><p>Build a blocks_to_rowrecs()/rowrecs_to_blocks() control table that specifies a pivot from a <code>data.frame</code>.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="build_unpivot_control.html">build_unpivot_control()</a></code> </p>
-        </td>
-        <td><p>Build a rowrecs_to_blocks() control table that specifies a un-pivot (or "shred").</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="cdata.html">cdata</a></code> </p>
-        </td>
-        <td><p><code>cdata</code>: Fluid Data Transformations.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="convert_records.html">convert_records()</a></code> </p>
-        </td>
-        <td><p>General transform from arbitrary record shape to arbitrary record shape.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="grapes-slash-slash-grapes.html">`%//%`</a></code> </p>
-        </td>
-        <td><p>Divide or aggregate block records into row records.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="grapes-times-times-grapes.html">`%**%`</a></code> </p>
-        </td>
-        <td><p>Multiply row records into block records.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map_fields.html">map_fields()</a></code> </p>
-        </td>
-        <td><p>Map field values from one column into new derived columns (takes a <code>data.frame</code>).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="map_fields_q.html">map_fields_q()</a></code> </p>
-        </td>
-        <td><p>Map field values from one column into new derived columns (query based, takes name of table).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="new_record_spec.html">new_record_spec()</a></code> </p>
-        </td>
-        <td><p>Create a record specification.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code> </p>
-        </td>
-        <td><p>Move values from rows to columns (pivot).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> </p>
-        </td>
-        <td><p>Map a set of columns to rows (takes a <code>data.frame</code>).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run_cdata_tests.html">run_cdata_tests()</a></code> </p>
-        </td>
-        <td><p>Run cdata package tests.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="unpivot_to_blocks.html">unpivot_to_blocks()</a></code> </p>
-        </td>
-        <td><p>Move values from columns to rows (anti-pivot, or "shred").</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>new_record_spec</span>(<span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>),
+  <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]])</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>controlTable</th>
+      <td><p>an all character data frame or cdata pivot control.</p></td>
+    </tr>
+    <tr>
+      <th>recordKeys</th>
+      <td><p>vector of columns identifying records.</p></td>
+    </tr>
+    <tr>
+      <th>controlTableKeys</th>
+      <td><p>vector of keying columns of the controlTable.</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>a record specification object</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 
