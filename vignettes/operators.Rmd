@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 As of `cdata` version `1.0.8` `cdata` implements an operator notation for data transform.
 
-The idea is simple, yet powerful.
+The idea is simple, yet powerful.  In fact it helps us find new names for the transforms: *multiply* to block records and *factor* to row records.  These terms will become clear as we work examples.
 
 First let's start with some data.
 
