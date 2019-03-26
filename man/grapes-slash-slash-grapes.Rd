@@ -35,4 +35,7 @@ record_spec <- new_record_spec(
 
 d \%//\% record_spec
 
+# identity
+d \%//\% record_spec \%**\% record_spec
+
 }

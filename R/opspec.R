@@ -69,7 +69,7 @@ new_record_spec <- function(controlTable,
 #'
 #' @examples
 #'
-#' d <- z <- wrapr::build_frame(
+#' d <- wrapr::build_frame(
 #'   "id", "AUC", "R2" |
 #'   1   , 0.7  , 0.4  |
 #'   2   , 0.8  , 0.5  )
@@ -82,6 +82,9 @@ new_record_spec <- function(controlTable,
 #'   recordKeys = "id")
 #'
 #' d %**% record_spec
+#'
+#' # identity
+#' d %**% record_spec %//% record_spec
 #'
 #' @export
 #'
@@ -117,6 +120,9 @@ new_record_spec <- function(controlTable,
 #'   recordKeys = "id")
 #'
 #' d %//% record_spec
+#'
+#' # identity
+#' d %//% record_spec %**% record_spec
 #'
 #' @export
 #'

@@ -19,7 +19,7 @@ Call \code{rowrecs_to_blocks()}.
 }
 \examples{
 
-d <- z <- wrapr::build_frame(
+d <- wrapr::build_frame(
   "id", "AUC", "R2" |
   1   , 0.7  , 0.4  |
   2   , 0.8  , 0.5  )
@@ -32,5 +32,8 @@ record_spec <- new_record_spec(
   recordKeys = "id")
 
 d \%**\% record_spec
+
+# identity
+d \%**\% record_spec \%//\% record_spec
 
 }
