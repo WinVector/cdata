@@ -71,6 +71,17 @@ d3 <- d2 %**% record_spec
 knitr::kable(d3)
 ```
 
+And the two operators have an inverse/adjoint relation.
+
+```{r}
+knitr::kable(d)
+
+d4 <- d %//% record_spec %**% record_spec
+
+knitr::kable(d4)
+```
+
+
 We also have an order sensitive `%pivot%` operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.
 
 ```{r}

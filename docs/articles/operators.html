@@ -278,6 +278,70 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
+<p>And the two operators have an inverse/adjoint relation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="left">measure</th>
+<th align="right">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">AUC</td>
+<td align="right">0.7</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">AUC</td>
+<td align="right">0.8</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">R2</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span>record_spec <span class="op">%**%</span><span class="st"> </span>record_spec
+
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="left">measure</th>
+<th align="right">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">AUC</td>
+<td align="right">0.7</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">AUC</td>
+<td align="right">0.8</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">R2</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
 <p>We also have an order sensitive <code>%pivot%</code> operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">record_spec <span class="op">%pivot%</span><span class="st"> </span>d <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
