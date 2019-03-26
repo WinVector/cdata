@@ -109,7 +109,7 @@
 <p>First let’s start with some data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-  <span class="st">"id"</span>, <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
+  <span class="st">"model_id"</span>, <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
 <span class="st">    </span><span class="dv">1</span>   , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span>
 <span class="st">    </span><span class="dv">1</span>   , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span>
 <span class="st">    </span><span class="dv">2</span>   , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span>
@@ -118,7 +118,7 @@ d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw">
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -145,15 +145,15 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/new_record_spec.html">new_record_spec()</a></code> method we can capture a description of this record structure.</p>
+<p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>model_id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/new_record_spec.html">new_record_spec()</a></code> method we can capture a description of this record structure.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 record_spec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/new_record_spec.html">new_record_spec</a></span>(
-  wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-    <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
-<span class="st">    "AUC"</span>    , <span class="st">"AUC"</span> <span class="op">|</span>
-<span class="st">    "R2"</span>     , <span class="st">"R2"</span>  ),
-  <span class="dt">recordKeys =</span> <span class="st">"id"</span>)
+  wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+    measure, value <span class="op">|</span>
+<span class="st">    </span>AUC    , <span class="st">"AUC"</span> <span class="op">|</span>
+<span class="st">    </span>R2     , <span class="st">"R2"</span>  ),
+  <span class="dt">recordKeys =</span> <span class="st">"model_id"</span>)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(record_spec)
 <span class="co">#&gt; $controlTable</span>
@@ -162,7 +162,7 @@ record_spec &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; 2      R2    R2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $recordKeys</span>
-<span class="co">#&gt; [1] "id"</span>
+<span class="co">#&gt; [1] "model_id"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $controlTableKeys</span>
 <span class="co">#&gt; [1] "measure"</span>
@@ -174,7 +174,7 @@ record_spec &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -207,7 +207,7 @@ d2 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st">
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -228,7 +228,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -251,7 +251,7 @@ d3 &lt;-<span class="st"> </span>d2 <span class="op">%**%</span><span class="st"
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d3)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -282,7 +282,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -315,7 +315,7 @@ d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st">
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -347,7 +347,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -370,7 +370,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -403,7 +403,7 @@ record_spec <span class="op">%pivot%</span><span class="st"> </span>d <span clas
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>
@@ -437,7 +437,7 @@ record_spec <span class="op">%pivot%</span><span class="st"> </span>( d2 <span c
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -463,7 +463,7 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -487,7 +487,7 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="right">AUC</th>
 <th align="right">R2</th>
 </tr></thead>
@@ -512,7 +512,7 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">id</th>
+<th align="right">model_id</th>
 <th align="left">measure</th>
 <th align="right">value</th>
 </tr></thead>

@@ -25,7 +25,7 @@ First let's start with some data.
 ```{r}
 
 d <- wrapr::build_frame(
-  "id", "measure", "value" |
+  "model_id", "measure", "value" |
     1   , "AUC"    , 0.7     |
     1   , "R2"     , 0.4     |
     2   , "AUC"    , 0.8     |
@@ -34,17 +34,17 @@ d <- wrapr::build_frame(
 knitr::kable(d)
 ```
 
-In the above data we have two measurements each for two individuals (individuals identified by the "`id`" column).  Using `cdata`'s `new_record_spec()` method we can capture a description of this record structure.
+In the above data we have two measurements each for two individuals (individuals identified by the "`model_id`" column).  Using `cdata`'s `new_record_spec()` method we can capture a description of this record structure.
 
 ```{r}
 library("cdata")
 
 record_spec <- new_record_spec(
-  wrapr::build_frame(
-    "measure", "value" |
-    "AUC"    , "AUC" |
-    "R2"     , "R2"  ),
-  recordKeys = "id")
+  wrapr::qchar_frame(
+    measure, value |
+    AUC    , "AUC" |
+    R2     , "R2"  ),
+  recordKeys = "model_id")
 
 print(record_spec)
 ```
