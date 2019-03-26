@@ -51,7 +51,7 @@ print(record_spec)
 
 Once we have this specification we can transform the data using operator notation.
 
-We can collect the record blocks into rows by a "division" (or aggregation/projection) step.
+We can collect the record blocks into rows by a "factor-out" (or aggregation/projection) step.
 
 ```{r}
 knitr::kable(d)
@@ -71,5 +71,48 @@ d3 <- d2 %**% record_spec
 knitr::kable(d3)
 ```
 
-And that is trully fluid data manipulation.
+We also have an order sensitive `%pivot%` operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.
+
+```{r}
+record_spec %pivot% d %.>%
+  knitr::kable(.)
+
+# identity
+( record_spec %pivot% d ) %pivot% record_spec %.>%
+  knitr::kable(.)
+
+# identity
+record_spec %pivot% d %pivot% record_spec %.>%
+  knitr::kable(.)
+
+
+# identity
+record_spec %pivot% ( d2 %pivot% record_spec ) %.>%
+  knitr::kable(.)
+```
+
+
+We can also pipe into the spec (and into its adjoint).
+
+```{r}
+# reverse or adjoint/transpose operation specification
+t_record_spec <- t(record_spec)
+
+d %.>% 
+  t_record_spec %.>%
+  knitr::kable(.)
+
+# using dot-pipe's bquote style .() execute immediate notation
+d %.>% 
+  .(t(record_spec)) %.>%
+  knitr::kable(.)
+
+# identity
+d %.>% 
+  .(t(record_spec)) %.>% 
+  record_spec %.>%
+  knitr::kable(.)
+```
+
+And that is truly fluid data manipulation.
 

@@ -92,7 +92,7 @@ new_record_spec <- function(controlTable,
                     columnsToCopy = record_spec$recordKeys)
 }
 
-#' Aggregate/project block records into row records.
+#' Factor-out (aggregate/project) block records into row records.
 #'
 #' Call \code{blocks_to_rowrecs()}.
 #'

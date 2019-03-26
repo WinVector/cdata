@@ -2,7 +2,7 @@
 % Please edit documentation in R/opspec.R
 \name{\%//\%}
 \alias{\%//\%}
-\title{Aggregate/project block records into row records.}
+\title{Factor-out (aggregate/project) block records into row records.}
 \usage{
 table \%//\% record_spec
 }
