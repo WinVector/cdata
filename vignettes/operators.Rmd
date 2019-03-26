@@ -71,18 +71,21 @@ d3 <- d2 %**% record_spec
 knitr::kable(d3)
 ```
 
+(`%//%` and `%**%` being two operators introduced by the `cdata` package.)
+
 And the two operators have an inverse/adjoint relation.
 
 ```{r}
 knitr::kable(d)
 
+# identity
 d4 <- d %//% record_spec %**% record_spec
 
 knitr::kable(d4)
 ```
 
 
-We also have an order sensitive `%pivot%` operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.
+`cdata` also introduces an order sensitive `%pivot%` operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.
 
 ```{r}
 record_spec %pivot% d %.>%
@@ -103,7 +106,7 @@ record_spec %pivot% ( d2 %pivot% record_spec ) %.>%
 ```
 
 
-We can also pipe into the spec (and into its adjoint).
+We can also pipe into the spec (and into its adjoint) using the [`wrapr`](https://github.com/WinVector/wrapr) [`dot pipe operator`](https://winvector.github.io/wrapr/reference/dot_arrow.html).
 
 ```{r}
 # reverse or adjoint/transpose operation specification

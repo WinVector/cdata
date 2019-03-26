@@ -278,6 +278,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
+<p>(<code>%//%</code> and <code>%**%</code> being two operators introduced by the <code>cdata</code> package.)</p>
 <p>And the two operators have an inverse/adjoint relation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
@@ -310,6 +311,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># identity</span>
 d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span>record_spec <span class="op">%**%</span><span class="st"> </span>record_spec
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</code></pre></div>
@@ -342,7 +344,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<p>We also have an order sensitive <code>%pivot%</code> operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.</p>
+<p><code>cdata</code> also introduces an order sensitive <code>%pivot%</code> operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">record_spec <span class="op">%pivot%</span><span class="st"> </span>d <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
@@ -454,7 +456,7 @@ record_spec <span class="op">%pivot%</span><span class="st"> </span>( d2 <span c
 </tr>
 </tbody>
 </table>
-<p>We can also pipe into the spec (and into its adjoint).</p>
+<p>We can also pipe into the spec (and into its adjoint) using the <a href="https://github.com/WinVector/wrapr"><code>wrapr</code></a> <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html"><code>dot pipe operator</code></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># reverse or adjoint/transpose operation specification</span>
 t_record_spec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)
 
