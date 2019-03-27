@@ -2,7 +2,7 @@
 
 test_check <- function() {
   res <- wrapr::build_frame(
-    "mean", "var", "sd"  , "naive_var", "naive_sd", "adj_sd" |
+    "mean"  , "var", "sd"  , "naive_var", "naive_sd", "adj_sd" |
       1     , 0    , 0     , 0          , 0         , 0.09634  |
       1     , 0    , 0     , 0          , 0         , 0.09634  |
       1     , 0    , 0     , 0          , 0         , 0.09634  |
