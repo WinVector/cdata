@@ -4,7 +4,6 @@
 # in-memory direct functionality
 
 
-# TODO: check for more name collision in columns we are producing
 
 
 #' @importFrom stats as.formula
