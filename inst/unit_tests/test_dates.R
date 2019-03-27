@@ -1,6 +1,6 @@
 
 test_operators <- function() {
-  # ## TODO: switch to this one wrapr build_frame can handle this
+  # ## TODO: switch to this one wrapr build_frame can handle this (wrapr 1.8.6).
   # d <- wrapr::build_frame(
   #   "date", "measure", "value" |
   #     as.Date("2019-03-01")   , "AUC"    , as.Date("2019-03-11")     |
