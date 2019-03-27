@@ -213,7 +213,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 
   # check more
   if(checkKeys) {
-    if(!rows_are_uniquely_keyed(wideTable, columnsToCopy, my_db)) {
+    if(!rows_are_uniquely_keyed(rquery::db_td(my_db, wideTable), columnsToCopy, my_db)) {
       stop("cdata::rowrecs_to_blocks_q columnsToCopy do not uniquely key the rows")
     }
   }
@@ -502,7 +502,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     #              paste(bnovel, collapse = ', ')))
     # }
     # check keyColumns plus controltable keys key data
-    if(!rows_are_uniquely_keyed(tallTable, c(controlTableKeys, keyColumns), my_db)) {
+    if(!rows_are_uniquely_keyed(rquery::db_td(my_db, tallTable), c(controlTableKeys, keyColumns), my_db)) {
       stop(paste("cdata::blocks_to_rowrecs_q: controlTableKeys plus keyColumns do not unique index data"))
     }
   }
