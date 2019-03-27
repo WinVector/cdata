@@ -8,7 +8,8 @@
 #' @param db database handle
 #' @return TRUE if table rows are uniquely keyed by key columns
 #'
-#' @noRd
+#' @export
+#' @keywords internal
 #'
 rows_are_uniquely_keyed <- function(table_rep, key_columns, db) {
   nk <- length(key_columns)
