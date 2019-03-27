@@ -122,7 +122,6 @@ rowrecs_to_blocks.default <- function(wideTable,
   }
   for(cn in controlTableValueColumns) {
     res[[cn]] <- wideTable[[controlTable[2, cn, drop = TRUE]]]
-    # TODO: check this keeps class and works with dates
     res[[cn]][seq_len(n_row_in)] <- NA
   }
   # cross product with control table
