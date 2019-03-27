@@ -17,8 +17,8 @@ unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   strict = FALSE)
 
 \method{unpivot_to_blocks}{relop}(data, nameForNewKeyColumn,
-  nameForNewValueColumn, columnsToTakeFrom, ...,
-  nameForNewClassColumn = NULL,
+  nameForNewValueColumn, columnsToTakeFrom, ..., checkNames = TRUE,
+  checkKeys = FALSE, strict = FALSE, nameForNewClassColumn = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE)
 }
 \arguments{

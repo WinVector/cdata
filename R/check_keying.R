@@ -16,6 +16,8 @@ rows_are_uniquely_keyed <- function(table_rep, key_columns, db) {
   if(nk<1) {
     return(rquery::rq_nrow(db, table_rep$table_name)<=1)
   }
+  . <- NULL # don't look unbound for checks
+  `:=` <- wrapr::`:=` # don't look unbound for checks
   tmp_col_name <- setdiff(
     paste0("cdata_temp_", seq_len(nk+1)),
     key_columns)[[1]]

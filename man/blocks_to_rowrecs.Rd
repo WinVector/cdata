@@ -19,8 +19,8 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   temporary = TRUE)
 
 \method{blocks_to_rowrecs}{relop}(tallTable, keyColumns, controlTable, ...,
-  columnsToCopy = NULL, checkNames = TRUE, strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]],
+  columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
+  strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
   temporary = TRUE)
 }

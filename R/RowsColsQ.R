@@ -138,6 +138,7 @@ qlook <- function(my_db, tableName,
 #' @param strict logical, if TRUE check control table name forms
 #' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param checkNames logical, if TRUE check names
+#' @param checkKeys logical, if TRUE check wideTable keys
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @param temporary logical, if TRUE make result temporary.
@@ -179,6 +180,7 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 strict = FALSE,
                                 controlTableKeys = colnames(controlTable)[[1]],
                                 checkNames = TRUE,
+                                checkKeys = FALSE,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
                                 temporary = FALSE,
@@ -208,6 +210,14 @@ rowrecs_to_blocks_q <- function(wideTable,
                  paste(badCells, collapse = ', ')))
     }
   }
+
+  # check more
+  if(checkKeys) {
+    if(!rows_are_uniquely_keyed(wideTable, columnsToCopy, my_db)) {
+      stop("cdata::rowrecs_to_blocks_q columnsToCopy do not uniquely key the rows")
+    }
+  }
+
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
   rquery::rq_copy_to(my_db,
@@ -399,6 +409,7 @@ build_pivot_control_q <- function(tableName,
 #' @param strict logical, if TRUE check control table name forms
 #' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param checkNames logical, if TRUE check names
+#' @param checkKeys logical, if TRUE check keying of tallTable
 #' @param showQuery if TRUE print query
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @param dropDups logical if TRUE suppress duplicate columns (duplicate determined by name, not content).
@@ -444,6 +455,7 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 strict = FALSE,
                                 controlTableKeys = colnames(controlTable)[[1]],
                                 checkNames = TRUE,
+                                checkKeys = FALSE,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
                                 dropDups = FALSE,
@@ -477,6 +489,24 @@ blocks_to_rowrecs_q <- function(tallTable,
                  paste(badCells, collapse = ', ')))
     }
   }
+
+  # check more
+  if(checkKeys) {
+    # TODO: consider these checks
+    # # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
+    # bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
+    # bseen <- unique(unlist(tallTable[, controlTableKeys], use.names = FALSE))
+    # bnovel <- setdiff(bseen, bkeys)
+    # if(length(bnovel)>0) {
+    #   stop(paste("cdata::blocks_to_rowrecs_q: table values that are not block keys:",
+    #              paste(bnovel, collapse = ', ')))
+    # }
+    # check keyColumns plus controltable keys key data
+    if(!rows_are_uniquely_keyed(tallTable, c(controlTableKeys, keyColumns), my_db)) {
+      stop(paste("cdata::blocks_to_rowrecs_q: controlTableKeys plus keyColumns do not unique index data"))
+    }
+  }
+
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
   rquery::rq_copy_to(my_db,
