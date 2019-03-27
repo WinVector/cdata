@@ -90,6 +90,8 @@ back <- blocks_to_rowrecs(
 knitr::kable(back)
 ```
 
+Recle Etino Vibal ([who asked for this feature in an issue](https://github.com/WinVector/cdata/issues/3)) has [an interesting article](https://amateurdatasci.rbind.io/post/table-another-back-again-cdata/) trying some variations on the data shaping concepts.
+
 The `cdata` unit test include the following variations of the above example:
 
   * [A simple "there and back example"](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_there_and_back.R).
