@@ -13,7 +13,7 @@ Maintainer: John Mount <jmount@win-vector.com>
 BugReports: https://github.com/WinVector/cdata/issues
 Description: Supplies higher-order coordinatized data specification and fluid transform operators that include pivot and anti-pivot as special cases. 
     The methodology is describe in 'Zumel', 2018, "Fluid data reshaping with 'cdata'", <http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html> , doi:10.5281/zenodo.1173299 .
-    This package introduces the idea of  control table specification of data transforms (now adapted by 'tidyr').
+    This package introduces the idea of  control table specification of data transforms (later also adapted from 'cdata' by 'tidyr').
     Works on in-memory data or on remote data using 'rquery' and 'SQL' database interfaces.
 License: GPL-3
 Encoding: UTF-8

@@ -12,7 +12,7 @@ transformation specification, and have pivot and un-pivot as special cases.
 Large scale implementation is based on 'rquery', so should be usable on
 'SQL' compliant data sources (include large systems such as 'PostgreSQL' and
 'Spark').
-This package introduces the idea of  control table specification of data transforms (now adapted by 'tidyr').
+This package introduces the idea of  control table specification of data transforms (later aslo adapted from 'cdata' by 'tidyr').
 A theory of fluid data transforms can be found in the following articles:
 \url{http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html},
 \url{https://github.com/WinVector/cdata} and \url{https://winvector.github.io/FluidData/FluidData.html}.
