@@ -4,12 +4,12 @@
 \alias{\%**\%}
 \title{Multiply/join row records into block records.}
 \usage{
-table \%**\% record_spec
+table \%**\% transform
 }
 \arguments{
 \item{table}{data (data.frame or relop).}
 
-\item{record_spec}{a cdata_record_spec.}
+\item{transform}{a rowrecs_to_blocks_spec.}
 }
 \value{
 rowrecs_to_blocks() result.
@@ -24,16 +24,16 @@ d <- wrapr::build_frame(
   1   , 0.7  , 0.4  |
   2   , 0.8  , 0.5  )
 
-record_spec <- new_record_spec(
+transform <- rowrecs_to_blocks_spec(
   wrapr::qchar_frame(
     measure, value |
     AUC    , "AUC" |
     R2     , "R2"  ),
   recordKeys = "id")
 
-d \%**\% record_spec
+d \%**\% transform
 
-# identity
-d \%**\% record_spec \%//\% record_spec
+# identity (in structure)
+d \%**\% transform \%//\% t(transform)
 
 }

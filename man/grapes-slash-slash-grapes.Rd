@@ -4,12 +4,12 @@
 \alias{\%//\%}
 \title{Factor-out (aggregate/project) block records into row records.}
 \usage{
-table \%//\% record_spec
+table \%//\% transform
 }
 \arguments{
 \item{table}{data (data.frame or relop).}
 
-\item{record_spec}{a cdata_record_spec.}
+\item{transform}{a rowrecs_to_blocks_spec.}
 }
 \value{
 blocks_to_rowrecs() result.
@@ -26,16 +26,16 @@ d <- wrapr::build_frame(
   2   , "AUC"    , 0.8     |
   2   , "R2"     , 0.5     )
 
-record_spec <- new_record_spec(
+transform <- blocks_to_rowrecs_spec(
   wrapr::qchar_frame(
     measure, value |
     AUC    , "AUC" |
     R2     , "R2"  ),
   recordKeys = "id")
 
-d \%//\% record_spec
+d \%//\% transform
 
-# identity
-d \%//\% record_spec \%**\% record_spec
+# identity (in structure)
+d \%//\% transform \%**\% t(transform)
 
 }

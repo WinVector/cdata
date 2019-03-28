@@ -34,19 +34,19 @@ d <- wrapr::build_frame(
 knitr::kable(d)
 ```
 
-In the above data we have two measurements each for two individuals (individuals identified by the "`model_id`" column).  Using `cdata`'s `new_record_spec()` method we can capture a description of this record structure.
+In the above data we have two measurements each for two individuals (individuals identified by the "`model_id`" column).  Using `cdata`'s `rowrecs_to_blocks_spec()` method we can capture a description of this record structure and transformation details.
 
 ```{r}
 library("cdata")
 
-record_spec <- new_record_spec(
+transform <- rowrecs_to_blocks_spec(
   wrapr::qchar_frame(
     measure, value |
     AUC    , "AUC" |
     R2     , "R2"  ),
   recordKeys = "model_id")
 
-print(record_spec)
+print(transform)
 ```
 
 Once we have this specification we can transform the data using operator notation.
@@ -56,7 +56,7 @@ We can collect the record blocks into rows by a "factor-out" (or aggregation/pro
 ```{r}
 knitr::kable(d)
 
-d2 <- d %//% record_spec
+d2 <- d %//% t(transform)
 
 knitr::kable(d2)
 ```
@@ -66,7 +66,7 @@ We can expand record rows into blocks by a "multiplication" (or join) step.
 ```{r}
 knitr::kable(d2)
 
-d3 <- d2 %**% record_spec
+d3 <- d2 %**% transform
 
 knitr::kable(d3)
 ```
@@ -79,30 +79,9 @@ And the two operators have an inverse/adjoint relation.
 knitr::kable(d)
 
 # identity
-d4 <- d %//% record_spec %**% record_spec
+d4 <- d %//% t(transform) %**% transform
 
 knitr::kable(d4)
-```
-
-
-`cdata` also introduces an order sensitive `%pivot%` operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.
-
-```{r}
-record_spec %pivot% d %.>%
-  knitr::kable(.)
-
-# identity
-( record_spec %pivot% d ) %pivot% record_spec %.>%
-  knitr::kable(.)
-
-# identity
-record_spec %pivot% d %pivot% record_spec %.>%
-  knitr::kable(.)
-
-
-# identity
-record_spec %pivot% ( d2 %pivot% record_spec ) %.>%
-  knitr::kable(.)
 ```
 
 
@@ -110,7 +89,7 @@ We can also pipe into the spec (and into its adjoint) using the [`wrapr`](https:
 
 ```{r}
 # reverse or adjoint/transpose operation specification
-t_record_spec <- t(record_spec)
+t_record_spec <- t(transform)
 
 d %.>% 
   t_record_spec %.>%
@@ -118,13 +97,13 @@ d %.>%
 
 # using dot-pipe's bquote style .() execute immediate notation
 d %.>% 
-  .(t(record_spec)) %.>%
+  .(t(transform)) %.>%
   knitr::kable(.)
 
 # identity
 d %.>% 
-  .(t(record_spec)) %.>% 
-  record_spec %.>%
+  .(t(transform)) %.>% 
+  transform %.>%
   knitr::kable(.)
 ```
 
@@ -148,18 +127,14 @@ d_td <- rquery::rq_copy_to(db, "d", d)
 ```
 
 ```{r eva=have_db}
-ops <- d_td %//% record_spec
+ops <- d_td %//% t(transform)
 cat(format(ops))
 
 rquery::execute(db, ops) %.>%
   knitr::kable(.)
 
 d_td %.>% 
-  .(t(record_spec)) %.>%
-  rquery::execute(db, .) %.>%
-  knitr::kable(.)
-
-record_spec %pivot% d_td %.>%
+  .(t(transform)) %.>%
   rquery::execute(db, .) %.>%
   knitr::kable(.)
 ```

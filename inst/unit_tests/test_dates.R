@@ -12,14 +12,14 @@ test_operators <- function() {
                   value = c(as.Date("2019-03-11") , as.Date("2019-03-12"), as.Date("2019-03-13") , as.Date("2019-03-14") ),
                   stringsAsFactors = FALSE)
 
-  record_spec <- new_record_spec(
+  record_spec <- rowrecs_to_blocks_spec(
     wrapr::qchar_frame(
       measure, value |
         AUC    , "AUC" |
         R2     , "R2"  ),
     recordKeys = "date")
 
-  d %//% record_spec %**% record_spec -> r
+  d %//% t(record_spec) %**% record_spec -> r
   RUnit::checkTrue("Date" %in% class(d$date))
   RUnit::checkTrue("Date" %in% class(d$value))
   RUnit::checkTrue(wrapr::check_equiv_frames(d, r))
