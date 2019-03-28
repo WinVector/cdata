@@ -128,5 +128,47 @@ d %.>%
   knitr::kable(.)
 ```
 
+And, of course, the exact same functionality for database tables.
+
+```{r}
+have_db <- requireNamespace("DBI", quietly = TRUE) &&
+   requireNamespace("RSQLite", quietly = TRUE)
+```
+
+```{r eval=have_db}
+raw_connection <- DBI::dbConnect(RSQLite::SQLite(), 
+                                 ":memory:")
+RSQLite::initExtension(raw_connection)
+db <- rquery::rquery_db_info(
+  connection = raw_connection,
+  is_dbi = TRUE,
+  connection_options = rquery::rq_connection_tests(raw_connection))
+
+d_td <- rquery::rq_copy_to(db, "d", d)
+```
+
+```{r eva=have_db}
+ops <- d_td %//% record_spec
+cat(format(ops))
+
+rquery::execute(db, ops) %.>%
+  knitr::kable(.)
+
+d_td %.>% 
+  .(t(record_spec)) %.>%
+  rquery::execute(db, .) %.>%
+  knitr::kable(.)
+
+record_spec %pivot% d_td %.>%
+  rquery::execute(db, .) %.>%
+  knitr::kable(.)
+```
+
+
+```{r eval=have_db}
+DBI::dbDisconnect(raw_connection)
+```
+
+
 And that is truly fluid data manipulation.
 

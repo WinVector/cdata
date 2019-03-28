@@ -95,7 +95,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-03-26</h4>
+            <h4 class="date">2019-03-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -541,6 +541,95 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
+<p>And, of course, the exact same functionality for database tables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">have_db &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
+<span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
+                                 <span class="st">":memory:"</span>)
+RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)
+db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(
+  <span class="dt">connection =</span> raw_connection,
+  <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,
+  <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))
+
+d_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"d"</span>, d)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ops &lt;-<span class="st"> </span>d_td <span class="op">%//%</span><span class="st"> </span>record_spec
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))
+<span class="co">#&gt; table(`d`; </span>
+<span class="co">#&gt;   model_id,</span>
+<span class="co">#&gt;   measure,</span>
+<span class="co">#&gt;   value) %.&gt;%</span>
+<span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.))</span>
+
+rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, ops) <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">model_id</th>
+<th align="right">AUC</th>
+<th align="right">R2</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.7</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.8</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+d_td <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)) <span class="op">%.&gt;%</span>
+<span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">model_id</th>
+<th align="right">AUC</th>
+<th align="right">R2</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.7</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.8</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+record_spec <span class="op">%pivot%</span><span class="st"> </span>d_td <span class="op">%.&gt;%</span>
+<span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">model_id</th>
+<th align="right">AUC</th>
+<th align="right">R2</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.7</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.8</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)</code></pre></div>
 <p>And that is truly fluid data manipulation.</p>
   </div>
 
