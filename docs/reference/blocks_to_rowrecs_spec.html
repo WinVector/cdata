@@ -241,6 +241,12 @@ extra row keys, and control table keys.</p>
 #&gt; 2  1      R2   0.4
 #&gt; 3  2     AUC   0.8
 #&gt; 4  2      R2   0.5</div><div class='input'>
+<span class='co'># identity again (using .() "immediate" notation)</span>
+<span class='no'>d</span> <span class='kw'>%.&gt;%</span> <span class='no'>transform</span> <span class='kw'>%.&gt;%</span> <span class='fu'>.</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>transform</span>))</div><div class='output co'>#&gt;   id measure value
+#&gt; 1  1     AUC   0.7
+#&gt; 2  1      R2   0.4
+#&gt; 3  2     AUC   0.8
+#&gt; 4  2      R2   0.5</div><div class='input'>
 
 </div></pre>
   </div>

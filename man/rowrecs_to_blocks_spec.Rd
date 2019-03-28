@@ -54,6 +54,7 @@ print(inv_transform)
 # identity (in structure)
 d \%.>\% transform \%.>\% inv_transform
 
-
+# identity again (using .() "immediate" notation)
+d \%.>\% transform \%.>\% .(t(transform))
 
 }

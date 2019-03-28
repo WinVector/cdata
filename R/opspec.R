@@ -41,7 +41,8 @@ NULL
 #' # identity (in structure)
 #' d %.>% transform %.>% inv_transform
 #'
-#'
+#' # identity again (using .() "immediate" notation)
+#' d %.>% transform %.>% .(t(transform))
 #'
 #' @export
 #'
@@ -106,6 +107,9 @@ rowrecs_to_blocks_spec <- function(controlTable,
 #'
 #' # identity (in structure)
 #' d %.>% transform %.>% inv_transform
+#'
+#' # identity again (using .() "immediate" notation)
+#' d %.>% transform %.>% .(t(transform))
 #'
 #'
 #' @export

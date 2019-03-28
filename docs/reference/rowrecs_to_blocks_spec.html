@@ -239,8 +239,10 @@ extra row keys, and control table keys.</p>
 <span class='no'>d</span> <span class='kw'>%.&gt;%</span> <span class='no'>transform</span> <span class='kw'>%.&gt;%</span> <span class='no'>inv_transform</span></div><div class='output co'>#&gt;   id AUC  R2
 #&gt; 1  1 0.7 0.4
 #&gt; 2  2 0.8 0.5</div><div class='input'>
-
-
+<span class='co'># identity again (using .() "immediate" notation)</span>
+<span class='no'>d</span> <span class='kw'>%.&gt;%</span> <span class='no'>transform</span> <span class='kw'>%.&gt;%</span> <span class='fu'>.</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>transform</span>))</div><div class='output co'>#&gt;   id AUC  R2
+#&gt; 1  1 0.7 0.4
+#&gt; 2  2 0.8 0.5</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
