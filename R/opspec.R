@@ -12,6 +12,9 @@ NULL
 #' @param ... not used, force later arguments to bind by name.
 #' @param recordKeys vector of columns identifying records.
 #' @param controlTableKeys vector of keying columns of the controlTable.
+#' @param checkNames passed to rowrecs_to_blocks.
+#' @param checkKeys passed to rowrecs_to_blocks.
+#' @param strict passed to rowrecs_to_blocks.
 #' @return a record specification object
 #'
 #' @examples
@@ -45,7 +48,10 @@ NULL
 rowrecs_to_blocks_spec <- function(controlTable,
                                    ...,
                                    recordKeys = character(0),
-                                   controlTableKeys = colnames(controlTable)[[1]]) {
+                                   controlTableKeys = colnames(controlTable)[[1]],
+                                   checkNames = TRUE,
+                                   checkKeys = TRUE,
+                                   strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_spec")
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
@@ -53,7 +59,10 @@ rowrecs_to_blocks_spec <- function(controlTable,
   }
   r <- list(controlTable = controlTable,
             recordKeys = recordKeys,
-            controlTableKeys = controlTableKeys)
+            controlTableKeys = controlTableKeys,
+            checkNames = checkNames,
+            checkKeys = checkKeys,
+            strict = strict)
   class(r) <- "rowrecs_to_blocks_spec"
   r
 }
@@ -67,6 +76,9 @@ rowrecs_to_blocks_spec <- function(controlTable,
 #' @param ... not used, force later arguments to bind by name.
 #' @param recordKeys vector of columns identifying records.
 #' @param controlTableKeys vector of keying columns of the controlTable.
+#' @param checkNames passed to blocks_to_rowrecs.
+#' @param checkKeys passed to blocks_to_rowrecs.
+#' @param strict passed to blocks_to_rowrecs.
 #' @return a record specification object
 #'
 #' @examples
@@ -101,7 +113,10 @@ rowrecs_to_blocks_spec <- function(controlTable,
 blocks_to_rowrecs_spec <- function(controlTable,
                                    ...,
                                    recordKeys = character(0),
-                                   controlTableKeys = colnames(controlTable)[[1]]) {
+                                   controlTableKeys = colnames(controlTable)[[1]],
+                                   checkNames = TRUE,
+                                   checkKeys = TRUE,
+                                   strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_spec")
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
@@ -109,13 +124,27 @@ blocks_to_rowrecs_spec <- function(controlTable,
   }
   r <- list(controlTable = controlTable,
             recordKeys = recordKeys,
-            controlTableKeys = controlTableKeys)
+            controlTableKeys = controlTableKeys,
+            checkNames = checkNames,
+            checkKeys = checkKeys,
+            strict = strict)
   class(r) <- "blocks_to_rowrecs_spec"
   r
 }
 
-# generate data frames representing both sides of a transform
-get_transform_pair <- function(controlTable, controlTableKeys, recordKeys) {
+#' Upack details of a cdata record transform.
+#'
+#' Unpack details, especially: generate data frames representing both sides of a transform.
+#'
+#' @param x blocks_to_rowrecs_spec or rowrecs_to_blocks_spec
+#' @return detailed fields
+#'
+#' @export
+#' @keywords internal
+get_transform_details <- function(x) {
+  controlTable = x$controlTable
+  controlTableKeys = x$controlTableKeys
+  recordKeys = x$recordKeys
   # build a of both sides of transform
   kf <- data.frame(x = 1)
   kf$x <- NULL
@@ -128,26 +157,31 @@ get_transform_pair <- function(controlTable, controlTableKeys, recordKeys) {
                            controlTableKeys = controlTableKeys)
   row <- cbind(kf, row)
   block <- cbind(kf, controlTable)
+  args <- x[setdiff(names(x), c("controlTable", "recordKeys", "controlTableKeys"))]
   list(block_record = block,
        block_keys = c(recordKeys, controlTableKeys),
        row_record = row,
-       row_keys = recordKeys)
+       row_keys = recordKeys,
+       args = args,
+       class = class(x))
 }
 
 #' @export
 #'
 format.rowrecs_to_blocks_spec <- function(x, ...) {
-  sides <- get_transform_pair(x$controlTable, x$controlTableKeys, x$recordKeys)
+  sides <- get_transform_details(x)
   row_record <- sides$row_record
   block_record <- sides$block_record
   row_str <- wrapr::draw_frame(row_record)
   block_str <- wrapr::draw_frame(block_record)
+  args <- x[setdiff(names(x), c("controlTable", "recordKeys", "controlTableKeys"))]
   fmt_str <- paste0("{\n ",
                     row_str,
                     " row_keys <- ", wrapr::map_to_char(x$recordKeys),
                     "\n\n # becomes\n\n " ,
                     block_str,
                     " block_keys <- ", wrapr::map_to_char(c(x$recordKeys, x$controlTableKeys)),
+                    "\n\n # args: ", gsub("['\"]+", "", wrapr::map_to_char(args)),
                     "\n}\n\n")
   fmt_str
 }
@@ -164,17 +198,19 @@ print.rowrecs_to_blocks_spec <- function(x, ...) {
 #' @export
 #'
 format.blocks_to_rowrecs_spec <- function(x, ...) {
-  sides <- get_transform_pair(x$controlTable, x$controlTableKeys, x$recordKeys)
+  sides <- get_transform_details(x)
   row_record <- sides$row_record
   block_record <- sides$block_record
   row_str <- wrapr::draw_frame(row_record)
   block_str <- wrapr::draw_frame(block_record)
+  args <- x[setdiff(names(x), c("controlTable", "recordKeys", "controlTableKeys"))]
   fmt_str <- paste0("{\n ",
                     block_str,
                     " block_keys <- ", wrapr::map_to_char(c(x$recordKeys, x$controlTableKeys)),
                     "\n\n # becomes\n\n " ,
                     row_str,
                     " row_keys <- ", wrapr::map_to_char(x$recordKeys),
+                    "\n\n # args: ", gsub("['\"]+", "", wrapr::map_to_char(args)),
                     "\n}\n\n")
   fmt_str
 }
@@ -241,7 +277,10 @@ t.blocks_to_rowrecs_spec <- function(x) {
   rowrecs_to_blocks(wideTable = table,
                     controlTable = transform$controlTable,
                     controlTableKeys = transform$controlTableKeys,
-                    columnsToCopy = transform$recordKeys)
+                    columnsToCopy = transform$recordKeys,
+                    checkNames = transform$checkNames,
+                    checkKeys = transform$checkKeys,
+                    strict = transform$strict)
 }
 
 #' Factor-out (aggregate/project) block records into row records.
@@ -282,7 +321,10 @@ t.blocks_to_rowrecs_spec <- function(x) {
   blocks_to_rowrecs(tallTable = table,
                     keyColumns = transform$recordKeys,
                     controlTable = transform$controlTable,
-                    controlTableKeys = transform$controlTableKeys)
+                    controlTableKeys = transform$controlTableKeys,
+                    checkNames = transform$checkNames,
+                    checkKeys = transform$checkKeys,
+                    strict = transform$strict)
 }
 
 
@@ -300,11 +342,14 @@ apply_right.rowrecs_to_blocks_spec <- function(pipe_left_arg,
                                                pipe_string,
                                                right_arg_name) {
   table <- pipe_left_arg
-  record_spec <- pipe_right_arg
+  transform_spec <- pipe_right_arg
   rowrecs_to_blocks(wideTable = table,
-                    controlTable = record_spec$controlTable,
-                    controlTableKeys = record_spec$controlTableKeys,
-                    columnsToCopy = record_spec$recordKeys)
+                    controlTable = transform_spec$controlTable,
+                    controlTableKeys = transform_spec$controlTableKeys,
+                    columnsToCopy = transform_spec$recordKeys,
+                    checkNames = transform_spec$checkNames,
+                    checkKeys = transform_spec$checkKeys,
+                    strict = transform_spec$strict)
 }
 
 #' @export
@@ -316,11 +361,14 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
                                                pipe_string,
                                                right_arg_name) {
   table <- pipe_left_arg
-  record_spec <- pipe_right_arg
+  transform_spec <- pipe_right_arg
   blocks_to_rowrecs(tallTable = table,
-                    keyColumns = record_spec$recordKeys,
-                    controlTable = record_spec$controlTable,
-                    controlTableKeys = record_spec$controlTableKeys)
+                    keyColumns = transform_spec$recordKeys,
+                    controlTable = transform_spec$controlTable,
+                    controlTableKeys = transform_spec$controlTableKeys,
+                    checkNames = transform_spec$checkNames,
+                    checkKeys = transform_spec$checkKeys,
+                    strict = transform_spec$strict)
 }
 
 

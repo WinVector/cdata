@@ -5,7 +5,8 @@
 \title{Create a row records to block records transform specification.}
 \usage{
 rowrecs_to_blocks_spec(controlTable, ..., recordKeys = character(0),
-  controlTableKeys = colnames(controlTable)[[1]])
+  controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
+  checkKeys = TRUE, strict = FALSE)
 }
 \arguments{
 \item{controlTable}{an all character data frame or cdata pivot control.}
@@ -15,6 +16,12 @@ rowrecs_to_blocks_spec(controlTable, ..., recordKeys = character(0),
 \item{recordKeys}{vector of columns identifying records.}
 
 \item{controlTableKeys}{vector of keying columns of the controlTable.}
+
+\item{checkNames}{passed to rowrecs_to_blocks.}
+
+\item{checkKeys}{passed to rowrecs_to_blocks.}
+
+\item{strict}{passed to rowrecs_to_blocks.}
 }
 \value{
 a record specification object
