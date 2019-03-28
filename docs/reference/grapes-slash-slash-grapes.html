@@ -137,7 +137,7 @@
     
     </div>
 
-    <pre class="usage"><span class='no'>table</span> <span class='kw'>%//%</span> <span class='no'>record_spec</span></pre>
+    <pre class="usage"><span class='no'>table</span> <span class='kw'>%//%</span> <span class='no'>transform</span></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +147,8 @@
       <td><p>data (data.frame or relop).</p></td>
     </tr>
     <tr>
-      <th>record_spec</th>
-      <td><p>a cdata_record_spec.</p></td>
+      <th>transform</th>
+      <td><p>a rowrecs_to_blocks_spec.</p></td>
     </tr>
     </table>
     
@@ -166,18 +166,18 @@
   <span class='fl'>2</span>   , <span class='st'>"AUC"</span>    , <span class='fl'>0.8</span>     <span class='kw'>|</span>
   <span class='fl'>2</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.5</span>     )
 
-<span class='no'>record_spec</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new_record_spec.html'>new_record_spec</a></span>(
+<span class='no'>transform</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='blocks_to_rowrecs_spec.html'>blocks_to_rowrecs_spec</a></span>(
   <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame'>qchar_frame</a></span>(
     <span class='no'>measure</span>, <span class='no'>value</span> <span class='kw'>|</span>
     <span class='no'>AUC</span>    , <span class='st'>"AUC"</span> <span class='kw'>|</span>
     <span class='no'>R2</span>     , <span class='st'>"R2"</span>  ),
   <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
 
-<span class='no'>d</span> <span class='kw'>%//%</span> <span class='no'>record_spec</span></div><div class='output co'>#&gt;   id AUC  R2
+<span class='no'>d</span> <span class='kw'>%//%</span> <span class='no'>transform</span></div><div class='output co'>#&gt;   id AUC  R2
 #&gt; 1  1 0.7 0.4
 #&gt; 2  2 0.8 0.5</div><div class='input'>
-<span class='co'># identity</span>
-<span class='no'>d</span> <span class='kw'>%//%</span> <span class='no'>record_spec</span> <span class='kw'>%**%</span> <span class='no'>record_spec</span></div><div class='output co'>#&gt;   id measure value
+<span class='co'># identity (in structure)</span>
+<span class='no'>d</span> <span class='kw'>%//%</span> <span class='no'>transform</span> <span class='kw'>%**%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>transform</span>)</div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
 #&gt; 2  1      R2   0.4
 #&gt; 3  2     AUC   0.8

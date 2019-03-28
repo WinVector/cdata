@@ -95,7 +95,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-03-27</h4>
+            <h4 class="date">2019-03-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -145,30 +145,33 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>model_id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/new_record_spec.html">new_record_spec()</a></code> method we can capture a description of this record structure.</p>
+<p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>model_id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code> method we can capture a description of this record structure and transformation details.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
-record_spec &lt;-<span class="st"> </span><span class="kw"><a href="../reference/new_record_spec.html">new_record_spec</a></span>(
+transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
     measure, value <span class="op">|</span>
 <span class="st">    </span>AUC    , <span class="st">"AUC"</span> <span class="op">|</span>
 <span class="st">    </span>R2     , <span class="st">"R2"</span>  ),
   <span class="dt">recordKeys =</span> <span class="st">"model_id"</span>)
 
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(record_spec)
-<span class="co">#&gt; $controlTable</span>
-<span class="co">#&gt;   measure value</span>
-<span class="co">#&gt; 1     AUC   AUC</span>
-<span class="co">#&gt; 2      R2    R2</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  row_record &lt;- wrapr::build_frame(</span>
+<span class="co">#&gt;    "model_id"  , "AUC", "R2" |</span>
+<span class="co">#&gt;      "*"       , "AUC", "R2" )</span>
+<span class="co">#&gt;  row_keys &lt;- c('model_id')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $recordKeys</span>
-<span class="co">#&gt; [1] "model_id"</span>
+<span class="co">#&gt;  # becomes</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $controlTableKeys</span>
-<span class="co">#&gt; [1] "measure"</span>
+<span class="co">#&gt;  block_record &lt;- wrapr::build_frame(</span>
+<span class="co">#&gt;    "model_id"  , "measure", "value" |</span>
+<span class="co">#&gt;      "*"       , "AUC"    , "AUC"   |</span>
+<span class="co">#&gt;      "*"       , "R2"     , "R2"    )</span>
+<span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "cdata_record_spec"</span></code></pre></div>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span></code></pre></div>
 <p>Once we have this specification we can transform the data using operator notation.</p>
 <p>We can collect the record blocks into rows by a “factor-out” (or aggregation/projection) step.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
@@ -202,7 +205,7 @@ record_spec &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d2 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span>record_spec
+d2 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
 <table class="table">
@@ -246,7 +249,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d3 &lt;-<span class="st"> </span>d2 <span class="op">%**%</span><span class="st"> </span>record_spec
+d3 &lt;-<span class="st"> </span>d2 <span class="op">%**%</span><span class="st"> </span>transform
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d3)</code></pre></div>
 <table class="table">
@@ -312,7 +315,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># identity</span>
-d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span>record_spec <span class="op">%**%</span><span class="st"> </span>record_spec
+d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform) <span class="op">%**%</span><span class="st"> </span>transform
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</code></pre></div>
 <table class="table">
@@ -344,121 +347,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<p><code>cdata</code> also introduces an order sensitive <code>%pivot%</code> operator. Record specification on the right multiplies into blocks and record specification on the left factors into row records.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">record_spec <span class="op">%pivot%</span><span class="st"> </span>d <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">model_id</th>
-<th align="right">AUC</th>
-<th align="right">R2</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">0.7</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="right">0.8</td>
-<td align="right">0.5</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># identity</span>
-( record_spec <span class="op">%pivot%</span><span class="st"> </span>d ) <span class="op">%pivot%</span><span class="st"> </span>record_spec <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">model_id</th>
-<th align="left">measure</th>
-<th align="right">value</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="left">AUC</td>
-<td align="right">0.7</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="left">AUC</td>
-<td align="right">0.8</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="left">R2</td>
-<td align="right">0.5</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># identity</span>
-record_spec <span class="op">%pivot%</span><span class="st"> </span>d <span class="op">%pivot%</span><span class="st"> </span>record_spec <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">model_id</th>
-<th align="left">measure</th>
-<th align="right">value</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="left">AUC</td>
-<td align="right">0.7</td>
-</tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="left">AUC</td>
-<td align="right">0.8</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="left">R2</td>
-<td align="right">0.5</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-
-<span class="co"># identity</span>
-record_spec <span class="op">%pivot%</span><span class="st"> </span>( d2 <span class="op">%pivot%</span><span class="st"> </span>record_spec ) <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">model_id</th>
-<th align="right">AUC</th>
-<th align="right">R2</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">0.7</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="right">0.8</td>
-<td align="right">0.5</td>
-</tr>
-</tbody>
-</table>
 <p>We can also pipe into the spec (and into its adjoint) using the <a href="https://github.com/WinVector/wrapr"><code>wrapr</code></a> <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html"><code>dot pipe operator</code></a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># reverse or adjoint/transpose operation specification</span>
-t_record_spec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)
+t_record_spec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
 
 d <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="st">  </span>t_record_spec <span class="op">%.&gt;%</span>
@@ -485,7 +376,7 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># using dot-pipe's bquote style .() execute immediate notation</span>
 d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)) <span class="op">%.&gt;%</span>
+<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -509,8 +400,8 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># identity</span>
 d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)) <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>record_spec <span class="op">%.&gt;%</span>
+<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>transform <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -553,7 +444,7 @@ db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw
   <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))
 
 d_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"d"</span>, d)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ops &lt;-<span class="st"> </span>d_td <span class="op">%//%</span><span class="st"> </span>record_spec
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ops &lt;-<span class="st"> </span>d_td <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))
 <span class="co">#&gt; table(`d`; </span>
 <span class="co">#&gt;   model_id,</span>
@@ -584,30 +475,7 @@ rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumenta
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 d_td <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(record_spec)) <span class="op">%.&gt;%</span>
-<span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">model_id</th>
-<th align="right">AUC</th>
-<th align="right">R2</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">0.7</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="right">0.8</td>
-<td align="right">0.5</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-record_spec <span class="op">%pivot%</span><span class="st"> </span>d_td <span class="op">%.&gt;%</span>
+<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span>
 <span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
