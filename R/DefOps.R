@@ -233,3 +233,6 @@ unpivot_to_blocks <- function(data,
   UseMethod("unpivot_to_blocks")
 }
 
+#' @rdname unpivot_to_blocks
+#' @export
+pivot_to_blocks <- unpivot_to_blocks
