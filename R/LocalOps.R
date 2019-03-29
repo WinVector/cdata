@@ -182,17 +182,9 @@ blocks_to_rowrecs.default <- function(tallTable,
 
   # check more
   if(checkKeys) {
-    # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
-    bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
-    bseen <- unique(unlist(tallTable[, controlTableKeys], use.names = FALSE))
-    bnovel <- setdiff(bseen, bkeys)
-    if(length(bnovel)>0) {
-      stop(paste("cdata::blocks_to_rowrecs: table values that are not block keys:",
-                 paste(bnovel, collapse = ', ')))
-    }
     # check keyColumns plus controltable keys key data
     if(!wrapr::checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
-      stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not unique index data"))
+      stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not uniquely index data"))
     }
   }
 

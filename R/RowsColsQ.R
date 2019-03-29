@@ -493,20 +493,6 @@ blocks_to_rowrecs_q <- function(tallTable,
   # check more
   if(checkKeys) {
     tallTable_db <- rquery::db_td(my_db, tallTable)
-    # only values expected as controlTable keys should be in tallTable[[controlTableKeys]]
-    bkeys <- unique(unlist(controlTable[, controlTableKeys], use.names = FALSE))
-    bseen <- character(0)
-    for(ci in controlTableKeys) {
-      bi <- tallTable_db %.>%
-        rquery::project(., ci, cdat_fake_column = 1) %.>%
-        rquery::execute(my_db, .)
-      bseen <- unique(c(bseen), bi[[1]])
-    }
-    bnovel <- setdiff(bseen, bkeys)
-    if(length(bnovel)>0) {
-      stop(paste("cdata::blocks_to_rowrecs_q: table values that are not block keys:",
-                 paste(bnovel, collapse = ', ')))
-    }
     # check keyColumns plus controltable keys key data
     if(!rows_are_uniquely_keyed(tallTable_db, c(controlTableKeys, keyColumns), my_db)) {
       stop(paste("cdata::blocks_to_rowrecs_q: controlTableKeys plus keyColumns do not unique index data"))
