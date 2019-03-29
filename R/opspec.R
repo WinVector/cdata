@@ -54,6 +54,8 @@ rowrecs_to_blocks_spec <- function(controlTable,
                                    checkKeys = TRUE,
                                    strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_spec")
+  controlTable <- as.data.frame(controlTable)
+  rownames(controlTable) <- NULL
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
     stop(paste("cdata::rowrecs_to_blocks_spec", ck))
@@ -122,6 +124,8 @@ blocks_to_rowrecs_spec <- function(controlTable,
                                    checkKeys = TRUE,
                                    strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_spec")
+  controlTable <- as.data.frame(controlTable)
+  rownames(controlTable) <- NULL
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
     stop(paste("cdata::blocks_to_rowrecs_spec", ck))
