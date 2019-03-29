@@ -157,17 +157,17 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
 <span class="co">#&gt; {</span>
-<span class="co">#&gt;  row_record &lt;- wrapr::build_frame(</span>
+<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "model_id"  , "AUC", "R2" |</span>
-<span class="co">#&gt;      "*"       , "AUC", "R2" )</span>
+<span class="co">#&gt;      *         , AUC  , R2   )</span>
 <span class="co">#&gt;  row_keys &lt;- c('model_id')</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  # becomes</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  block_record &lt;- wrapr::build_frame(</span>
+<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "model_id"  , "measure", "value" |</span>
-<span class="co">#&gt;      "*"       , "AUC"    , "AUC"   |</span>
-<span class="co">#&gt;      "*"       , "R2"     , "R2"    )</span>
+<span class="co">#&gt;      *         , "AUC"    , AUC     |</span>
+<span class="co">#&gt;      *         , "R2"     , R2      )</span>
 <span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>

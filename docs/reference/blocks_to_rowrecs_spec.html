@@ -198,17 +198,17 @@ extra row keys, and control table keys.</p>
   <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='st'>"id"</span>)
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>transform</span>)</div><div class='output co'>#&gt; {
-#&gt;  block_record &lt;- wrapr::build_frame(
+#&gt;  block_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "measure", "value" |
-#&gt;      "*" , "AUC"    , "AUC"   |
-#&gt;      "*" , "R2"     , "R2"    )
+#&gt;      *   , "AUC"    , AUC     |
+#&gt;      *   , "R2"     , R2      )
 #&gt;  block_keys &lt;- c('id', 'measure')
 #&gt; 
 #&gt;  # becomes
 #&gt; 
-#&gt;  row_record &lt;- wrapr::build_frame(
+#&gt;  row_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "AUC", "R2" |
-#&gt;      "*" , "AUC", "R2" )
+#&gt;      *   , AUC  , R2   )
 #&gt;  row_keys &lt;- c('id')
 #&gt; 
 #&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
@@ -219,17 +219,17 @@ extra row keys, and control table keys.</p>
 #&gt; 2  2 0.8 0.5</div><div class='input'>
 <span class='no'>inv_transform</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>transform</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>inv_transform</span>)</div><div class='output co'>#&gt; {
-#&gt;  row_record &lt;- wrapr::build_frame(
+#&gt;  row_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "AUC", "R2" |
-#&gt;      "*" , "AUC", "R2" )
+#&gt;      *   , AUC  , R2   )
 #&gt;  row_keys &lt;- c('id')
 #&gt; 
 #&gt;  # becomes
 #&gt; 
-#&gt;  block_record &lt;- wrapr::build_frame(
+#&gt;  block_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "measure", "value" |
-#&gt;      "*" , "AUC"    , "AUC"   |
-#&gt;      "*" , "R2"     , "R2"    )
+#&gt;      *   , "AUC"    , AUC     |
+#&gt;      *   , "R2"     , R2      )
 #&gt;  block_keys &lt;- c('id', 'measure')
 #&gt; 
 #&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)

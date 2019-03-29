@@ -38,9 +38,9 @@ library("cdata")
 # and "value columns" Length and Width
 #
 controlTable <- wrapr::qchar_frame(
-  flower_part, Length        , Width         |
-    Petal    , "Petal.Length", "Petal.Width" |
-    Sepal    , "Sepal.Length", "Sepal.Width" )
+  "flower_part", "Length"     , "Width"     |
+    "Petal"    , Petal.Length , Petal.Width |
+    "Sepal"    , Sepal.Length , Sepal.Width )
 transform <- rowrecs_to_blocks_spec(
   controlTable,
   recordKeys = "Species",
@@ -73,17 +73,17 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 # show the transform
 print(transform)
  #  {
- #   row_record <- wrapr::build_frame(
+ #   row_record <- wrapr::qchar_frame(
  #     "Species"  , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
- #       "*"      , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" )
+ #       *        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
  #   row_keys <- c('Species')
  #  
  #   # becomes
  #  
- #   block_record <- wrapr::build_frame(
- #     "Species"  , "flower_part", "Length"      , "Width"       |
- #       "*"      , "Petal"      , "Petal.Length", "Petal.Width" |
- #       "*"      , "Sepal"      , "Sepal.Length", "Sepal.Width" )
+ #   block_record <- wrapr::qchar_frame(
+ #     "Species"  , "flower_part", "Length"    , "Width"     |
+ #       *        , "Petal"      , Petal.Length, Petal.Width |
+ #       *        , "Sepal"      , Sepal.Length, Sepal.Width )
  #   block_keys <- c('Species', 'flower_part')
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
@@ -134,25 +134,18 @@ category_variable <- "Species"
 # and pair_key as the key column
 controlTable <- data.frame(expand.grid(meas_vars, meas_vars, 
                                        stringsAsFactors = FALSE))
+# one copy of columns is coordinate names second copy is values
+controlTable <- cbind(controlTable, controlTable)
 # name the value columns value1 and value2
-colnames(controlTable) <- qc(value1, value2)
-# insert first, or key column
-controlTable <- cbind(
-  data.frame(pair_key = paste(controlTable[[1]], controlTable[[2]]),
-             stringsAsFactors = FALSE),
-  controlTable)
-
+colnames(controlTable) <- qc(v1, v2, value1, value2)
+transform <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = "Species",
+  controlTableKeys = qc(v1, v2),
+  checkKeys = FALSE)
 
 # do the unpivot to convert the row records to multiple block records
-iris_aug <- rowrecs_to_blocks(
-  iris,
-  controlTable,
-  columnsToCopy = category_variable)
-
-# unpack the key column into two variable keys for the facet_grid
-splt <- strsplit(iris_aug$pair_key, split = " ", fixed = TRUE)
-iris_aug$v1 <- vapply(splt, function(si) si[[1]], character(1))
-iris_aug$v2 <- vapply(splt, function(si) si[[2]], character(1))
+iris_aug <- iris %.>% transform
 
 
 ggplot(iris_aug, aes(x=value1, y=value2)) +
@@ -165,6 +158,42 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
 ```
 
 ![](tools/README-ex0_1-1.png)
+
+``` r
+
+# show transform
+print(transform)
+ #  {
+ #   row_record <- wrapr::qchar_frame(
+ #     "Species"  , "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |
+ #       *        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )
+ #   row_keys <- c('Species')
+ #  
+ #   # becomes
+ #  
+ #   block_record <- wrapr::qchar_frame(
+ #     "Species"  , "v1"          , "v2"          , "value1"    , "value2"     |
+ #       *        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |
+ #       *        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |
+ #       *        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |
+ #       *        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |
+ #       *        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |
+ #       *        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |
+ #       *        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |
+ #       *        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |
+ #       *        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |
+ #       *        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |
+ #       *        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |
+ #       *        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |
+ #       *        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |
+ #       *        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |
+ #       *        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |
+ #       *        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
+ #   block_keys <- c('Species', 'v1', 'v2')
+ #  
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
+ #  }
+```
 
 The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
 
@@ -223,10 +252,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_75420884561976133764_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_09065129953839033667_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_75420884561976133764_0000000000` SQLiteConnection 
+ #  table `rquery_mat_09065129953839033667_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

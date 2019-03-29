@@ -134,9 +134,9 @@
 <span class="co"># and "value columns" Length and Width</span>
 <span class="co">#</span>
 controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  flower_part, Length        , Width         <span class="op">|</span>
-<span class="st">    </span>Petal    , <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span> <span class="op">|</span>
-<span class="st">    </span>Sepal    , <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span> )
+  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span>
+<span class="st">    "Petal"</span>    , Petal.Length , Petal.Width <span class="op">|</span>
+<span class="st">    "Sepal"</span>    , Sepal.Length , Sepal.Width )
 transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   controlTable,
   <span class="dt">recordKeys =</span> <span class="st">"Species"</span>,
@@ -165,21 +165,43 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="co"># show the transform</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
  <span class="co">#  {</span>
- <span class="co">#   row_record &lt;- wrapr::build_frame(</span>
+ <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
  <span class="co">#     "Species"  , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |</span>
- <span class="co">#       "*"      , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" )</span>
+ <span class="co">#       *        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )</span>
  <span class="co">#   row_keys &lt;- c('Species')</span>
  <span class="co">#  </span>
  <span class="co">#   # becomes</span>
  <span class="co">#  </span>
- <span class="co">#   block_record &lt;- wrapr::build_frame(</span>
- <span class="co">#     "Species"  , "flower_part", "Length"      , "Width"       |</span>
- <span class="co">#       "*"      , "Petal"      , "Petal.Length", "Petal.Width" |</span>
- <span class="co">#       "*"      , "Sepal"      , "Sepal.Length", "Sepal.Width" )</span>
+ <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
+ <span class="co">#     "Species"  , "flower_part", "Length"    , "Width"     |</span>
+ <span class="co">#       *        , "Petal"      , Petal.Length, Petal.Width |</span>
+ <span class="co">#       *        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
  <span class="co">#   block_keys &lt;- c('Species', 'flower_part')</span>
  <span class="co">#  </span>
  <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)</span>
- <span class="co">#  }</span></code></pre></div>
+ <span class="co">#  }</span>
+
+<span class="co"># show the representation of the transform</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">unclass</a></span>(transform)
+ <span class="co">#  $controlTable</span>
+ <span class="co">#    flower_part       Length       Width</span>
+ <span class="co">#  1       Petal Petal.Length Petal.Width</span>
+ <span class="co">#  2       Sepal Sepal.Length Sepal.Width</span>
+ <span class="co">#  </span>
+ <span class="co">#  $recordKeys</span>
+ <span class="co">#  [1] "Species"</span>
+ <span class="co">#  </span>
+ <span class="co">#  $controlTableKeys</span>
+ <span class="co">#  [1] "flower_part"</span>
+ <span class="co">#  </span>
+ <span class="co">#  $checkNames</span>
+ <span class="co">#  [1] TRUE</span>
+ <span class="co">#  </span>
+ <span class="co">#  $checkKeys</span>
+ <span class="co">#  [1] FALSE</span>
+ <span class="co">#  </span>
+ <span class="co">#  $strict</span>
+ <span class="co">#  [1] FALSE</span></code></pre></div>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.<br>
 And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
 <hr>
@@ -198,25 +220,18 @@ category_variable &lt;-<span class="st"> "Species"</span>
 <span class="co"># and pair_key as the key column</span>
 controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expand.grid">expand.grid</a></span>(meas_vars, meas_vars, 
                                        <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+<span class="co"># one copy of columns is coordinate names second copy is values</span>
+controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(controlTable, controlTable)
 <span class="co"># name the value columns value1 and value2</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(value1, value2)
-<span class="co"># insert first, or key column</span>
-controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">pair_key =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(controlTable[[<span class="dv">1</span>]], controlTable[[<span class="dv">2</span>]]),
-             <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>),
-  controlTable)
-
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2, value1, value2)
+transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+  controlTable,
+  <span class="dt">recordKeys =</span> <span class="st">"Species"</span>,
+  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2),
+  <span class="dt">checkKeys =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># do the unpivot to convert the row records to multiple block records</span>
-iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
-  iris,
-  controlTable,
-  <span class="dt">columnsToCopy =</span> category_variable)
-
-<span class="co"># unpack the key column into two variable keys for the facet_grid</span>
-splt &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/strsplit">strsplit</a></span>(iris_aug<span class="op">$</span>pair_key, <span class="dt">split =</span> <span class="st">" "</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)
-iris_aug<span class="op">$</span>v1 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(splt, <span class="cf">function</span>(si) si[[<span class="dv">1</span>]], <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">character</a></span>(<span class="dv">1</span>))
-iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(splt, <span class="cf">function</span>(si) si[[<span class="dv">2</span>]], <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">character</a></span>(<span class="dv">1</span>))
+iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform
 
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>value1, <span class="dt">y=</span>value2)) <span class="op">+</span>
@@ -227,6 +242,39 @@ iris_aug<span class="op">$</span>v2 &lt;-<span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># show transform</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+ <span class="co">#  {</span>
+ <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
+ <span class="co">#     "Species"  , "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
+ <span class="co">#       *        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
+ <span class="co">#   row_keys &lt;- c('Species')</span>
+ <span class="co">#  </span>
+ <span class="co">#   # becomes</span>
+ <span class="co">#  </span>
+ <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
+ <span class="co">#     "Species"  , "v1"          , "v2"          , "value1"    , "value2"     |</span>
+ <span class="co">#       *        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span>
+ <span class="co">#       *        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span>
+ <span class="co">#       *        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span>
+ <span class="co">#       *        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span>
+ <span class="co">#       *        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span>
+ <span class="co">#       *        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span>
+ <span class="co">#       *        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span>
+ <span class="co">#       *        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span>
+ <span class="co">#       *        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span>
+ <span class="co">#       *        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span>
+ <span class="co">#       *        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span>
+ <span class="co">#       *        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span>
+ <span class="co">#       *        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span>
+ <span class="co">#       *        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span>
+ <span class="co">#       *        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span>
+ <span class="co">#       *        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span>
+ <span class="co">#   block_keys &lt;- c('Species', 'v1', 'v2')</span>
+ <span class="co">#  </span>
+ <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)</span>
+ <span class="co">#  }</span></code></pre></div>
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <p>And a quick database example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
@@ -281,10 +329,10 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(tab)
- <span class="co">#  [1] "table(`rquery_mat_04624758641473214227_0000000000`; AUC, R2)"</span>
+ <span class="co">#  [1] "table(`rquery_mat_83726124022295934408_0000000000`; AUC, R2)"</span>
   
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
- <span class="co">#  table `rquery_mat_04624758641473214227_0000000000` SQLiteConnection </span>
+ <span class="co">#  table `rquery_mat_83726124022295934408_0000000000` SQLiteConnection </span>
  <span class="co">#   nrow: 1 </span>
  <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
  <span class="co">#   $ AUC: num 0.6</span>

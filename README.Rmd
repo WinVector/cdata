@@ -48,9 +48,9 @@ library("cdata")
 # and "value columns" Length and Width
 #
 controlTable <- wrapr::qchar_frame(
-  flower_part, Length        , Width         |
-    Petal    , "Petal.Length", "Petal.Width" |
-    Sepal    , "Sepal.Length", "Sepal.Width" )
+  "flower_part", "Length"     , "Width"     |
+    "Petal"    , Petal.Length , Petal.Width |
+    "Sepal"    , Sepal.Length , Sepal.Width )
 transform <- rowrecs_to_blocks_spec(
   controlTable,
   recordKeys = "Species",
@@ -98,25 +98,18 @@ category_variable <- "Species"
 # and pair_key as the key column
 controlTable <- data.frame(expand.grid(meas_vars, meas_vars, 
                                        stringsAsFactors = FALSE))
+# one copy of columns is coordinate names second copy is values
+controlTable <- cbind(controlTable, controlTable)
 # name the value columns value1 and value2
-colnames(controlTable) <- qc(value1, value2)
-# insert first, or key column
-controlTable <- cbind(
-  data.frame(pair_key = paste(controlTable[[1]], controlTable[[2]]),
-             stringsAsFactors = FALSE),
-  controlTable)
-
+colnames(controlTable) <- qc(v1, v2, value1, value2)
+transform <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = "Species",
+  controlTableKeys = qc(v1, v2),
+  checkKeys = FALSE)
 
 # do the unpivot to convert the row records to multiple block records
-iris_aug <- rowrecs_to_blocks(
-  iris,
-  controlTable,
-  columnsToCopy = category_variable)
-
-# unpack the key column into two variable keys for the facet_grid
-splt <- strsplit(iris_aug$pair_key, split = " ", fixed = TRUE)
-iris_aug$v1 <- vapply(splt, function(si) si[[1]], character(1))
-iris_aug$v2 <- vapply(splt, function(si) si[[2]], character(1))
+iris_aug <- iris %.>% transform
 
 
 ggplot(iris_aug, aes(x=value1, y=value2)) +
@@ -126,6 +119,9 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   scale_color_brewer(palette = "Dark2") +
   ylab(NULL) + 
   xlab(NULL)
+
+# show transform
+print(transform)
 ```
 
 
