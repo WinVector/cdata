@@ -28,9 +28,9 @@ d <- wrapr::build_frame(
 
 transform <- blocks_to_rowrecs_spec(
   wrapr::qchar_frame(
-    measure, value |
-    AUC    , "AUC" |
-    R2     , "R2"  ),
+    "measure", "value" |
+    "AUC"    , AUC     |
+    "R2"     , R2      ),
   recordKeys = "id")
 
 d \%//\% transform

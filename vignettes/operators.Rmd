@@ -25,11 +25,11 @@ First let's start with some data.
 ```{r}
 
 d <- wrapr::build_frame(
-  "model_id", "measure", "value" |
-    1   , "AUC"    , 0.7     |
-    1   , "R2"     , 0.4     |
-    2   , "AUC"    , 0.8     |
-    2   , "R2"     , 0.5     )
+   "model_id"  , "measure", "value" |
+     1         , "AUC"    , 0.7     |
+     1         , "R2"     , 0.4     |
+     2         , "AUC"    , 0.8     |
+     2         , "R2"     , 0.5     )
 
 knitr::kable(d)
 ```
@@ -41,9 +41,9 @@ library("cdata")
 
 transform <- rowrecs_to_blocks_spec(
   wrapr::qchar_frame(
-    measure, value |
-    AUC    , "AUC" |
-    R2     , "R2"  ),
+    "measure", "value" |
+    "AUC"    , AUC     |
+    "R2"     , R2      ),
   recordKeys = "model_id")
 
 print(transform)

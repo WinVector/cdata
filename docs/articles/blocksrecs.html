@@ -138,9 +138,9 @@ iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="
 <p><img src="rowrecs_to_blocks.png" width="600"></p>
 <p>In <code>R</code> the transform table is specified as follows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  flower_part, Length      , Width       <span class="op">|</span>
-<span class="st">  </span>Petal      , Petal.Length, Petal.Width <span class="op">|</span>
-<span class="st">  </span>Sepal      , Sepal.Length, Sepal.Width ))
+  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>      , <span class="st">"Width"</span>     <span class="op">|</span>
+<span class="st">  "Petal"</span>      , Petal.Length  , Petal.Width <span class="op">|</span>
+<span class="st">  "Sepal"</span>      , Sepal.Length  , Sepal.Width ))
 <span class="co">#&gt;   flower_part       Length       Width</span>
 <span class="co">#&gt; 1       Petal Petal.Length Petal.Width</span>
 <span class="co">#&gt; 2       Sepal Sepal.Length Sepal.Width</span>

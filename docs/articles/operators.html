@@ -109,11 +109,11 @@
 <p>First let’s start with some data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-  <span class="st">"model_id"</span>, <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
-<span class="st">    </span><span class="dv">1</span>   , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span>
-<span class="st">    </span><span class="dv">1</span>   , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span>
-<span class="st">    </span><span class="dv">2</span>   , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span>
-<span class="st">    </span><span class="dv">2</span>   , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     )
+   <span class="st">"model_id"</span>  , <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
+<span class="st">     </span><span class="dv">1</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span>
+<span class="st">     </span><span class="dv">1</span>         , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span>
+<span class="st">     </span><span class="dv">2</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span>
+<span class="st">     </span><span class="dv">2</span>         , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     )
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
@@ -150,9 +150,9 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 
 transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-    measure, value <span class="op">|</span>
-<span class="st">    </span>AUC    , <span class="st">"AUC"</span> <span class="op">|</span>
-<span class="st">    </span>R2     , <span class="st">"R2"</span>  ),
+    <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
+<span class="st">    "AUC"</span>    , AUC     <span class="op">|</span>
+<span class="st">    "R2"</span>     , R2      ),
   <span class="dt">recordKeys =</span> <span class="st">"model_id"</span>)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)

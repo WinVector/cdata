@@ -26,9 +26,9 @@ NULL
 #'
 #' transform <- rowrecs_to_blocks_spec(
 #'   wrapr::qchar_frame(
-#'     measure, value |
-#'     AUC    , "AUC" |
-#'     R2     , "R2"  ),
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
 #'   recordKeys = "id")
 #'
 #' print(transform)
@@ -95,9 +95,9 @@ rowrecs_to_blocks_spec <- function(controlTable,
 #'
 #' transform <- blocks_to_rowrecs_spec(
 #'   wrapr::qchar_frame(
-#'     measure, value |
-#'     AUC    , "AUC" |
-#'     R2     , "R2"  ),
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
 #'   recordKeys = "id")
 #'
 #' print(transform)
@@ -266,9 +266,9 @@ t.blocks_to_rowrecs_spec <- function(x) {
 #'
 #' transform <- rowrecs_to_blocks_spec(
 #'   wrapr::qchar_frame(
-#'     measure, value |
-#'     AUC    , "AUC" |
-#'     R2     , "R2"  ),
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
 #'   recordKeys = "id")
 #'
 #' d %**% transform
@@ -310,9 +310,9 @@ t.blocks_to_rowrecs_spec <- function(x) {
 #'
 #' transform <- blocks_to_rowrecs_spec(
 #'   wrapr::qchar_frame(
-#'     measure, value |
-#'     AUC    , "AUC" |
-#'     R2     , "R2"  ),
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
 #'   recordKeys = "id")
 #'
 #' d %//% transform

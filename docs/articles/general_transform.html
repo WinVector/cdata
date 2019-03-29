@@ -177,16 +177,16 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keyColumns =<span class="st"> 'record_id'</span>
 
 incoming_shape &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  row,  col1, col2, col3 <span class="op">|</span>
-<span class="st">  </span>row1, v11,  v12,  v13  <span class="op">|</span>
-<span class="st">  </span>row2, v21,  v22,  v23  <span class="op">|</span>
-<span class="st">  </span>row3, v31,  v32,  v33  )</code></pre></div>
+  <span class="st">"row"</span>,  <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
+<span class="st">  "row1"</span>, v11   ,  v12  ,  v13   <span class="op">|</span>
+<span class="st">  "row2"</span>, v21   ,  v22  ,  v23   <span class="op">|</span>
+<span class="st">  "row3"</span>, v31   ,  v32  ,  v33   )</code></pre></div>
 <p>And we specify (using the same principles) the desired final record shape, re-using the interior names from the first step to show where values are to be mapped.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outgoing_shape &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  column, row1, row2, row3 <span class="op">|</span>
-<span class="st">  </span>col1,   v11,  v21,  v31  <span class="op">|</span>
-<span class="st">  </span>col2,   v12,  v22,  v32  <span class="op">|</span>
-<span class="st">  </span>col3,   v13,  v23,  v33  )</code></pre></div>
+  <span class="st">"column"</span>, <span class="st">"row1"</span>, <span class="st">"row2"</span>, <span class="st">"row3"</span> <span class="op">|</span>
+<span class="st">  "col1"</span>  , v11   ,  v21 ,  v31    <span class="op">|</span>
+<span class="st">  "col2"</span>  , v12   ,  v22 ,  v32    <span class="op">|</span>
+<span class="st">  "col3"</span>  , v13   ,  v23 ,  v33    )</code></pre></div>
 <p>Once you have done this the conversion is accomplished in two function calls.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rowrecs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(
   data,
