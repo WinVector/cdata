@@ -20,6 +20,16 @@ A quick example: plot iris petal and sepal dimensions in a faceted graph.
 ``` r
 iris <- data.frame(iris)
 
+# show the data
+head(iris)
+ #    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+ #  1          5.1         3.5          1.4         0.2  setosa
+ #  2          4.9         3.0          1.4         0.2  setosa
+ #  3          4.7         3.2          1.3         0.2  setosa
+ #  4          4.6         3.1          1.5         0.2  setosa
+ #  5          5.0         3.6          1.4         0.2  setosa
+ #  6          5.4         3.9          1.7         0.4  setosa
+
 library("ggplot2")
 library("cdata")
 
@@ -28,17 +38,28 @@ library("cdata")
 # and "value columns" Length and Width
 #
 controlTable <- wrapr::qchar_frame(
-   flower_part, Length      , Width       |
-   Petal    , Petal.Length, Petal.Width |
-   Sepal    , Sepal.Length, Sepal.Width )
+  flower_part, Length        , Width         |
+    Petal    , "Petal.Length", "Petal.Width" |
+    Sepal    , "Sepal.Length", "Sepal.Width" )
+transform <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = "Species",
+  checkKeys = FALSE)
 
 # do the unpivot to convert the row records to block records
-iris_aug <- rowrecs_to_blocks(
-  iris,
-  controlTable,
-  columnsToCopy = c("Species"))
+iris_aug <- iris %.>% transform
 
+# show the tranformed data
+head(iris_aug)
+ #    Species flower_part Length Width
+ #  1  setosa       Petal    1.4   0.2
+ #  2  setosa       Sepal    5.1   3.5
+ #  3  setosa       Petal    1.4   0.2
+ #  4  setosa       Sepal    4.9   3.0
+ #  5  setosa       Petal    1.3   0.2
+ #  6  setosa       Sepal    4.7   3.2
 
+# plot the graph
 ggplot(iris_aug, aes(x=Length, y=Width)) +
   geom_point(aes(color=Species, shape=Species)) + 
   facet_wrap(~flower_part, labeller = label_both, scale = "free") +
@@ -46,6 +67,28 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 ```
 
 ![](tools/README-ex0-1.png)
+
+``` r
+
+# show the transform
+print(transform)
+ #  {
+ #   row_record <- wrapr::build_frame(
+ #     "Species"  , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
+ #       "*"      , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" )
+ #   row_keys <- c('Species')
+ #  
+ #   # becomes
+ #  
+ #   block_record <- wrapr::build_frame(
+ #     "Species"  , "flower_part", "Length"      , "Width"       |
+ #       "*"      , "Petal"      , "Petal.Length", "Petal.Width" |
+ #       "*"      , "Sepal"      , "Sepal.Length", "Sepal.Width" )
+ #   block_keys <- c('Species', 'flower_part')
+ #  
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
+ #  }
+```
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
 And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
@@ -158,10 +201,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_94848141197449999497_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_47982738704986532388_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_94848141197449999497_0000000000` SQLiteConnection 
+ #  table `rquery_mat_47982738704986532388_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

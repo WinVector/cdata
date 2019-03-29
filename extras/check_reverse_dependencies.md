@@ -5,7 +5,12 @@ check\_reverse\_dependencies
 library("prrd")
 td <- tempdir()
 package = "cdata"
+packageVersion(package)
+```
 
+    ## [1] '1.0.8'
+
+``` r
 parallelCluster <- NULL
 # # parallel doesn't work due to https://github.com/r-lib/liteq/issues/22
 #ncores <- parallel::detectCores()
@@ -22,7 +27,7 @@ setwd(td)
 print(td)
 ```
 
-    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//Rtmp91hQ2y"
+    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//RtmpxaxQdX"
 
 ``` r
 options(repos = c(CRAN="https://cloud.r-project.org"))
@@ -47,7 +52,7 @@ if(!is.null(parallelCluster)) {
 }
 ```
 
-    ## WVPlots_1.0.9 started at 2019-03-29 07:23:13 success at 2019-03-29 07:24:14 (1/0/0)
+    ## WVPlots_1.0.9 started at 2019-03-29 07:34:45 success at 2019-03-29 07:35:52 (1/0/0)
 
     ## [1] id     title  status
     ## <0 rows> (or 0-length row.names)
@@ -57,8 +62,8 @@ summariseQueue(package=package, directory=td)
 ```
 
     ## Test of cdata had 1 successes, 0 failures, and 0 skipped packages. 
-    ## Ran from 2019-03-29 07:23:13 to 2019-03-29 07:24:14 for 1.017 mins 
-    ## Average of 61 secs relative to 61.071 secs using 1 runners
+    ## Ran from 2019-03-29 07:34:45 to 2019-03-29 07:35:52 for 1.117 mins 
+    ## Average of 67 secs relative to 66.23 secs using 1 runners
     ## 
     ## Failed packages:   
     ## 

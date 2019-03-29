@@ -37,6 +37,9 @@ A quick example: plot iris petal and sepal dimensions in a faceted graph.
 ```{r ex0}
 iris <- data.frame(iris)
 
+# show the data
+head(iris)
+
 library("ggplot2")
 library("cdata")
 
@@ -45,22 +48,28 @@ library("cdata")
 # and "value columns" Length and Width
 #
 controlTable <- wrapr::qchar_frame(
-   flower_part, Length      , Width       |
-   Petal    , Petal.Length, Petal.Width |
-   Sepal    , Sepal.Length, Sepal.Width )
+  flower_part, Length        , Width         |
+    Petal    , "Petal.Length", "Petal.Width" |
+    Sepal    , "Sepal.Length", "Sepal.Width" )
+transform <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = "Species",
+  checkKeys = FALSE)
 
 # do the unpivot to convert the row records to block records
-iris_aug <- rowrecs_to_blocks(
-  iris,
-  controlTable,
-  columnsToCopy = c("Species"))
+iris_aug <- iris %.>% transform
 
+# show the tranformed data
+head(iris_aug)
 
+# plot the graph
 ggplot(iris_aug, aes(x=Length, y=Width)) +
   geom_point(aes(color=Species, shape=Species)) + 
   facet_wrap(~flower_part, labeller = label_both, scale = "free") +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 
+# show the transform
+print(transform)
 ```
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). 
