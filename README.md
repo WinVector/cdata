@@ -88,6 +88,28 @@ print(transform)
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
  #  }
+
+# show the representation of the transform
+unclass(transform)
+ #  $controlTable
+ #    flower_part       Length       Width
+ #  1       Petal Petal.Length Petal.Width
+ #  2       Sepal Sepal.Length Sepal.Width
+ #  
+ #  $recordKeys
+ #  [1] "Species"
+ #  
+ #  $controlTableKeys
+ #  [1] "flower_part"
+ #  
+ #  $checkNames
+ #  [1] TRUE
+ #  
+ #  $checkKeys
+ #  [1] FALSE
+ #  
+ #  $strict
+ #  [1] FALSE
 ```
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
@@ -201,10 +223,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_47982738704986532388_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_75420884561976133764_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_47982738704986532388_0000000000` SQLiteConnection 
+ #  table `rquery_mat_75420884561976133764_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

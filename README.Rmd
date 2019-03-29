@@ -70,6 +70,9 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 
 # show the transform
 print(transform)
+
+# show the representation of the transform
+unclass(transform)
 ```
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). 
