@@ -157,7 +157,7 @@ get_transform_details <- function(x) {
   kf <- data.frame(x = 1)
   kf$x <- NULL
   for(cn in recordKeys) {
-    kf[[cn]] <- "*"
+    kf[[cn]] <- "."
   }
   row <- blocks_to_rowrecs(controlTable,
                            keyColumns = character(0),

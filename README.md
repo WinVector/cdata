@@ -75,15 +75,15 @@ print(transform)
  #  {
  #   row_record <- wrapr::qchar_frame(
  #     "Species"  , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
- #       *        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
+ #       .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
  #   row_keys <- c('Species')
  #  
  #   # becomes
  #  
  #   block_record <- wrapr::qchar_frame(
  #     "Species"  , "flower_part", "Length"    , "Width"     |
- #       *        , "Petal"      , Petal.Length, Petal.Width |
- #       *        , "Sepal"      , Sepal.Length, Sepal.Width )
+ #       .        , "Petal"      , Petal.Length, Petal.Width |
+ #       .        , "Sepal"      , Sepal.Length, Sepal.Width )
  #   block_keys <- c('Species', 'flower_part')
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
@@ -166,29 +166,29 @@ print(transform)
  #  {
  #   row_record <- wrapr::qchar_frame(
  #     "Species"  , "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |
- #       *        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )
+ #       .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )
  #   row_keys <- c('Species')
  #  
  #   # becomes
  #  
  #   block_record <- wrapr::qchar_frame(
  #     "Species"  , "v1"          , "v2"          , "value1"    , "value2"     |
- #       *        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |
- #       *        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |
- #       *        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |
- #       *        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |
- #       *        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |
- #       *        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |
- #       *        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |
- #       *        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |
- #       *        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |
- #       *        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |
- #       *        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |
- #       *        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |
- #       *        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |
- #       *        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |
- #       *        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |
- #       *        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
+ #       .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |
+ #       .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |
+ #       .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |
+ #       .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |
+ #       .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |
+ #       .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |
+ #       .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |
+ #       .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |
+ #       .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |
+ #       .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |
+ #       .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |
+ #       .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |
+ #       .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |
+ #       .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |
+ #       .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |
+ #       .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
  #   block_keys <- c('Species', 'v1', 'v2')
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
@@ -252,10 +252,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_09065129953839033667_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_87497792956584962647_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_09065129953839033667_0000000000` SQLiteConnection 
+ #  table `rquery_mat_87497792956584962647_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6
