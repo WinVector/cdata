@@ -32,7 +32,23 @@
     Maintainer: 'John Mount <jmount@win-vector.com>'
     Possibly mis-spelled words in DESCRIPTION:
       coordinatized (15:36)
-      Status: 1 NOTE
+    Status: 1 NOTE
+    "Zumel" and "coordinatized" are not misspelled.
+
+
+    * using R version 3.6.0 alpha (2019-03-29 r76300)
+    * using platform: x86_64-w64-mingw32 (64-bit)
+    * using session charset: ISO8859-1
+    * checking for file 'cdata/DESCRIPTION' ... OK
+    * checking extension type ... Package
+    * this is package 'cdata' version '1.0.8'
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... NOTE
+    Maintainer: 'John Mount <jmount@win-vector.com>'
+    Possibly mis-spelled words in DESCRIPTION:
+      coordinatized (15:36)
+    Status: 1 NOTE
+    "Zumel" and "coordinatized" are not misspelled.
 
 
 ## Downstream dependencies
@@ -45,5 +61,5 @@
 
 # Notes
 
-    "Zumel" and "coordinatized" is not misspelled.
+    "Zumel" and "coordinatized" are not misspelled.
 
