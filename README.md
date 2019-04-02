@@ -252,10 +252,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_87497792956584962647_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_76318684933357504692_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_87497792956584962647_0000000000` SQLiteConnection 
+ #  table `rquery_mat_76318684933357504692_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

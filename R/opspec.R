@@ -180,8 +180,8 @@ format.rowrecs_to_blocks_spec <- function(x, ...) {
   sides <- get_transform_details(x)
   row_record <- sides$row_record
   block_record <- sides$block_record
-  row_str <- draw_framec(row_record, unquote_cols = colnames(row_record))
-  block_str <- draw_framec(block_record, unquote_cols = setdiff(colnames(block_record), x$controlTableKeys))
+  row_str <- wrapr::draw_framec(row_record, unquote_cols = colnames(row_record))
+  block_str <- wrapr::draw_framec(block_record, unquote_cols = setdiff(colnames(block_record), x$controlTableKeys))
   args <- x[setdiff(names(x), c("controlTable", "recordKeys", "controlTableKeys"))]
   fmt_str <- paste0("{\n ",
                     row_str,
@@ -209,8 +209,8 @@ format.blocks_to_rowrecs_spec <- function(x, ...) {
   sides <- get_transform_details(x)
   row_record <- sides$row_record
   block_record <- sides$block_record
-  row_str <- draw_framec(row_record, unquote_cols = colnames(row_record))
-  block_str <- draw_framec(block_record, unquote_cols = setdiff(colnames(block_record), x$controlTableKeys))
+  row_str <- wrapr::draw_framec(row_record, unquote_cols = colnames(row_record))
+  block_str <- wrapr::draw_framec(block_record, unquote_cols = setdiff(colnames(block_record), x$controlTableKeys))
   args <- x[setdiff(names(x), c("controlTable", "recordKeys", "controlTableKeys"))]
   fmt_str <- paste0("{\n ",
                     block_str,
