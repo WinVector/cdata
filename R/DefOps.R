@@ -185,7 +185,6 @@ blocks_to_rowrecs <- function(tallTable,
 
 
 
-
 #' Move values from columns to rows (anti-pivot, or "shred").
 #'
 #' This is a convenience notation for \code{rowrecs_to_blocks}.
@@ -232,6 +231,10 @@ unpivot_to_blocks <- function(data,
                               temporary = TRUE) {
   UseMethod("unpivot_to_blocks")
 }
+
+#' @rdname unpivot_to_blocks
+#' @export
+layout_to_blocks <- unpivot_to_blocks
 
 #' @rdname unpivot_to_blocks
 #' @export

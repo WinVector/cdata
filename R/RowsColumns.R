@@ -177,4 +177,7 @@ pivot_to_rowrecs <- function(data,
                     strict = strict)
 }
 
+#' @rdname pivot_to_rowrecs
+#' @export
+layout_to_rowrecs <- pivot_to_rowrecs
 

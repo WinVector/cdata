@@ -8,7 +8,7 @@ package = "cdata"
 packageVersion(package)
 ```
 
-    ## [1] '1.0.8'
+    ## [1] '1.0.9'
 
 ``` r
 parallelCluster <- NULL
@@ -27,7 +27,7 @@ setwd(td)
 print(td)
 ```
 
-    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//RtmpxaxQdX"
+    ## [1] "/var/folders/7q/h_jp2vj131g5799gfnpzhdp80000gn/T//RtmpAS7YAq"
 
 ``` r
 options(repos = c(CRAN="https://cloud.r-project.org"))
@@ -52,7 +52,7 @@ if(!is.null(parallelCluster)) {
 }
 ```
 
-    ## WVPlots_1.0.9 started at 2019-03-29 07:34:45 success at 2019-03-29 07:35:52 (1/0/0)
+    ## WVPlots_1.1.0 started at 2019-04-15 16:42:44 success at 2019-04-15 16:43:39 (1/0/0)
 
     ## [1] id     title  status
     ## <0 rows> (or 0-length row.names)
@@ -62,8 +62,8 @@ summariseQueue(package=package, directory=td)
 ```
 
     ## Test of cdata had 1 successes, 0 failures, and 0 skipped packages. 
-    ## Ran from 2019-03-29 07:34:45 to 2019-03-29 07:35:52 for 1.117 mins 
-    ## Average of 67 secs relative to 66.23 secs using 1 runners
+    ## Ran from 2019-04-15 16:42:44 to 2019-04-15 16:43:39 for 55 secs 
+    ## Average of 55 secs relative to 55.065 secs using 1 runners
     ## 
     ## Failed packages:   
     ## 

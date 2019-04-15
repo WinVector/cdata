@@ -2,9 +2,14 @@
 % Please edit documentation in R/RowsColumns.R
 \name{pivot_to_rowrecs}
 \alias{pivot_to_rowrecs}
+\alias{layout_to_rowrecs}
 \title{Move values from rows to columns (pivot).}
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
+  rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
+  checkKeys = TRUE, strict = FALSE)
+
+layout_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
   checkKeys = TRUE, strict = FALSE)
 }

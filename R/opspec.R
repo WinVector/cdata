@@ -149,6 +149,7 @@ blocks_to_rowrecs_spec <- function(controlTable,
 #'
 #' @export
 #' @keywords internal
+#'
 get_transform_details <- function(x) {
   controlTable = x$controlTable
   controlTableKeys = x$controlTableKeys
@@ -246,6 +247,125 @@ t.blocks_to_rowrecs_spec <- function(x) {
 }
 
 
+# use the transform spec
+
+#' Use transform spec to layout data.
+#'
+#' @param transform object of class rowrecs_to_blocks_spec
+#' @param table data.frame or relop.
+#' @return re-arranged data or data reference (relop).
+#'
+#' @examples
+#'
+#' d <- wrapr::build_frame(
+#'   "id"  , "AUC", "R2" |
+#'     1   , 0.7  , 0.4  |
+#'     2   , 0.8  , 0.5  )
+#' transform <- rowrecs_to_blocks_spec(
+#'   wrapr::qchar_frame(
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
+#'   recordKeys = "id")
+#' print(transform)
+#' layout_by(transform, d)
+#'
+#' d <- wrapr::build_frame(
+#'   "id", "measure", "value" |
+#'   1   , "AUC"    , 0.7     |
+#'   1   , "R2"     , 0.4     |
+#'   2   , "AUC"    , 0.8     |
+#'   2   , "R2"     , 0.5     )
+#' transform <- blocks_to_rowrecs_spec(
+#'   wrapr::qchar_frame(
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
+#'   recordKeys = "id")
+#' print(transform)
+#' layout_by(transform, d)
+#'
+#' @export
+#'
+layout_by <- function(transform, table) {
+  UseMethod("layout_by")
+}
+
+#' Use transform spec to layout data.
+#'
+#' @param transform object of class rowrecs_to_blocks_spec
+#' @param table data.frame or relop.
+#' @return re-arranged data or data reference (relop).
+#'
+#' @examples
+#'
+#' d <- wrapr::build_frame(
+#'   "id"  , "AUC", "R2" |
+#'     1   , 0.7  , 0.4  |
+#'     2   , 0.8  , 0.5  )
+#'
+#' transform <- rowrecs_to_blocks_spec(
+#'   wrapr::qchar_frame(
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
+#'   recordKeys = "id")
+#'
+#' print(transform)
+#' layout_by(transform, d)
+#'
+#' @export
+#'
+layout_by.rowrecs_to_blocks_spec <- function(transform, table) {
+  rowrecs_to_blocks(wideTable = table,
+                    controlTable = transform$controlTable,
+                    controlTableKeys = transform$controlTableKeys,
+                    columnsToCopy = transform$recordKeys,
+                    checkNames = transform$checkNames,
+                    checkKeys = transform$checkKeys,
+                    strict = transform$strict)
+}
+
+
+
+#' Use transform spec to layout data.
+#'
+#' @param transform object of class blocks_to_rowrecs_spec.
+#' @param table data.frame or relop.
+#' @return re-arranged data or data reference (relop).
+#'
+#' @examples
+#'
+#' d <- wrapr::build_frame(
+#'   "id", "measure", "value" |
+#'   1   , "AUC"    , 0.7     |
+#'   1   , "R2"     , 0.4     |
+#'   2   , "AUC"    , 0.8     |
+#'   2   , "R2"     , 0.5     )
+#'
+#' transform <- blocks_to_rowrecs_spec(
+#'   wrapr::qchar_frame(
+#'     "measure", "value" |
+#'     "AUC"    , AUC     |
+#'     "R2"     , R2      ),
+#'   recordKeys = "id")
+#'
+#' print(transform)
+#'
+#' layout_by(transform, d)
+#'
+#' @export
+#'
+layout_by.blocks_to_rowrecs_spec <- function(transform, table) {
+  blocks_to_rowrecs(tallTable = table,
+                    keyColumns = transform$recordKeys,
+                    controlTable = transform$controlTable,
+                    controlTableKeys = transform$controlTableKeys,
+                    checkNames = transform$checkNames,
+                    checkKeys = transform$checkKeys,
+                    strict = transform$strict)
+}
+
 
 
 
@@ -337,7 +457,7 @@ t.blocks_to_rowrecs_spec <- function(x) {
 
 
 
-# pipe interface
+# wrapr dot-pipe interface
 
 
 

@@ -29,9 +29,9 @@
 #'
 #' outgoing_shape <- qchar_frame(
 #'   "column", "row1", "row2", "row3" |
-#'   "col1",      v11,  v21, "v31     |
-#'   "col2",      v12,  v22,  v32     |
-#'   "col3",      v13,  v23,  v33     )
+#'   "col1",      v11,  v21  ,  v31   |
+#'   "col2",      v12,  v22  ,  v32   |
+#'   "col3",      v13,  v23  ,  v33   )
 #'
 #' data <- build_frame(
 #'   'record_id', 'row',  'col1', 'col2', 'col3'  |

@@ -1,7 +1,9 @@
 
-# cdata 1.0.9 2019/04/02
+# cdata 1.0.9 2019/04/15
 
+ * "layout" commands.
  * Move to wrapr draw_framec().
+ * Fix typo in general transform example code.
 
 # cdata 1.0.8 2019/03/30
 
