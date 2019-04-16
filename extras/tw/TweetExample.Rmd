@@ -91,11 +91,25 @@ print(layout_spec)
 And we can now apply the layout transform to data.
 
 ```{r}
-before %.>% layout_spec
-
+after <- before %.>% layout_spec
 # cdata 1.0.9 adds the non-piped function notation:
 # layout_by(layout_spec, before)
+
+knitr::kable(after)
 ```
+
+A really fun extra: we can build an inverse layout specification to reverse the transform.
+
+```{r}
+reverse_layout <- t(layout_spec) # invert the spec using t()
+
+print(reverse_layout)
+
+after %.>% 
+  reverse_layout %.>%
+  knitr::kable(.)
+```
+
 
 And that is it, we have a re-usable `layout_spec` that can transform future data.  We have a lot of tutorial on the method [here](https://winvector.github.io/cdata/), and the source code for this note can be found [here](https://github.com/WinVector/cdata/blob/master/extras/tw/TweetExample.Rmd).
 

@@ -325,14 +325,97 @@ knitr::kable(ct)</code></pre>
 ##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
 ## }</code></pre>
 <p>And we can now apply the layout transform to data.</p>
-<pre class="r"><code>before %.&gt;% layout_spec</code></pre>
-<pre><code>##   id t x y
-## 1  1 a 1 6
-## 2  1 b 3 8
-## 3  2 a 2 7
-## 4  2 b 4 9</code></pre>
-<pre class="r"><code># cdata 1.0.9 adds the non-piped function notation:
-# layout_by(layout_spec, before)</code></pre>
+<pre class="r"><code>after &lt;- before %.&gt;% layout_spec
+# cdata 1.0.9 adds the non-piped function notation:
+# layout_by(layout_spec, before)
+
+knitr::kable(after)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">t</th>
+<th align="right">x</th>
+<th align="right">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">a</td>
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">b</td>
+<td align="right">3</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">a</td>
+<td align="right">2</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">b</td>
+<td align="right">4</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<p>A really fun extra: we can build an inverse layout specification to reverse the transform.</p>
+<pre class="r"><code>reverse_layout &lt;- t(layout_spec) # invert the spec using t()
+
+print(reverse_layout)</code></pre>
+<pre><code>## {
+##  block_record &lt;- wrapr::qchar_frame(
+##    &quot;id&quot;  , &quot;t&quot;, &quot;x&quot;, &quot;y&quot; |
+##      .   , &quot;a&quot;, xa , ya  |
+##      .   , &quot;b&quot;, xb , yb  )
+##  block_keys &lt;- c('id', 't')
+## 
+##  # becomes
+## 
+##  row_record &lt;- wrapr::qchar_frame(
+##    &quot;id&quot;  , &quot;xa&quot;, &quot;xb&quot;, &quot;ya&quot;, &quot;yb&quot; |
+##      .   , xa  , xb  , ya  , yb   )
+##  row_keys &lt;- c('id')
+## 
+##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+## }</code></pre>
+<pre class="r"><code>after %.&gt;% 
+  reverse_layout %.&gt;%
+  knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="right">xa</th>
+<th align="right">xb</th>
+<th align="right">ya</th>
+<th align="right">yb</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
 <p>And that is it, we have a re-usable <code>layout_spec</code> that can transform future data. We have a lot of tutorial on the method <a href="https://winvector.github.io/cdata/">here</a>, and the source code for this note can be found <a href="https://github.com/WinVector/cdata/blob/master/extras/tw/TweetExample.Rmd">here</a>.</p>
 
 
