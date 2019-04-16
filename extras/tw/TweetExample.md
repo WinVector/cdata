@@ -167,4 +167,4 @@ after %.>%
 |    1|    1|    3|    6|    8|
 |    2|    2|    4|    7|    9|
 
-And that is it, we have a re-usable `layout_spec` that can transform future data. We have a lot of tutorial on the method [here](https://winvector.github.io/cdata/), and the source code for this note can be found [here](https://github.com/WinVector/cdata/blob/master/extras/tw/TweetExample.Rmd).
+And that is it, we have a re-usable `layout_spec` that can transform future data. We have many tutorials on the method [here](https://winvector.github.io/cdata/), and the source code for this note can be found [here](https://github.com/WinVector/cdata/blob/master/extras/tw/TweetExample.Rmd).
