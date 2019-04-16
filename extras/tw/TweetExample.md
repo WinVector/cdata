@@ -5,7 +5,6 @@ Here is an example how easy it is to use [`cdata`](https://github.com/WinVector/
 
 Tim Morris recently [tweeted](https://twitter.com/WinVectorLLC/status/1117797504920080384) the following problem (corrected).
 
-<code>
 <pre>
 Please will you take pity on me #rstats folks?
 I only want to reshape two variables x & y from wide to long!
@@ -31,8 +30,6 @@ Thanks for any help!
 
 PS – I can make reshape() or gather() work when I have just x or just y.
 </pre>
-</code>
-
 This is not to make fun of Tim Morris: the above *should* be easy. Using diagrams and slowing down the data transform into small steps makes the process very easy.
 
 First: (and this is the important part) define our problem *using an example*. Tim Morris did this really well, but let's repeat it here. We want to realize the following data layout transform.
