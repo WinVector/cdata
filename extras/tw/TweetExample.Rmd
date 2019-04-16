@@ -1,6 +1,6 @@
 ---
 title: "TweetExample"
-output: html_document
+output: github_document
 ---
 
 Here is an example how easy it is to use [`cdata`](https://github.com/WinVector/cdata) to re-layout your data.
