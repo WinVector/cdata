@@ -35,7 +35,7 @@ PS – I can make reshape() or gather() work when I have just x or just y.
 </pre>
 </code>
 
-This is not to make fun of Tim Morris: the above *should* be easy.  Using diagrams and slowing down the data transform into small steps design makes the process very easy.
+This is not to make fun of Tim Morris: the above *should* be easy.  Using diagrams and slowing down the data transform into small steps makes the process very easy.
 
 First: (and this is the important part) define our problem *using an example*.  Tim Morris did this really well, but let's repeat it here.  We want to realize the following data layout transform.
 
@@ -73,6 +73,8 @@ ct <- qchar_frame(
 
 knitr::kable(ct)
 ```
+
+In the above we are using a convention that concrete values are written in quotes, and symbols to be taken from the "before" data frame are written without quotes.
 
 Now specify the many-record transform.
 
