@@ -146,6 +146,7 @@ transform <- rowrecs_to_blocks_spec(
 
 # do the unpivot to convert the row records to multiple block records
 iris_aug <- iris %.>% transform
+# alternate notation: layout_by(transform, iris)
 
 
 ggplot(iris_aug, aes(x=value1, y=value2)) +
@@ -252,10 +253,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_11020143466908835185_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_97269009656395161718_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_11020143466908835185_0000000000` SQLiteConnection 
+ #  table `rquery_mat_97269009656395161718_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

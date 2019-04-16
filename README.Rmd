@@ -110,6 +110,7 @@ transform <- rowrecs_to_blocks_spec(
 
 # do the unpivot to convert the row records to multiple block records
 iris_aug <- iris %.>% transform
+# alternate notation: layout_by(transform, iris)
 
 
 ggplot(iris_aug, aes(x=value1, y=value2)) +
