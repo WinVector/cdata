@@ -86,6 +86,7 @@ We can also exhibit a larger example of using `cdata` to create a scatter-plot m
 ```{r ex0_1}
 
 iris <- data.frame(iris)
+iris$iris_id <- seq_len(nrow(iris))
 
 library("ggplot2")
 library("cdata")
@@ -104,7 +105,7 @@ controlTable <- cbind(controlTable, controlTable)
 colnames(controlTable) <- qc(v1, v2, value1, value2)
 transform <- rowrecs_to_blocks_spec(
   controlTable,
-  recordKeys = "Species",
+  recordKeys = c("iris_id", "Species"),
   controlTableKeys = qc(v1, v2),
   checkKeys = FALSE)
 

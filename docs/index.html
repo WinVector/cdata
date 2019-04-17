@@ -208,6 +208,7 @@ And some discussion of the nature of records in <code>cdata</code> can be found 
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 iris &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(iris)
+iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
@@ -226,12 +227,13 @@ controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2, value1, value2)
 transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   controlTable,
-  <span class="dt">recordKeys =</span> <span class="st">"Species"</span>,
+  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>),
   <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2),
   <span class="dt">checkKeys =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># do the unpivot to convert the row records to multiple block records</span>
 iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform
+<span class="co"># alternate notation: layout_by(transform, iris)</span>
 
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>value1, <span class="dt">y=</span>value2)) <span class="op">+</span>
@@ -247,31 +249,31 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
  <span class="co">#  {</span>
  <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "Species"  , "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
- <span class="co">#       .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
- <span class="co">#   row_keys &lt;- c('Species')</span>
+ <span class="co">#     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
+ <span class="co">#       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
+ <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span>
  <span class="co">#  </span>
  <span class="co">#   # becomes</span>
  <span class="co">#  </span>
  <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "Species"  , "v1"          , "v2"          , "value1"    , "value2"     |</span>
- <span class="co">#       .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span>
- <span class="co">#       .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span>
- <span class="co">#       .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span>
- <span class="co">#       .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span>
- <span class="co">#       .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span>
- <span class="co">#       .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span>
- <span class="co">#       .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span>
- <span class="co">#       .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span>
- <span class="co">#       .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span>
- <span class="co">#       .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span>
- <span class="co">#       .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span>
- <span class="co">#       .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span>
- <span class="co">#   block_keys &lt;- c('Species', 'v1', 'v2')</span>
+ <span class="co">#     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |</span>
+ <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span>
+ <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span>
+ <span class="co">#       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span>
+ <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span>
+ <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span>
+ <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span>
+ <span class="co">#       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span>
+ <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span>
+ <span class="co">#       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span>
+ <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span>
+ <span class="co">#       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span>
+ <span class="co">#       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span>
+ <span class="co">#       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span>
+ <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span>
+ <span class="co">#       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span>
+ <span class="co">#       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span>
+ <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'v1', 'v2')</span>
  <span class="co">#  </span>
  <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)</span>
  <span class="co">#  }</span></code></pre></div>
@@ -329,10 +331,10 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(tab)
- <span class="co">#  [1] "table(`rquery_mat_07834167429310659355_0000000000`; AUC, R2)"</span>
+ <span class="co">#  [1] "table(`rquery_mat_90688276660093637929_0000000000`; AUC, R2)"</span>
   
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
- <span class="co">#  table `rquery_mat_07834167429310659355_0000000000` SQLiteConnection </span>
+ <span class="co">#  table `rquery_mat_90688276660093637929_0000000000` SQLiteConnection </span>
  <span class="co">#   nrow: 1 </span>
  <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
  <span class="co">#   $ AUC: num 0.6</span>

@@ -122,6 +122,7 @@ We can also exhibit a larger example of using `cdata` to create a scatter-plot m
 ``` r
 
 iris <- data.frame(iris)
+iris$iris_id <- seq_len(nrow(iris))
 
 library("ggplot2")
 library("cdata")
@@ -140,7 +141,7 @@ controlTable <- cbind(controlTable, controlTable)
 colnames(controlTable) <- qc(v1, v2, value1, value2)
 transform <- rowrecs_to_blocks_spec(
   controlTable,
-  recordKeys = "Species",
+  recordKeys = c("iris_id", "Species"),
   controlTableKeys = qc(v1, v2),
   checkKeys = FALSE)
 
@@ -166,31 +167,31 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
 print(transform)
  #  {
  #   row_record <- wrapr::qchar_frame(
- #     "Species"  , "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |
- #       .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )
- #   row_keys <- c('Species')
+ #     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |
+ #       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )
+ #   row_keys <- c('iris_id', 'Species')
  #  
  #   # becomes
  #  
  #   block_record <- wrapr::qchar_frame(
- #     "Species"  , "v1"          , "v2"          , "value1"    , "value2"     |
- #       .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |
- #       .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |
- #       .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |
- #       .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |
- #       .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |
- #       .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |
- #       .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |
- #       .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |
- #       .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |
- #       .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |
- #       .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |
- #       .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |
- #       .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |
- #       .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |
- #       .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |
- #       .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
- #   block_keys <- c('Species', 'v1', 'v2')
+ #     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |
+ #       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |
+ #       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |
+ #       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |
+ #       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |
+ #       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |
+ #       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |
+ #       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |
+ #       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |
+ #       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |
+ #       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |
+ #       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |
+ #       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |
+ #       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |
+ #       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |
+ #       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |
+ #       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
+ #   block_keys <- c('iris_id', 'Species', 'v1', 'v2')
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
  #  }
@@ -253,10 +254,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_97269009656395161718_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_67724515667320135854_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_97269009656395161718_0000000000` SQLiteConnection 
+ #  table `rquery_mat_67724515667320135854_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6
