@@ -19,16 +19,17 @@ A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
 ``` r
 iris <- data.frame(iris)
+iris$iris_id <- seq_len(nrow(iris))
 
 # show the data
 head(iris)
- #    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
- #  1          5.1         3.5          1.4         0.2  setosa
- #  2          4.9         3.0          1.4         0.2  setosa
- #  3          4.7         3.2          1.3         0.2  setosa
- #  4          4.6         3.1          1.5         0.2  setosa
- #  5          5.0         3.6          1.4         0.2  setosa
- #  6          5.4         3.9          1.7         0.4  setosa
+ #    Sepal.Length Sepal.Width Petal.Length Petal.Width Species iris_id
+ #  1          5.1         3.5          1.4         0.2  setosa       1
+ #  2          4.9         3.0          1.4         0.2  setosa       2
+ #  3          4.7         3.2          1.3         0.2  setosa       3
+ #  4          4.6         3.1          1.5         0.2  setosa       4
+ #  5          5.0         3.6          1.4         0.2  setosa       5
+ #  6          5.4         3.9          1.7         0.4  setosa       6
 
 library("ggplot2")
 library("cdata")
@@ -43,7 +44,7 @@ controlTable <- wrapr::qchar_frame(
     "Sepal"    , Sepal.Length , Sepal.Width )
 transform <- rowrecs_to_blocks_spec(
   controlTable,
-  recordKeys = "Species",
+  recordKeys = c("iris_id", "Species"),
   checkKeys = FALSE)
 
 # do the unpivot to convert the row records to block records
@@ -51,13 +52,13 @@ iris_aug <- iris %.>% transform
 
 # show the tranformed data
 head(iris_aug)
- #    Species flower_part Length Width
- #  1  setosa       Petal    1.4   0.2
- #  2  setosa       Sepal    5.1   3.5
- #  3  setosa       Petal    1.4   0.2
- #  4  setosa       Sepal    4.9   3.0
- #  5  setosa       Petal    1.3   0.2
- #  6  setosa       Sepal    4.7   3.2
+ #    iris_id Species flower_part Length Width
+ #  1       1  setosa       Petal    1.4   0.2
+ #  2       1  setosa       Sepal    5.1   3.5
+ #  3       2  setosa       Petal    1.4   0.2
+ #  4       2  setosa       Sepal    4.9   3.0
+ #  5       3  setosa       Petal    1.3   0.2
+ #  6       3  setosa       Sepal    4.7   3.2
 
 # plot the graph
 ggplot(iris_aug, aes(x=Length, y=Width)) +
@@ -74,17 +75,17 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 print(transform)
  #  {
  #   row_record <- wrapr::qchar_frame(
- #     "Species"  , "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
- #       .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
- #   row_keys <- c('Species')
+ #     "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
+ #       .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
+ #   row_keys <- c('iris_id', 'Species')
  #  
  #   # becomes
  #  
  #   block_record <- wrapr::qchar_frame(
- #     "Species"  , "flower_part", "Length"    , "Width"     |
- #       .        , "Petal"      , Petal.Length, Petal.Width |
- #       .        , "Sepal"      , Sepal.Length, Sepal.Width )
- #   block_keys <- c('Species', 'flower_part')
+ #     "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |
+ #       .        , .        , "Petal"      , Petal.Length, Petal.Width |
+ #       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )
+ #   block_keys <- c('iris_id', 'Species', 'flower_part')
  #  
  #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
  #  }
@@ -97,7 +98,7 @@ unclass(transform)
  #  2       Sepal Sepal.Length Sepal.Width
  #  
  #  $recordKeys
- #  [1] "Species"
+ #  [1] "iris_id" "Species"
  #  
  #  $controlTableKeys
  #  [1] "flower_part"
@@ -254,10 +255,10 @@ tab <- td %.>%
   materialize(my_db, .)
 
 print(tab)
- #  [1] "table(`rquery_mat_67724515667320135854_0000000000`; AUC, R2)"
+ #  [1] "table(`rquery_mat_54579966247598861375_0000000000`; AUC, R2)"
   
 rstr(my_db, tab)
- #  table `rquery_mat_67724515667320135854_0000000000` SQLiteConnection 
+ #  table `rquery_mat_54579966247598861375_0000000000` SQLiteConnection 
  #   nrow: 1 
  #  'data.frame':   1 obs. of  2 variables:
  #   $ AUC: num 0.6

@@ -36,6 +36,7 @@ A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
 ```{r ex0}
 iris <- data.frame(iris)
+iris$iris_id <- seq_len(nrow(iris))
 
 # show the data
 head(iris)
@@ -53,7 +54,7 @@ controlTable <- wrapr::qchar_frame(
     "Sepal"    , Sepal.Length , Sepal.Width )
 transform <- rowrecs_to_blocks_spec(
   controlTable,
-  recordKeys = "Species",
+  recordKeys = c("iris_id", "Species"),
   checkKeys = FALSE)
 
 # do the unpivot to convert the row records to block records
