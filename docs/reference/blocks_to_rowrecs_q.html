@@ -144,7 +144,7 @@ and controlTable.</p>
   <span class='kw'>tempNameGenerator</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"mvtcq"</span>), <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showQuery</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>defaultValue</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>dropDups</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -268,7 +268,7 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
                              <span class='kw'>my_db</span> <span class='kw'>=</span> <span class='no'>my_db</span>)
   <span class='fu'><a href='qlook.html'>qlook</a></span>(<span class='no'>my_db</span>, <span class='no'>tab</span>)
   <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect'>dbDisconnect</a></span>(<span class='no'>my_db</span>)
-}</div><div class='output co'>#&gt; table `mvtcq_64660779934315472703_0000000001` SQLiteConnection 
+}</div><div class='output co'>#&gt; table `mvtcq_64660779934315472703_0000000000` SQLiteConnection 
 #&gt;  nrow: 1 
 #&gt; 'data.frame':	1 obs. of  2 variables:
 #&gt;  $ AUC: num 0.6

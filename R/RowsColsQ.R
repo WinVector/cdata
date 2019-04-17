@@ -458,7 +458,7 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 checkKeys = FALSE,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
-                                dropDups = FALSE,
+                                dropDups = TRUE,
                                 temporary = FALSE,
                                 resultName = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_q")
@@ -499,11 +499,7 @@ blocks_to_rowrecs_q <- function(tallTable,
     }
   }
 
-  ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  rquery::rq_copy_to(my_db,
-                      ctabName,
-                      controlTable)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -574,7 +570,6 @@ blocks_to_rowrecs_q <- function(tallTable,
                          ' ',
                          rquery::quote_identifier(my_db, keyColumns))
   }
-  # deliberate cross join
   qs <-  paste0(" SELECT ",
                 paste(c(groupstmts, copystmts, collectstmts), collapse = ', '),
                 ' FROM ',
@@ -595,7 +590,6 @@ blocks_to_rowrecs_q <- function(tallTable,
     print(q)
   }
   rquery::rq_execute(my_db, q)
-  rquery::rq_remove_table(my_db, ctabName)
   resName
 }
 

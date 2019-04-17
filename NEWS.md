@@ -2,6 +2,7 @@
 # cdata 1.0.9 2019/04/17
 
  * "layout" commands.
+ * Deal better with duplicate entries in db-version of blocks to rows.
  * Move to wrapr draw_framec().
  * Fix typo in general transform example code.
 

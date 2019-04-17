@@ -284,7 +284,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
   outgoing_table_name = tmp_name_source()
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   columns_produced <- c(keyColumns,
-                        as.character(unlist(controlTable[, controlTableValueColumns])))
+                        unique(as.character(unlist(controlTable[, controlTableValueColumns]))))
   f_db <- function(db,
                    incoming_table_name,
                    outgoing_table_name) {
@@ -300,7 +300,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                         checkKeys = checkKeys,
                         showQuery = FALSE,
                         defaultValue = NULL,
-                        dropDups = FALSE,
+                        dropDups = TRUE,
                         temporary = temporary,
                         resultName = outgoing_table_name)
   }

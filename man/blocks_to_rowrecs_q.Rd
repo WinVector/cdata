@@ -9,7 +9,7 @@ blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
   tempNameGenerator = mk_tmp_name_source("mvtcq"), strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
   checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
-  dropDups = FALSE, temporary = FALSE, resultName = NULL)
+  dropDups = TRUE, temporary = FALSE, resultName = NULL)
 }
 \arguments{
 \item{tallTable}{name of table containing data to be mapped (db/Spark data)}
