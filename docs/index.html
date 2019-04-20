@@ -12,7 +12,7 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Fluid Data Transformations">
 <meta property="og:description" content="Supplies higher-order coordinatized data specification and fluid transform operators that include pivot and anti-pivot as special cases. 
     The methodology is describe in 'Zumel', 2018, &quot;Fluid data reshaping with 'cdata'&quot;, &lt;http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html&gt; , doi:10.5281/zenodo.1173299 .
-    This package introduces the idea of  control table specification of data transforms (later also adapted from 'cdata' by 'tidyr').
+    This package introduces the idea of control table specification of data transforms (later also adapted from 'cdata' by 'tidyr').
     Works on in-memory data or on remote data using 'rquery' and 'SQL' database interfaces.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -128,6 +128,7 @@ iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="
  <span class="co">#  6          5.4         3.9          1.7         0.4  setosa       6</span>
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)
+ <span class="co">#  Warning: package 'ggplot2' was built under R version 3.5.2</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 <span class="co">#</span>
@@ -161,7 +162,7 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
-<p><img src="https://github.com/WinVector/cdata/blob/master/tools/README-ex0-1.png" width="700"></p>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># show the transform</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
@@ -244,7 +245,7 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
-<p><img src="https://github.com/WinVector/cdata/blob/master/tools/README-ex0_1-1.png" width="700"></p>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># show transform</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
@@ -332,10 +333,10 @@ tab &lt;-<span class="st"> </span>td <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/materialize">materialize</a></span>(my_db, .)
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(tab)
- <span class="co">#  [1] "table(`rquery_mat_80077669787012109953_0000000000`; AUC, R2)"</span>
+ <span class="co">#  [1] "table(`rquery_mat_71534600551692455484_0000000000`; AUC, R2)"</span>
   
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rstr">rstr</a></span>(my_db, tab)
- <span class="co">#  table `rquery_mat_80077669787012109953_0000000000` SQLiteConnection </span>
+ <span class="co">#  table `rquery_mat_71534600551692455484_0000000000` SQLiteConnection </span>
  <span class="co">#   nrow: 1 </span>
  <span class="co">#  'data.frame':   1 obs. of  2 variables:</span>
  <span class="co">#   $ AUC: num 0.6</span>
