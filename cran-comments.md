@@ -17,18 +17,29 @@
     Maintainer: ‘John Mount <jmount@win-vector.com>’
     Status: OK
 
+
 ### Windows
 
     devtools::build_win()
- 
+    * using R version 3.6.0 RC (2019-04-19 r76406)
+    * using platform: x86_64-w64-mingw32 (64-bit)
+    * using session charset: ISO8859-1
+    * checking for file 'cdata/DESCRIPTION' ... OK
+    * checking extension type ... Package
+    * this is package 'cdata' version '1.0.9'
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    Maintainer: 'John Mount <jmount@win-vector.com>'
+    Status: OK
 
 
 ## Downstream dependencies
 
     Checked all declared dependencies
     https://github.com/WinVector/cdata/blob/master/extras/check_reverse_dependencies.md
-    ## WVPlots_1.1.0 started at 2019-04-15 16:42:44 success at 2019-04-15 16:43:39 (1/0/0)
+    ## WVPlots_1.1.0 started at 2019-04-20 07:53:21 success at 2019-04-20 07:54:22 (1/0/0)
     ## Test of cdata had 1 successes, 0 failures, and 0 skipped packages. 
+
 
 # Notes
 

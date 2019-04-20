@@ -1,5 +1,5 @@
 
-# cdata 1.0.9 2019/04/17
+# cdata 1.0.9 2019/04/20
 
  * "layout" commands.
  * Deal better with duplicate entries in db-version of blocks to rows.

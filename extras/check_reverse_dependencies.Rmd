@@ -3,7 +3,7 @@ title: "check_reverse_dependencies"
 output: github_document
 ---
 
-```{r}
+```{r, error=TRUE}
 library("prrd")
 td <- tempdir()
 package = "cdata"
