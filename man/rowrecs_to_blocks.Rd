@@ -74,6 +74,9 @@ by running an appropriate query over the data.
 Some discussion and examples can be found here:
 \url{https://winvector.github.io/FluidData/FluidData.html} and
 here \url{https://github.com/WinVector/cdata}.
+
+\code{rowrecs_to_blocks.default} will change some factor columns to character, and there
+are issues with time columns with different time zones.
 }
 \examples{
 

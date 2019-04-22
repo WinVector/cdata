@@ -68,6 +68,9 @@ build_pivot_control <- function(table,
 #' \url{https://winvector.github.io/FluidData/FluidData.html} and
 #' here \url{https://github.com/WinVector/cdata}.
 #'
+#' \code{rowrecs_to_blocks.default} will change some factor columns to character, and there
+#' are issues with time columns with different time zones.
+#'
 #' @param wideTable data.frame containing data to be mapped (in-memory data.frame).
 #' @param controlTable table specifying mapping (local data frame).
 #' @param ... force later arguments to be by name.

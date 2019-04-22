@@ -121,7 +121,11 @@ rowrecs_to_blocks.default <- function(wideTable,
     res[[cn]] <- NA_character_
   }
   for(cn in controlTableValueColumns) {
-    res[[cn]] <- wideTable[[controlTable[2, cn, drop = TRUE]]]
+    wtn <- wideTable[[controlTable[1, cn, drop = TRUE]]]
+    if(is.factor(wtn)) {
+      wtn <- as.character(wtn)
+    }
+    res[[cn]] <- wtn
     res[[cn]][seq_len(n_row_in)] <- NA
   }
   # cross product with control table
@@ -135,7 +139,11 @@ rowrecs_to_blocks.default <- function(wideTable,
     for(i in seq_len(n_rep)) {
       indxs <- i + n_rep*(0:(n_row_in-1))
       col <- controlTable[i, cn, drop = TRUE]
-      res[[cn]][indxs] <- wideTable[[col]]
+      wtni <- wideTable[[col]]
+      if(is.factor(wtni)) {
+        wtni <- as.character(wtni)
+      }
+      res[[cn]][indxs] <- wtni
     }
   }
   rownames(res) <- NULL
