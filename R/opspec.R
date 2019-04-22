@@ -60,6 +60,9 @@ rowrecs_to_blocks_spec <- function(controlTable,
   if(!is.null(ck)) {
     stop(paste("cdata::rowrecs_to_blocks_spec", ck))
   }
+  if(length(intersect(recordKeys, colnames(controlTable)))>0) {
+    stop("cdata::rowrecs_to_blocks_spec recordKeys intersected control table columns")
+  }
   r <- list(controlTable = controlTable,
             recordKeys = recordKeys,
             controlTableKeys = controlTableKeys,
@@ -129,6 +132,9 @@ blocks_to_rowrecs_spec <- function(controlTable,
   ck <- checkControlTable(controlTable = controlTable, controlTableKeys = controlTableKeys, strict = FALSE)
   if(!is.null(ck)) {
     stop(paste("cdata::blocks_to_rowrecs_spec", ck))
+  }
+  if(length(intersect(recordKeys, colnames(controlTable)))>0) {
+    stop("cdata::blocks_to_rowrecs_spec recordKeys intersected control table columns")
   }
   r <- list(controlTable = controlTable,
             recordKeys = recordKeys,
@@ -572,7 +578,6 @@ layout_specification <- function(incoming_shape,
                                  checkNames = TRUE,
                                  checkKeys = TRUE,
                                  strict = FALSE) {
-  # check shapes are talking about same cells
   ca <- blocks_to_rowrecs_spec(incoming_shape,
                                controlTableKeys = incoming_controlTableKeys,
                                recordKeys = character(0),
@@ -585,6 +590,31 @@ layout_specification <- function(incoming_shape,
                                checkNames = checkNames,
                                checkKeys = checkKeys,
                                strict = strict)
+  # check for some trivial cases
+  if((nrow(outgoing_shape)==1) && (length(outgoing_controlTableKeys)==0)) {
+    ra <- incoming_shape %.>% ca
+    if(isTRUE(all.equal(sort(colnames(ra)), sort(colnames(outgoing_shape))))) {
+      return(blocks_to_rowrecs_spec(incoming_shape,
+                                    controlTableKeys = incoming_controlTableKeys,
+                                    recordKeys = recordKeys,
+                                    checkNames = checkNames,
+                                    checkKeys = checkKeys,
+                                    strict = strict))
+    }
+  }
+  if((nrow(incoming_shape)==1) && (length(incoming_controlTableKeys)==0)) {
+    cb_inv <- t(cb)
+    rb <- outgoing_shape %.>% cb_inv
+    if(isTRUE(all.equal(sort(colnames(rb)), sort(colnames(incoming_shape))))) {
+      return(rowrecs_to_blocks_spec(outgoing_shape,
+                                    controlTableKeys = outgoing_controlTableKeys,
+                                    recordKeys = character(0),
+                                    checkNames = checkNames,
+                                    checkKeys = checkKeys,
+                                    strict = strict))
+    }
+  }
+  # check transform makes sense
   tryCatch(
     { incoming_shape %.>% ca %.>% cb },
     error = function(e) {
