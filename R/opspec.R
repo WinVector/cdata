@@ -572,6 +572,25 @@ layout_specification <- function(incoming_shape,
                                  checkNames = TRUE,
                                  checkKeys = TRUE,
                                  strict = FALSE) {
+  # check shapes are talking about same cells
+  ca <- blocks_to_rowrecs_spec(incoming_shape,
+                               controlTableKeys = incoming_controlTableKeys,
+                               recordKeys = character(0),
+                               checkNames = checkNames,
+                               checkKeys = checkKeys,
+                               strict = strict)
+  cb <- rowrecs_to_blocks_spec(outgoing_shape,
+                               controlTableKeys = outgoing_controlTableKeys,
+                               recordKeys = character(0),
+                               checkNames = checkNames,
+                               checkKeys = checkKeys,
+                               strict = strict)
+  tryCatch(
+    { incoming_shape %.>% ca %.>% cb },
+    error = function(e) {
+      stop("cdata::layout_specification, incoming and outgoing shape not compatible")
+    }
+  )
   a <- blocks_to_rowrecs_spec(incoming_shape,
                               controlTableKeys = incoming_controlTableKeys,
                               recordKeys = recordKeys,
@@ -622,11 +641,14 @@ apply_right.cdata_general_transform_spec <- function(pipe_left_arg,
 #' @export
 #'
 t.cdata_general_transform_spec <- function(x) {
-  r <- list(
-    blocks_to_rowrecs_spec = x$rowrecs_to_blocks_spec,
-    rowrecs_to_blocks_spec = x$blocks_to_rowrecs_spec)
-  class(r) <- "cdata_general_transform_spec"
-  r
+  layout_specification(incoming_shape = x$rowrecs_to_blocks_spec$controlTable,
+                       outgoing_shape = x$blocks_to_rowrecs_spec$controlTable,
+                       recordKeys = x$rowrecs_to_blocks_spec$recordKeys,
+                       incoming_controlTableKeys = x$rowrecs_to_blocks_spec$controlTableKeys,
+                       outgoing_controlTableKeys = x$blocks_to_rowrecs_spec$controlTableKeys,
+                       checkNames = x$rowrecs_to_blocks_spec$checkNames,
+                       checkKeys = x$rowrecs_to_blocks_spec$checkKeys,
+                       strict = x$rowrecs_to_blocks_spec$strict)
 }
 
 
