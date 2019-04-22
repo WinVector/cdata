@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a rowrecs_to_blocks() control table that specifies a un-pivot (or "shred"). — build_unpivot_control • cdata</title>
+<title>Use transform spec to layout data. — layout_by.cdata_general_transform_spec • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,9 @@
 
 
 
-<meta property="og:title" content="Build a rowrecs_to_blocks() control table that specifies a un-pivot (or "shred"). — build_unpivot_control" />
+<meta property="og:title" content="Use transform spec to layout data. — layout_by.cdata_general_transform_spec" />
 
-<meta property="og:description" content="Some discussion and examples can be found here:
-https://winvector.github.io/FluidData/FluidData.html and
-here https://github.com/WinVector/cdata." />
+<meta property="og:description" content="Use transform spec to layout data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,58 +126,38 @@ here https://github.com/WinVector/cdata." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a rowrecs_to_blocks() control table that specifies a un-pivot (or "shred").</h1>
-    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a></small>
-    <div class="hidden name"><code>build_unpivot_control.Rd</code></div>
+    <h1>Use transform spec to layout data.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/opspec.R'><code>R/opspec.R</code></a></small>
+    <div class="hidden name"><code>layout_by.cdata_general_transform_spec.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Some discussion and examples can be found here:
-<a href='https://winvector.github.io/FluidData/FluidData.html'>https://winvector.github.io/FluidData/FluidData.html</a> and
-here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/cdata</a>.</p>
+    <p>Use transform spec to layout data.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>build_unpivot_control</span>(<span class='no'>nameForNewKeyColumn</span>, <span class='no'>nameForNewValueColumn</span>,
-  <span class='no'>columnsToTakeFrom</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for cdata_general_transform_spec</span>
+<span class='fu'><a href='layout_by.html'>layout_by</a></span>(<span class='no'>transform</span>, <span class='no'>table</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>nameForNewKeyColumn</th>
-      <td><p>character name of column to write new keys in.</p></td>
+      <th>transform</th>
+      <td><p>object of class blocks_to_rowrecs_spec.</p></td>
     </tr>
     <tr>
-      <th>nameForNewValueColumn</th>
-      <td><p>character name of column to write new values in.</p></td>
-    </tr>
-    <tr>
-      <th>columnsToTakeFrom</th>
-      <td><p>character array names of columns to take values from.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>not used, force later args to be by name</p></td>
+      <th>table</th>
+      <td><p>data.frame or relop.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>control table</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='rowrecs_to_blocks.html'>rowrecs_to_blocks</a></code></p></div>
+    <p>re-arranged data or data reference (relop).</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>build_unpivot_control</span>(<span class='st'>"measurmentType"</span>, <span class='st'>"measurmentValue"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"c1"</span>, <span class='st'>"c2"</span>))</div><div class='output co'>#&gt;   measurmentType measurmentValue
-#&gt; 1             c1              c1
-#&gt; 2             c2              c2</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -187,11 +165,7 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

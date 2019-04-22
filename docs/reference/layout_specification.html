@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>General transform from arbitrary record shape to arbitrary record shape. — convert_records • cdata</title>
+<title>Create a record to record spec. — layout_specification • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="General transform from arbitrary record shape to arbitrary record shape. — convert_records" />
+<meta property="og:title" content="Create a record to record spec. — layout_specification" />
 
-<meta property="og:description" content="General transform from arbitrary record shape to arbitrary record shape." />
+<meta property="og:description" content="Create a general record to record transform specification." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,32 +126,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>General transform from arbitrary record shape to arbitrary record shape.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/GeneralTransform.R'><code>R/GeneralTransform.R</code></a></small>
-    <div class="hidden name"><code>convert_records.Rd</code></div>
+    <h1>Create a record to record spec.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/opspec.R'><code>R/opspec.R</code></a></small>
+    <div class="hidden name"><code>layout_specification.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>General transform from arbitrary record shape to arbitrary record shape.</p>
+    <p>Create a general record to record transform specification.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>convert_records</span>(<span class='no'>table</span>, <span class='no'>incoming_shape</span>, <span class='no'>outgoing_shape</span>, <span class='no'>...</span>,
-  <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>columnsToCopy_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>layout_specification</span>(<span class='no'>incoming_shape</span>, <span class='no'>outgoing_shape</span>, <span class='no'>...</span>,
+  <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>),
   <span class='kw'>incoming_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>incoming_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>outgoing_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>outgoing_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
-  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"crec"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>table</th>
-      <td><p>data.frame or relop.</p></td>
-    </tr>
     <tr>
       <th>incoming_shape</th>
       <td><p>data.frame, definition of incoming record shape.</p></td>
@@ -162,27 +156,11 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>force later arguments to bind by name.</p></td>
+      <td><p>not used, force later arguments to bind by name.</p></td>
     </tr>
     <tr>
-      <th>keyColumns</th>
-      <td><p>character vector of column defining incoming row groups</p></td>
-    </tr>
-    <tr>
-      <th>columnsToCopy_in</th>
-      <td><p>character array of incoming column names to copy.</p></td>
-    </tr>
-    <tr>
-      <th>checkNames</th>
-      <td><p>logical, if TRUE check names.</p></td>
-    </tr>
-    <tr>
-      <th>checkKeys</th>
-      <td><p>logical, if TRUE check columnsToCopy form row keys (not a requirement, unless you want to be able to invert the operation).</p></td>
-    </tr>
-    <tr>
-      <th>strict</th>
-      <td><p>logical, if TRUE check control table name forms.</p></td>
+      <th>recordKeys</th>
+      <td><p>vector of columns identifying records.</p></td>
     </tr>
     <tr>
       <th>incoming_controlTableKeys</th>
@@ -193,18 +171,22 @@
       <td><p>character, which column names of the outgoing control table are considered to be keys.</p></td>
     </tr>
     <tr>
-      <th>tmp_name_source</th>
-      <td><p>a tempNameGenerator from cdata::mk_tmp_name_source()</p></td>
+      <th>checkNames</th>
+      <td><p>passed to rowrecs_to_blocks.</p></td>
     </tr>
     <tr>
-      <th>temporary</th>
-      <td><p>logical, if TRUE use temporary tables</p></td>
+      <th>checkKeys</th>
+      <td><p>passed to rowrecs_to_blocks.</p></td>
+    </tr>
+    <tr>
+      <th>strict</th>
+      <td><p>passed to rowrecs_to_blocks.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>processing pipeline or transformed table</p>
+    <p>a record specification object</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -239,46 +221,45 @@
 #&gt; 4         2 row1   11   12   13
 #&gt; 5         2 row2   14   15   16
 #&gt; 6         2 row3   17   18   19</div><div class='input'>
-<span class='fu'>convert_records</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='st'>'record_id'</span>,
+<span class='no'>layout</span> <span class='kw'>&lt;-</span> <span class='fu'>layout_specification</span>(
   <span class='kw'>incoming_shape</span> <span class='kw'>=</span> <span class='no'>incoming_shape</span>,
-  <span class='kw'>outgoing_shape</span> <span class='kw'>=</span> <span class='no'>outgoing_shape</span>)</div><div class='output co'>#&gt;   record_id column row1 row2 row3
+  <span class='kw'>outgoing_shape</span> <span class='kw'>=</span> <span class='no'>outgoing_shape</span>,
+  <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='st'>'record_id'</span>)
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>layout</span>)</div><div class='output co'>#&gt; {
+#&gt;  in_record &lt;- wrapr::qchar_frame(
+#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |
+#&gt;      .          , "row1", v11   , v12   , v13    |
+#&gt;      .          , "row2", v21   , v22   , v23    |
+#&gt;      .          , "row3", v31   , v32   , v33    )
+#&gt;  in_keys &lt;- c('record_id', 'row')
+#&gt; 
+#&gt;  # becomes
+#&gt; 
+#&gt;  out_record &lt;- wrapr::qchar_frame(
+#&gt;    "record_id"  , "column", "row1", "row2", "row3" |
+#&gt;      .          , "col1"  , v11   , v21   , v31    |
+#&gt;      .          , "col2"  , v12   , v22   , v32    |
+#&gt;      .          , "col3"  , v13   , v23   , v33    )
+#&gt;  out_keys &lt;- c('record_id', 'column')
+#&gt; 
+#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+#&gt; }
+#&gt; </div><div class='input'>
+<span class='no'>data</span> <span class='kw'>%.&gt;%</span> <span class='no'>layout</span></div><div class='output co'>#&gt;   record_id column row1 row2 row3
 #&gt; 1         1   col1    1    4    7
 #&gt; 2         1   col2    2    5    8
 #&gt; 3         1   col3    3    6    9
 #&gt; 4         2   col1   11   14   17
 #&gt; 5         2   col2   12   15   18
 #&gt; 6         2   col3   13   16   19</div><div class='input'>
-<span class='no'>td</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rquery</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/rquery/topics/local_td'>local_td</a></span>(<span class='no'>data</span>)
-
-<span class='no'>ops</span> <span class='kw'>&lt;-</span> <span class='fu'>convert_records</span>(
-  <span class='no'>td</span>,
-  <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='st'>'record_id'</span>,
-  <span class='kw'>incoming_shape</span> <span class='kw'>=</span> <span class='no'>incoming_shape</span>,
-  <span class='kw'>outgoing_shape</span> <span class='kw'>=</span> <span class='no'>outgoing_shape</span>)
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='no'>ops</span>))</div><div class='output co'>#&gt; table(data; 
-#&gt;   record_id,
-#&gt;   row,
-#&gt;   col1,
-#&gt;   col2,
-#&gt;   col3) %.&gt;%
-#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%
-#&gt;  non_sql_node(., rowrecs_to_blocks(.))</div><div class='input'>
-<span class='kw'>if</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ns-load'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='st'>"rqdatatable"</span>)
-  <span class='no'>data</span> <span class='kw'>%.&gt;%</span>
-    <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
-    <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>.</span>)
-}</div><div class='output co'>#&gt;    record_id column row1 row2 row3
-#&gt; 1:         1   col1    1    4    7
-#&gt; 2:         1   col2    2    5    8
-#&gt; 3:         1   col3    3    6    9
-#&gt; 4:         2   col1   11   14   17
-#&gt; 5:         2   col2   12   15   18
-#&gt; 6:         2   col3   13   16   19</div><div class='input'>
-
+<span class='no'>data</span> <span class='kw'>%.&gt;%</span> <span class='no'>layout</span> <span class='kw'>%.&gt;%</span> <span class='fu'>.</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>layout</span>))</div><div class='output co'>#&gt;   record_id  row col1 col2 col3
+#&gt; 1         1 row1    1    2    3
+#&gt; 2         1 row2    4    5    6
+#&gt; 3         1 row3    7    8    9
+#&gt; 4         2 row1   11   12   13
+#&gt; 5         2 row2   14   15   16
+#&gt; 6         2 row3   17   18   19</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

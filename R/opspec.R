@@ -247,6 +247,9 @@ t.blocks_to_rowrecs_spec <- function(x) {
 }
 
 
+
+
+
 # use the transform spec
 
 #' Use transform spec to layout data.
@@ -499,4 +502,193 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
                     strict = transform_spec$strict)
 }
 
+
+
+
+# general spec
+
+
+#' Create a record to record spec.
+#'
+#' Create a general record to record transform specification.
+#'
+#' @param incoming_shape data.frame, definition of incoming record shape.
+#' @param outgoing_shape data.frame, defintion of outgoing record shape.
+#' @param ... not used, force later arguments to bind by name.
+#' @param recordKeys vector of columns identifying records.
+#' @param incoming_controlTableKeys character, which column names of the incoming control table are considered to be keys.
+#' @param outgoing_controlTableKeys character, which column names of the outgoing control table are considered to be keys.
+#' @param checkNames passed to rowrecs_to_blocks.
+#' @param checkKeys passed to rowrecs_to_blocks.
+#' @param strict passed to rowrecs_to_blocks.
+#' @return a record specification object
+#'
+#' @examples
+#'
+#'
+#' incoming_shape <- qchar_frame(
+#'   "row",  "col1", "col2", "col3" |
+#'   "row1",   v11,     v12,  v13   |
+#'   "row2",   v21,     v22,  v23   |
+#'   "row3",   v31,     v32,  v33   )
+#'
+#'
+#' outgoing_shape <- qchar_frame(
+#'   "column", "row1", "row2", "row3" |
+#'   "col1",      v11,  v21  ,  v31   |
+#'   "col2",      v12,  v22  ,  v32   |
+#'   "col3",      v13,  v23  ,  v33   )
+#'
+#' data <- build_frame(
+#'   'record_id', 'row',  'col1', 'col2', 'col3'  |
+#'   1,           'row1',  1,      2,      3      |
+#'   1,           'row2',  4,      5,      6      |
+#'   1,           'row3',  7,      8,      9      |
+#'   2,           'row1',  11,     12,     13     |
+#'   2,           'row2',  14,     15,     16     |
+#'   2,           'row3',  17,     18,     19     )
+#'
+#' print(data)
+#'
+#' layout <- layout_specification(
+#'   incoming_shape = incoming_shape,
+#'   outgoing_shape = outgoing_shape,
+#'   recordKeys = 'record_id')
+#'
+#' print(layout)
+#'
+#' data %.>% layout
+#'
+#' data %.>% layout %.>% .(t(layout))
+#'
+#' @export
+#'
+layout_specification <- function(incoming_shape,
+                                 outgoing_shape,
+                                 ...,
+                                 recordKeys = character(0),
+                                 incoming_controlTableKeys = colnames(incoming_shape)[[1]],
+                                 outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
+                                 checkNames = TRUE,
+                                 checkKeys = TRUE,
+                                 strict = FALSE) {
+  a <- blocks_to_rowrecs_spec(incoming_shape,
+                              controlTableKeys = incoming_controlTableKeys,
+                              recordKeys = recordKeys,
+                              checkNames = checkNames,
+                              checkKeys = checkKeys,
+                              strict = strict)
+  b <- rowrecs_to_blocks_spec(outgoing_shape,
+                              controlTableKeys = outgoing_controlTableKeys,
+                              recordKeys = recordKeys,
+                              checkNames = checkNames,
+                              checkKeys = checkKeys,
+                              strict = strict)
+  r <- list(
+    blocks_to_rowrecs_spec = a,
+    rowrecs_to_blocks_spec = b)
+  class(r) <- "cdata_general_transform_spec"
+  r
+}
+
+#' @export
+#'
+apply_right.cdata_general_transform_spec <- function(pipe_left_arg,
+                                                     pipe_right_arg,
+                                                     pipe_environment,
+                                                     left_arg_name,
+                                                     pipe_string,
+                                                     right_arg_name) {
+  table <- pipe_left_arg
+  transform_spec <- pipe_right_arg
+  blocks_to_rowrecs_spec <- transform_spec$blocks_to_rowrecs_spec
+  table <- blocks_to_rowrecs(tallTable = table,
+                             keyColumns = blocks_to_rowrecs_spec$recordKeys,
+                             controlTable = blocks_to_rowrecs_spec$controlTable,
+                             controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
+                             checkNames = blocks_to_rowrecs_spec$checkNames,
+                             checkKeys = blocks_to_rowrecs_spec$checkKeys,
+                             strict = blocks_to_rowrecs_spec$strict)
+  rowrecs_to_blocks_spec <- transform_spec$rowrecs_to_blocks_spec
+  rowrecs_to_blocks(wideTable = table,
+                    controlTable = rowrecs_to_blocks_spec$controlTable,
+                    controlTableKeys = rowrecs_to_blocks_spec$controlTableKeys,
+                    columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
+                    checkNames = rowrecs_to_blocks_spec$checkNames,
+                    checkKeys = rowrecs_to_blocks_spec$checkKeys,
+                    strict = rowrecs_to_blocks_spec$strict)
+}
+
+#' @export
+#'
+t.cdata_general_transform_spec <- function(x) {
+  r <- list(
+    blocks_to_rowrecs_spec = x$rowrecs_to_blocks_spec,
+    rowrecs_to_blocks_spec = x$blocks_to_rowrecs_spec)
+  class(r) <- "cdata_general_transform_spec"
+  r
+}
+
+
+#' Use transform spec to layout data.
+#'
+#' @param transform object of class blocks_to_rowrecs_spec.
+#' @param table data.frame or relop.
+#' @return re-arranged data or data reference (relop).
+#'
+#'
+#' @export
+#'
+layout_by.cdata_general_transform_spec <- function(transform, table) {
+  blocks_to_rowrecs_spec <- transform$blocks_to_rowrecs_spec
+  table <- blocks_to_rowrecs(tallTable = table,
+                             keyColumns = blocks_to_rowrecs_spec$recordKeys,
+                             controlTable = blocks_to_rowrecs_spec$controlTable,
+                             controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
+                             checkNames = blocks_to_rowrecs_spec$checkNames,
+                             checkKeys = blocks_to_rowrecs_spec$checkKeys,
+                             strict = blocks_to_rowrecs_spec$strict)
+  rowrecs_to_blocks_spec <- transform$rowrecs_to_blocks_spec
+  rowrecs_to_blocks(wideTable = table,
+                    controlTable = rowrecs_to_blocks_spec$controlTable,
+                    controlTableKeys = rowrecs_to_blocks_spec$controlTableKeys,
+                    columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
+                    checkNames = rowrecs_to_blocks_spec$checkNames,
+                    checkKeys = rowrecs_to_blocks_spec$checkKeys,
+                    strict = rowrecs_to_blocks_spec$strict)
+}
+
+#' @export
+#'
+format.cdata_general_transform_spec <- function(x, ...) {
+  details_in <- get_transform_details(x$blocks_to_rowrecs_spec)
+  details_out <- get_transform_details(x$rowrecs_to_blocks_spec)
+  in_record <- details_in$block_record
+  out_record <- details_out$block_record
+  in_str <- wrapr::draw_framec(in_record, unquote_cols = setdiff(colnames(in_record),
+                                                                 x$blocks_to_rowrecs_spec$controlTableKeys))
+  out_str <- wrapr::draw_framec(out_record, unquote_cols = setdiff(colnames(out_record),
+                                                                   x$rowrecs_to_blocks_spec$controlTableKeys))
+  args <- x$blocks_to_rowrecs_spec[setdiff(names(x$blocks_to_rowrecs_spec),
+                                           c("controlTable", "recordKeys", "controlTableKeys"))]
+  fmt_str <- paste0("{\n ",
+                    in_str,
+                    " in_keys <- ", wrapr::map_to_char(c(x$blocks_to_rowrecs_spec$recordKeys,
+                                                         x$blocks_to_rowrecs_spec$controlTableKeys)),
+                    "\n\n # becomes\n\n " ,
+                    out_str,
+                    " out_keys <- ", wrapr::map_to_char(c(x$rowrecs_to_blocks_spec$recordKeys,
+                                                          x$rowrecs_to_blocks_spec$controlTableKeys)),
+                    "\n\n # args: ", gsub("['\"]+", "", wrapr::map_to_char(args)),
+                    "\n}\n\n")
+  fmt_str
+}
+
+#' @export
+#'
+print.cdata_general_transform_spec <- function(x, ...) {
+  fmt_str <- format(x)
+  cat(fmt_str)
+  invisible(fmt_str)
+}
 
