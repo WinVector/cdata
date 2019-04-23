@@ -18,8 +18,7 @@ knitr::opts_chunk$set(
 
 > Fold knowledge into data, so program logic can be stupid and robust.
 >
-> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley
-, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
 
 > Rule 2: The guaranteed access rule.
 >
@@ -141,7 +140,7 @@ The above is now wrapped into a [one-line command in `WVPlots`](https://winvecto
 
 The `cdata` package develops the idea of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   
 
-The current recommended interfaces to `cdata` are:
+The current idiomatic interfaces to `cdata` are:
 
   * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
   * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
