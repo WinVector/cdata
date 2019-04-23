@@ -26,9 +26,9 @@ Consider the simple data frame (the first couple of rows of the famous `iris` da
 library("cdata")
 
 d <- wrapr::build_frame(
-  "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species" |
-  5.1           , 3.5          , 1.4           , 0.2          , "setosa"  |
-  4.9           , 3            , 1.4           , 0.2          , "setosa"  )
+   "Sepal.Length"  , "Sepal.Width", "Petal.Length", "Petal.Width", "Species" |
+     5.1           , 3.5          , 1.4           , 0.2          , "setosa"  |
+     4.9           , 3            , 1.4           , 0.2          , "setosa"  )
 d$id <- seq_len(nrow(d))
 
 knitr::kable(d)
@@ -38,42 +38,49 @@ Suppose we wish to land the dimensions of different irises in rows keyed by two 
 
 ```{r}
 expect <- wrapr::build_frame(
-  "id", "Species", "Part" , "Measure", "Value" |
-  1L  , "setosa" , "Sepal", "Length" , 5.1     |
-  1L  , "setosa" , "Sepal", "Width"  , 3.5     |
-  1L  , "setosa" , "Petal", "Length" , 1.4     |
-  1L  , "setosa" , "Petal", "Width"  , 0.2     |
-  2L  , "setosa" , "Sepal", "Length" , 4.9     |
-  2L  , "setosa" , "Sepal", "Width"  , 3       |
-  2L  , "setosa" , "Petal", "Length" , 1.4     |
-  2L  , "setosa" , "Petal", "Width"  , 0.2     )
+   "id"  , "Species", "Part" , "Measure", "Value" |
+     1L  , "setosa" , "Sepal", "Length" , 5.1     |
+     1L  , "setosa" , "Sepal", "Width"  , 3.5     |
+     1L  , "setosa" , "Petal", "Length" , 1.4     |
+     1L  , "setosa" , "Petal", "Width"  , 0.2     |
+     2L  , "setosa" , "Sepal", "Length" , 4.9     |
+     2L  , "setosa" , "Sepal", "Width"  , 3       |
+     2L  , "setosa" , "Petal", "Length" , 1.4     |
+     2L  , "setosa" , "Petal", "Width"  , 0.2     )
 
 knitr::kable(expect)
 ```
 
-With multiple control table keys this is easy.
+This may seem like an exotic transform, but it seems to be common when you want to use multiple display aesthetics in a plot (such as x, y, color, and facet).
+
+With multiple control table keys specifying these sorts of transforms can be made easy.
 
 First define the control table specifying what a single row-record looks like after transformation to a multi-row block-record.
 
 ```{r}
 control_table <- wrapr::qchar_frame(
-  "Part",  "Measure", "Value"         |
-  "Sepal", "Length" ,  "Sepal.Length" |
-  "Sepal", "Width"  ,  "Sepal.Width"  |
-  "Petal", "Length" ,  "Petal.Length" |
-  "Petal", "Width"  ,  "Petal.Width"  )
-```
+   "Part"   , "Measure", "Value"      |
+     "Sepal", "Length" , Sepal.Length |
+     "Sepal", "Width"  , Sepal.Width  |
+     "Petal", "Length" , Petal.Length |
+     "Petal", "Width"  , Petal.Width  )
 
-We have designed our desired transform above (as taught [here](https://winvector.github.io/cdata/articles/design.html)). We are introducing a new convention of putting the non-key values in quotes (even though `wrapr::qcar_frame()` does not need this).  Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.
-
-We can now have `cdata::rowrecs_to_blocks()` perform the transform.  Notice we are specifying that the columns `Part` and `Measure` are the control table row-keys.
-
-```{r}
-res <- rowrecs_to_blocks(
-  d,
+layout <- rowrecs_to_blocks_spec(
   control_table,
   controlTableKeys = c("Part", "Measure"),
-  columnsToCopy = c("id", "Species"))
+  recordKeys = c("id", "Species"))
+
+print(layout)
+```
+
+Notice we are specifying that the columns `Part` and `Measure` are the control table row-keys (identifying rows within the block record) and "id" and "Species" are record keys (specifying which rows are in the same record).
+
+We have designed our desired transform above (as taught [here](https://winvector.github.io/cdata/articles/design.html)). We are introducing a new convention of putting the key values in quotes (even though `wrapr::qcar_frame()` does not need this).  Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.
+
+We can now perform the transform.  
+
+```{r}
+res <- d %.>% layout
 
 knitr::kable(res)
 ```
@@ -81,11 +88,11 @@ knitr::kable(res)
 And, as one comes to expect with coordinatized/fluid-data transforms, the process is easy to reverse (modulo column and row order).
 
 ```{r}
-back <- blocks_to_rowrecs(
-  res,
-  keyColumns = c("id", "Species"),
-  control_table,
-  controlTableKeys = c("Part", "Measure"))
+inv_layout <- t(layout)
+
+print(inv_layout)
+
+back <- res %.>% inv_layout
 
 knitr::kable(back)
 ```

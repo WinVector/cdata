@@ -26,14 +26,14 @@ But as with all general ideas, it is much easier to see what we mean by the abov
 ```{r}
 library("cdata")
 
-data <- build_frame(
-  'record_id', 'row',  'col1', 'col2', 'col3' |
-  1,           'row1',  1,      2,      3     |
-  1,           'row2',  4,      5,      6     |
-  1,           'row3',  7,      8,      9     |
-  2,           'row1',  11,     12,     13    |
-  2,           'row2',  14,     15,     16    |
-  2,           'row3',  17,     18,     19    )
+data <- wrapr::build_frame(
+   "record_id"  , "row" , "col1", "col2", "col3" |
+     1          , "row1", 1     , 2     , 3      |
+     1          , "row2", 4     , 5     , 6      |
+     1          , "row3", 7     , 8     , 9      |
+     2          , "row1", 11    , 12    , 13     |
+     2          , "row2", 14    , 15    , 16     |
+     2          , "row3", 17    , 18    , 19     )
 
 knitr::kable(data)
 ```
@@ -44,70 +44,85 @@ are identified by the value in the `row` column.  So The data items are named by
 Suppose we want to transpose each of the records- swapping the row and column notions.  With `cdata` this is easy.  First you design a transform to flatten each complex record into a single wide row (using the design steps taught [here](https://winvector.github.io/cdata/articles/design.html)).  Essentially that is just specifying the following control variables.  We define how to identify records (the key columns) and the structure of the records (giving the interior of the record arbitrary names we will re-use later).
 
 ```{r}
-keyColumns = 'record_id'
+recordKeys = 'record_id'
 
-incoming_shape <- qchar_frame(
-  "row",  "col1", "col2", "col3" |
-  "row1", v11   ,  v12  ,  v13   |
-  "row2", v21   ,  v22  ,  v23   |
-  "row3", v31   ,  v32  ,  v33   )
+incoming_shape <- wrapr::qchar_frame(
+   "row"   , "col1", "col2", "col3" |
+     "row1", v11   , v12   , v13    |
+     "row2", v21   , v22   , v23    |
+     "row3", v31   , v32   , v33    )
 ```
 
 And we specify (using the same principles) the desired final record shape, re-using the interior names from the first step to show where values are to be mapped.
 
 ```{r}
-outgoing_shape <- qchar_frame(
-  "column", "row1", "row2", "row3" |
-  "col1"  , v11   ,  v21 ,  v31    |
-  "col2"  , v12   ,  v22 ,  v32    |
-  "col3"  , v13   ,  v23 ,  v33    )
+outgoing_shape <- wrapr::qchar_frame(
+   "column_label"  , "c_row1", "c_row2", "c_row3" |
+     "rec_col1"    , v11     , v21     , v31      |
+     "rec_col2"    , v12     , v22     , v32      |
+     "rec_col3"    , v13     , v23     , v33      )
 ```
 
-Once you have done this the conversion is accomplished in two function calls.
+Once you have done this you specify the overall transform by building a layout specifying the incoming and outgoing record shapes.
 
 ```{r}
-rowrecs <- blocks_to_rowrecs(
+layout <- layout_specification(
+  incoming_shape = incoming_shape,
+  outgoing_shape = outgoing_shape,
+  recordKeys = recordKeys)
+
+print(layout)
+```
+
+This layout specification or controller can then perform the transform.
+
+```{r}
+data %.>%
+  layout %.>%
+  knitr::kable(.)
+```
+
+And the transform is done, each record has been transposed.  
+
+The principle is "draw a picture."  First we draw a picture of the block record structure we have, and then we draw a picture of the block record structure we want. 
+
+As you have seen, we have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).
+
+If you don't want to use pipe notation, you can use the method `layout_by()` (which takes a layout specification as an argument) or the method `convert_records()` (which takes the components of the transform specification as separate arguments).
+
+```{r}
+lr <- layout_by(layout, data)
+knitr::kable(lr)
+
+cr <- convert_records(
   data,
-  keyColumns = keyColumns,
-  controlTable = incoming_shape)
-transformed <- rowrecs_to_blocks(
-  rowrecs,
-  controlTable = outgoing_shape,
-  columnsToCopy = keyColumns)
-
-knitr::kable(transformed)
-```
-
-And the transform is done, each record has been transposed.  The principle is "draw a picture."  First we draw a picture of the block record structure we have, and then we draw a picture of the block record structure we want.  The intermediate form (`rowrecs`) is a special form where the concepts of records and rows exactly agree.  In this form each record is one exactly row and each row is exactly one record.  This data looks like the following.
-
-```{r}
-knitr::kable(rowrecs)
-```
-
-We have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).
-
-In `cdata` `1.0.5` or newer we can make things even easier and use a [convenience function that combines these steps](https://winvector.github.io/cdata/reference/convert_records.html).
-
-```{r}
-t2 <- convert_records(
-  data,
-  keyColumns = keyColumns,
+  keyColumns = recordKeys,
   incoming_shape = incoming_shape,
   outgoing_shape = outgoing_shape)
 
-knitr::kable(t2)
+knitr::kable(cr)
 ```
+
+A nifty bonus is: if the transformation is "faithful" (preserves enough cells and labels), then it is invertible and in fact easy to invert (by the `t()` transpose/adjoint function).
+
+```{r}
+inv_layout <- t(layout)
+
+print(inv_layout)
+
+data %.>%
+  layout %.>%
+  inv_layout %.>%
+  knitr::kable(.)
+```
+
 
 Also these conversions can also be translated into [`rquery`](https://github.com/WinVector/rquery) operators, and therefore saved to be run either in memory or directly on a database.
 
 ```{r}
 table_desciption <- rquery::local_td(data)
 ops <- table_desciption %.>%
-  convert_records(
-    .,
-    keyColumns = keyColumns,
-    incoming_shape = incoming_shape,
-    outgoing_shape = outgoing_shape)
+  layout
 
 cat(format(ops))
 
@@ -134,7 +149,6 @@ if(requireNamespace("DBI", quietly = TRUE) &&
 }
 ```
 
-
-
+And that is some of the generality of `cdata` transforms.
 
 

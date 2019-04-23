@@ -95,7 +95,7 @@
       <h1>Control Table Keys</h1>
                         <h4 class="author">John Mount</h4>
             
-            <h4 class="date">2019-04-22</h4>
+            <h4 class="date">2019-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/control_table_keys.Rmd"><code>vignettes/control_table_keys.Rmd</code></a></small>
       <div class="hidden name"><code>control_table_keys.Rmd</code></div>
@@ -110,9 +110,9 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-  <span class="st">"Sepal.Length"</span>, <span class="st">"Sepal.Width"</span>, <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span>, <span class="st">"Species"</span> <span class="op">|</span>
-<span class="st">  </span><span class="fl">5.1</span>           , <span class="fl">3.5</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
-<span class="st">  </span><span class="fl">4.9</span>           , <span class="dv">3</span>            , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  )
+   <span class="st">"Sepal.Length"</span>  , <span class="st">"Sepal.Width"</span>, <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span>, <span class="st">"Species"</span> <span class="op">|</span>
+<span class="st">     </span><span class="fl">5.1</span>           , <span class="fl">3.5</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="fl">4.9</span>           , <span class="dv">3</span>            , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  )
 d<span class="op">$</span>id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(d))
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
@@ -146,15 +146,15 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </table>
 <p>Suppose we wish to land the dimensions of different irises in rows keyed by two columns: <code>Part</code> and <code>Measure</code>. That is we want the data to look like the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">expect &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-  <span class="st">"id"</span>, <span class="st">"Species"</span>, <span class="st">"Part"</span> , <span class="st">"Measure"</span>, <span class="st">"Value"</span> <span class="op">|</span>
-<span class="st">  </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Length"</span> , <span class="fl">5.1</span>     <span class="op">|</span>
-<span class="st">  </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Width"</span>  , <span class="fl">3.5</span>     <span class="op">|</span>
-<span class="st">  </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Length"</span> , <span class="fl">1.4</span>     <span class="op">|</span>
-<span class="st">  </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Width"</span>  , <span class="fl">0.2</span>     <span class="op">|</span>
-<span class="st">  </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Length"</span> , <span class="fl">4.9</span>     <span class="op">|</span>
-<span class="st">  </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Width"</span>  , <span class="dv">3</span>       <span class="op">|</span>
-<span class="st">  </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Length"</span> , <span class="fl">1.4</span>     <span class="op">|</span>
-<span class="st">  </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Width"</span>  , <span class="fl">0.2</span>     )
+   <span class="st">"id"</span>  , <span class="st">"Species"</span>, <span class="st">"Part"</span> , <span class="st">"Measure"</span>, <span class="st">"Value"</span> <span class="op">|</span>
+<span class="st">     </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Length"</span> , <span class="fl">5.1</span>     <span class="op">|</span>
+<span class="st">     </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Width"</span>  , <span class="fl">3.5</span>     <span class="op">|</span>
+<span class="st">     </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Length"</span> , <span class="fl">1.4</span>     <span class="op">|</span>
+<span class="st">     </span>1L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Width"</span>  , <span class="fl">0.2</span>     <span class="op">|</span>
+<span class="st">     </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Length"</span> , <span class="fl">4.9</span>     <span class="op">|</span>
+<span class="st">     </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Sepal"</span>, <span class="st">"Width"</span>  , <span class="dv">3</span>       <span class="op">|</span>
+<span class="st">     </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Length"</span> , <span class="fl">1.4</span>     <span class="op">|</span>
+<span class="st">     </span>2L  , <span class="st">"setosa"</span> , <span class="st">"Petal"</span>, <span class="st">"Width"</span>  , <span class="fl">0.2</span>     )
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(expect)</code></pre></div>
 <table class="table">
@@ -224,21 +224,44 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<p>With multiple control table keys this is easy.</p>
+<p>This may seem like an exotic transform, but it seems to be common when you want to use multiple display aesthetics in a plot (such as x, y, color, and facet).</p>
+<p>With multiple control table keys specifying these sorts of transforms can be made easy.</p>
 <p>First define the control table specifying what a single row-record looks like after transformation to a multi-row block-record.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control_table &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  <span class="st">"Part"</span>,  <span class="st">"Measure"</span>, <span class="st">"Value"</span>         <span class="op">|</span>
-<span class="st">  "Sepal"</span>, <span class="st">"Length"</span> ,  <span class="st">"Sepal.Length"</span> <span class="op">|</span>
-<span class="st">  "Sepal"</span>, <span class="st">"Width"</span>  ,  <span class="st">"Sepal.Width"</span>  <span class="op">|</span>
-<span class="st">  "Petal"</span>, <span class="st">"Length"</span> ,  <span class="st">"Petal.Length"</span> <span class="op">|</span>
-<span class="st">  "Petal"</span>, <span class="st">"Width"</span>  ,  <span class="st">"Petal.Width"</span>  )</code></pre></div>
-<p>We have designed our desired transform above (as taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). We are introducing a new convention of putting the non-key values in quotes (even though <code>wrapr::qcar_frame()</code> does not need this). Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.</p>
-<p>We can now have <code><a href="../reference/rowrecs_to_blocks.html">cdata::rowrecs_to_blocks()</a></code> perform the transform. Notice we are specifying that the columns <code>Part</code> and <code>Measure</code> are the control table row-keys.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
-  d,
+   <span class="st">"Part"</span>   , <span class="st">"Measure"</span>, <span class="st">"Value"</span>      <span class="op">|</span>
+<span class="st">     "Sepal"</span>, <span class="st">"Length"</span> , Sepal.Length <span class="op">|</span>
+<span class="st">     "Sepal"</span>, <span class="st">"Width"</span>  , Sepal.Width  <span class="op">|</span>
+<span class="st">     "Petal"</span>, <span class="st">"Length"</span> , Petal.Length <span class="op">|</span>
+<span class="st">     "Petal"</span>, <span class="st">"Width"</span>  , Petal.Width  )
+
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   control_table,
   <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Part"</span>, <span class="st">"Measure"</span>),
-  <span class="dt">columnsToCopy =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"id"</span>, <span class="st">"Species"</span>))
+  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"id"</span>, <span class="st">"Species"</span>))
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
+<span class="co">#&gt;      .   , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
+<span class="co">#&gt;  row_keys &lt;- c('id', 'Species')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "id"  , "Species", "Part" , "Measure", "Value"      |</span>
+<span class="co">#&gt;      .   , .        , "Sepal", "Length" , Sepal.Length |</span>
+<span class="co">#&gt;      .   , .        , "Sepal", "Width"  , Sepal.Width  |</span>
+<span class="co">#&gt;      .   , .        , "Petal", "Length" , Petal.Length |</span>
+<span class="co">#&gt;      .   , .        , "Petal", "Width"  , Petal.Width  )</span>
+<span class="co">#&gt;  block_keys &lt;- c('id', 'Species', 'Part', 'Measure')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span></code></pre></div>
+<p>Notice we are specifying that the columns <code>Part</code> and <code>Measure</code> are the control table row-keys (identifying rows within the block record) and “id” and “Species” are record keys (specifying which rows are in the same record).</p>
+<p>We have designed our desired transform above (as taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). We are introducing a new convention of putting the key values in quotes (even though <code>wrapr::qcar_frame()</code> does not need this). Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.</p>
+<p>We can now perform the transform.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span>d <span class="op">%.&gt;%</span><span class="st"> </span>layout
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(res)</code></pre></div>
 <table class="table">
@@ -309,11 +332,29 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <p>And, as one comes to expect with coordinatized/fluid-data transforms, the process is easy to reverse (modulo column and row order).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">back &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(
-  res,
-  <span class="dt">keyColumns =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"id"</span>, <span class="st">"Species"</span>),
-  control_table,
-  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Part"</span>, <span class="st">"Measure"</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "id"  , "Species", "Part" , "Measure", "Value"      |</span>
+<span class="co">#&gt;      .   , .        , "Sepal", "Length" , Sepal.Length |</span>
+<span class="co">#&gt;      .   , .        , "Sepal", "Width"  , Sepal.Width  |</span>
+<span class="co">#&gt;      .   , .        , "Petal", "Length" , Petal.Length |</span>
+<span class="co">#&gt;      .   , .        , "Petal", "Width"  , Petal.Width  )</span>
+<span class="co">#&gt;  block_keys &lt;- c('id', 'Species', 'Part', 'Measure')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
+<span class="co">#&gt;      .   , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
+<span class="co">#&gt;  row_keys &lt;- c('id', 'Species')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span>
+
+back &lt;-<span class="st"> </span>res <span class="op">%.&gt;%</span><span class="st"> </span>inv_layout
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(back)</code></pre></div>
 <table class="table">

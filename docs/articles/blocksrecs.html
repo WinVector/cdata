@@ -95,7 +95,7 @@
       <h1>Block Records and Row Records</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-22</h4>
+            <h4 class="date">2019-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/blocksrecs.Rmd"><code>vignettes/blocksrecs.Rmd</code></a></small>
       <div class="hidden name"><code>blocksrecs.Rmd</code></div>
@@ -117,13 +117,28 @@
 <p>Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.</p>
 </blockquote>
 <p>The coordinatized data concept is that the exact <em>current</em> data realization is incidental. One can perform a data <em>change of basis</em> to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).</p>
-<p>The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to <a href="https://en.wikipedia.org/wiki/Record-oriented_filesystem">record-oriented filesystems</a>, and perhaps living on in JSON nested format.</p>
-<p>The entirety of the <code>cdata</code> package is to supply transforms between what we call “row records” (records that happen to be implemented as a single row) and block records (records that span multiple rows). These two methods are:</p>
+<p>The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to <a href="https://en.wikipedia.org/wiki/Record-oriented_filesystem">record-oriented filesystems</a>.</p>
+<p>The core of the <code>cdata</code> package is to supply transforms between what we call “row records” (records that happen to be implemented as a single row) and block records (records that span multiple rows). These two methods are:</p>
 <ul>
 <li><code><a href="../reference/rowrecs_to_blocks.html">cdata::rowrecs_to_blocks()</a></code></li>
 <li><code><a href="../reference/blocks_to_rowrecs.html">cdata::blocks_to_rowrecs()</a></code></li>
 </ul>
 <p>All the other <code>cdata</code> functions are helpers allowing abbreviated notation in special cases (such as <code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code> <code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code>) and adapters (allowing these operations to be performed directly in databases and large data systems such as <code>Apache Spark</code>).</p>
+<p>The “nice user facing” methods are:</p>
+<ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records relate to single-row records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/layout_by.html"><code><a href="../reference/layout_by.html">layout_by()</a></code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper in specifying record control table layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="../reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
+</ul>
 <p>Let’s look at <code>cdata</code> with some specific data.</p>
 <p>For our example let’s take the task of re-organizing the <code>iris</code> data for a faceted plot, as discussed <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(cdata)
@@ -137,91 +152,214 @@ iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="
 <p>To transform this data into a format ready for our <code>ggplot2</code> task we design (as <a href="https://winvector.github.io/cdata/articles/design.html">taught here</a>) a “transform control table” that shows how to move from our row-oriented form into a block oriented form. Which in this case looks like the following.</p>
 <p><img src="rowrecs_to_blocks.png" width="600"></p>
 <p>In <code>R</code> the transform table is specified as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
   <span class="st">"flower_part"</span>, <span class="st">"Length"</span>      , <span class="st">"Width"</span>     <span class="op">|</span>
 <span class="st">  "Petal"</span>      , Petal.Length  , Petal.Width <span class="op">|</span>
-<span class="st">  "Sepal"</span>      , Sepal.Length  , Sepal.Width ))
-<span class="co">#&gt;   flower_part       Length       Width</span>
-<span class="co">#&gt; 1       Petal Petal.Length Petal.Width</span>
-<span class="co">#&gt; 2       Sepal Sepal.Length Sepal.Width</span>
+<span class="st">  "Sepal"</span>      , Sepal.Length  , Sepal.Width )
 
-columnsToCopy &lt;-<span class="st"> "Species"</span></code></pre></div>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+  controlTable,
+  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |</span>
+<span class="co">#&gt;      .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )</span>
+<span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
+<span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
+<span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
+<span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span></code></pre></div>
 <p>And then applying it converts rows from our <code>iris</code> data into ready to plot 2-row blocks.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris, <span class="dt">n=</span><span class="dv">1</span>),
-  controlTable,
-  <span class="dt">columnsToCopy =</span> columnsToCopy)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(., <span class="dt">n =</span> <span class="dv">1</span>) <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="left">Species</th>
+<th align="right">iris_id</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">1</td>
+</tr></tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(., <span class="dt">n =</span> <span class="dv">1</span>) <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout
 
-iris_aug
-<span class="co">#&gt;   Species flower_part Length Width</span>
-<span class="co">#&gt; 1  setosa       Petal    1.4   0.2</span>
-<span class="co">#&gt; 2  setosa       Sepal    5.1   3.5</span></code></pre></div>
-<p>To perform the reverse transform we use the same transform control table, but we think of it as specifying the reverse transform (from its own block form into a row).</p>
+iris_aug <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">iris_id</th>
+<th align="left">Species</th>
+<th align="left">flower_part</th>
+<th align="right">Length</th>
+<th align="right">Width</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">Petal</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">Sepal</td>
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+</tr>
+</tbody>
+</table>
+<p>To perform the reverse transform we use the same transform control table, but we think of it as specifying the reverse transform (from its own block form into a row). The reverse can be specified using the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> transpose/adjoint method.</p>
 <p><img src="blocks_to_rowrecs.png" width="600"></p>
-<p>We also use additional keys to help us identify the which rows are in the same block record (in this case the <code>iris_id</code> column).</p>
-<p>A forward and then back transform is as follows.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">columnsToCopy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(iris_id, Species)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># re-do the forward transform, this time</span>
+<span class="co"># with more records so we can see more</span>
+iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(., <span class="dt">n =</span> <span class="dv">3</span>) <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout
 
-<span class="co"># re-do the forward transform, this time</span>
-<span class="co"># with the iris_id</span>
-iris_aug &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
-  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris, <span class="dt">n=</span><span class="dv">3</span>),
-  controlTable,
-  <span class="dt">columnsToCopy =</span> columnsToCopy)
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(iris_aug)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">iris_id</th>
+<th align="left">Species</th>
+<th align="left">flower_part</th>
+<th align="right">Length</th>
+<th align="right">Width</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">Petal</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">Sepal</td>
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">Petal</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">Sepal</td>
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">Petal</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">Sepal</td>
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
 
-iris_aug
-<span class="co">#&gt;   iris_id Species flower_part Length Width</span>
-<span class="co">#&gt; 1       1  setosa       Petal    1.4   0.2</span>
-<span class="co">#&gt; 2       1  setosa       Sepal    5.1   3.5</span>
-<span class="co">#&gt; 3       2  setosa       Petal    1.4   0.2</span>
-<span class="co">#&gt; 4       2  setosa       Sepal    4.9   3.0</span>
-<span class="co">#&gt; 5       3  setosa       Petal    1.3   0.2</span>
-<span class="co">#&gt; 6       3  setosa       Sepal    4.7   3.2</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
+<span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
+<span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
+<span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |</span>
+<span class="co">#&gt;      .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )</span>
+<span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span>
 
 <span class="co"># demonstrate the reverse transform</span>
-iris_back &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(
-  iris_aug,
-  <span class="dt">keyColumns =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>),
-  controlTable
-)
+iris_back &lt;-<span class="st"> </span>iris_aug <span class="op">%.&gt;%</span>
+<span class="st">  </span>inv_layout
 
-iris_back
-<span class="co">#&gt;   iris_id Species Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
-<span class="co">#&gt; 1       1  setosa          1.4          5.1         0.2         3.5</span>
-<span class="co">#&gt; 2       2  setosa          1.4          4.9         0.2         3.0</span>
-<span class="co">#&gt; 3       3  setosa          1.3          4.7         0.2         3.2</span></code></pre></div>
-<p>Notice we use the same control table in both directions: what changes is the interpretations of various regions of the control table.</p>
-<p>The control table is a picture of the transform in the sense that it transforms it self into a row, and that row back into itself. We show this here.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># transform the row into a control table</span>
-row &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(controlTable, 
-                         <span class="dt">keyColumns =</span> <span class="ot">NULL</span>, 
-                         <span class="dt">controlTable =</span> controlTable)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(row)
-<span class="co">#&gt;   Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
-<span class="co">#&gt; 1 Petal.Length Sepal.Length Petal.Width Sepal.Width</span>
-
-<span class="co"># recover the controlTable from the row</span>
-<span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(row,
-                  <span class="dt">controlTable =</span> controlTable)
-<span class="co">#&gt;   flower_part       Length       Width</span>
-<span class="co">#&gt; 1       Petal Petal.Length Petal.Width</span>
-<span class="co">#&gt; 2       Sepal Sepal.Length Sepal.Width</span></code></pre></div>
-<p><code>cdata</code> considers the row-record a universal form. Just about any data shape can be transformed to any other by:</p>
-<ul>
-<li>(optionally) Combining columns (as new column names in the soon to come row records must come from values of a single column).</li>
-<li>Performing a <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> step (moving all data for each arbitrarily shaped block record into a single row).</li>
-<li>Performing a <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> step (moving all data from each row into a <em>new</em> arbitrarily shaped block record).</li>
-<li>(optionally) Splitting some columns (as only a single inside block key column is produced by <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code>, this step us not often needed).</li>
-</ul>
-<p>For most practical applications we have seen a single <code><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs()</a></code> step or <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> step is usually sufficient.</p>
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(iris_back)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">iris_id</th>
+<th align="left">Species</th>
+<th align="right">Petal.Length</th>
+<th align="right">Sepal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="right">Sepal.Width</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="right">1.4</td>
+<td align="right">5.1</td>
+<td align="right">0.2</td>
+<td align="right">3.5</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="right">1.4</td>
+<td align="right">4.9</td>
+<td align="right">0.2</td>
+<td align="right">3.0</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="right">1.3</td>
+<td align="right">4.7</td>
+<td align="right">0.2</td>
+<td align="right">3.2</td>
+</tr>
+</tbody>
+</table>
+<p><code>cdata</code> considers the row-record a universal intermediate form, and this has the advantage of being able to represent a different type per value (as each value per-record is in a different column)</p>
 <p>This differs from <code>reshape2</code> where the <code>melt()</code> to “molten” (or thin <a href="https://en.wikipedia.org/wiki/Semantic_triple">RDF-triple</a>-like) is used as the universal intermediate form that one then <code>dcast()</code>s into desired arrangements.</p>
-<p>The act of <a href="https://winvector.github.io/cdata/articles/design.html">designing a transform control table</a> to solve a problem already exposes a lot of problem structure:</p>
-<ul>
-<li>If the control table has two columns then the operation could be implemented as a single <code>tidyr</code> <code>gather()</code> or <code>spread()</code>.</li>
-<li>If the control table has <code>k</code> rows then the <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> direction could be implemented as <code>k-1</code> <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind()</a></code>s.</li>
-</ul>
-<p>As we have said, a tutorial on <em>how</em> to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>.</p>
-<p>Some additional tutorials on <code>cdata</code> data transforms can are given below:</p>
+<p>As we have said, a tutorial on <em>how</em> to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a> and <a href="http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/">here</a>.</p>
+<p>Some additional (older) tutorials on <code>cdata</code> data transforms can are given below:</p>
 <ul>
 <li><a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">The faceted plot example</a></li>
 <li><a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a></li>

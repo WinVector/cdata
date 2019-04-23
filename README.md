@@ -1,10 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to the so-called "Rule of Representation":
+[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to Raymond's "Rule of Representation", and using Codd's "Guaranteed Access Rule".
 
 > Fold knowledge into data, so program logic can be stupid and robust.
 >
 > [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley , 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+
+> Rule 2: The guaranteed access rule.
+>
+> Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
+>
+> [Edgar F. Codd](https://en.wikipedia.org/wiki/Codd%27s_12_rules)
 
 The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
 
@@ -14,6 +20,8 @@ Briefly: `cdata` supplies data transform operators that:
 
 -   Work on local data or with any `DBI` data source.
 -   Are powerful generalizations of the operations commonly called `pivot` and `un-pivot`.
+-   Allow for example-driven graphical specification of data transforms or data layout control.
+-   Work in-memory or with `SQL` databases.
 
 A quick example: plot iris petal and sepal dimensions in a faceted graph.
 
@@ -32,6 +40,7 @@ head(iris)
  #  6          5.4         3.9          1.7         0.4  setosa       6
 
 library("ggplot2")
+ #  Warning: package 'ggplot2' was built under R version 3.5.2
 library("cdata")
 
 #
@@ -42,10 +51,10 @@ controlTable <- wrapr::qchar_frame(
   "flower_part", "Length"     , "Width"     |
     "Petal"    , Petal.Length , Petal.Width |
     "Sepal"    , Sepal.Length , Sepal.Width )
+
 transform <- rowrecs_to_blocks_spec(
   controlTable,
-  recordKeys = c("iris_id", "Species"),
-  checkKeys = FALSE)
+  recordKeys = c("iris_id", "Species"))
 
 # do the unpivot to convert the row records to block records
 iris_aug <- iris %.>% transform
@@ -87,7 +96,7 @@ print(transform)
  #       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )
  #   block_keys <- c('iris_id', 'Species', 'flower_part')
  #  
- #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
+ #   # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
  #  }
 
 # show the representation of the transform
@@ -107,14 +116,13 @@ unclass(transform)
  #  [1] TRUE
  #  
  #  $checkKeys
- #  [1] FALSE
+ #  [1] TRUE
  #  
  #  $strict
  #  [1] FALSE
 ```
 
-More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
-And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html). And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
 
 ------------------------------------------------------------------------
 
@@ -200,81 +208,22 @@ print(transform)
 
 The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
 
-And a quick database example:
-
-``` r
-library("cdata")
-library("rquery")
-
-use_spark <- FALSE
-
-if(use_spark) {
-  my_db <- sparklyr::spark_connect(version='2.2.0', 
-                                   master = "local")
-} else {
-  my_db <- DBI::dbConnect(RSQLite::SQLite(),
-                          ":memory:")
-}
-
-
-
-# pivot example
-d <- wrapr::build_frame(
-   "meas", "val" |
-   "AUC" , 0.6   |
-   "R2"  , 0.2   )
-DBI::dbWriteTable(my_db,
-                  'd',
-                  d,
-                  temporary = TRUE)
-rstr(my_db, 'd')
- #  table `d` SQLiteConnection 
- #   nrow: 2 
- #  'data.frame':   2 obs. of  2 variables:
- #   $ meas: chr  "AUC" "R2"
- #   $ val : num  0.6 0.2
-td <- db_td(my_db, "d")
-td
- #  [1] "table(`d`; meas, val)"
-
-cT <- td %.>%
-  build_pivot_control(.,
-                      columnToTakeKeysFrom= 'meas',
-                      columnToTakeValuesFrom= 'val') %.>%
-  execute(my_db, .)
-print(cT)
- #    meas val
- #  1  AUC AUC
- #  2   R2  R2
-
-tab <- td %.>%
-  blocks_to_rowrecs(.,
-                    keyColumns = NULL,
-                    controlTable = cT,
-                    temporary = FALSE) %.>%
-  materialize(my_db, .)
-
-print(tab)
- #  [1] "table(`rquery_mat_67431167034341783035_0000000000`; AUC, R2)"
-  
-rstr(my_db, tab)
- #  table `rquery_mat_67431167034341783035_0000000000` SQLiteConnection 
- #   nrow: 1 
- #  'data.frame':   1 obs. of  2 variables:
- #   $ AUC: num 0.6
- #   $ R2 : num 0.2
-
-if(use_spark) {
-  sparklyr::spark_disconnect(my_db)
-} else {
-  DBI::dbDisconnect(my_db)
-}
-```
-
 ------------------------------------------------------------------------
 
 The `cdata` package develops the idea of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).
-The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)). These concepts were later adapted from `cdata` by the `tidyr` package.
+
+The current recommended interfaces to `cdata` are:
+
+-   [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
+-   [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+-   [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
+-   `t()` (transpose/adjoint) to invert or reverse layout specifications.
+-   [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
+-   [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
+
+The package vignettes can be found in the "Articles" tab [here](https://winvector.github.io/cdata/).
+
+The (older) recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)). These concepts were later adapted from `cdata` by the `tidyr` package.
 
 ------------------------------------------------------------------------
 
@@ -283,5 +232,7 @@ Install via CRAN:
 ``` r
 install.packages("cdata")
 ```
+
+------------------------------------------------------------------------
 
 Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).

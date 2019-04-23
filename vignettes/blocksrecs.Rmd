@@ -29,9 +29,9 @@ The idea of data coordinates is related to [Codd's 2nd rule](https://en.wikipedi
 
 The coordinatized data concept is that the exact *current* data realization is incidental.  One can perform a data *change of basis* to get the data into the right format (where the physical layout of records is altered to match the desired logical layout of the data).
 
-The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem), and perhaps living on in JSON nested format.
+The idea of data records (and these records possibly being different than simple rows) is a staple of computer science: harking at least back to [record-oriented filesystems](https://en.wikipedia.org/wiki/Record-oriented_filesystem).
 
-The entirety of the `cdata` package is to supply transforms between what we call "row records" (records that
+The core of the `cdata` package is to supply transforms between what we call "row records" (records that
 happen to be implemented as a single row) and block records (records that span multiple rows).  These two
 methods are:
 
@@ -39,6 +39,16 @@ methods are:
   * `cdata::blocks_to_rowrecs()`
   
 All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases and large data systems such as `Apache Spark`).
+
+The "nice user facing" methods are:
+
+  * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
+  * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+  * [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
+  * `t()` (transpose/adjoint) to invert or reverse layout specifications.
+  * [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
+  * [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
+
 
 
 Let's look at `cdata` with some specific data.
@@ -63,92 +73,66 @@ looks like the following.
 In `R` the transform table is specified as follows.
 
 ```{r}
-(controlTable <- wrapr::qchar_frame(
+controlTable <- wrapr::qchar_frame(
   "flower_part", "Length"      , "Width"     |
   "Petal"      , Petal.Length  , Petal.Width |
-  "Sepal"      , Sepal.Length  , Sepal.Width ))
+  "Sepal"      , Sepal.Length  , Sepal.Width )
 
-columnsToCopy <- "Species"
+layout <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = c("iris_id", "Species"))
+
+print(layout)
 ```
 
 And then applying it converts rows from our `iris` data into ready to plot 2-row blocks.
 
 ```{r}
-iris_aug <- rowrecs_to_blocks(
-  head(iris, n=1),
-  controlTable,
-  columnsToCopy = columnsToCopy)
+iris %.>%
+  head(., n = 1) %.>%
+  knitr::kable(.)
 
-iris_aug
+iris_aug <- iris %.>%
+  head(., n = 1) %.>%
+  layout
+
+iris_aug %.>%
+  knitr::kable(.)
 ```
 
-To perform the reverse transform we use the same transform control table, but we think of it as specifying the reverse transform (from its own block form into a row).
+To perform the reverse transform we use the same transform control table, but we think of it as specifying the reverse transform (from its own block form into a row).  The reverse can be specified using the `t()` transpose/adjoint method.
 
 <img src="blocks_to_rowrecs.png" width="600">
 
-We also use additional keys to help us identify the which rows are in the same block record (in this case the `iris_id` column).  
-
-A forward and then back transform is as follows.
 
 ```{r}
-columnsToCopy = qc(iris_id, Species)
-
 # re-do the forward transform, this time
-# with the iris_id
-iris_aug <- rowrecs_to_blocks(
-  head(iris, n=3),
-  controlTable,
-  columnsToCopy = columnsToCopy)
+# with more records so we can see more
+iris_aug <- iris %.>%
+  head(., n = 3) %.>%
+  layout
 
-iris_aug
+knitr::kable(iris_aug)
+
+inv_layout <- t(layout)
+
+print(inv_layout)
 
 # demonstrate the reverse transform
-iris_back <- blocks_to_rowrecs(
-  iris_aug,
-  keyColumns = c("iris_id", "Species"),
-  controlTable
-)
+iris_back <- iris_aug %.>%
+  inv_layout
 
-iris_back
-```
-
-Notice we use the same control table in both directions: what changes is the interpretations of various regions of the control table.
-
-The  control table is a picture of the transform in the sense that it transforms it self
-into a row, and that row back into itself.  We show this here.
-
-```{r}
-# transform the row into a control table
-row <- blocks_to_rowrecs(controlTable, 
-                         keyColumns = NULL, 
-                         controlTable = controlTable)
-print(row)
-
-# recover the controlTable from the row
-rowrecs_to_blocks(row,
-                  controlTable = controlTable)
+knitr::kable(iris_back)
 ```
 
 
-`cdata` considers the row-record a universal form.  Just about any data shape can be transformed to any other by:
-
- * (optionally) Combining columns (as new column names in the soon to come row records must come from values of a single column).
- * Performing a `blocks_to_rowrecs()` step (moving all data for each arbitrarily shaped block record into a single row).
- * Performing a `rowrecs_to_blocks()` step (moving all data from each row into a *new* arbitrarily shaped block record).
- * (optionally) Splitting some columns (as only a single inside block key column is produced by `rowrecs_to_blocks()`, this step us not often needed).
- 
-For most practical applications we have seen a single `blocks_to_rowrecs()` step or `rowrecs_to_blocks()` step is usually sufficient.
+`cdata` considers the row-record a universal intermediate form, and this has the advantage of being able to represent a different type per value (as each value per-record is in a different column)
 
 This differs from `reshape2` where the `melt()` to "molten" (or thin [RDF-triple](https://en.wikipedia.org/wiki/Semantic_triple)-like) is used as the universal intermediate form that one then `dcast()`s into desired arrangements.
 
-The act of [designing a transform control table](https://winvector.github.io/cdata/articles/design.html) to solve a problem already exposes a lot of problem structure:
+As we have said, a tutorial on *how* to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html) and [here](http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/).
 
- * If the control table has two columns then the operation could be implemented as a single `tidyr` `gather()` or `spread()`.
- * If the control table has `k` rows then the `rowrecs_to_blocks()` direction could be implemented as `k-1` `rbind()`s.
-
-As we have said, a tutorial on *how* to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html).
-
-Some additional tutorials on `cdata` data transforms can are given below:
+Some additional (older) tutorials on `cdata` data transforms can are given below:
 
   * [The faceted plot example](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/)
   * [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)

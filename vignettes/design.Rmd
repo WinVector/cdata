@@ -95,56 +95,62 @@ This annotated example record is the guide for building what we call the transfo
 The `R` version of the above is specified as follows:
 
 ```{r}
-(controlTable <- wrapr::qchar_frame(
+# get a small sample of irises
+iris <- head(iris, n = 3)
+# add a record id to iris
+iris$iris_id <- seq_len(nrow(iris))
+
+knitr::kable(iris)
+```
+
+Specify the layout transform.
+
+```{r}
+library("cdata")
+
+controlTable <- wrapr::qchar_frame(
   "flower_part", "Length"    , "Width"     |
   "Petal"      , Petal.Length, Petal.Width |
-  "Sepal"      , Sepal.Length, Sepal.Width ))
+  "Sepal"      , Sepal.Length, Sepal.Width )
 
-(columnsToCopy <- "Species")
+layout <- rowrecs_to_blocks_spec(
+  controlTable,
+  recordKeys = c("iris_id", "Species"))
 
+print(layout)
 ```
 
 And we can now perform the transform.
 
 ```{r}
-library("cdata")
+iris %.>%
+  knitr::kable(.)
+  
+iris_aug <- iris %.>% 
+  layout
 
-iris_aug <- rowrecs_to_blocks(
-  iris,
-  controlTable = controlTable,
-  columnsToCopy = columnsToCopy) 
-
-head(iris_aug)
+iris_aug %.>%
+  knitr::kable(.)
 ```
   
   
 The data is now ready to plot using `ggplot2` as was shown  [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
 
-Designing a `blocks_to_rowrecs` transform is even easier, as the `controlTable` has the same
+Designing a `blocks_to_rowrecs` transform is just as easy, as the `controlTable` has the same
 shape as the incoming record block (assuming the record partial key controlling column is the first column).  All 
-one has to do is replace the values in such an example record with the desired column names.
+one has to is get the reverse specification using `t()`.
 
 For example:
 
 ```{r}
-# grab a record to use to build our control table 
-ct <- iris_aug[1:2, c("flower_part", "Length", "Width")]
-print(ct)
+inv_layout <- t(layout)
 
-# replace values with desired column names
-# as in this case the values are unique we can do
-# this mechanically, normally we do this by hand
-for(i in 1:nrow(ct)) {
-  for(j in 2:ncol(ct)) {
-    ct[i,j] <- colnames(iris)[which(iris[1,]==ct[i,j])]
-  }
-}
+print(inv_layout)
 
-print(ct)
+iris_aug %.>%
+  inv_layout %.>%
+  knitr::kable(.)
 ```
-
-
-Though to actually move back from block records to row records we would need additional record id keys showing *which* rows together form a record (which we demonstrate [here](https://winvector.github.io/cdata/articles/blocksrecs.html)).
 
 Notice in both cases that having examples of the before and after form of the transform is the guide to building the transform specification, that is, the transform control table. In practice: we *highly* recommend looking at your data, writing down what a 
 single record on each side of the transform would look like, and then using that to fill out the control table on paper.  

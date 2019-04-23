@@ -95,7 +95,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-22</h4>
+            <h4 class="date">2019-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -104,8 +104,8 @@
 
     
     
-<p>As of <code>cdata</code> version <code>1.0.8</code> <code>cdata</code> implements an operator notation for data transform.</p>
-<p>The idea is simple, yet powerful. In fact it helps us find new names for the transforms: <em>multiply</em> to block records and <em>factor</em> to row records. These terms will become clear as we work examples.</p>
+<p><code>cdata</code> recommends an operator idiom to apply data transforms.</p>
+<p>The idea is simple, yet powerful.</p>
 <p>First let’s start with some data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
@@ -227,6 +227,31 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># (or using general pipe notation </span>
+<span class="co"># includng the .() "execute immediately")</span>
+d <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">model_id</th>
+<th align="right">AUC</th>
+<th align="right">R2</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.7</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.8</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
 <p>We can expand record rows into blocks by a “multiplication” (or join) step.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
 <table class="table">
@@ -281,8 +306,42 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># (or using general pipe notation)</span>
+d2 <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>transform <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">model_id</th>
+<th align="left">measure</th>
+<th align="right">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">AUC</td>
+<td align="right">0.7</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">AUC</td>
+<td align="right">0.8</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">R2</td>
+<td align="right">0.5</td>
+</tr>
+</tbody>
+</table>
 <p>(<code>%//%</code> and <code>%**%</code> being two operators introduced by the <code>cdata</code> package.)</p>
-<p>And the two operators have an inverse/adjoint relation.</p>
+<p>And the two specialized operators have an inverse/adjoint relation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -498,7 +557,6 @@ d_td <span class="op">%.&gt;%</span><span class="st"> </span>
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)</code></pre></div>
-<p>And that is truly fluid data manipulation.</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

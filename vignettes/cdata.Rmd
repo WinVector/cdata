@@ -9,57 +9,98 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The `cdata` package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   The recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
-
+The [`cdata`](https://github.com/WinVector/cdata) package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   
 
 Briefly `cdata` supplies data transform operators that:
 
  * Work on local data or with any `DBI` data source.
  * Are powerful generalizations of the operators commonly called `pivot` and `un-pivot`.
+ * Can be specified by drawing an example.
 
 A quick example:
 
-```{r chkpkg}
-run_vignette <- requireNamespace("RSQLite", quietly = TRUE) &&
-  requireNamespace("DBI", quietly = TRUE)
-```
-
-```{r ex1, eval=run_vignette}
+```{r}
 library("cdata")
-my_db <- DBI::dbConnect(RSQLite::SQLite(), 
-                        ":memory:")
 
-# pivot example
-d <- build_frame(
-   "meas", "val" /
-   "AUC" , 0.6   /
-   "R2"  , 0.2   )
+# first few rows of the iris data as an example
+d <- wrapr::build_frame(
+   "Sepal.Length"  , "Sepal.Width", "Petal.Length", "Petal.Width", "Species" |
+     5.1           , 3.5          , 1.4           , 0.2          , "setosa"  |
+     4.9           , 3            , 1.4           , 0.2          , "setosa"  |
+     4.7           , 3.2          , 1.3           , 0.2          , "setosa"  |
+     4.6           , 3.1          , 1.5           , 0.2          , "setosa"  |
+     5             , 3.6          , 1.4           , 0.2          , "setosa"  |
+     5.4           , 3.9          , 1.7           , 0.4          , "setosa"  )
+d$iris_id <- seq_len(nrow(d))
 
-DBI::dbWriteTable(my_db,
-                  'd',
-                  d,
-                  temporary = TRUE)
-qlook(my_db, 'd')
-
-cT <- build_pivot_control_q('d',
-                            columnToTakeKeysFrom= 'meas',
-                            columnToTakeValuesFrom= 'val',
-                            my_db = my_db)
-tab <- blocks_to_rowrecs_q('d',
-                           keyColumns = NULL,
-                           controlTable = cT,
-                           my_db = my_db)
-qlook(my_db, tab)
-
-DBI::dbDisconnect(my_db)
+knitr::kable(d)
 ```
 
-Install via CRAN:
+Now suppose we want to take the above "all facts about each iris are in a single row" representation and convert it into a per-iris record block with the following structure.
 
-```{r, eval=FALSE}
-install.packages("cdata")
+```{r}
+record_example <- wrapr::qchar_frame(
+   "plant_part"  , "measurement", "value"      |
+     "sepal"     , "width"      , Sepal.Width  |
+     "sepal"     , "length"     , Sepal.Length |
+     "petal"     , "width"      , Petal.Width  |
+     "petal"     , "length"     , Petal.Length )
+
+knitr::kable(record_example)
 ```
 
-Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on). 
+The above sort of transformation may seem exotic, but it is fairly common when we want to plot many aspects of a record at the same time.
 
+To specify our transformation we combine the record example with information about how records are keyed (recordKeys showing which rows go together to form a record, and controlTableKeys specifying the internal structure of a data record).
+
+```{r}
+layout <- rowrecs_to_blocks_spec(
+  record_example,
+  controlTableKeys = c("plant_part", "measurement"),
+  recordKeys = c("iris_id", "Species"))
+
+print(layout)
+```
+
+In the above we have used the common useful data organizing trick of specifying a dependent column (Species being a function of iris_id) as an additional key.
+
+This layout then specifies and implements the data transform.  We can transform the data by sending it to the layout.
+
+```{r}
+d_transformed <- d %.>% 
+  layout
+
+knitr::kable(d_transformed)
+```
+
+And it is easy to invert these transforms using the `t()` transpose/adjoint notation.
+
+```{r}
+inv_layout <- t(layout)
+
+print(inv_layout)
+
+d_transformed %.>%
+  inv_layout %.>%
+  knitr::kable(.)
+```
+
+The layout specifications themselves are just simple lists with "pretty print methods" (the control table being simply and example record in the form of a data.frame).
+
+```{r}
+unclass(layout)
+```
+
+Notice that almost all of the time and space in using cdata is spent in specifying how your data is structured and is to be structured.
+
+The current recommended interfaces to `cdata` are:
+
+  * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
+  * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+  * [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
+  * `t()` (transpose/adjoint) to invert or reverse layout specifications.
+  * [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
+  * [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
+
+The (older) recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have an (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
 

@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-As of `cdata` version `1.0.8` `cdata` implements an operator notation for data transform.
+`cdata` recommends an operator idiom to apply data transforms.
 
-The idea is simple, yet powerful.  In fact it helps us find new names for the transforms: *multiply* to block records and *factor* to row records.  These terms will become clear as we work examples.
+The idea is simple, yet powerful.  
 
 First let's start with some data.
 
@@ -59,6 +59,12 @@ knitr::kable(d)
 d2 <- d %//% t(transform)
 
 knitr::kable(d2)
+
+# (or using general pipe notation 
+# includng the .() "execute immediately")
+d %.>% 
+  .(t(transform)) %.>% 
+  knitr::kable(.)
 ```
 
 We can expand record rows into blocks by a "multiplication" (or join) step.
@@ -69,11 +75,16 @@ knitr::kable(d2)
 d3 <- d2 %**% transform
 
 knitr::kable(d3)
+
+# (or using general pipe notation)
+d2 %.>% 
+  transform %.>% 
+  knitr::kable(.)
 ```
 
 (`%//%` and `%**%` being two operators introduced by the `cdata` package.)
 
-And the two operators have an inverse/adjoint relation.
+And the two specialized operators have an inverse/adjoint relation.
 
 ```{r}
 knitr::kable(d)
@@ -145,5 +156,5 @@ DBI::dbDisconnect(raw_connection)
 ```
 
 
-And that is truly fluid data manipulation.
+
 

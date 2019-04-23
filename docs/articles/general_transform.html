@@ -95,7 +95,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-22</h4>
+            <h4 class="date">2019-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -109,14 +109,14 @@
 <p>But as with all general ideas, it is much easier to see what we mean by the above with a concrete example. Let’s consider the following artificial (but simple) example. Suppose we have the following data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
-data &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-  <span class="st">'record_id'</span>, <span class="st">'row'</span>,  <span class="st">'col1'</span>, <span class="st">'col2'</span>, <span class="st">'col3'</span> <span class="op">|</span>
-<span class="st">  </span><span class="dv">1</span>,           <span class="st">'row1'</span>,  <span class="dv">1</span>,      <span class="dv">2</span>,      <span class="dv">3</span>     <span class="op">|</span>
-<span class="st">  </span><span class="dv">1</span>,           <span class="st">'row2'</span>,  <span class="dv">4</span>,      <span class="dv">5</span>,      <span class="dv">6</span>     <span class="op">|</span>
-<span class="st">  </span><span class="dv">1</span>,           <span class="st">'row3'</span>,  <span class="dv">7</span>,      <span class="dv">8</span>,      <span class="dv">9</span>     <span class="op">|</span>
-<span class="st">  </span><span class="dv">2</span>,           <span class="st">'row1'</span>,  <span class="dv">11</span>,     <span class="dv">12</span>,     <span class="dv">13</span>    <span class="op">|</span>
-<span class="st">  </span><span class="dv">2</span>,           <span class="st">'row2'</span>,  <span class="dv">14</span>,     <span class="dv">15</span>,     <span class="dv">16</span>    <span class="op">|</span>
-<span class="st">  </span><span class="dv">2</span>,           <span class="st">'row3'</span>,  <span class="dv">17</span>,     <span class="dv">18</span>,     <span class="dv">19</span>    )
+data &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
+   <span class="st">"record_id"</span>  , <span class="st">"row"</span> , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
+<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row1"</span>, <span class="dv">1</span>     , <span class="dv">2</span>     , <span class="dv">3</span>      <span class="op">|</span>
+<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row2"</span>, <span class="dv">4</span>     , <span class="dv">5</span>     , <span class="dv">6</span>      <span class="op">|</span>
+<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row3"</span>, <span class="dv">7</span>     , <span class="dv">8</span>     , <span class="dv">9</span>      <span class="op">|</span>
+<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row1"</span>, <span class="dv">11</span>    , <span class="dv">12</span>    , <span class="dv">13</span>     <span class="op">|</span>
+<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row2"</span>, <span class="dv">14</span>    , <span class="dv">15</span>    , <span class="dv">16</span>     <span class="op">|</span>
+<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row3"</span>, <span class="dv">17</span>    , <span class="dv">18</span>    , <span class="dv">19</span>     )
 
 knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(data)</code></pre></div>
 <table class="table">
@@ -174,183 +174,299 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </table>
 <p>In the above the records are the triples of rows with matching <code>record_id</code> and the different rows within the record are identified by the value in the <code>row</code> column. So The data items are named by the triplet <code>record_id</code>, <code>row</code> and renaming column name (<code>col1</code>, <code>col2</code>, or <code>col2</code>). This sort of naming of values is essentially <a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules">Codd’s “guaranteed access rule”</a>.</p>
 <p>Suppose we want to transpose each of the records- swapping the row and column notions. With <code>cdata</code> this is easy. First you design a transform to flatten each complex record into a single wide row (using the design steps taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). Essentially that is just specifying the following control variables. We define how to identify records (the key columns) and the structure of the records (giving the interior of the record arbitrary names we will re-use later).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">keyColumns =<span class="st"> 'record_id'</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recordKeys =<span class="st"> 'record_id'</span>
 
-incoming_shape &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  <span class="st">"row"</span>,  <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
-<span class="st">  "row1"</span>, v11   ,  v12  ,  v13   <span class="op">|</span>
-<span class="st">  "row2"</span>, v21   ,  v22  ,  v23   <span class="op">|</span>
-<span class="st">  "row3"</span>, v31   ,  v32  ,  v33   )</code></pre></div>
+incoming_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+   <span class="st">"row"</span>   , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
+<span class="st">     "row1"</span>, v11   , v12   , v13    <span class="op">|</span>
+<span class="st">     "row2"</span>, v21   , v22   , v23    <span class="op">|</span>
+<span class="st">     "row3"</span>, v31   , v32   , v33    )</code></pre></div>
 <p>And we specify (using the same principles) the desired final record shape, re-using the interior names from the first step to show where values are to be mapped.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outgoing_shape &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  <span class="st">"column"</span>, <span class="st">"row1"</span>, <span class="st">"row2"</span>, <span class="st">"row3"</span> <span class="op">|</span>
-<span class="st">  "col1"</span>  , v11   ,  v21 ,  v31    <span class="op">|</span>
-<span class="st">  "col2"</span>  , v12   ,  v22 ,  v32    <span class="op">|</span>
-<span class="st">  "col3"</span>  , v13   ,  v23 ,  v33    )</code></pre></div>
-<p>Once you have done this the conversion is accomplished in two function calls.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rowrecs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs.html">blocks_to_rowrecs</a></span>(
-  data,
-  <span class="dt">keyColumns =</span> keyColumns,
-  <span class="dt">controlTable =</span> incoming_shape)
-transformed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks</a></span>(
-  rowrecs,
-  <span class="dt">controlTable =</span> outgoing_shape,
-  <span class="dt">columnsToCopy =</span> keyColumns)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outgoing_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+   <span class="st">"column_label"</span>  , <span class="st">"c_row1"</span>, <span class="st">"c_row2"</span>, <span class="st">"c_row3"</span> <span class="op">|</span>
+<span class="st">     "rec_col1"</span>    , v11     , v21     , v31      <span class="op">|</span>
+<span class="st">     "rec_col2"</span>    , v12     , v22     , v32      <span class="op">|</span>
+<span class="st">     "rec_col3"</span>    , v13     , v23     , v33      )</code></pre></div>
+<p>Once you have done this you specify the overall transform by building a layout specifying the incoming and outgoing record shapes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_specification.html">layout_specification</a></span>(
+  <span class="dt">incoming_shape =</span> incoming_shape,
+  <span class="dt">outgoing_shape =</span> outgoing_shape,
+  <span class="dt">recordKeys =</span> recordKeys)
 
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(transformed)</code></pre></div>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span>
+<span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span>
+<span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span>
+<span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span>
+<span class="co">#&gt;  in_keys &lt;- c('record_id', 'row')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span>
+<span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span>
+<span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span>
+<span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span>
+<span class="co">#&gt;  out_keys &lt;- c('record_id', 'column_label')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span></code></pre></div>
+<p>This layout specification or controller can then perform the transform.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
-<th align="left">column</th>
-<th align="right">row1</th>
-<th align="right">row2</th>
-<th align="right">row3</th>
+<th align="left">column_label</th>
+<th align="right">c_row1</th>
+<th align="right">c_row2</th>
+<th align="right">c_row3</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="left">col1</td>
+<td align="left">rec_col1</td>
 <td align="right">1</td>
 <td align="right">4</td>
 <td align="right">7</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="left">col2</td>
+<td align="left">rec_col2</td>
 <td align="right">2</td>
 <td align="right">5</td>
 <td align="right">8</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td align="left">col3</td>
+<td align="left">rec_col3</td>
 <td align="right">3</td>
 <td align="right">6</td>
 <td align="right">9</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="left">col1</td>
+<td align="left">rec_col1</td>
 <td align="right">11</td>
 <td align="right">14</td>
 <td align="right">17</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
-<td align="left">col2</td>
+<td align="left">rec_col2</td>
 <td align="right">12</td>
 <td align="right">15</td>
 <td align="right">18</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="left">col3</td>
+<td align="left">rec_col3</td>
 <td align="right">13</td>
 <td align="right">16</td>
 <td align="right">19</td>
 </tr>
 </tbody>
 </table>
-<p>And the transform is done, each record has been transposed. The principle is “draw a picture.” First we draw a picture of the block record structure we have, and then we draw a picture of the block record structure we want. The intermediate form (<code>rowrecs</code>) is a special form where the concepts of records and rows exactly agree. In this form each record is one exactly row and each row is exactly one record. This data looks like the following.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(rowrecs)</code></pre></div>
+<p>And the transform is done, each record has been transposed.</p>
+<p>The principle is “draw a picture.” First we draw a picture of the block record structure we have, and then we draw a picture of the block record structure we want.</p>
+<p>As you have seen, we have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).</p>
+<p>If you don’t want to use pipe notation, you can use the method <code><a href="../reference/layout_by.html">layout_by()</a></code> (which takes a layout specification as an argument) or the method <code><a href="../reference/convert_records.html">convert_records()</a></code> (which takes the components of the transform specification as separate arguments).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_by.html">layout_by</a></span>(layout, data)
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(lr)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
-<th align="right">v11</th>
-<th align="right">v21</th>
-<th align="right">v31</th>
-<th align="right">v12</th>
-<th align="right">v22</th>
-<th align="right">v32</th>
-<th align="right">v13</th>
-<th align="right">v23</th>
-<th align="right">v33</th>
+<th align="left">column_label</th>
+<th align="right">c_row1</th>
+<th align="right">c_row2</th>
+<th align="right">c_row3</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
+<td align="left">rec_col1</td>
 <td align="right">1</td>
 <td align="right">4</td>
 <td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">rec_col2</td>
 <td align="right">2</td>
 <td align="right">5</td>
 <td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">rec_col3</td>
 <td align="right">3</td>
 <td align="right">6</td>
 <td align="right">9</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
+<td align="left">rec_col1</td>
 <td align="right">11</td>
 <td align="right">14</td>
 <td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">rec_col2</td>
 <td align="right">12</td>
 <td align="right">15</td>
 <td align="right">18</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">rec_col3</td>
 <td align="right">13</td>
 <td align="right">16</td>
 <td align="right">19</td>
 </tr>
 </tbody>
 </table>
-<p>We have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).</p>
-<p>In <code>cdata</code> <code>1.0.5</code> or newer we can make things even easier and use a <a href="https://winvector.github.io/cdata/reference/convert_records.html">convenience function that combines these steps</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+cr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(
   data,
-  <span class="dt">keyColumns =</span> keyColumns,
+  <span class="dt">keyColumns =</span> recordKeys,
   <span class="dt">incoming_shape =</span> incoming_shape,
   <span class="dt">outgoing_shape =</span> outgoing_shape)
 
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(t2)</code></pre></div>
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(cr)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
-<th align="left">column</th>
-<th align="right">row1</th>
-<th align="right">row2</th>
-<th align="right">row3</th>
+<th align="left">column_label</th>
+<th align="right">c_row1</th>
+<th align="right">c_row2</th>
+<th align="right">c_row3</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="left">col1</td>
+<td align="left">rec_col1</td>
 <td align="right">1</td>
 <td align="right">4</td>
 <td align="right">7</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
-<td align="left">col2</td>
+<td align="left">rec_col2</td>
 <td align="right">2</td>
 <td align="right">5</td>
 <td align="right">8</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
-<td align="left">col3</td>
+<td align="left">rec_col3</td>
 <td align="right">3</td>
 <td align="right">6</td>
 <td align="right">9</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="left">col1</td>
+<td align="left">rec_col1</td>
 <td align="right">11</td>
 <td align="right">14</td>
 <td align="right">17</td>
 </tr>
 <tr class="odd">
 <td align="right">2</td>
-<td align="left">col2</td>
+<td align="left">rec_col2</td>
 <td align="right">12</td>
 <td align="right">15</td>
 <td align="right">18</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="left">col3</td>
+<td align="left">rec_col3</td>
 <td align="right">13</td>
 <td align="right">16</td>
+<td align="right">19</td>
+</tr>
+</tbody>
+</table>
+<p>A nifty bonus is: if the transformation is “faithful” (preserves enough cells and labels), then it is invertible and in fact easy to invert (by the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> transpose/adjoint function).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)
+<span class="co">#&gt; {</span>
+<span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span>
+<span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span>
+<span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span>
+<span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span>
+<span class="co">#&gt;  in_keys &lt;- c('record_id', 'column_label')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # becomes</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span>
+<span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span>
+<span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span>
+<span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span>
+<span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span>
+<span class="co">#&gt;  out_keys &lt;- c('record_id', 'row')</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt; }</span>
+
+data <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
+<span class="st">  </span>inv_layout <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">record_id</th>
+<th align="left">row</th>
+<th align="right">col1</th>
+<th align="right">col2</th>
+<th align="right">col3</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">row1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">row2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">row3</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">row1</td>
+<td align="right">11</td>
+<td align="right">12</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">row2</td>
+<td align="right">14</td>
+<td align="right">15</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">row3</td>
+<td align="right">17</td>
+<td align="right">18</td>
 <td align="right">19</td>
 </tr>
 </tbody>
@@ -358,11 +474,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <p>Also these conversions can also be translated into <a href="https://github.com/WinVector/rquery"><code>rquery</code></a> operators, and therefore saved to be run either in memory or directly on a database.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table_desciption &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/local_td">local_td</a></span>(data)
 ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(
-    .,
-    <span class="dt">keyColumns =</span> keyColumns,
-    <span class="dt">incoming_shape =</span> incoming_shape,
-    <span class="dt">outgoing_shape =</span> outgoing_shape)
+<span class="st">  </span>layout
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))
 <span class="co">#&gt; table(data; </span>
@@ -375,7 +487,8 @@ ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</spa
 <span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span>
 
 rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops) 
-<span class="co">#&gt; [1] "record_id" "column"    "row1"      "row2"      "row3"</span>
+<span class="co">#&gt; [1] "record_id"    "column_label" "c_row1"       "c_row2"      </span>
+<span class="co">#&gt; [5] "c_row3"</span>
 
 <span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
 <span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
@@ -398,14 +511,15 @@ rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumenta
 }
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  record_id  column    row1   row2   row3</span>
-<span class="co">#&gt; ----------  -------  -----  -----  -----</span>
-<span class="co">#&gt;          1  col1         1      4      7</span>
-<span class="co">#&gt;          1  col2         2      5      8</span>
-<span class="co">#&gt;          1  col3         3      6      9</span>
-<span class="co">#&gt;          2  col1        11     14     17</span>
-<span class="co">#&gt;          2  col2        12     15     18</span>
-<span class="co">#&gt;          2  col3        13     16     19</span></code></pre></div>
+<span class="co">#&gt;  record_id  column_label    c_row1   c_row2   c_row3</span>
+<span class="co">#&gt; ----------  -------------  -------  -------  -------</span>
+<span class="co">#&gt;          1  rec_col1             1        4        7</span>
+<span class="co">#&gt;          1  rec_col2             2        5        8</span>
+<span class="co">#&gt;          1  rec_col3             3        6        9</span>
+<span class="co">#&gt;          2  rec_col1            11       14       17</span>
+<span class="co">#&gt;          2  rec_col2            12       15       18</span>
+<span class="co">#&gt;          2  rec_col3            13       16       19</span></code></pre></div>
+<p>And that is some of the generality of <code>cdata</code> transforms.</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

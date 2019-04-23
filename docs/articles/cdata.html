@@ -95,7 +95,7 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-22</h4>
+            <h4 class="date">2019-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -104,53 +104,462 @@
 
     
     
-<p>The <code>cdata</code> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>. The recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
+<p>The <a href="https://github.com/WinVector/cdata"><code>cdata</code></a> package is a demonstration of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>.</p>
 <p>Briefly <code>cdata</code> supplies data transform operators that:</p>
 <ul>
 <li>Work on local data or with any <code>DBI</code> data source.</li>
 <li>Are powerful generalizations of the operators commonly called <code>pivot</code> and <code>un-pivot</code>.</li>
+<li>Can be specified by drawing an example.</li>
 </ul>
 <p>A quick example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">run_vignette &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
-my_db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
-                        <span class="st">":memory:"</span>)
 
-<span class="co"># pivot example</span>
-d &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-   <span class="st">"meas"</span>, <span class="st">"val"</span> <span class="op">/</span>
-<span class="st">   "AUC"</span> , <span class="fl">0.6</span>   <span class="op">/</span>
-<span class="st">   "R2"</span>  , <span class="fl">0.2</span>   )
+<span class="co"># first few rows of the iris data as an example</span>
+d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
+   <span class="st">"Sepal.Length"</span>  , <span class="st">"Sepal.Width"</span>, <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span>, <span class="st">"Species"</span> <span class="op">|</span>
+<span class="st">     </span><span class="fl">5.1</span>           , <span class="fl">3.5</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="fl">4.9</span>           , <span class="dv">3</span>            , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="fl">4.7</span>           , <span class="fl">3.2</span>          , <span class="fl">1.3</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="fl">4.6</span>           , <span class="fl">3.1</span>          , <span class="fl">1.5</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="dv">5</span>             , <span class="fl">3.6</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
+<span class="st">     </span><span class="fl">5.4</span>           , <span class="fl">3.9</span>          , <span class="fl">1.7</span>           , <span class="fl">0.4</span>          , <span class="st">"setosa"</span>  )
+d<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(d))
 
-DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbWriteTable">dbWriteTable</a></span>(my_db,
-                  <span class="st">'d'</span>,
-                  d,
-                  <span class="dt">temporary =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, <span class="st">'d'</span>)</code></pre></div>
-<pre><code>## table `d` SQLiteConnection 
-##  nrow: 2 
-## 'data.frame':    2 obs. of  2 variables:
-##  $ meas: chr  "AUC" "R2"
-##  $ val : num  0.6 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cT &lt;-<span class="st"> </span><span class="kw"><a href="../reference/build_pivot_control_q.html">build_pivot_control_q</a></span>(<span class="st">'d'</span>,
-                            <span class="dt">columnToTakeKeysFrom=</span> <span class="st">'meas'</span>,
-                            <span class="dt">columnToTakeValuesFrom=</span> <span class="st">'val'</span>,
-                            <span class="dt">my_db =</span> my_db)
-tab &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs_q.html">blocks_to_rowrecs_q</a></span>(<span class="st">'d'</span>,
-                           <span class="dt">keyColumns =</span> <span class="ot">NULL</span>,
-                           <span class="dt">controlTable =</span> cT,
-                           <span class="dt">my_db =</span> my_db)
-<span class="kw"><a href="../reference/qlook.html">qlook</a></span>(my_db, tab)</code></pre></div>
-<pre><code>## table `mvtcq_95070699513688051972_0000000000` SQLiteConnection 
-##  nrow: 1 
-## 'data.frame':    1 obs. of  2 variables:
-##  $ AUC: num 0.6
-##  $ R2 : num 0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(my_db)</code></pre></div>
-<p>Install via CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"cdata"</span>)</code></pre></div>
-<p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="left">Species</th>
+<th align="right">iris_id</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+<td align="left">setosa</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">5.4</td>
+<td align="right">3.9</td>
+<td align="right">1.7</td>
+<td align="right">0.4</td>
+<td align="left">setosa</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>Now suppose we want to take the above “all facts about each iris are in a single row” representation and convert it into a per-iris record block with the following structure.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">record_example &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
+   <span class="st">"plant_part"</span>  , <span class="st">"measurement"</span>, <span class="st">"value"</span>      <span class="op">|</span>
+<span class="st">     "sepal"</span>     , <span class="st">"width"</span>      , Sepal.Width  <span class="op">|</span>
+<span class="st">     "sepal"</span>     , <span class="st">"length"</span>     , Sepal.Length <span class="op">|</span>
+<span class="st">     "petal"</span>     , <span class="st">"width"</span>      , Petal.Width  <span class="op">|</span>
+<span class="st">     "petal"</span>     , <span class="st">"length"</span>     , Petal.Length )
+
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(record_example)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">plant_part</th>
+<th align="left">measurement</th>
+<th align="left">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="left">Sepal.Width</td>
+</tr>
+<tr class="even">
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="left">Sepal.Length</td>
+</tr>
+<tr class="odd">
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="left">Petal.Width</td>
+</tr>
+<tr class="even">
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="left">Petal.Length</td>
+</tr>
+</tbody>
+</table>
+<p>The above sort of transformation may seem exotic, but it is fairly common when we want to plot many aspects of a record at the same time.</p>
+<p>To specify our transformation we combine the record example with information about how records are keyed (recordKeys showing which rows go together to form a record, and controlTableKeys specifying the internal structure of a data record).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+  record_example,
+  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"plant_part"</span>, <span class="st">"measurement"</span>),
+  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)</code></pre></div>
+<pre><code>## {
+##  row_record &lt;- wrapr::qchar_frame(
+##    "iris_id"  , "Species", "Sepal.Width", "Sepal.Length", "Petal.Width", "Petal.Length" |
+##      .        , .        , Sepal.Width  , Sepal.Length  , Petal.Width  , Petal.Length   )
+##  row_keys &lt;- c('iris_id', 'Species')
+## 
+##  # becomes
+## 
+##  block_record &lt;- wrapr::qchar_frame(
+##    "iris_id"  , "Species", "plant_part", "measurement", "value"      |
+##      .        , .        , "sepal"     , "width"      , Sepal.Width  |
+##      .        , .        , "sepal"     , "length"     , Sepal.Length |
+##      .        , .        , "petal"     , "width"      , Petal.Width  |
+##      .        , .        , "petal"     , "length"     , Petal.Length )
+##  block_keys &lt;- c('iris_id', 'Species', 'plant_part', 'measurement')
+## 
+##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+## }</code></pre>
+<p>In the above we have used the common useful data organizing trick of specifying a dependent column (Species being a function of iris_id) as an additional key.</p>
+<p>This layout then specifies and implements the data transform. We can transform the data by sending it to the layout.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_transformed &lt;-<span class="st"> </span>d <span class="op">%.&gt;%</span><span class="st"> </span>
+<span class="st">  </span>layout
+
+knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d_transformed)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">iris_id</th>
+<th align="left">Species</th>
+<th align="left">plant_part</th>
+<th align="left">measurement</th>
+<th align="right">value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.5</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">5.1</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.0</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">4.9</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.2</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">4.7</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.3</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.1</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">4.6</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.5</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.6</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">5.0</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">width</td>
+<td align="right">3.9</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">setosa</td>
+<td align="left">sepal</td>
+<td align="left">length</td>
+<td align="right">5.4</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">width</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">setosa</td>
+<td align="left">petal</td>
+<td align="left">length</td>
+<td align="right">1.7</td>
+</tr>
+</tbody>
+</table>
+<p>And it is easy to invert these transforms using the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> transpose/adjoint notation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)</code></pre></div>
+<pre><code>## {
+##  block_record &lt;- wrapr::qchar_frame(
+##    "iris_id"  , "Species", "plant_part", "measurement", "value"      |
+##      .        , .        , "sepal"     , "width"      , Sepal.Width  |
+##      .        , .        , "sepal"     , "length"     , Sepal.Length |
+##      .        , .        , "petal"     , "width"      , Petal.Width  |
+##      .        , .        , "petal"     , "length"     , Petal.Length )
+##  block_keys &lt;- c('iris_id', 'Species', 'plant_part', 'measurement')
+## 
+##  # becomes
+## 
+##  row_record &lt;- wrapr::qchar_frame(
+##    "iris_id"  , "Species", "Sepal.Width", "Sepal.Length", "Petal.Width", "Petal.Length" |
+##      .        , .        , Sepal.Width  , Sepal.Length  , Petal.Width  , Petal.Length   )
+##  row_keys &lt;- c('iris_id', 'Species')
+## 
+##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+## }</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_transformed <span class="op">%.&gt;%</span>
+<span class="st">  </span>inv_layout <span class="op">%.&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="right">iris_id</th>
+<th align="left">Species</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Sepal.Length</th>
+<th align="right">Petal.Width</th>
+<th align="right">Petal.Length</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">setosa</td>
+<td align="right">3.5</td>
+<td align="right">5.1</td>
+<td align="right">0.2</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">setosa</td>
+<td align="right">3.0</td>
+<td align="right">4.9</td>
+<td align="right">0.2</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">setosa</td>
+<td align="right">3.2</td>
+<td align="right">4.7</td>
+<td align="right">0.2</td>
+<td align="right">1.3</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">setosa</td>
+<td align="right">3.1</td>
+<td align="right">4.6</td>
+<td align="right">0.2</td>
+<td align="right">1.5</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">setosa</td>
+<td align="right">3.6</td>
+<td align="right">5.0</td>
+<td align="right">0.2</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">setosa</td>
+<td align="right">3.9</td>
+<td align="right">5.4</td>
+<td align="right">0.4</td>
+<td align="right">1.7</td>
+</tr>
+</tbody>
+</table>
+<p>The layout specifications themselves are just simple lists with “pretty print methods” (the control table being simply and example record in the form of a data.frame).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">unclass</a></span>(layout)</code></pre></div>
+<pre><code>## $controlTable
+##   plant_part measurement        value
+## 1      sepal       width  Sepal.Width
+## 2      sepal      length Sepal.Length
+## 3      petal       width  Petal.Width
+## 4      petal      length Petal.Length
+## 
+## $recordKeys
+## [1] "iris_id" "Species"
+## 
+## $controlTableKeys
+## [1] "plant_part"  "measurement"
+## 
+## $checkNames
+## [1] TRUE
+## 
+## $checkKeys
+## [1] TRUE
+## 
+## $strict
+## [1] FALSE</code></pre>
+<p>Notice that almost all of the time and space in using cdata is spent in specifying how your data is structured and is to be structured.</p>
+<p>The current recommended interfaces to <code>cdata</code> are:</p>
+<ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records relate to single-row records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/layout_by.html"><code><a href="../reference/layout_by.html">layout_by()</a></code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
+<li>
+<code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper in specifying record control table layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="../reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
+</ul>
+<p>The (older) recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have an (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -1,8 +1,9 @@
 
-# cdata 1.1.0 2019/04/22
+# cdata 1.1.0 2019/04/23
 
  * General transform specification.
  * More care with factors.
+ * Update vignettes.
  * More tests with factors and dates/times.
 
 # cdata 1.0.9 2019/04/20
