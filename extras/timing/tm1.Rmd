@@ -1,6 +1,6 @@
 ---
 title: "tm1"
-output: html_document
+output: github_document
 ---
 
 From: [https://github.com/tidyverse/tidyr/issues/613](https://github.com/tidyverse/tidyr/issues/613).
