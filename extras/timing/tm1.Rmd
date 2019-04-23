@@ -1,0 +1,118 @@
+---
+title: "tm1"
+output: html_document
+---
+
+From: [https://github.com/tidyverse/tidyr/issues/613](https://github.com/tidyverse/tidyr/issues/613).
+
+```{r example_data}
+require(tidyverse)
+require(data.table)
+data.test <- matrix(
+  data = sample(
+    x = c(0L, 1L, 2L, NA_integer_),#the genotypes
+    size = 2e+07,
+    replace = TRUE,
+    prob = c(0.8, 0.10, 0.05, 0.05)
+    ),
+  nrow = 20000,#number of SNPs/markers
+  ncol = 1000,#number of samples
+  dimnames = list(rownames = seq(1, 20000, 1), colnames = seq(1, 1000, 1))
+  ) %>%
+  tibble::as_tibble(x = ., rownames = "MARKERS") 
+```
+
+```{r pkgs}
+library("cdata")
+library("rqdatatable")
+```
+
+```{r convert_to_data_frame}
+data.test <- data.frame(data.test)
+```
+
+test1: data.table::melt.data.table
+
+```{r test_data_table_melt}
+system.time(
+test1 <- data.table::as.data.table(data.test) %>%
+  data.table::melt.data.table(
+    data = .,
+    id.vars = "MARKERS",
+    variable.name = "INDIVIDUALS",
+    value.name = "GENOTYPES",
+    variable.factor = FALSE) 
+)
+# reported: #~0.41sec
+```
+
+```{r sort_data_table_melt}
+test1 <- orderby(test1, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+```
+
+test2: tidyr::gather
+
+```{r test_tidyr_gather}
+system.time(
+test2 <- tidyr::gather(
+  data = data.test,
+  key = "INDIVIDUALS",
+  value = "GENOTYPES",
+  -MARKERS)
+)
+# reported: #~0.39sec
+```
+
+```{r compare_1_2}
+test2 <- orderby(test2, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+stopifnot(isTRUE(all.equal(test1, test2)))
+```
+
+
+
+test3: latest tidyr::pivot_longer
+
+```{r decide_pl}
+run_pivot_longer <- exists('pivot_longer', 
+                           where = 'package:tidyr', 
+                           mode = 'function')
+```
+
+
+```{r test_tidyr_pivot_longer, eval = run_pivot_longer}
+system.time(
+test3 <- tidyr::pivot_longer(
+  df = data.test,
+  cols = -MARKERS,
+  names_to = "INDIVIDUALS",
+  values_to = "GENOTYPES")
+)
+# reported: #~90sec !!!
+```
+
+```{r compare_1_3, eval = run_pivot_longer}
+test3 <- orderby(test3, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+stopifnot(isTRUE(all.equal(test1, test3)))
+```
+
+test 4: cdata::unpivot_to_blocks()
+
+Also slow, not optimized for this many columns.
+
+```{r test_cdata_unpivot_to_blocks()}
+system.time(
+test4 <- unpivot_to_blocks(
+  data = data.test,
+  nameForNewKeyColumn = "INDIVIDUALS",
+  nameForNewValueColumn = "GENOTYPES",
+  columnsToTakeFrom = setdiff(colnames(data.test), 
+                              c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+)
+```
+
+```{r compare_1_4}
+test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+stopifnot(isTRUE(all.equal(test1, test4)))
+```
+
+
