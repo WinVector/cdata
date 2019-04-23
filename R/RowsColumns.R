@@ -83,10 +83,11 @@ unpivot_to_blocks.default <- function(data,
   res
 }
 
-#' Move values from rows to columns (pivot).
+#' Map data records from block records that have one row per measurement value to row records.
 #'
-#' This is a convenience notation for \code{blocks_to_rowrecs}.
-#' For a tutorial please try \url{https://winvector.github.io/cdata/articles/blocksrecs.html}.
+#' Map data records from block records (where each record may be more than one row) to
+#' row records (where each record is a single row).  Values specified in rowKeyColumns
+#' determine which sets of rows build up records and are copied into the result.
 #'
 #'
 #' @param data data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).
@@ -104,11 +105,11 @@ unpivot_to_blocks.default <- function(data,
 #'
 #' @examples
 #'
-#'   d <- data.frame(meas= c('AUC', 'R2'), val= c(0.6, 0.2))
+#'   d <- data.frame(model_id = c("m1", "m1"), meas = c('AUC', 'R2'), val= c(0.6, 0.2))
 #'   pivot_to_rowrecs(d,
 #'                    columnToTakeKeysFrom= 'meas',
 #'                    columnToTakeValuesFrom= 'val',
-#'                    rowKeyColumns= c()) %.>%
+#'                    rowKeyColumns= "model_id") %.>%
 #'      print(.)
 #'
 #' @export

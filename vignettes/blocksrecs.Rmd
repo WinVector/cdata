@@ -40,8 +40,10 @@ methods are:
   
 All the other `cdata` functions are helpers allowing abbreviated notation in special cases (such as `unpivot_to_blocks()` `pivot_to_rowrecs()`) and adapters (allowing these operations to be performed directly in databases and large data systems such as `Apache Spark`).
 
-The "nice user facing" methods are:
+The current favored idiomatic interfaces to `cdata` are:
 
+  * [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), a convenience function for moving data from multi-row block records with one value per row to single row records.
+  * [`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), a convenience function for moving data from single-row records to possibly multi row block records with one row per value.
   * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
   * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
   * [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.

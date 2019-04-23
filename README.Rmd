@@ -140,8 +140,10 @@ The above is now wrapped into a [one-line command in `WVPlots`](https://winvecto
 
 The `cdata` package develops the idea of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   
 
-The current idiomatic interfaces to `cdata` are:
+The current favored idiomatic interfaces to `cdata` are:
 
+  * [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), a convenience function for moving data from multi-row block records with one value per row to single row records.
+  * [`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), a convenience function for moving data from single-row records to possibly multi row block records with one row per value.
   * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
   * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
   * [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.

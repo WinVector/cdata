@@ -288,8 +288,12 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <hr>
 <p>The <code>cdata</code> package develops the idea of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>.</p>
-<p>The current idiomatic interfaces to <code>cdata</code> are:</p>
+<p>The current favored idiomatic interfaces to <code>cdata</code> are:</p>
 <ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, a convenience function for moving data from multi-row block records with one value per row to single row records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, a convenience function for moving data from single-row records to possibly multi row block records with one row per value.</li>
 <li>
 <a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
 <li>

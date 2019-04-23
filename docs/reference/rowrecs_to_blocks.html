@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Map a set of columns to rows (takes a <code>data.frame</code>). — rowrecs_to_blocks • cdata</title>
+<title>Map a data records from row records to block records. — rowrecs_to_blocks • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Map a set of columns to rows (takes a <code>data.frame</code>). — rowrecs_to_blocks" />
+<meta property="og:title" content="Map a data records from row records to block records. — rowrecs_to_blocks" />
 
-<meta property="og:description" content="Transform data facts from columns into additional rows controlTable." />
+<meta property="og:description" content="Map a data records from row records (records that are exactly single rows) to block records
+(records that may be more than one row)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,14 +127,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Map a set of columns to rows (takes a <code>data.frame</code>).</h1>
+    <h1>Map a data records from row records to block records.</h1>
     <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/DefOps.R'><code>R/DefOps.R</code></a>, <a href='https://github.com/WinVector/cdata/blob/master/R/LocalOps.R'><code>R/LocalOps.R</code></a>, <a href='https://github.com/WinVector/cdata/blob/master/R/relops.R'><code>R/relops.R</code></a></small>
     <div class="hidden name"><code>rowrecs_to_blocks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Transform data facts from columns into additional rows controlTable.</p>
+    <p>Map a data records from row records (records that are exactly single rows) to block records
+(records that may be more than one row).</p>
     
     </div>
 
@@ -208,15 +210,7 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is using the theory of "fluid data"
-(<a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/cdata</a>), which includes the
-principle that each data cell has coordinates independent of the
-storage details and storage detail dependent coordinates (usually
-row-id, column-id, and group-id) can be re-derived at will (the
-other principle is that there may not be "one true preferred data
-shape" and many re-shapings of data may be needed to match data to
-different algorithms and methods).</p>
-<p>The controlTable defines the names of each data element in the two notations:
+    <p>The controlTable defines the names of each data element in the two notations:
 the notation of the tall table (which is row oriented)
 and the notation of the wide table (which is column oriented).
 controlTable[ , 1] (the group label) cross colnames(controlTable)

@@ -4,7 +4,7 @@
 \alias{blocks_to_rowrecs}
 \alias{blocks_to_rowrecs.default}
 \alias{blocks_to_rowrecs.relop}
-\title{Map sets rows to columns (takes a \code{data.frame}).}
+\title{Map data records from block records to row records.}
 \usage{
 blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
@@ -51,18 +51,10 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 wide table built by mapping key-grouped tallTable rows to one row per group
 }
 \description{
-Transform data facts from rows into additional columns using controlTable.
+Map data records from block records (which each record may be more than one row) to
+row records (where each record is a single row).
 }
 \details{
-This is using the theory of "fluid data"n
-(\url{https://github.com/WinVector/cdata}), which includes the
-principle that each data cell has coordinates independent of the
-storage details and storage detail dependent coordinates (usually
-row-id, column-id, and group-id) can be re-derived at will (the
-other principle is that there may not be "one true preferred data
-shape" and many re-shapings of data may be needed to match data to
-different algorithms and methods).
-
 The controlTable defines the names of each data element in the two notations:
 the notation of the tall table (which is row oriented)
 and the notation of the wide table (which is column oriented).

@@ -40,19 +40,10 @@ build_pivot_control <- function(table,
 
 
 
-#' Map a set of columns to rows (takes a \code{data.frame}).
+#' Map a data records from row records to block records.
 #'
-#' Transform data facts from columns into additional rows controlTable.
-#'
-#'
-#' This is using the theory of "fluid data"
-#' (\url{https://github.com/WinVector/cdata}), which includes the
-#' principle that each data cell has coordinates independent of the
-#' storage details and storage detail dependent coordinates (usually
-#' row-id, column-id, and group-id) can be re-derived at will (the
-#' other principle is that there may not be "one true preferred data
-#' shape" and many re-shapings of data may be needed to match data to
-#' different algorithms and methods).
+#' Map a data records from row records (records that are exactly single rows) to block records
+#' (records that may be more than one row).
 #'
 #' The controlTable defines the names of each data element in the two notations:
 #' the notation of the tall table (which is row oriented)
@@ -113,19 +104,10 @@ rowrecs_to_blocks <- function(wideTable,
 
 
 
-#' Map sets rows to columns (takes a \code{data.frame}).
+#' Map data records from block records to row records.
 #'
-#' Transform data facts from rows into additional columns using controlTable.
-#'
-#'
-#' This is using the theory of "fluid data"n
-#' (\url{https://github.com/WinVector/cdata}), which includes the
-#' principle that each data cell has coordinates independent of the
-#' storage details and storage detail dependent coordinates (usually
-#' row-id, column-id, and group-id) can be re-derived at will (the
-#' other principle is that there may not be "one true preferred data
-#' shape" and many re-shapings of data may be needed to match data to
-#' different algorithms and methods).
+#' Map data records from block records (which each record may be more than one row) to
+#' row records (where each record is a single row).
 #'
 #' The controlTable defines the names of each data element in the two notations:
 #' the notation of the tall table (which is row oriented)
@@ -188,10 +170,11 @@ blocks_to_rowrecs <- function(tallTable,
 
 
 
-#' Move values from columns to rows (anti-pivot, or "shred").
+#' Map a data records from row records to block records with one record row per columnsToTakeFrom value.
 #'
-#' This is a convenience notation for \code{rowrecs_to_blocks}.
-#' For a tutorial please try \url{https://winvector.github.io/cdata/articles/blocksrecs.html}.
+#' Map a data records from row records (records that are exactly single rows) to block records
+#' (records that may be more than one row).  All columns not named in columnsToTakeFrom are copied to each
+#' record row in the result.
 #'
 #'
 #' @param data data.frame to work with.
@@ -211,7 +194,7 @@ blocks_to_rowrecs <- function(tallTable,
 #'
 #' @examples
 #'
-#'   d <- data.frame(AUC= 0.6, R2= 0.2)
+#'   d <- data.frame(model_name = "m1", AUC = 0.6, R2 = 0.2)
 #'   unpivot_to_blocks(d,
 #'                     nameForNewKeyColumn= 'meas',
 #'                     nameForNewValueColumn= 'val',

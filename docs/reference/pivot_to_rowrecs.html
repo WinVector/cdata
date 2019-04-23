@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Move values from rows to columns (pivot). — pivot_to_rowrecs • cdata</title>
+<title>Map data records from block records that have one row per measurement value to row records. — pivot_to_rowrecs • cdata</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Move values from rows to columns (pivot). — pivot_to_rowrecs" />
+<meta property="og:title" content="Map data records from block records that have one row per measurement value to row records. — pivot_to_rowrecs" />
 
-<meta property="og:description" content="This is a convenience notation for blocks_to_rowrecs.
-For a tutorial please try https://winvector.github.io/cdata/articles/blocksrecs.html." />
+<meta property="og:description" content="Map data records from block records (where each record may be more than one row) to
+row records (where each record is a single row).  Values specified in rowKeyColumns
+determine which sets of rows build up records and are copied into the result." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,15 +128,16 @@ For a tutorial please try https://winvector.github.io/cdata/articles/blocksrecs.
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Move values from rows to columns (pivot).</h1>
+    <h1>Map data records from block records that have one row per measurement value to row records.</h1>
     <small class="dont-index">Source: <a href='https://github.com/WinVector/cdata/blob/master/R/RowsColumns.R'><code>R/RowsColumns.R</code></a></small>
     <div class="hidden name"><code>pivot_to_rowrecs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This is a convenience notation for <code>blocks_to_rowrecs</code>.
-For a tutorial please try <a href='https://winvector.github.io/cdata/articles/blocksrecs.html'>https://winvector.github.io/cdata/articles/blocksrecs.html</a>.</p>
+    <p>Map data records from block records (where each record may be more than one row) to
+row records (where each record is a single row).  Values specified in rowKeyColumns
+determine which sets of rows build up records and are copied into the result.</p>
     
     </div>
 
@@ -199,13 +201,13 @@ For a tutorial please try <a href='https://winvector.github.io/cdata/articles/bl
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>meas</span><span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span><span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
+  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>model_id</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"m1"</span>, <span class='st'>"m1"</span>), <span class='kw'>meas</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>), <span class='kw'>val</span><span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.6</span>, <span class='fl'>0.2</span>))
   <span class='fu'>pivot_to_rowrecs</span>(<span class='no'>d</span>,
                    <span class='kw'>columnToTakeKeysFrom</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                    <span class='kw'>columnToTakeValuesFrom</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                   <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>()) <span class='kw'>%.&gt;%</span>
-     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>.</span>)</div><div class='output co'>#&gt;   AUC  R2
-#&gt; 1 0.6 0.2</div><div class='input'>
+                   <span class='kw'>rowKeyColumns</span><span class='kw'>=</span> <span class='st'>"model_id"</span>) <span class='kw'>%.&gt;%</span>
+     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>.</span>)</div><div class='output co'>#&gt;   model_id AUC  R2
+#&gt; 1       m1 0.6 0.2</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

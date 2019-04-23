@@ -124,8 +124,12 @@
 <li><code><a href="../reference/blocks_to_rowrecs.html">cdata::blocks_to_rowrecs()</a></code></li>
 </ul>
 <p>All the other <code>cdata</code> functions are helpers allowing abbreviated notation in special cases (such as <code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code> <code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code>) and adapters (allowing these operations to be performed directly in databases and large data systems such as <code>Apache Spark</code>).</p>
-<p>The “nice user facing” methods are:</p>
+<p>The current favored idiomatic interfaces to <code>cdata</code> are:</p>
 <ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, a convenience function for moving data from multi-row block records with one value per row to single row records.</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, a convenience function for moving data from single-row records to possibly multi row block records with one row per value.</li>
 <li>
 <a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
 <li>
