@@ -1,0 +1,96 @@
+---
+title: "table"
+output: github_document
+---
+
+Recently a deceptively simple problem through us a day layout curve-ball: how do you convert an object of class `table` into a `data.frame` with an actual show similar to what `table` displays?
+
+Here is our example:
+
+```{r}
+confmat <- readRDS("confmat.rds")
+
+print(confmat)
+
+as.data.frame(confmat)
+```
+
+Notice the `data.frame` is in a tall form, not the same as `print(confmat)`.
+
+Now there are ways to get the data into the form we want: `as.matrix()` and also `unclass()`.
+
+```{r}
+as.matrix(confmat)
+
+unclass(confmat)
+```
+
+But let's suppose we are starting from the data-frame form.  
+
+```{r}
+conf_frame <- as.data.frame(confmat)
+
+knitr::kable(conf_frame)
+```
+
+
+The transform can be built up as follows.  We draw what we 
+think is coming in (with symbolic names `tFpF`, `tTpF`, `tFpT`, and `tTpT` for the values to be determined).
+
+```{r}
+example_in <- wrapr::qchar_frame(
+  "truth" , "pred" , "Freq" |
+    "0"   , "FALSE", tFpF   |
+    "1"   , "FALSE", tTpF   |
+    "0"   , "TRUE" , tFpT   |
+    "1"   , "TRUE" , tTpT   )
+
+knitr::kable(example_in)
+```
+
+And also draw what we want.
+
+```{r}
+example_out <- wrapr::qchar_frame(
+  "_"                , "pred: FALSE", "pred: TRUE" |
+    "truth: FALSE"   ,  tFpF,         tFpT         |
+    "truth: TRUE"    ,  tTpF,         tTpT         )
+
+knitr::kable(example_out)
+```
+
+Now we use the `cdata` package and build a `layout_specification`
+with the incoming shape as what we expect to see and the outgoing
+shape as what we want.  
+
+```{r, error = TRUE}
+library("cdata")
+
+layout <- layout_specification(
+  incoming_shape = example_in,
+  outgoing_shape = example_out)
+```
+
+Now, that wasn't allowed as the first column of the incoming example did not identify the rows of the example (the first column was not sufficient to key).  So we try again and add the deceleration that the incoming shape is keyed by "`truth`" plus "`pred`".
+
+```{r}
+layout <- layout_specification(
+  incoming_shape = example_in,
+  incoming_controlTableKeys = c("truth", "pred"),
+  outgoing_shape = example_out)
+```
+
+And now we can apply the layout transformation.
+
+```{r}
+conf_frame %.>% layout
+```
+
+As always, we can also print the layout transformation.
+
+```{r}
+print(layout)
+```
+
+This is a lot of work to transform the table, but it turns out this little transform is a hard one.
+
