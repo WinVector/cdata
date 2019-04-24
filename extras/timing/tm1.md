@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.567   0.125   0.697
+    ##   0.635   0.146   0.798
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.424   0.101   0.527
+    ##   0.445   0.115   0.566
 
 ``` r
 # reported: #~0.39sec
@@ -170,18 +170,23 @@ system.time({
 ```
 
     ##    user  system elapsed 
-    ##   0.747   0.361   1.051
+    ##   0.738   0.348   0.931
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
 stopifnot(isTRUE(all.equal(test1, test4)))
 ```
 
+Not optimized.
+
 ``` r
 system.time({
   back4 <- layout_by(t(layout), test4)
 })
 ```
+
+    ##    user  system elapsed 
+    ## 151.146  33.395 187.841
 
 ``` r
 back4 <- orderby(back4, colnames(back4)) 
