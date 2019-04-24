@@ -97,7 +97,6 @@ stopifnot(isTRUE(all.equal(test1, test3)))
 
 test 4: cdata::unpivot_to_blocks()
 
-Also slow, not optimized for this many columns.
 
 ```{r test_cdata_unpivot_to_blocks()}
 system.time({
@@ -119,13 +118,13 @@ test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES))
 stopifnot(isTRUE(all.equal(test1, test4)))
 ```
 
-```{r cdata_back}
+```{r cdata_back, eval = FALSE}
 system.time({
   back4 <- layout_by(t(layout), test4)
 })
 ```
 
-```{r compare_cdata_back}
+```{r compare_cdata_back, eval = FALSE}
 back4 <- orderby(back4, colnames(back4)) 
 data.test <- orderby(back4, colnames(data.test)) 
 stopifnot(isTRUE(all.equal(data.test, back4)))

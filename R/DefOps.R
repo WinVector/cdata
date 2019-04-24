@@ -72,6 +72,7 @@ build_pivot_control <- function(table,
 #' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}}, \code{\link{blocks_to_rowrecs}}
@@ -97,7 +98,8 @@ rowrecs_to_blocks <- function(wideTable,
                               controlTableKeys = colnames(controlTable)[[1]],
                               columnsToCopy = NULL,
                               tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
-                              temporary = TRUE) {
+                              temporary = TRUE,
+                              allow_rqdatatable = TRUE) {
   UseMethod("rowrecs_to_blocks")
 }
 
@@ -134,6 +136,7 @@ rowrecs_to_blocks <- function(wideTable,
 #' @param controlTableKeys character, which column names of the control table are considered to be keys.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{build_pivot_control}}, \code{\link{rowrecs_to_blocks}}
@@ -163,7 +166,8 @@ blocks_to_rowrecs <- function(tallTable,
                               strict = FALSE,
                               controlTableKeys = colnames(controlTable)[[1]],
                               tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
-                              temporary = TRUE) {
+                              temporary = TRUE,
+                              allow_rqdatatable = TRUE) {
   UseMethod("blocks_to_rowrecs")
 }
 
@@ -188,6 +192,7 @@ blocks_to_rowrecs <- function(tallTable,
 #' @param strict logical, if TRUE check control table name forms.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE make result temporary.
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return new data.frame with values moved to rows.
 #'
 #' @seealso \code{\link{pivot_to_rowrecs}}, \code{\link{rowrecs_to_blocks}}
@@ -214,7 +219,8 @@ unpivot_to_blocks <- function(data,
                               checkKeys = FALSE,
                               strict = FALSE,
                               tmp_name_source = wrapr::mk_tmp_name_source("upb"),
-                              temporary = TRUE) {
+                              temporary = TRUE,
+                              allow_rqdatatable = TRUE) {
   UseMethod("unpivot_to_blocks")
 }
 

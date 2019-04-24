@@ -10,19 +10,19 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
   checkKeys = FALSE, strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 
 \method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 
 \method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -44,6 +44,8 @@ rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
 \item{temporary}{logical, if TRUE use temporary tables}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 long table built by mapping wideTable to one row per group

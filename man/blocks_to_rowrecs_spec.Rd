@@ -6,7 +6,7 @@
 \usage{
 blocks_to_rowrecs_spec(controlTable, ..., recordKeys = character(0),
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE)
+  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{controlTable}{an all character data frame or cdata pivot control.}
@@ -22,6 +22,8 @@ blocks_to_rowrecs_spec(controlTable, ..., recordKeys = character(0),
 \item{checkKeys}{passed to blocks_to_rowrecs.}
 
 \item{strict}{passed to blocks_to_rowrecs.}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 a record specification object

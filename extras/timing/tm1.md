@@ -9,7 +9,7 @@ require(tidyverse)
 
     ## Loading required package: tidyverse
 
-    ## ── Attaching packages ───────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
     ## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
@@ -30,7 +30,7 @@ require(tidyverse)
 
     ## Warning: package 'forcats' was built under R version 3.5.2
 
-    ## ── Conflicts ──────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.616   0.134   0.805
+    ##   0.567   0.125   0.697
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.465   0.121   0.619
+    ##   0.424   0.101   0.527
 
 ``` r
 # reported: #~0.39sec
@@ -154,8 +154,6 @@ stopifnot(isTRUE(all.equal(test1, test3)))
 
 test 4: cdata::unpivot\_to\_blocks()
 
-Also slow, not optimized for this many columns.
-
 ``` r
 system.time({
   cT <- build_unpivot_control(
@@ -172,7 +170,7 @@ system.time({
 ```
 
     ##    user  system elapsed 
-    ##  52.758  21.731  78.815
+    ##   0.747   0.361   1.051
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -184,9 +182,6 @@ system.time({
   back4 <- layout_by(t(layout), test4)
 })
 ```
-
-    ##    user  system elapsed 
-    ## 366.398  35.514 405.453
 
 ``` r
 back4 <- orderby(back4, colnames(back4)) 

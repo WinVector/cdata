@@ -85,7 +85,8 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       controlTableKeys = colnames(controlTable)[[1]],
                                       columnsToCopy = NULL,
                                       tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
-                                      temporary = TRUE) {
+                                      temporary = TRUE,
+                                      allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
@@ -108,6 +109,25 @@ rowrecs_to_blocks.default <- function(wideTable,
     }
   }
 
+  # see if it is an obvious simple unpivot
+  if(allow_rqdatatable &&
+     (ncol(controlTable)==2) &&
+     (isTRUE(all.equal(controlTable[ ,1, drop = TRUE],
+                       controlTable[ ,2, drop = TRUE]))) &&
+     (controlTableKeys == colnames(controlTable)[[1]]) &&
+     requireNamespace("rqdatatable", quietly = TRUE)) {
+    res <- rqdatatable::layout_to_blocks_data_table(
+      data = wideTable,
+      nameForNewKeyColumn = colnames(controlTable)[[1]],
+      nameForNewValueColumn = colnames(controlTable)[[2]],
+      columnsToTakeFrom = controlTable[, 2, drop = TRUE],
+      columnsToCopy = columnsToCopy)
+    res <- data.frame(res)
+    rownames(res) <- NULL
+    return(res)
+  }
+
+  # do the work
   n_row_in <- nrow(wideTable)
   n_rep <- nrow(controlTable)
   n_row_res <- n_rep*n_row_in
@@ -164,7 +184,8 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       strict = FALSE,
                                       controlTableKeys = colnames(controlTable)[[1]],
                                       tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
-                                      temporary = TRUE) {
+                                      temporary = TRUE,
+                                      allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")
@@ -196,6 +217,7 @@ blocks_to_rowrecs.default <- function(tallTable,
     }
   }
 
+  # do the work
   # make simple grouping keys
   tallTable$cdata_group_key_col <- 1
   if(length(keyColumns)>=1) {

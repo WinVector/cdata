@@ -31,7 +31,9 @@ test_there_and_back <- function() {
   res <- res[, colnames(expect), drop = FALSE]
 
   expect <- expect[wrapr::orderv(expect[, c("id", "Species", "Measure")]), , drop = FALSE]
+  rownames(expect) <- NULL
   res <- res[wrapr::orderv(res[, c("id", "Species", "Measure")]), , drop = FALSE]
+  rownames(res) <- NULL
   RUnit::checkEquals(expect, res)
 
   back <- blocks_to_rowrecs(res,
@@ -42,6 +44,8 @@ test_there_and_back <- function() {
   back <- back[, colnames(d), drop = FALSE]
 
   d <- d[wrapr::orderv(d), , drop = FALSE]
+  rownames(d) <- NULL
   back <- back[wrapr::orderv(back), , drop = FALSE]
+  rownames(back) <- NULL
   RUnit::checkEquals(d, back)
 }
