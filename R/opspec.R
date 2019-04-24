@@ -51,7 +51,7 @@ rowrecs_to_blocks_spec <- function(controlTable,
                                    recordKeys = character(0),
                                    controlTableKeys = colnames(controlTable)[[1]],
                                    checkNames = TRUE,
-                                   checkKeys = TRUE,
+                                   checkKeys = FALSE,
                                    strict = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_spec")
   controlTable <- as.data.frame(controlTable)

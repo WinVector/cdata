@@ -6,7 +6,7 @@
 \usage{
 rowrecs_to_blocks_spec(controlTable, ..., recordKeys = character(0),
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE)
+  checkKeys = FALSE, strict = FALSE)
 }
 \arguments{
 \item{controlTable}{an all character data frame or cdata pivot control.}

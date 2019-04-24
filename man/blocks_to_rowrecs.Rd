@@ -13,7 +13,7 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   temporary = TRUE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
-  ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
+  ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
   temporary = TRUE)

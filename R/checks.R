@@ -44,7 +44,7 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
   if(any(is.na(controlTable[, controlTableKeys, drop = FALSE]))) {
     return("control table key values must not be NA")
   }
-  if(!wrapr::checkColsFormUniqueKeys(controlTable, controlTableKeys)) {
+  if(!check_cols_form_unique_keys(controlTable, controlTableKeys)) {
     return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
   }
   toCheck <- list(
