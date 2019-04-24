@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.695   0.175   0.985
+    ##   0.570   0.126   0.700
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.453   0.110   0.576
+    ##   0.425   0.100   0.531
 
 ``` r
 # reported: #~0.39sec
@@ -157,20 +157,41 @@ test 4: cdata::unpivot\_to\_blocks()
 Also slow, not optimized for this many columns.
 
 ``` r
-system.time(
-test4 <- unpivot_to_blocks(
-  data = data.test,
-  nameForNewKeyColumn = "INDIVIDUALS",
-  nameForNewValueColumn = "GENOTYPES",
-  columnsToTakeFrom = setdiff(colnames(data.test), 
-                              c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
-)
+system.time({
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn = "INDIVIDUALS",
+    nameForNewValueColumn = "GENOTYPES",
+    columnsToTakeFrom = setdiff(colnames(data.test), 
+                                c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+  test4 <- rowrecs_to_blocks(
+    wideTable = data.test,
+    controlTable = cT,
+    columnsToCopy = "MARKERS")
+})
 ```
 
     ##    user  system elapsed 
-    ##  52.045  21.979  76.480
+    ##  52.659  22.359  81.210
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
 stopifnot(isTRUE(all.equal(test1, test4)))
+```
+
+``` r
+system.time(
+back4 <- blocks_to_rowrecs(
+  tallTable = test4,
+  keyColumns = "MARKERS",
+  controlTable = cT)
+)
+```
+
+    ##    user  system elapsed 
+    ## 389.243  35.741 431.362
+
+``` r
+back4 <- orderby(back4, colnames(back4)) 
+data.test <- orderby(back4, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, back4)))
 ```

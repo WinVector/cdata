@@ -129,7 +129,7 @@ rowrecs_to_blocks.default <- function(wideTable,
     res[[cn]][seq_len(n_row_in)] <- NA
   }
   # cross product with control table
-  res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE]
+  res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE] # TODO: speedup hotspot
   rownames(res) <- NULL
   for(cn in controlTableKeys) {
     res[[cn]] <- rep(controlTable[[cn]], n_row_in)
@@ -143,7 +143,7 @@ rowrecs_to_blocks.default <- function(wideTable,
       if(is.factor(wtni)) {
         wtni <- as.character(wtni)
       }
-      res[[cn]][indxs] <- wtni
+      res[[cn]][indxs] <- wtni # TODO: speedup hotspot
     }
   }
   rownames(res) <- NULL
@@ -191,7 +191,7 @@ blocks_to_rowrecs.default <- function(tallTable,
   # check more
   if(checkKeys) {
     # check keyColumns plus controltable keys key data
-    if(!wrapr::checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
+    if(!wrapr::checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {  # TODO: speedup hotspot
       stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not uniquely index data"))
     }
   }
@@ -223,7 +223,7 @@ blocks_to_rowrecs.default <- function(tallTable,
     for(i in seq_len(n_rep)) {
       srccol <- controlTable$composite_meas_col[[i]]
       destcol <- controlTable[[cn]][i]
-      indxs <- which(tallTable$composite_meas_col == srccol)
+      indxs <- which(tallTable$composite_meas_col == srccol)  # TODO: speedup hotspot
       vals <- tallTable[[cn]][indxs]
       res[[destcol]] <- vals[[1]]
       res[[destcol]][seq_len(n_res)] <- NA

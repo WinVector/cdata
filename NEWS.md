@@ -1,6 +1,7 @@
 
-# cdata 1.1.0 2019/04/23
+# cdata 1.1.0 2019/04/24
 
+ * Switch to rqdatatable implementation.
  * General transform specification.
  * More care with factors.
  * Update vignettes.
