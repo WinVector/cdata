@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.570   0.126   0.700
+    ##   0.616   0.134   0.805
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.425   0.100   0.531
+    ##   0.465   0.121   0.619
 
 ``` r
 # reported: #~0.39sec
@@ -163,15 +163,16 @@ system.time({
     nameForNewValueColumn = "GENOTYPES",
     columnsToTakeFrom = setdiff(colnames(data.test), 
                                 c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
-  test4 <- rowrecs_to_blocks(
-    wideTable = data.test,
-    controlTable = cT,
-    columnsToCopy = "MARKERS")
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS")
+  
+  test4 <- layout_by(layout, data.test)
 })
 ```
 
     ##    user  system elapsed 
-    ##  52.659  22.359  81.210
+    ##  52.758  21.731  78.815
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -179,16 +180,13 @@ stopifnot(isTRUE(all.equal(test1, test4)))
 ```
 
 ``` r
-system.time(
-back4 <- blocks_to_rowrecs(
-  tallTable = test4,
-  keyColumns = "MARKERS",
-  controlTable = cT)
-)
+system.time({
+  back4 <- layout_by(t(layout), test4)
+})
 ```
 
     ##    user  system elapsed 
-    ## 389.243  35.741 431.362
+    ## 366.398  35.514 405.453
 
 ``` r
 back4 <- orderby(back4, colnames(back4)) 

@@ -106,10 +106,11 @@ system.time({
     nameForNewValueColumn = "GENOTYPES",
     columnsToTakeFrom = setdiff(colnames(data.test), 
                                 c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
-  test4 <- rowrecs_to_blocks(
-    wideTable = data.test,
-    controlTable = cT,
-    columnsToCopy = "MARKERS")
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS")
+  
+  test4 <- layout_by(layout, data.test)
 })
 ```
 
@@ -119,12 +120,9 @@ stopifnot(isTRUE(all.equal(test1, test4)))
 ```
 
 ```{r cdata_back}
-system.time(
-back4 <- blocks_to_rowrecs(
-  tallTable = test4,
-  keyColumns = "MARKERS",
-  controlTable = cT)
-)
+system.time({
+  back4 <- layout_by(t(layout), test4)
+})
 ```
 
 ```{r compare_cdata_back}
