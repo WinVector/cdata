@@ -9,7 +9,7 @@ require(tidyverse)
 
     ## Loading required package: tidyverse
 
-    ## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
     ## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
@@ -30,7 +30,7 @@ require(tidyverse)
 
     ## Warning: package 'forcats' was built under R version 3.5.2
 
-    ## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.565   0.122   0.691
+    ##   0.620   0.155   0.807
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.426   0.103   0.531
+    ##   0.423   0.100   0.527
 
 ``` r
 # reported: #~0.39sec
@@ -163,7 +163,8 @@ system.time({
                                 c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
   layout <- rowrecs_to_blocks_spec(
     cT,
-    recordKeys = "MARKERS")
+    recordKeys = "MARKERS",
+    allow_rqdatatable = TRUE)
   
   print(layout$allow_rqdatatable)
   
@@ -174,7 +175,7 @@ system.time({
     ## [1] TRUE
 
     ##    user  system elapsed 
-    ##   0.717   0.228   0.753
+    ##   0.695   0.556   1.570
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -196,7 +197,7 @@ system.time({
     ## [1] TRUE
 
     ##    user  system elapsed 
-    ## 100.139   2.299  99.280
+    ## 108.199   2.848 111.431
 
 ``` r
 back4 <- orderby(back4, colnames(back4)) 
@@ -231,7 +232,7 @@ system.time({
     ## [1] FALSE
 
     ##    user  system elapsed 
-    ##  87.544  68.921 160.014
+    ##  92.018  77.784 180.643
 
 ``` r
 test5 <- orderby(test5, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -253,7 +254,7 @@ system.time({
     ## [1] FALSE
 
     ##    user  system elapsed 
-    ## 158.550  38.982 198.500
+    ## 156.720  40.199 197.889
 
 ``` r
 back5 <- orderby(back5, colnames(back5)) 

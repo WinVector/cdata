@@ -107,7 +107,8 @@ system.time({
                                 c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
   layout <- rowrecs_to_blocks_spec(
     cT,
-    recordKeys = "MARKERS")
+    recordKeys = "MARKERS",
+    allow_rqdatatable = TRUE)
   
   print(layout$allow_rqdatatable)
   
