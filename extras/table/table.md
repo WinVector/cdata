@@ -153,7 +153,7 @@ print(layout)
     ##      "truth: TRUE" , tTpF         , tTpT         )
     ##  out_keys <- c('_')
     ## 
-    ##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
+    ##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
     ## }
 
 This is a lot of work to transform the table, but it turns out this little transform is a hard one.
