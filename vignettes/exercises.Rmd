@@ -387,7 +387,7 @@ The package vignettes can be found in the "Articles" tab [here](https://winvecto
 
 ## Conclusion
 
-Notice how in all cases we can solve the record layout transform by insisting an an example of the incoming and outgoing records, knowing which columns specify records (`recordKeys`) and then copying column names from the incoming/outgoing records into cells of the outgoing/incoming records.  Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
+Notice how in all cases we can solve the record layout transform by insisting on examples of the incoming and outgoing records, knowing which columns specify records (`recordKeys`) and then copying column names from the incoming/outgoing records into cells of the outgoing/incoming records.  Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
 
 To make your own solutions, we suggest just using one of these solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
