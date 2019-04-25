@@ -121,10 +121,10 @@
 <li>Draw the shape of the incoming record without the record keys.</li>
 <li>Draw the shape of the outgoing record without the record keys.</li>
 <li>Combine the above information as a one of the above data layout transform specifications.</li>
-<li>Print the transform to confirm it is what you want.</li>
-<li>Apply the transform.</li>
+<li>Print the layout transform to confirm it is what you want.</li>
+<li>Apply the layout transform.</li>
 </ul>
-<p>This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The thing to note is there is hopefully not a lot of additional problem solving to apply the <code>cdata</code> methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the transform is implemented. In <code>cdata</code> the user only specifies the data transform, and implementation is left to the <code>cdata</code> package. With <code>cdata</code> the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired transform. The <code>cdata</code> solution pattern is always the same, which can help in mastering it.</p>
+<p>This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The thing to note is there is hopefully not a lot of additional problem solving to apply the <code>cdata</code> methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the layout transform is implemented. In <code>cdata</code> the user only specifies the data layout transform, and implementation is left to the <code>cdata</code> package. With <code>cdata</code> the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired data layout transform. The <code>cdata</code> solution pattern is always the same, which can help in mastering it.</p>
 <p>With <code>cdata</code> record layout transforms are simple <code>R</code> objects with detailed <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> methods- so they are convenient to save re-used later.</p>
 <p>We will work some examples with the hope that practice brings familiarity. The examples for this note are all of the demo-examples from <a href="https://github.com/tidyverse/tidyr/tree/master/demo">tidyr/demo/</a>.</p>
 </div>
@@ -161,13 +161,13 @@ outgoing_record &lt;-<span class="st"> </span>wrapr<span class="op">::</span><sp
 <span class="st">     "d"</span>     , named , incd <span class="op">|</span>
 <span class="st">     "m"</span>     , namem , incm )
 
-<span class="co"># put it all together into a transform</span>
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+<span class="co"># put it all together into a layout</span>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   outgoing_record,
   <span class="dt">recordKeys =</span> recordKeys)
 
-<span class="co"># confirm we have the right transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co"># confirm we have the right layout</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "famid"  , "named", "namem", "incd", "incm" |</span>
@@ -185,9 +185,9 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
 <span class="co">#&gt; }</span>
 
-<span class="co"># apply the transform</span>
+<span class="co"># apply the layout</span>
 dadmomw <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -236,8 +236,8 @@ dadmomw <span class="op">%.&gt;%</span><span class="st"> </span>
 </tbody>
 </table>
 <p>Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes.</p>
-<p>Also notice the <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> method fully documents what columns are expected and the intent of the transform. The <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or “dot” for row-keys (keys that specify which sets of rows are in the same block record).</p>
-<p>(Note: the original “<code>tidyr</code>” solution may have been on different data, or at least appears to not work on the above data. As the <code>tidyr</code> does not have a layout transform print method, we can’t confirm if we have the correct data for the <code>tidyr</code> example.)</p>
+<p>Also notice the <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> method fully documents what columns are expected and the intent of the data layout transform. The <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or “dot” for row-keys (keys that specify which sets of rows are in the same block record).</p>
+<p>(Note: the original “<code>tidyr</code>” solution may have been on different data, or at least appears to not work on the above data. As the <code>tidyr</code> does not have a data layout transform print method, we can’t confirm if we have the correct data for the <code>tidyr</code> example.)</p>
 </div>
 <div id="example-2" class="section level2">
 <h2 class="hasAnchor">
@@ -284,14 +284,14 @@ outgoing_record &lt;-<span class="st"> </span>wrapr<span class="op">::</span><sp
 <span class="st">    "Spring"</span> , S1,      S2      <span class="op">|</span>
 <span class="st">    "Winter"</span> , W1,      W2      )
 
-<span class="co"># put it all together into a transform</span>
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_specification.html">layout_specification</a></span>(
+<span class="co"># put it all together into a layout</span>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_specification.html">layout_specification</a></span>(
   <span class="dt">incoming_shape =</span> incoming_record,
   <span class="dt">outgoing_shape =</span> outgoing_record,
   <span class="dt">recordKeys =</span> recordKeys)
 
-<span class="co"># confirm we have the right transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co"># confirm we have the right layout</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "ID"  , "Year", "Test", "Fall", "Spring", "Winter" |</span>
@@ -327,9 +327,9 @@ grades &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class=
 <span class="st">     </span><span class="dv">3</span>   , <span class="dv">2</span>     , <span class="dv">2008</span>  , <span class="dv">17</span>    , <span class="dv">12</span>      , <span class="dv">23</span>       <span class="op">|</span>
 <span class="st">     </span><span class="dv">3</span>   , <span class="dv">2</span>     , <span class="dv">2009</span>  , <span class="dv">14</span>    ,  <span class="dv">9</span>      , <span class="dv">31</span>       )
 
-<span class="co"># apply the transform</span>
+<span class="co"># apply the layout</span>
 grades <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -498,13 +498,13 @@ incoming_record &lt;-<span class="st"> </span>wrapr<span class="op">::</span><sp
 <span class="st">    "Cont"</span>      , Cont    )
 
 
-<span class="co"># put it all together into a transform</span>
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec</a></span>(
+<span class="co"># put it all together into a layout</span>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec</a></span>(
   incoming_record,
   <span class="dt">recordKeys =</span> recordKeys)
 
-<span class="co"># confirm we have the right transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co"># confirm we have the right layout</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "Ind"  , "Treatment", "value" |</span>
@@ -522,9 +522,9 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/b
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
-<span class="co"># apply the transform</span>
+<span class="co"># apply the layout</span>
 a <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -545,7 +545,7 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<p>By now you should be able to see the <code>cdata</code> solution always follows a very similar path. In fact we try not to let the nature of the transform (“easy” versus “hard”) dictate the solution method. Always slow down and draw out the before and after before attempting to solve the problem. An interesting trivial transform that was a pain to initial draw-out was converting a typical confusion matrix format (example <a href="https://github.com/WinVector/cdata/blob/master/extras/table/table.md">here</a>).</p>
+<p>By now you should be able to see the <code>cdata</code> solution always follows a very similar path. In fact we try not to let the nature of the data layout transform (“easy” versus “hard”) dictate the solution method. Always slow down and draw out the before and after before attempting to solve the problem. An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example <a href="https://github.com/WinVector/cdata/blob/master/extras/table/table.md">here</a>).</p>
 </div>
 <div id="example-4" class="section level1">
 <h1 class="hasAnchor">
@@ -573,7 +573,7 @@ b &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw">
 <span class="st">     "Mace"</span> , <span class="dv">250</span>   , <span class="fl">3.6</span>     <span class="op">|</span>
 <span class="st">     "Mace"</span> , <span class="dv">300</span>   , <span class="dv">3</span>       <span class="op">|</span>
 <span class="st">     "Mace"</span> , <span class="dv">350</span>   , <span class="fl">2.5</span>     )</code></pre></div>
-<p>The <code>cdata</code> solution is as before, but as we have a large number of columns we will us a helper function to specify the transform.</p>
+<p>The <code>cdata</code> solution is as before, but as we have a large number of columns we will us a helper function to specify the data layout transform.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 <span class="co"># how to find records</span>
@@ -585,13 +585,13 @@ outgoing_record &lt;-<span class="st"> </span><span class="kw"><a href="../refer
   <span class="dt">nameForNewValueColumn =</span> <span class="st">"Score"</span>,
   <span class="dt">columnsToTakeFrom =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sets">setdiff</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(a), recordKeys))
 
-<span class="co"># put it all together into a transform</span>
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+<span class="co"># put it all together into a layout</span>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   outgoing_record,
   <span class="dt">recordKeys =</span> recordKeys)
 
-<span class="co"># confirm we have the right transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co"># confirm we have the right layout</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "Name"  , "50", "100", "150", "200", "250", "300", "350" |</span>
@@ -614,9 +614,9 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
 <span class="co">#&gt; }</span>
 
-<span class="co"># apply the transform</span>
+<span class="co"># apply the layout</span>
 a <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/transform">transform</a></span>(., <span class="dt">Time =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(Time)) <span class="op">%.&gt;%</span>
 <span class="st">  </span>.[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/order">order</a></span>(.<span class="op">$</span>Name, .<span class="op">$</span>Time), , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
@@ -744,13 +744,13 @@ outgoing_record &lt;-<span class="st"> </span>wrapr<span class="op">::</span><sp
 <span class="st">    "T1"</span>    , work.T1, play.T1, talk.T1, total.T1 <span class="op">|</span>
 <span class="st">    "T2"</span>    , work.T2, play.T2, talk.T2, total.T2 )
 
-<span class="co"># put it all together into a transform</span>
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
+<span class="co"># put it all together into a layout</span>
+layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
   outgoing_record,
   <span class="dt">recordKeys =</span> recordKeys)
 
-<span class="co"># confirm we have the right transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
+<span class="co"># confirm we have the right layout</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "id"  , "trt", "work.T1", "work.T2", "play.T1", "play.T2", "talk.T1", "talk.T2", "total.T1", "total.T2" |</span>
@@ -768,9 +768,9 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
 <span class="co">#&gt; }</span>
 
-<span class="co"># apply the transform</span>
+<span class="co"># apply the layout</span>
 a <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>layout <span class="op">%.&gt;%</span>
 <span class="st">  </span>.[wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/orderv">orderv</a></span>(.[ , recordKeys, <span class="dt">drop =</span> <span class="ot">FALSE</span>]), , drop =<span class="st"> </span><span class="ot">FALSE</span>] <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
@@ -826,10 +826,10 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 <h2 class="hasAnchor">
 <a href="#transform-direction" class="anchor"></a>Transform Direction</h2>
 <p><code>cdata</code> transforms specifications are reversible or invertible. So in solving any one of the above problems the user has complete freedom to try and solve “moving from a to b” or “moving form b to a” (and can pick whichever they find easier).</p>
-<p>For example continuing with example 5, we can reverse the transform using the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_transform &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
+<p>For example continuing with example 5, we can reverse the data layout transform using the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
 
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_transform)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "id"  , "trt", "time", "work" , "play" , "talk" , "total"  |</span>
@@ -847,9 +847,9 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
 <span class="co">#&gt; }</span>
 
-<span class="co"># apply the inverse transform</span>
+<span class="co"># apply the inverse layout</span>
 b <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>inv_transform <span class="op">%.&gt;%</span>
+<span class="st">  </span>inv_layout <span class="op">%.&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -891,7 +891,7 @@ b <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<p>(We may get a different column order or row order. In <code>cdata</code> row and column order are not considered essential properties of the transform (as is also the the case with relational data systems).)</p>
+<p>(We may get a different column order or row order. In <code>cdata</code> row and column order are not considered essential properties of the data layout transform (as is also the the case with relational data systems).)</p>
 </div>
 <div id="package-entry-points" class="section level2">
 <h2 class="hasAnchor">
@@ -921,9 +921,9 @@ b <span class="op">%.&gt;%</span><span class="st"> </span>
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
 <p>Notice how in all cases we can solve the record layout transform by insisting an an example of the incoming and outgoing records, knowing which columns specify records (<code>recordKeys</code>) and then copying column names from the incoming/outgoing records into cells of the outgoing/incoming records. Really all one is doing when using <code>cdata</code> is formalizing the transform “ask” into a machine readable example.</p>
-<p>To make your own solutions, we suggest just using one of these solutions as a template</p>
-<p><code>cdata</code> also supplies a number of convenience functions for specifying common transforms, or one can build up transformations descriptions using code as shown in the grid scatter-plot example <a href="https://github.com/WinVector/cdata">here</a>.</p>
-<p>We also note the value of being able to print and review the bulk of transform, as it documents expected incoming data columns and interior block record key values.</p>
+<p>To make your own solutions, we suggest just using one of these solutions as a template. The idea of having the data layout transform be simple data (a <code>list</code> of a couple of <code>data.frame</code>s) means one can use the full power of <code>R</code> and other <code>R</code> packages to build the data layout transform specification (one isn’t limited to some interface grammar specified by the data layout transform package). The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example <a href="https://github.com/WinVector/cdata">here</a>.</p>
+<p><code>cdata</code> also supplies a number of convenience functions for specifying common transforms,</p>
+<p>We also note the value of being able to print and review the bulk of data layout transform, as it documents expected incoming data columns and interior block record key values.</p>
 <p>The source-code for <a href="https://winvector.github.io/cdata/articles/exercises.html">this note</a> can be found <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd">here</a>.</p>
 </div>
 </div>

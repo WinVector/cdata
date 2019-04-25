@@ -33,10 +33,10 @@ Each of these five problems will be solved using the same steps:
   * Draw the shape of the incoming record without the record keys.
   * Draw the shape of the outgoing record without the record keys.
   * Combine the above information as a one of the above data layout transform specifications.
-  * Print the transform to confirm it is what you want.
-  * Apply the transform.
+  * Print the layout transform to confirm it is what you want.
+  * Apply the layout transform.
   
-This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the transform is implemented.  In `cdata` the user only specifies the data transform, and implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
+This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the layout transform is implemented.  In `cdata` the user only specifies the data layout transform, and implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired data layout transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
 
 With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to save re-used later.
 
@@ -82,25 +82,25 @@ outgoing_record <- wrapr::qchar_frame(
      "d"     , named , incd |
      "m"     , namem , incm )
 
-# put it all together into a transform
-transform <- rowrecs_to_blocks_spec(
+# put it all together into a layout
+layout <- rowrecs_to_blocks_spec(
   outgoing_record,
   recordKeys = recordKeys)
 
-# confirm we have the right transform
-print(transform)
+# confirm we have the right layout
+print(layout)
 
-# apply the transform
+# apply the layout
 dadmomw %.>% 
-  transform %.>%
+  layout %.>%
   knitr::kable(.)
 ```
 
 Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes.
 
-Also notice the `print()` method fully documents what columns are expected and the intent of the transform.  The `print()` method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or "dot" for row-keys (keys that specify which sets of rows are in the same block record).
+Also notice the `print()` method fully documents what columns are expected and the intent of the data layout transform.  The `print()` method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or "dot" for row-keys (keys that specify which sets of rows are in the same block record).
 
-(Note: the original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. As the `tidyr` does not have a layout transform print method, we can't confirm if we have the correct data for the `tidyr` example.)
+(Note: the original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. As the `tidyr` does not have a data layout transform print method, we can't confirm if we have the correct data for the `tidyr` example.)
 
 
 ## Example 2
@@ -156,14 +156,14 @@ outgoing_record <- wrapr::qchar_frame(
     "Spring" , S1,      S2      |
     "Winter" , W1,      W2      )
 
-# put it all together into a transform
-transform <- layout_specification(
+# put it all together into a layout
+layout <- layout_specification(
   incoming_shape = incoming_record,
   outgoing_shape = outgoing_record,
   recordKeys = recordKeys)
 
-# confirm we have the right transform
-print(transform)
+# confirm we have the right layout
+print(layout)
 
 # example data
 grades <- wrapr::build_frame(
@@ -181,9 +181,9 @@ grades <- wrapr::build_frame(
      3   , 2     , 2008  , 17    , 12      , 23       |
      3   , 2     , 2009  , 14    ,  9      , 31       )
 
-# apply the transform
+# apply the layout
 grades %.>% 
-  transform %.>%
+  layout %.>%
   knitr::kable(.)
 ```
 
@@ -222,21 +222,21 @@ incoming_record <- wrapr::qchar_frame(
     "Cont"      , Cont    )
 
 
-# put it all together into a transform
-transform <- blocks_to_rowrecs_spec(
+# put it all together into a layout
+layout <- blocks_to_rowrecs_spec(
   incoming_record,
   recordKeys = recordKeys)
 
-# confirm we have the right transform
-print(transform)
+# confirm we have the right layout
+print(layout)
 
-# apply the transform
+# apply the layout
 a %.>% 
-  transform %.>%
+  layout %.>%
   knitr::kable(.)
 ```
 
-By now you should be able to see the `cdata` solution always follows a very similar path.  In fact we try not to let the nature of the transform ("easy" versus "hard") dictate the solution method.  Always slow down and draw out the before and after before attempting to solve the problem.  An interesting trivial transform that was a pain to initial draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
+By now you should be able to see the `cdata` solution always follows a very similar path.  In fact we try not to let the nature of the data layout transform ("easy" versus "hard") dictate the solution method.  Always slow down and draw out the before and after before attempting to solve the problem.  An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
 
 
 # Example 4
@@ -269,7 +269,7 @@ b <- wrapr::build_frame(
      "Mace" , 350   , 2.5     )
 ```
 
-The `cdata` solution is as before, but as we have a large number of columns we will us a helper function to specify the transform.
+The `cdata` solution is as before, but as we have a large number of columns we will us a helper function to specify the data layout transform.
 
 ```{r}
 library("cdata")
@@ -283,17 +283,17 @@ outgoing_record <- build_unpivot_control(
   nameForNewValueColumn = "Score",
   columnsToTakeFrom = setdiff(colnames(a), recordKeys))
 
-# put it all together into a transform
-transform <- rowrecs_to_blocks_spec(
+# put it all together into a layout
+layout <- rowrecs_to_blocks_spec(
   outgoing_record,
   recordKeys = recordKeys)
 
-# confirm we have the right transform
-print(transform)
+# confirm we have the right layout
+print(layout)
 
-# apply the transform
+# apply the layout
 a %.>% 
-  transform %.>%
+  layout %.>%
   transform(., Time = as.numeric(Time)) %.>%
   .[order(.$Name, .$Time), , drop = FALSE] %.>%
   knitr::kable(.)
@@ -336,17 +336,17 @@ outgoing_record <- wrapr::qchar_frame(
     "T1"    , work.T1, play.T1, talk.T1, total.T1 |
     "T2"    , work.T2, play.T2, talk.T2, total.T2 )
 
-# put it all together into a transform
-transform <- rowrecs_to_blocks_spec(
+# put it all together into a layout
+layout <- rowrecs_to_blocks_spec(
   outgoing_record,
   recordKeys = recordKeys)
 
-# confirm we have the right transform
-print(transform)
+# confirm we have the right layout
+print(layout)
 
-# apply the transform
+# apply the layout
 a %.>% 
-  transform %.>%
+  layout %.>%
   .[wrapr::orderv(.[ , recordKeys, drop = FALSE]), , drop = FALSE] %.>%
   knitr::kable(.)
 ```
@@ -355,20 +355,20 @@ a %.>%
 
 `cdata` transforms specifications are reversible or invertible.  So in solving any one of the above problems the user has complete freedom to try and solve "moving from a to b" or "moving form b to a" (and can pick whichever they find easier).
 
-For example continuing with example 5, we can reverse the transform using the `t()` function.
+For example continuing with example 5, we can reverse the data layout transform using the `t()` function.
 
 ```{r}
-inv_transform <- t(transform)
+inv_layout <- t(layout)
 
-print(inv_transform)
+print(inv_layout)
 
-# apply the inverse transform
+# apply the inverse layout
 b %.>% 
-  inv_transform %.>%
+  inv_layout %.>%
   knitr::kable(.)
 ```
 
-(We may get a different column order or row order. In `cdata` row and column order are not considered essential properties of the transform (as is also the the case with relational data systems).)
+(We may get a different column order or row order. In `cdata` row and column order are not considered essential properties of the data layout transform (as is also the the case with relational data systems).)
 
 ## Package entry points
 
@@ -389,11 +389,11 @@ The package vignettes can be found in the "Articles" tab [here](https://winvecto
 
 Notice how in all cases we can solve the record layout transform by insisting an an example of the incoming and outgoing records, knowing which columns specify records (`recordKeys`) and then copying column names from the incoming/outgoing records into cells of the outgoing/incoming records.  Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
 
-To make your own solutions, we suggest just using one of these solutions as a template
+To make your own solutions, we suggest just using one of these solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
-`cdata` also supplies a number of convenience functions for specifying common transforms, or one can build up transformations descriptions using code as shown in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
+`cdata` also supplies a number of convenience functions for specifying common transforms, 
 
-We also note the value of being able to print and review the bulk of transform, as it documents expected incoming data columns and interior block record key values.
+We also note the value of being able to print and review the bulk of data layout transform, as it documents expected incoming data columns and interior block record key values.
 
 The source-code for [this note](https://winvector.github.io/cdata/articles/exercises.html) can be found [here](https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd).
 
