@@ -5,18 +5,18 @@ date: "Thu Apr 25, 2019"
 output: github_document
 ---
 
-In [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) we are going to use some [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples, and use them to demonstrate how to use the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
+In [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) we are going to use five [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples as exercises to master data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
 
 The idea is these are a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
-For each of these examples we will re-layout the data using [`cdata`](https://github.com/WinVector/cdata).  
+For each of these examples we will show how to re-layout data using [`cdata`](https://github.com/WinVector/cdata).  
 
 ## Introduction
 
-The layout transform design of the layout process will always follow the same steps:
+Each of these five problems will be solved using the same steps:
 
   * Get some example data.
-  * Look if either the incoming or outgoing data format is "all data for a record is in a single row" or not, this determines if you later use `rowrecs_to_blocks_spec()` (specifying data moving from single rows to arbitrary block records), `blocks_to_rowrecs_spec()` (specifying data moving from block records to single rows), or `layout_specification()` (a general block record to block record case).  Data transforms that take rows to rows are not so much re-shapings as combination of renames, selections, and column calculations.
+  * Look if either the incoming or outgoing data format is "all data for a record is in a single row" or not, this determines if you later use `rowrecs_to_blocks_spec()` (specifying data moving from single rows to arbitrary block records), `blocks_to_rowrecs_spec()` (specifying data moving from block records to single rows), or `layout_specification()` (a general block record to block record case).
   * Identify which columns that tell us which sets of rows are records, which we call the "record keys."
   * Draw the shape of the incoming record without the record keys.
   * Draw the shape of the outgoing record without the record keys.
@@ -24,18 +24,18 @@ The layout transform design of the layout process will always follow the same st
   * Print the transform to confirm it is what you want.
   * Apply the transform.
   
-This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the transform is implemented.  In `cdata` the user only specifies the data transform, implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired transform.  The `cdata` solution pattern is always the same, which can help mastering it.
+This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the transform is implemented.  In `cdata` the user only specifies the data transform, and implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
 
-Also with `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to save re-used later.
+With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to save re-used later.
 
-We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from Examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).
+We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).
 
 
 ## Example 1
 
 (From: [https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R](https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R).)
 
-Full data not available, as link is dead. From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get the following data extract.  From this source we can extract the question:
+Full data not available, as the link is dead. From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get the following similar data extract.  From this source we can extract the question:
 
 ```{r}
 # convert from this format
@@ -86,9 +86,9 @@ dadmomw %.>%
 
 Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes.
 
-Also notice the `print()` method fully documents what columns are expected and the intent of the transform.  The `print()` method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe block record structure), and un-quoted entities are values we expect to be in the record or "dot" for row-keys (keys that specify which sets of rows are in the same block record).
+Also notice the `print()` method fully documents what columns are expected and the intent of the transform.  The `print()` method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or "dot" for row-keys (keys that specify which sets of rows are in the same block record).
 
-(The original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. Because the `tidyr` solution is multiple independent transform steps: it does not have a single print method that can document intent.  So we can't know we if we have the correct data for the `tidyr` example, and hence can't know if the `tidyr` example is correct or not.)
+(Note: the original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. As the `tidyr` does not have a layout transform print method, we can't confirm if we have the correct data for the `tidyr` example.)
 
 
 ## Example 2
@@ -177,9 +177,9 @@ grades %.>%
 
 # Example 3
 
-(From: [https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R](https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R) , [r](http://stackoverflow.com/questions/16032858).)
+(From: [https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R](https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R) , [http://stackoverflow.com/questions/16032858](http://stackoverflow.com/questions/16032858).)
 
-Question: given data such as below how does one move treatment and control values for each individual into columns? Or how does take `a` to `b`?
+Question: given data such as below how does one move treatment and control values for each individual into columns? Or how does one take `a` to `b`?
 
 ```{r}
 a <- wrapr::build_frame(
@@ -336,6 +336,25 @@ a %.>%
   orderby(., recordKeys) %.>%
   knitr::kable(.)
 ```
+
+## Transform Direction
+
+`cdata` transforms specifications are reversible or invertible.  So in solving any one of the above problems the user has complete freedom to try and solve "moving from a to b" or "moving form b to a" (and can pick whichever they find easier).
+
+For example continuing with example 5, we can reverse the transform using the `t()` function.
+
+```{r}
+inv_transform <- t(transform)
+
+print(inv_transform)
+
+# apply the inverse transform
+b %.>% 
+  inv_transform %.>%
+  knitr::kable(.)
+```
+
+(We do note we got a different column order, in `cdata` row and column order are not considered essential properties of the transform (as is also the the case with relational data systems).)
 
 ## Conclusion
 
