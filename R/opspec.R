@@ -130,7 +130,7 @@ blocks_to_rowrecs_spec <- function(controlTable,
                                    checkNames = TRUE,
                                    checkKeys = TRUE,
                                    strict = FALSE,
-                                   allow_rqdatatable = TRUE) {
+                                   allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_spec")
   controlTable <- as.data.frame(controlTable)
   rownames(controlTable) <- NULL
@@ -539,7 +539,8 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
 #' @param checkNames passed to rowrecs_to_blocks.
 #' @param checkKeys passed to rowrecs_to_blocks.
 #' @param strict passed to rowrecs_to_blocks.
-#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
+#' @param allow_rqdatatable_in logical, if TRUE allow rqdatatable shortcutting on simple conversions.
+#' @param allow_rqdatatable_out logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return a record specification object
 #'
 #' @examples
@@ -591,21 +592,22 @@ layout_specification <- function(incoming_shape,
                                  checkNames = TRUE,
                                  checkKeys = TRUE,
                                  strict = FALSE,
-                                 allow_rqdatatable = TRUE) {
+                                 allow_rqdatatable_in = FALSE,
+                                 allow_rqdatatable_out = TRUE) {
   ca <- blocks_to_rowrecs_spec(incoming_shape,
                                controlTableKeys = incoming_controlTableKeys,
                                recordKeys = character(0),
                                checkNames = checkNames,
                                checkKeys = checkKeys,
                                strict = strict,
-                               allow_rqdatatable = allow_rqdatatable)
+                               allow_rqdatatable = allow_rqdatatable_in)
   cb <- rowrecs_to_blocks_spec(outgoing_shape,
                                controlTableKeys = outgoing_controlTableKeys,
                                recordKeys = character(0),
                                checkNames = checkNames,
                                checkKeys = checkKeys,
                                strict = strict,
-                               allow_rqdatatable = allow_rqdatatable)
+                               allow_rqdatatable = allow_rqdatatable_out)
   # check for some trivial cases
   if((nrow(outgoing_shape)==1) && (length(outgoing_controlTableKeys)==0)) {
     ra <- incoming_shape %.>% ca
@@ -616,7 +618,7 @@ layout_specification <- function(incoming_shape,
                                     checkNames = checkNames,
                                     checkKeys = checkKeys,
                                     strict = strict,
-                                    allow_rqdatatable = allow_rqdatatable))
+                                    allow_rqdatatable = allow_rqdatatable_in))
     }
   }
   if((nrow(incoming_shape)==1) && (length(incoming_controlTableKeys)==0)) {
@@ -629,7 +631,7 @@ layout_specification <- function(incoming_shape,
                                     checkNames = checkNames,
                                     checkKeys = checkKeys,
                                     strict = strict,
-                                    allow_rqdatatable = allow_rqdatatable))
+                                    allow_rqdatatable = allow_rqdatatable_out))
     }
   }
   # check transform makes sense
@@ -645,14 +647,14 @@ layout_specification <- function(incoming_shape,
                               checkNames = checkNames,
                               checkKeys = checkKeys,
                               strict = strict,
-                              allow_rqdatatable = allow_rqdatatable)
+                              allow_rqdatatable = allow_rqdatatable_in)
   b <- rowrecs_to_blocks_spec(outgoing_shape,
                               controlTableKeys = outgoing_controlTableKeys,
                               recordKeys = recordKeys,
                               checkNames = checkNames,
                               checkKeys = checkKeys,
                               strict = strict,
-                              allow_rqdatatable = allow_rqdatatable)
+                              allow_rqdatatable = allow_rqdatatable_out)
   r <- list(
     blocks_to_rowrecs_spec = a,
     rowrecs_to_blocks_spec = b)

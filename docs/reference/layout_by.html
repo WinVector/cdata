@@ -183,12 +183,12 @@
 #&gt;      .   , "R2"     , R2      )
 #&gt;  block_keys &lt;- c('id', 'measure')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
 #&gt; }
 #&gt; </div><div class='input'><span class='fu'>layout_by</span>(<span class='no'>transform</span>, <span class='no'>d</span>)</div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
-#&gt; 2  1      R2   0.4
-#&gt; 3  2     AUC   0.8
+#&gt; 2  2     AUC   0.8
+#&gt; 3  1      R2   0.4
 #&gt; 4  2      R2   0.5</div><div class='input'>
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/build_frame'>build_frame</a></span>(
   <span class='st'>"id"</span>, <span class='st'>"measure"</span>, <span class='st'>"value"</span> <span class='kw'>|</span>
@@ -216,7 +216,7 @@
 #&gt;      .   , AUC  , R2   )
 #&gt;  row_keys &lt;- c('id')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
 #&gt; }
 #&gt; </div><div class='input'><span class='fu'>layout_by</span>(<span class='no'>transform</span>, <span class='no'>d</span>)</div><div class='output co'>#&gt;   id AUC  R2
 #&gt; 1  1 0.7 0.4

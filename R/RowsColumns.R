@@ -125,7 +125,7 @@ pivot_to_rowrecs <- function(data,
                              checkNames = TRUE,
                              checkKeys = TRUE,
                              strict = FALSE,
-                             allow_rqdatatable = TRUE) {
+                             allow_rqdatatable = FALSE) {
   if(!is.data.frame(data)) {
     stop("cdata::pivot_to_rowrecs data must be a local data.frame")
   }
@@ -178,7 +178,8 @@ pivot_to_rowrecs <- function(data,
                     columnsToCopy = colsToCopy,
                     checkNames = checkNames,
                     checkKeys = checkKeys,
-                    strict = strict)
+                    strict = strict,
+                    allow_rqdatatable = allow_rqdatatable)
 }
 
 #' @rdname pivot_to_rowrecs

@@ -167,7 +167,7 @@ blocks_to_rowrecs <- function(tallTable,
                               controlTableKeys = colnames(controlTable)[[1]],
                               tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                               temporary = TRUE,
-                              allow_rqdatatable = TRUE) {
+                              allow_rqdatatable = FALSE) {
   UseMethod("blocks_to_rowrecs")
 }
 

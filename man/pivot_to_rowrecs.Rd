@@ -7,11 +7,11 @@
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
+  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
 
 layout_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
+  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}

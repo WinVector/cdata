@@ -143,11 +143,11 @@ determine which sets of rows build up records and are copied into the result.</p
 
     <pre class="usage"><span class='fu'>pivot_to_rowrecs</span>(<span class='no'>data</span>, <span class='no'>columnToTakeKeysFrom</span>, <span class='no'>columnToTakeValuesFrom</span>,
   <span class='no'>rowKeyColumns</span>, <span class='no'>...</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>layout_to_rowrecs</span>(<span class='no'>data</span>, <span class='no'>columnToTakeKeysFrom</span>, <span class='no'>columnToTakeValuesFrom</span>,
   <span class='no'>rowKeyColumns</span>, <span class='no'>...</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,6 +187,10 @@ determine which sets of rows build up records and are copied into the result.</p
     <tr>
       <th>strict</th>
       <td><p>logical, if TRUE check control table name forms</p></td>
+    </tr>
+    <tr>
+      <th>allow_rqdatatable</th>
+      <td><p>logical, if TRUE allow rqdatatable shortcutting on simple conversions.</p></td>
     </tr>
     </table>
     

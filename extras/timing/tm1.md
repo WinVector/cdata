@@ -9,7 +9,7 @@ require(tidyverse)
 
     ## Loading required package: tidyverse
 
-    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
     ## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
@@ -30,7 +30,7 @@ require(tidyverse)
 
     ## Warning: package 'forcats' was built under R version 3.5.2
 
-    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.684   0.152   0.868
+    ##   0.565   0.122   0.691
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.504   0.125   0.649
+    ##   0.426   0.103   0.531
 
 ``` r
 # reported: #~0.39sec
@@ -174,7 +174,7 @@ system.time({
     ## [1] TRUE
 
     ##    user  system elapsed 
-    ##   0.763   0.327   1.118
+    ##   0.717   0.228   0.753
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -196,7 +196,7 @@ system.time({
     ## [1] TRUE
 
     ##    user  system elapsed 
-    ## 109.079   2.844 110.412
+    ## 100.139   2.299  99.280
 
 ``` r
 back4 <- orderby(back4, colnames(back4)) 
@@ -231,7 +231,7 @@ system.time({
     ## [1] FALSE
 
     ##    user  system elapsed 
-    ##  94.691  79.250 184.969
+    ##  87.544  68.921 160.014
 
 ``` r
 test5 <- orderby(test5, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
@@ -253,7 +253,7 @@ system.time({
     ## [1] FALSE
 
     ##    user  system elapsed 
-    ## 167.367  45.363 218.144
+    ## 158.550  38.982 198.500
 
 ``` r
 back5 <- orderby(back5, colnames(back5)) 

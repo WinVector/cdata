@@ -14,7 +14,8 @@
 #' @param outgoing_controlTableKeys character, which column names of the outgoing control table are considered to be keys.
 #' @param tmp_name_source a tempNameGenerator from cdata::mk_tmp_name_source()
 #' @param temporary logical, if TRUE use temporary tables
-#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
+#' @param allow_rqdatatable_in logical, if TRUE allow rqdatatable shortcutting on simple conversions.
+#' @param allow_rqdatatable_out logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return processing pipeline or transformed table
 #'
 #'
@@ -84,7 +85,8 @@ convert_records <- function(table,
                             outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
                             tmp_name_source = wrapr::mk_tmp_name_source("crec"),
                             temporary = TRUE,
-                            allow_rqdatatable = TRUE) {
+                            allow_rqdatatable_in = FALSE,
+                            allow_rqdatatable_out = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::convert_records")
   if(!is.data.frame(incoming_shape)) {
     stop("cdata::convert_records incoming_shape should be a data.frame")
@@ -102,7 +104,7 @@ convert_records <- function(table,
     controlTableKeys = incoming_controlTableKeys,
     tmp_name_source = tmp_name_source,
     temporary = temporary,
-    allow_rqdatatable = allow_rqdatatable)
+    allow_rqdatatable = allow_rqdatatable_in)
   result <- rowrecs_to_blocks(
     row_records,
     controlTable = outgoing_shape,
@@ -113,6 +115,6 @@ convert_records <- function(table,
     columnsToCopy = c(keyColumns, columnsToCopy_in),
     tmp_name_source = tmp_name_source,
     temporary = temporary,
-    allow_rqdatatable = allow_rqdatatable)
+    allow_rqdatatable = allow_rqdatatable_out)
   result
 }

@@ -10,19 +10,19 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE, allow_rqdatatable = FALSE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
   ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE, allow_rqdatatable = FALSE)
 
 \method{blocks_to_rowrecs}{relop}(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE, allow_rqdatatable = FALSE)
 }
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}

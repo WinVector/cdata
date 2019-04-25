@@ -255,7 +255,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                                     controlTableKeys = colnames(controlTable)[[1]],
                                     tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
                                     temporary = TRUE,
-                                    allow_rqdatatable = TRUE) {
+                                    allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!("relop" %in% class(tallTable))) {
     stop("cdata::blocks_to_rowrecs.relop tallTable must be of class relop")

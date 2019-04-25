@@ -9,7 +9,7 @@ layout_specification(incoming_shape, outgoing_shape, ...,
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],
   outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
   checkNames = TRUE, checkKeys = TRUE, strict = FALSE,
-  allow_rqdatatable = TRUE)
+  allow_rqdatatable_in = FALSE, allow_rqdatatable_out = TRUE)
 }
 \arguments{
 \item{incoming_shape}{data.frame, definition of incoming record shape.}
@@ -30,7 +30,9 @@ layout_specification(incoming_shape, outgoing_shape, ...,
 
 \item{strict}{passed to rowrecs_to_blocks.}
 
-\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
+\item{allow_rqdatatable_in}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
+
+\item{allow_rqdatatable_out}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 a record specification object

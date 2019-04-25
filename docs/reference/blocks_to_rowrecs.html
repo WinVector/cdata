@@ -143,21 +143,21 @@ row records (where each record is a single row).</p>
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"bltrr"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>blocks_to_rowrecs</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>,
-  <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>, <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"btrd"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>blocks_to_rowrecs</span>(<span class='no'>tallTable</span>, <span class='no'>keyColumns</span>, <span class='no'>controlTable</span>, <span class='no'>...</span>,
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"bltrr"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,6 +205,10 @@ row records (where each record is a single row).</p>
     <tr>
       <th>temporary</th>
       <td><p>logical, if TRUE use temporary tables</p></td>
+    </tr>
+    <tr>
+      <th>allow_rqdatatable</th>
+      <td><p>logical, if TRUE allow rqdatatable shortcutting on simple conversions.</p></td>
     </tr>
     </table>
     

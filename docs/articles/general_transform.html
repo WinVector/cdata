@@ -95,7 +95,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-23</h4>
+            <h4 class="date">2019-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -211,7 +211,7 @@ incoming_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><spa
 <span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span>
 <span class="co">#&gt;  out_keys &lt;- c('record_id', 'column_label')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span></code></pre></div>
 <p>This layout specification or controller can then perform the transform.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data <span class="op">%.&gt;%</span>
@@ -411,7 +411,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span>
 <span class="co">#&gt;  out_keys &lt;- c('record_id', 'row')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 data <span class="op">%.&gt;%</span>

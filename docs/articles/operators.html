@@ -95,7 +95,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-23</h4>
+            <h4 class="date">2019-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -170,7 +170,7 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 <span class="co">#&gt;      .         , "R2"     , R2      )</span>
 <span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
 <span class="co">#&gt; }</span></code></pre></div>
 <p>Once we have this specification we can transform the data using operator notation.</p>
 <p>We can collect the record blocks into rows by a “factor-out” (or aggregation/projection) step.</p>
@@ -290,14 +290,14 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.7</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
 <td align="right">2</td>
 <td align="left">AUC</td>
 <td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -324,14 +324,14 @@ d2 <span class="op">%.&gt;%</span><span class="st"> </span>
 <td align="right">0.7</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
 <td align="right">2</td>
 <td align="left">AUC</td>
 <td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -390,14 +390,14 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 <td align="right">0.7</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
 <td align="right">2</td>
 <td align="left">AUC</td>
 <td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -475,14 +475,14 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 <td align="right">0.7</td>
 </tr>
 <tr class="even">
-<td align="right">1</td>
-<td align="left">R2</td>
-<td align="right">0.4</td>
-</tr>
-<tr class="odd">
 <td align="right">2</td>
 <td align="left">AUC</td>
 <td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">R2</td>
+<td align="right">0.4</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>

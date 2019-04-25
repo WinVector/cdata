@@ -141,7 +141,7 @@ extra row keys, and control table keys.</p>
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks_spec</span>(<span class='no'>controlTable</span>, <span class='no'>...</span>, <span class='kw'>recordKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0</span>),
   <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]], <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +173,10 @@ extra row keys, and control table keys.</p>
     <tr>
       <th>strict</th>
       <td><p>passed to rowrecs_to_blocks.</p></td>
+    </tr>
+    <tr>
+      <th>allow_rqdatatable</th>
+      <td><p>logical, if TRUE allow rqdatatable shortcutting on simple conversions.</p></td>
     </tr>
     </table>
     
@@ -209,13 +213,13 @@ extra row keys, and control table keys.</p>
 #&gt;      .   , "R2"     , R2      )
 #&gt;  block_keys &lt;- c('id', 'measure')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
 #&gt; }
 #&gt; </div><div class='input'>
 <span class='no'>d</span> <span class='kw'>%.&gt;%</span> <span class='no'>transform</span></div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
-#&gt; 2  1      R2   0.4
-#&gt; 3  2     AUC   0.8
+#&gt; 2  2     AUC   0.8
+#&gt; 3  1      R2   0.4
 #&gt; 4  2      R2   0.5</div><div class='input'>
 <span class='no'>inv_transform</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/t'>t</a></span>(<span class='no'>transform</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>inv_transform</span>)</div><div class='output co'>#&gt; {
@@ -232,7 +236,7 @@ extra row keys, and control table keys.</p>
 #&gt;      .   , AUC  , R2   )
 #&gt;  row_keys &lt;- c('id')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
 #&gt; }
 #&gt; </div><div class='input'>
 <span class='co'># identity (in structure)</span>

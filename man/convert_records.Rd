@@ -10,7 +10,8 @@ convert_records(table, incoming_shape, outgoing_shape, ...,
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],
   outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("crec"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE, allow_rqdatatable_in = FALSE,
+  allow_rqdatatable_out = TRUE)
 }
 \arguments{
 \item{table}{data.frame or relop.}
@@ -39,7 +40,9 @@ convert_records(table, incoming_shape, outgoing_shape, ...,
 
 \item{temporary}{logical, if TRUE use temporary tables}
 
-\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
+\item{allow_rqdatatable_in}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
+
+\item{allow_rqdatatable_out}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 processing pipeline or transformed table

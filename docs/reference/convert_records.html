@@ -143,7 +143,8 @@
   <span class='kw'>incoming_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>incoming_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>outgoing_controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>outgoing_shape</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/wrapr/topics/mk_tmp_name_source'>mk_tmp_name_source</a></span>(<span class='st'>"crec"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>allow_rqdatatable_in</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>allow_rqdatatable_out</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,6 +200,14 @@
     <tr>
       <th>temporary</th>
       <td><p>logical, if TRUE use temporary tables</p></td>
+    </tr>
+    <tr>
+      <th>allow_rqdatatable_in</th>
+      <td><p>logical, if TRUE allow rqdatatable shortcutting on simple conversions.</p></td>
+    </tr>
+    <tr>
+      <th>allow_rqdatatable_out</th>
+      <td><p>logical, if TRUE allow rqdatatable shortcutting on simple conversions.</p></td>
     </tr>
     </table>
     

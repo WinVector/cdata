@@ -185,7 +185,7 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       controlTableKeys = colnames(controlTable)[[1]],
                                       tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
                                       temporary = TRUE,
-                                      allow_rqdatatable = TRUE) {
+                                      allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")

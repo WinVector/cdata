@@ -95,7 +95,7 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-23</h4>
+            <h4 class="date">2019-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -248,7 +248,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 ##      .        , .        , "petal"     , "length"     , Petal.Length )
 ##  block_keys &lt;- c('iris_id', 'Species', 'plant_part', 'measurement')
 ## 
-##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
 ## }</code></pre>
 <p>In the above we have used the common useful data organizing trick of specifying a dependent column (Species being a function of iris_id) as an additional key.</p>
 <p>This layout then specifies and implements the data transform. We can transform the data by sending it to the layout.</p>
@@ -455,7 +455,7 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 ##      .        , .        , Sepal.Width  , Sepal.Length  , Petal.Width  , Petal.Length   )
 ##  row_keys &lt;- c('iris_id', 'Species')
 ## 
-##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
 ## }</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d_transformed <span class="op">%.&gt;%</span>
 <span class="st">  </span>inv_layout <span class="op">%.&gt;%</span>
@@ -539,10 +539,13 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 ## [1] TRUE
 ## 
 ## $checkKeys
-## [1] TRUE
+## [1] FALSE
 ## 
 ## $strict
-## [1] FALSE</code></pre>
+## [1] FALSE
+## 
+## $allow_rqdatatable
+## [1] TRUE</code></pre>
 <p>Notice that almost all of the time and space in using cdata is spent in specifying how your data is structured and is to be structured.</p>
 <p>The current favored idiomatic interfaces to <code>cdata</code> are:</p>
 <ul>
