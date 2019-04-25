@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 
-In [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) we are going to use five [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples as exercises to master data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
+In [this note](https://winvector.github.io/cdata/articles/exercises.html) we are going to use five [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples as exercises to master data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
 
 The idea is these are a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
@@ -395,7 +395,7 @@ To make your own solutions, we suggest just using one of these solutions as a te
 
 We also note the value of being able to print and review the bulk of transform, as it documents expected incoming data columns and interior block record key values.
 
-The source-code for [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) can be found [here](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.Rmd).
+The source-code for [this note](https://winvector.github.io/cdata/articles/exercises.html) can be found [here](https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd).
 
 
 
