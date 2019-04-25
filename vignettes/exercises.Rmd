@@ -38,7 +38,7 @@ Each of these five problems will be solved using the same steps:
   
 This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the layout transform is implemented.  In `cdata` the user only specifies the data layout transform, and implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired data layout transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
 
-With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to save re-used later.
+With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to alter, save, and re-use later.  The record layout transform also documents the expected columns and constants of the incoming data.
 
 We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).
 
@@ -391,7 +391,7 @@ Notice how in all cases we can solve the record layout transform by insisting on
 
 To make your own solutions, we suggest just using one of these solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
-`cdata` also supplies a number of convenience functions for specifying common transforms, 
+`cdata` also supplies a number of convenience functions for specifying common transforms, especially the fundamental cases of moving in out and our records that are exactly one row.
 
 We also note the value of being able to print and review the bulk of data layout transform, as it documents expected incoming data columns and interior block record key values.
 
