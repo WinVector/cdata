@@ -236,7 +236,7 @@ a %.>%
   knitr::kable(.)
 ```
 
-By now you should be able to see the `cdata` solution always follows a very similar path.  In fact we try not to let the nature of the data layout transform ("easy" versus "hard") dictate the solution method.  Always slow down and draw out the before and after before attempting to solve the problem.  An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
+By now you should be able to see the `cdata` solution always follows a very similar path.  In fact we try not to let the nature of the data layout transform ("easy" versus "hard") dictate the solution method (in fact `cdata` delegates common data layout transforms to [`data.table`](https://github.com/Rdatatable/data.table/wiki), for [a substantial speedup](https://github.com/WinVector/cdata/blob/master/extras/timing/tm1.md)).  Always slow down and draw out the before and after before attempting to solve the problem.  An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
 
 
 # Example 4
@@ -322,7 +322,7 @@ b <- wrapr::build_frame(
 
 We can see what cell corresponds in `a` corresponds to a given cell in `b` by comparing values.
 
-That `cdata` solution is, as always, just picking more informative names for these cells.
+That `cdata` solution is, as always, just picking more informative names for these cells (though this can be automated, as we show [here](https://github.com/WinVector/cdata/blob/master/extras/solution_conversion/solution_conversion.md)).
 
 ```{r}
 library("cdata")

@@ -545,7 +545,7 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<p>By now you should be able to see the <code>cdata</code> solution always follows a very similar path. In fact we try not to let the nature of the data layout transform (“easy” versus “hard”) dictate the solution method. Always slow down and draw out the before and after before attempting to solve the problem. An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example <a href="https://github.com/WinVector/cdata/blob/master/extras/table/table.md">here</a>).</p>
+<p>By now you should be able to see the <code>cdata</code> solution always follows a very similar path. In fact we try not to let the nature of the data layout transform (“easy” versus “hard”) dictate the solution method (in fact <code>cdata</code> delegates common data layout transforms to <a href="https://github.com/Rdatatable/data.table/wiki"><code>data.table</code></a>, for <a href="https://github.com/WinVector/cdata/blob/master/extras/timing/tm1.md">a substantial speedup</a>). Always slow down and draw out the before and after before attempting to solve the problem. An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example <a href="https://github.com/WinVector/cdata/blob/master/extras/table/table.md">here</a>).</p>
 </div>
 <div id="example-4" class="section level1">
 <h1 class="hasAnchor">
@@ -732,7 +732,7 @@ b &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw">
 <span class="st">     "x1.2"</span>, <span class="st">"tr"</span> , <span class="st">"T1"</span>  , <span class="fl">0.06132</span>, <span class="fl">0.8427</span>, <span class="fl">0.3339</span>, <span class="fl">0.04686</span> <span class="op">|</span>
 <span class="st">     "x1.2"</span>, <span class="st">"tr"</span> , <span class="st">"T2"</span>  , <span class="fl">0.2348</span> , <span class="fl">0.1971</span>, <span class="fl">0.5164</span>, <span class="fl">0.7618</span>  )</code></pre></div>
 <p>We can see what cell corresponds in <code>a</code> corresponds to a given cell in <code>b</code> by comparing values.</p>
-<p>That <code>cdata</code> solution is, as always, just picking more informative names for these cells.</p>
+<p>That <code>cdata</code> solution is, as always, just picking more informative names for these cells (though this can be automated, as we show <a href="https://github.com/WinVector/cdata/blob/master/extras/solution_conversion/solution_conversion.md">here</a>).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 <span class="co"># how to find records</span>
