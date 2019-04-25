@@ -314,6 +314,8 @@ a %.>%
 | Ind1 |      1|     3|
 | Ind2 |      2|     4|
 
+By now you should be able to see the `cdata` solution always follows a very similar path. In fact we try not to let the nature of the transform ("easy" versus "hard") dictate the solution method. Always slow down and draw out the before and after before attempting to solve the problem. An interesting trivial transform that was a pain to initial draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
+
 Example 4
 =========
 
@@ -349,12 +351,7 @@ The `cdata` solution is as before, but as we have a large number of columns we w
 
 ``` r
 library("cdata")
-library("rqdatatable")
-```
 
-    ## Loading required package: rquery
-
-``` r
 # how to find records
 recordKeys <- "Name"
 
@@ -399,27 +396,27 @@ print(transform)
 # apply the transform
 a %.>% 
   transform %.>%
-  extend(., Time = as.numeric(Time)) %.>%
-  orderby(., c("Name", "Time")) %.>%
+  transform(., Time = as.numeric(Time)) %.>%
+  .[order(.$Name, .$Time), , drop = FALSE] %.>%
   knitr::kable(.)
 ```
 
-| Name  |  Time|  Score|
-|:------|-----:|------:|
-| Carla |    50|    1.2|
-| Carla |   100|    1.8|
-| Carla |   150|    2.2|
-| Carla |   200|    2.3|
-| Carla |   250|    3.0|
-| Carla |   300|    2.5|
-| Carla |   350|    1.8|
-| Mace  |    50|    1.5|
-| Mace  |   100|    1.1|
-| Mace  |   150|    1.9|
-| Mace  |   200|    2.0|
-| Mace  |   250|    3.6|
-| Mace  |   300|    3.0|
-| Mace  |   350|    2.5|
+|     | Name  |  Time|  Score|
+|-----|:------|-----:|------:|
+| 1   | Carla |    50|    1.2|
+| 3   | Carla |   100|    1.8|
+| 5   | Carla |   150|    2.2|
+| 7   | Carla |   200|    2.3|
+| 9   | Carla |   250|    3.0|
+| 11  | Carla |   300|    2.5|
+| 13  | Carla |   350|    1.8|
+| 2   | Mace  |    50|    1.5|
+| 4   | Mace  |   100|    1.1|
+| 6   | Mace  |   150|    1.9|
+| 8   | Mace  |   200|    2.0|
+| 10  | Mace  |   250|    3.6|
+| 12  | Mace  |   300|    3.0|
+| 14  | Mace  |   350|    2.5|
 
 Example 5
 =========
@@ -430,32 +427,33 @@ Convert from `a` to `b`.
 
 ``` r
 a <- wrapr::build_frame(
-   "id"     , "trt", "work.T1", "play.T1", "talk.T1", "work.T2", "play.T2", "talk.T2" |
-     "x1.01", "tr" , 0.6517   , 0.8647   , 0.5356   , 0.2755   , 0.3543   , 0.03189   |
-     "x1.02", "cnt", 0.5677   , 0.6154   , 0.09309  , 0.2289   , 0.9364   , 0.1145    )
+   "id"    , "trt", "work.T1", "play.T1", "talk.T1", "total.T1", "work.T2", "play.T2", "talk.T2", "total.T2" |
+     "x1.1", "cnt", 0.3443   , 0.7842   , 0.1079   , 0.888     , 0.6484   , 0.8795   , 0.7234   , 0.5631     |
+     "x1.2", "tr" , 0.06132  , 0.8427   , 0.3339   , 0.04686   , 0.2348   , 0.1971   , 0.5164   , 0.7618     )
 
 b <- wrapr::build_frame(
-   "id"     , "trt", "time", "play", "talk" , "work" |
-     "x1.01", "tr" , "T1"  , 0.8647, 0.5356 , 0.6517 |
-     "x1.01", "tr" , "T2"  , 0.3543, 0.03189, 0.2755 |
-     "x1.02", "cnt", "T1"  , 0.6154, 0.09309, 0.5677 |
-     "x1.02", "cnt", "T2"  , 0.9364, 0.1145 , 0.2289 )
+   "id"    , "trt", "time", "work" , "play", "talk", "total" |
+     "x1.1", "cnt", "T1"  , 0.3443 , 0.7842, 0.1079, 0.888   |
+     "x1.1", "cnt", "T2"  , 0.6484 , 0.8795, 0.7234, 0.5631  |
+     "x1.2", "tr" , "T1"  , 0.06132, 0.8427, 0.3339, 0.04686 |
+     "x1.2", "tr" , "T2"  , 0.2348 , 0.1971, 0.5164, 0.7618  )
 ```
 
-`cdata` solution.
+We can see what cell corresponds in `a` corresponds to a given cell in `b` by comparing values.
+
+That `cdata` solution is, as always, just picking more informative names for these cells.
 
 ``` r
 library("cdata")
-library("rqdatatable")
 
 # how to find records
 recordKeys <- c("id", "trt")
 
 # specify the outgoing record shape, using a helper function
 outgoing_record <- wrapr::qchar_frame(
-    "time"  , "play" , "talk" , "work"  |
-    "T1"    , play.T1, talk.T1, work.T1 |
-    "T2"    , play.T2, talk.T2, work.T2 )
+    "time"  , "work" , "play" , "talk" , "total"  |
+    "T1"    , work.T1, play.T1, talk.T1, total.T1 |
+    "T2"    , work.T2, play.T2, talk.T2, total.T2 )
 
 # put it all together into a transform
 transform <- rowrecs_to_blocks_spec(
@@ -468,16 +466,16 @@ print(transform)
 
     ## {
     ##  row_record <- wrapr::qchar_frame(
-    ##    "id"  , "trt", "play.T1", "play.T2", "talk.T1", "talk.T2", "work.T1", "work.T2" |
-    ##      .   , .    , play.T1  , play.T2  , talk.T1  , talk.T2  , work.T1  , work.T2   )
+    ##    "id"  , "trt", "work.T1", "work.T2", "play.T1", "play.T2", "talk.T1", "talk.T2", "total.T1", "total.T2" |
+    ##      .   , .    , work.T1  , work.T2  , play.T1  , play.T2  , talk.T1  , talk.T2  , total.T1  , total.T2   )
     ##  row_keys <- c('id', 'trt')
     ## 
     ##  # becomes
     ## 
     ##  block_record <- wrapr::qchar_frame(
-    ##    "id"  , "trt", "time", "play" , "talk" , "work"  |
-    ##      .   , .    , "T1"  , play.T1, talk.T1, work.T1 |
-    ##      .   , .    , "T2"  , play.T2, talk.T2, work.T2 )
+    ##    "id"  , "trt", "time", "work" , "play" , "talk" , "total"  |
+    ##      .   , .    , "T1"  , work.T1, play.T1, talk.T1, total.T1 |
+    ##      .   , .    , "T2"  , work.T2, play.T2, talk.T2, total.T2 )
     ##  block_keys <- c('id', 'trt', 'time')
     ## 
     ##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
@@ -487,16 +485,16 @@ print(transform)
 # apply the transform
 a %.>% 
   transform %.>%
-  orderby(., recordKeys) %.>%
+  .[wrapr::orderv(.[ , recordKeys, drop = FALSE]), , drop = FALSE] %.>%
   knitr::kable(.)
 ```
 
-| id    | trt | time |    play|     talk|    work|
-|:------|:----|:-----|-------:|--------:|-------:|
-| x1.01 | tr  | T1   |  0.8647|  0.53560|  0.6517|
-| x1.01 | tr  | T2   |  0.3543|  0.03189|  0.2755|
-| x1.02 | cnt | T1   |  0.6154|  0.09309|  0.5677|
-| x1.02 | cnt | T2   |  0.9364|  0.11450|  0.2289|
+| id   | trt | time |     work|    play|    talk|    total|
+|:-----|:----|:-----|--------:|-------:|-------:|--------:|
+| x1.1 | cnt | T1   |  0.34430|  0.7842|  0.1079|  0.88800|
+| x1.1 | cnt | T2   |  0.64840|  0.8795|  0.7234|  0.56310|
+| x1.2 | tr  | T1   |  0.06132|  0.8427|  0.3339|  0.04686|
+| x1.2 | tr  | T2   |  0.23480|  0.1971|  0.5164|  0.76180|
 
 Transform Direction
 -------------------
@@ -513,16 +511,16 @@ print(inv_transform)
 
     ## {
     ##  block_record <- wrapr::qchar_frame(
-    ##    "id"  , "trt", "time", "play" , "talk" , "work"  |
-    ##      .   , .    , "T1"  , play.T1, talk.T1, work.T1 |
-    ##      .   , .    , "T2"  , play.T2, talk.T2, work.T2 )
+    ##    "id"  , "trt", "time", "work" , "play" , "talk" , "total"  |
+    ##      .   , .    , "T1"  , work.T1, play.T1, talk.T1, total.T1 |
+    ##      .   , .    , "T2"  , work.T2, play.T2, talk.T2, total.T2 )
     ##  block_keys <- c('id', 'trt', 'time')
     ## 
     ##  # becomes
     ## 
     ##  row_record <- wrapr::qchar_frame(
-    ##    "id"  , "trt", "play.T1", "play.T2", "talk.T1", "talk.T2", "work.T1", "work.T2" |
-    ##      .   , .    , play.T1  , play.T2  , talk.T1  , talk.T2  , work.T1  , work.T2   )
+    ##    "id"  , "trt", "work.T1", "work.T2", "play.T1", "play.T2", "talk.T1", "talk.T2", "total.T1", "total.T2" |
+    ##      .   , .    , work.T1  , work.T2  , play.T1  , play.T2  , talk.T1  , talk.T2  , total.T1  , total.T2   )
     ##  row_keys <- c('id', 'trt')
     ## 
     ##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
@@ -535,12 +533,28 @@ b %.>%
   knitr::kable(.)
 ```
 
-| id    | trt |  play.T1|  play.T2|  talk.T1|  talk.T2|  work.T1|  work.T2|
-|:------|:----|--------:|--------:|--------:|--------:|--------:|--------:|
-| x1.01 | tr  |   0.8647|   0.3543|  0.53560|  0.03189|   0.6517|   0.2755|
-| x1.02 | cnt |   0.6154|   0.9364|  0.09309|  0.11450|   0.5677|   0.2289|
+| id   | trt |  work.T1|  work.T2|  play.T1|  play.T2|  talk.T1|  talk.T2|  total.T1|  total.T2|
+|:-----|:----|--------:|--------:|--------:|--------:|--------:|--------:|---------:|---------:|
+| x1.1 | cnt |  0.34430|   0.6484|   0.7842|   0.8795|   0.1079|   0.7234|   0.88800|    0.5631|
+| x1.2 | tr  |  0.06132|   0.2348|   0.8427|   0.1971|   0.3339|   0.5164|   0.04686|    0.7618|
 
-(We do note we got a different column order, in `cdata` row and column order are not considered essential properties of the transform (as is also the the case with relational data systems).)
+(We may get a different column order or row order. In `cdata` row and column order are not considered essential properties of the transform (as is also the the case with relational data systems).)
+
+Package entry points
+--------------------
+
+The main `cdata` interfaces are given by the following set of methods:
+
+-   [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), a convenience function for moving data from multi-row block records with one value per row to single row records.
+-   [`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), a convenience function for moving data from single-row records to possibly multi row block records with one row per value.
+-   [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
+-   [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+-   [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
+-   `t()` (transpose/adjoint) to invert or reverse layout specifications.
+-   [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
+-   [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
+
+The package vignettes can be found in the "Articles" tab [here](https://winvector.github.io/cdata/).
 
 Conclusion
 ----------
