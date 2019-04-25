@@ -112,10 +112,10 @@ rowrecs_to_blocks.default <- function(wideTable,
   # see if it is an obvious simple unpivot
   if(allow_rqdatatable &&
      (ncol(controlTable)==2) &&
+     requireNamespace("rqdatatable", quietly = TRUE) &&
      (isTRUE(all.equal(controlTable[ ,1, drop = TRUE],
                        controlTable[ ,2, drop = TRUE]))) &&
-     (controlTableKeys == colnames(controlTable)[[1]]) &&
-     requireNamespace("rqdatatable", quietly = TRUE)) {
+     (controlTableKeys == colnames(controlTable)[[1]])) {
     res <- rqdatatable::layout_to_blocks_data_table(
       data = wideTable,
       nameForNewKeyColumn = colnames(controlTable)[[1]],
@@ -215,6 +215,23 @@ blocks_to_rowrecs.default <- function(tallTable,
     if(!check_cols_form_unique_keys(tallTable, c(controlTableKeys, keyColumns))) {
       stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not uniquely index data"))
     }
+  }
+
+  # see if it is an obvious simple unpivot
+  if(allow_rqdatatable &&
+     (ncol(controlTable)==2) &&
+     requireNamespace("rqdatatable", quietly = TRUE) &&
+     (isTRUE(all.equal(controlTable[ ,1, drop = TRUE],
+                       controlTable[ ,2, drop = TRUE]))) &&
+     (controlTableKeys == colnames(controlTable)[[1]])) {
+    res <- rqdatatable::layout_to_rowrecs_data_table(
+      data = tallTable,
+      columnToTakeKeysFrom = colnames(controlTable)[[1]],
+      columnToTakeValuesFrom= colnames(controlTable)[[2]],
+      rowKeyColumns = keyColumns)
+    res <- data.frame(res)
+    rownames(res) <- NULL
+    return(res)
   }
 
   # do the work
