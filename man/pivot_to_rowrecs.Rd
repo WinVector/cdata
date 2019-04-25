@@ -7,11 +7,11 @@
 \usage{
 pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE)
+  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
 
 layout_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
   rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE)
+  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}
@@ -31,6 +31,8 @@ layout_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
 \item{checkKeys}{logical, if TRUE check keyColumns uniquely identify blocks (required).}
 
 \item{strict}{logical, if TRUE check control table name forms}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 new data.frame with values moved to columns.

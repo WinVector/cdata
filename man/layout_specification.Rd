@@ -8,7 +8,8 @@ layout_specification(incoming_shape, outgoing_shape, ...,
   recordKeys = character(0),
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],
   outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
-  checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+  checkNames = TRUE, checkKeys = TRUE, strict = FALSE,
+  allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{incoming_shape}{data.frame, definition of incoming record shape.}
@@ -28,6 +29,8 @@ layout_specification(incoming_shape, outgoing_shape, ...,
 \item{checkKeys}{passed to rowrecs_to_blocks.}
 
 \item{strict}{passed to rowrecs_to_blocks.}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 a record specification object

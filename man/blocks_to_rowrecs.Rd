@@ -10,19 +10,19 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 
 \method{blocks_to_rowrecs}{default}(tallTable, keyColumns, controlTable,
-  ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = TRUE,
+  ..., columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 
 \method{blocks_to_rowrecs}{relop}(tallTable, keyColumns, controlTable, ...,
   columnsToCopy = NULL, checkNames = TRUE, checkKeys = FALSE,
   strict = FALSE, controlTableKeys = colnames(controlTable)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("bltrr"),
-  temporary = TRUE)
+  temporary = TRUE, allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{tallTable}{data.frame containing data to be mapped (in-memory data.frame).}
@@ -46,6 +46,8 @@ blocks_to_rowrecs(tallTable, keyColumns, controlTable, ...,
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
 \item{temporary}{logical, if TRUE use temporary tables}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

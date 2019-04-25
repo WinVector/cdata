@@ -11,27 +11,31 @@
 unpivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE)
+  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE,
+  allow_rqdatatable = TRUE)
 
 layout_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE)
+  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE,
+  allow_rqdatatable = TRUE)
 
 pivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
   columnsToTakeFrom, ..., nameForNewClassColumn = NULL,
   checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE)
+  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE,
+  allow_rqdatatable = TRUE)
 
 \method{unpivot_to_blocks}{default}(data, nameForNewKeyColumn,
   nameForNewValueColumn, columnsToTakeFrom, ...,
   nameForNewClassColumn = NULL, checkNames = TRUE, checkKeys = FALSE,
-  strict = FALSE)
+  strict = FALSE, allow_rqdatatable = TRUE)
 
 \method{unpivot_to_blocks}{relop}(data, nameForNewKeyColumn,
   nameForNewValueColumn, columnsToTakeFrom, ..., checkNames = TRUE,
   checkKeys = FALSE, strict = FALSE, nameForNewClassColumn = NULL,
-  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE)
+  tmp_name_source = wrapr::mk_tmp_name_source("upb"), temporary = TRUE,
+  allow_rqdatatable = TRUE)
 }
 \arguments{
 \item{data}{data.frame to work with.}
@@ -55,6 +59,8 @@ pivot_to_blocks(data, nameForNewKeyColumn, nameForNewValueColumn,
 \item{tmp_name_source}{a tempNameGenerator from cdata::mk_tmp_name_source()}
 
 \item{temporary}{logical, if TRUE make result temporary.}
+
+\item{allow_rqdatatable}{logical, if TRUE allow rqdatatable shortcutting on simple conversions.}
 }
 \value{
 new data.frame with values moved to rows.

@@ -9,7 +9,7 @@ require(tidyverse)
 
     ## Loading required package: tidyverse
 
-    ## ── Attaching packages ───────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
     ## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
@@ -30,7 +30,7 @@ require(tidyverse)
 
     ## Warning: package 'forcats' was built under R version 3.5.2
 
-    ## ── Conflicts ──────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -94,7 +94,7 @@ test1 <- data.table::as.data.table(data.test) %>%
 ```
 
     ##    user  system elapsed 
-    ##   0.695   0.175   0.985
+    ##   0.684   0.152   0.868
 
 ``` r
 # reported: #~0.41sec
@@ -117,7 +117,7 @@ test2 <- tidyr::gather(
 ```
 
     ##    user  system elapsed 
-    ##   0.453   0.110   0.576
+    ##   0.504   0.125   0.649
 
 ``` r
 # reported: #~0.39sec
@@ -152,25 +152,111 @@ test3 <- orderby(test3, qc(MARKERS, INDIVIDUALS, GENOTYPES))
 stopifnot(isTRUE(all.equal(test1, test3)))
 ```
 
-test 4: cdata::unpivot\_to\_blocks()
-
-Also slow, not optimized for this many columns.
+test 4: cdata::unpivot\_to\_blocks() (with data.table)
 
 ``` r
-system.time(
-test4 <- unpivot_to_blocks(
-  data = data.test,
-  nameForNewKeyColumn = "INDIVIDUALS",
-  nameForNewValueColumn = "GENOTYPES",
-  columnsToTakeFrom = setdiff(colnames(data.test), 
-                              c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
-)
+system.time({
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn = "INDIVIDUALS",
+    nameForNewValueColumn = "GENOTYPES",
+    columnsToTakeFrom = setdiff(colnames(data.test), 
+                                c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS")
+  
+  print(layout$allow_rqdatatable)
+  
+  test4 <- layout_by(layout, data.test)
+})
 ```
 
+    ## [1] TRUE
+
     ##    user  system elapsed 
-    ##  52.045  21.979  76.480
+    ##   0.763   0.327   1.118
 
 ``` r
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
 stopifnot(isTRUE(all.equal(test1, test4)))
+```
+
+Slow.
+
+``` r
+system.time({
+  inv_layout <- t(layout)
+  
+  print(inv_layout$allow_rqdatatable)
+
+  back4 <- layout_by(inv_layout, test4)
+})
+```
+
+    ## [1] TRUE
+
+    ##    user  system elapsed 
+    ## 109.079   2.844 110.412
+
+``` r
+back4 <- orderby(back4, colnames(back4)) 
+data.test <- orderby(back4, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, back4)))
+```
+
+------------------------------------------------------------------------
+
+test 5: cdata::unpivot\_to\_blocks() (without data.table)
+
+Slow.
+
+``` r
+system.time({
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn = "INDIVIDUALS",
+    nameForNewValueColumn = "GENOTYPES",
+    columnsToTakeFrom = setdiff(colnames(data.test), 
+                                c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS",
+    allow_rqdatatable = FALSE)
+  
+  print(layout$allow_rqdatatable)
+  
+  test5 <- layout_by(layout, data.test)
+})
+```
+
+    ## [1] FALSE
+
+    ##    user  system elapsed 
+    ##  94.691  79.250 184.969
+
+``` r
+test5 <- orderby(test5, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+stopifnot(isTRUE(all.equal(test1, test5)))
+```
+
+Slow.
+
+``` r
+system.time({
+  inv_layout <- t(layout)
+
+  print(inv_layout$allow_rqdatatable)
+    
+  back5 <- layout_by(inv_layout, test5)
+})
+```
+
+    ## [1] FALSE
+
+    ##    user  system elapsed 
+    ## 167.367  45.363 218.144
+
+``` r
+back5 <- orderby(back5, colnames(back5)) 
+data.test <- orderby(back5, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, back5)))
 ```

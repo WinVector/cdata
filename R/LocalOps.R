@@ -85,7 +85,8 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       controlTableKeys = colnames(controlTable)[[1]],
                                       columnsToCopy = NULL,
                                       tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
-                                      temporary = TRUE) {
+                                      temporary = TRUE,
+                                      allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")
@@ -103,11 +104,30 @@ rowrecs_to_blocks.default <- function(wideTable,
 
   # check more
   if(checkKeys) {
-    if(!wrapr::checkColsFormUniqueKeys(wideTable, columnsToCopy)) {
+    if(!check_cols_form_unique_keys(wideTable, columnsToCopy)) {
       stop("cdata::rowrecs_to_blocks columnsToCopy do not uniquely key the rows")
     }
   }
 
+  # see if it is an obvious simple unpivot
+  if(allow_rqdatatable &&
+     (ncol(controlTable)==2) &&
+     requireNamespace("rqdatatable", quietly = TRUE) &&
+     (isTRUE(all.equal(controlTable[ ,1, drop = TRUE],
+                       controlTable[ ,2, drop = TRUE]))) &&
+     (controlTableKeys == colnames(controlTable)[[1]])) {
+    res <- rqdatatable::layout_to_blocks_data_table(
+      data = wideTable,
+      nameForNewKeyColumn = colnames(controlTable)[[1]],
+      nameForNewValueColumn = colnames(controlTable)[[2]],
+      columnsToTakeFrom = controlTable[, 2, drop = TRUE],
+      columnsToCopy = columnsToCopy)
+    res <- data.frame(res)
+    rownames(res) <- NULL
+    return(res)
+  }
+
+  # do the work
   n_row_in <- nrow(wideTable)
   n_rep <- nrow(controlTable)
   n_row_res <- n_rep*n_row_in
@@ -129,7 +149,7 @@ rowrecs_to_blocks.default <- function(wideTable,
     res[[cn]][seq_len(n_row_in)] <- NA
   }
   # cross product with control table
-  res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE]
+  res <- res[sort(rep(seq_len(n_row_in), n_rep)), , drop = FALSE] # TODO: speedup hotspot
   rownames(res) <- NULL
   for(cn in controlTableKeys) {
     res[[cn]] <- rep(controlTable[[cn]], n_row_in)
@@ -143,7 +163,7 @@ rowrecs_to_blocks.default <- function(wideTable,
       if(is.factor(wtni)) {
         wtni <- as.character(wtni)
       }
-      res[[cn]][indxs] <- wtni
+      res[[cn]][indxs] <- wtni # TODO: speedup hotspot
     }
   }
   rownames(res) <- NULL
@@ -160,11 +180,12 @@ blocks_to_rowrecs.default <- function(tallTable,
                                       ...,
                                       columnsToCopy = NULL,
                                       checkNames = TRUE,
-                                      checkKeys = TRUE,
+                                      checkKeys = FALSE,
                                       strict = FALSE,
                                       controlTableKeys = colnames(controlTable)[[1]],
                                       tmp_name_source = wrapr::mk_tmp_name_source("btrd"),
-                                      temporary = TRUE) {
+                                      temporary = TRUE,
+                                      allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs")
   if(!is.data.frame(tallTable)) {
     stop("cdata::blocks_to_rowrecs.default tallTable should be a data.frame")
@@ -191,11 +212,29 @@ blocks_to_rowrecs.default <- function(tallTable,
   # check more
   if(checkKeys) {
     # check keyColumns plus controltable keys key data
-    if(!wrapr::checkColsFormUniqueKeys(tallTable, c(controlTableKeys, keyColumns))) {
+    if(!check_cols_form_unique_keys(tallTable, c(controlTableKeys, keyColumns))) {
       stop(paste("cdata::blocks_to_rowrecs: controlTableKeys plus keyColumns do not uniquely index data"))
     }
   }
 
+  # see if it is an obvious simple unpivot
+  if(allow_rqdatatable &&
+     (ncol(controlTable)==2) &&
+     requireNamespace("rqdatatable", quietly = TRUE) &&
+     (isTRUE(all.equal(controlTable[ ,1, drop = TRUE],
+                       controlTable[ ,2, drop = TRUE]))) &&
+     (controlTableKeys == colnames(controlTable)[[1]])) {
+    res <- rqdatatable::layout_to_rowrecs_data_table(
+      data = tallTable,
+      columnToTakeKeysFrom = colnames(controlTable)[[1]],
+      columnToTakeValuesFrom= colnames(controlTable)[[2]],
+      rowKeyColumns = keyColumns)
+    res <- data.frame(res)
+    rownames(res) <- NULL
+    return(res)
+  }
+
+  # do the work
   # make simple grouping keys
   tallTable$cdata_group_key_col <- 1
   if(length(keyColumns)>=1) {
@@ -223,7 +262,7 @@ blocks_to_rowrecs.default <- function(tallTable,
     for(i in seq_len(n_rep)) {
       srccol <- controlTable$composite_meas_col[[i]]
       destcol <- controlTable[[cn]][i]
-      indxs <- which(tallTable$composite_meas_col == srccol)
+      indxs <- which(tallTable$composite_meas_col == srccol)  # TODO: speedup hotspot
       vals <- tallTable[[cn]][indxs]
       res[[destcol]] <- vals[[1]]
       res[[destcol]][seq_len(n_res)] <- NA

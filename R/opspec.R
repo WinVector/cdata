@@ -15,6 +15,7 @@ NULL
 #' @param checkNames passed to rowrecs_to_blocks.
 #' @param checkKeys passed to rowrecs_to_blocks.
 #' @param strict passed to rowrecs_to_blocks.
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return a record specification object
 #'
 #' @examples
@@ -51,8 +52,9 @@ rowrecs_to_blocks_spec <- function(controlTable,
                                    recordKeys = character(0),
                                    controlTableKeys = colnames(controlTable)[[1]],
                                    checkNames = TRUE,
-                                   checkKeys = TRUE,
-                                   strict = FALSE) {
+                                   checkKeys = FALSE,
+                                   strict = FALSE,
+                                   allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_spec")
   controlTable <- as.data.frame(controlTable)
   rownames(controlTable) <- NULL
@@ -68,7 +70,8 @@ rowrecs_to_blocks_spec <- function(controlTable,
             controlTableKeys = controlTableKeys,
             checkNames = checkNames,
             checkKeys = checkKeys,
-            strict = strict)
+            strict = strict,
+            allow_rqdatatable = allow_rqdatatable)
   class(r) <- "rowrecs_to_blocks_spec"
   r
 }
@@ -85,6 +88,7 @@ rowrecs_to_blocks_spec <- function(controlTable,
 #' @param checkNames passed to blocks_to_rowrecs.
 #' @param checkKeys passed to blocks_to_rowrecs.
 #' @param strict passed to blocks_to_rowrecs.
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return a record specification object
 #'
 #' @examples
@@ -125,7 +129,8 @@ blocks_to_rowrecs_spec <- function(controlTable,
                                    controlTableKeys = colnames(controlTable)[[1]],
                                    checkNames = TRUE,
                                    checkKeys = TRUE,
-                                   strict = FALSE) {
+                                   strict = FALSE,
+                                   allow_rqdatatable = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_spec")
   controlTable <- as.data.frame(controlTable)
   rownames(controlTable) <- NULL
@@ -141,7 +146,8 @@ blocks_to_rowrecs_spec <- function(controlTable,
             controlTableKeys = controlTableKeys,
             checkNames = checkNames,
             checkKeys = checkKeys,
-            strict = strict)
+            strict = strict,
+            allow_rqdatatable = allow_rqdatatable)
   class(r) <- "blocks_to_rowrecs_spec"
   r
 }
@@ -332,7 +338,8 @@ layout_by.rowrecs_to_blocks_spec <- function(transform, table) {
                     columnsToCopy = transform$recordKeys,
                     checkNames = transform$checkNames,
                     checkKeys = transform$checkKeys,
-                    strict = transform$strict)
+                    strict = transform$strict,
+                    allow_rqdatatable = transform$allow_rqdatatable)
 }
 
 
@@ -372,7 +379,8 @@ layout_by.blocks_to_rowrecs_spec <- function(transform, table) {
                     controlTableKeys = transform$controlTableKeys,
                     checkNames = transform$checkNames,
                     checkKeys = transform$checkKeys,
-                    strict = transform$strict)
+                    strict = transform$strict,
+                    allow_rqdatatable = transform$allow_rqdatatable)
 }
 
 
@@ -417,7 +425,8 @@ layout_by.blocks_to_rowrecs_spec <- function(transform, table) {
                     columnsToCopy = transform$recordKeys,
                     checkNames = transform$checkNames,
                     checkKeys = transform$checkKeys,
-                    strict = transform$strict)
+                    strict = transform$strict,
+                    allow_rqdatatable = transform$allow_rqdatatable)
 }
 
 #' Factor-out (aggregate/project) block records into row records.
@@ -461,7 +470,8 @@ layout_by.blocks_to_rowrecs_spec <- function(transform, table) {
                     controlTableKeys = transform$controlTableKeys,
                     checkNames = transform$checkNames,
                     checkKeys = transform$checkKeys,
-                    strict = transform$strict)
+                    strict = transform$strict,
+                    allow_rqdatatable = transform$allow_rqdatatable)
 }
 
 
@@ -486,7 +496,8 @@ apply_right.rowrecs_to_blocks_spec <- function(pipe_left_arg,
                     columnsToCopy = transform_spec$recordKeys,
                     checkNames = transform_spec$checkNames,
                     checkKeys = transform_spec$checkKeys,
-                    strict = transform_spec$strict)
+                    strict = transform_spec$strict,
+                    allow_rqdatatable = transform_spec$allow_rqdatatable)
 }
 
 #' @export
@@ -505,7 +516,8 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
                     controlTableKeys = transform_spec$controlTableKeys,
                     checkNames = transform_spec$checkNames,
                     checkKeys = transform_spec$checkKeys,
-                    strict = transform_spec$strict)
+                    strict = transform_spec$strict,
+                    allow_rqdatatable = transform_spec$allow_rqdatatable)
 }
 
 
@@ -527,6 +539,7 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
 #' @param checkNames passed to rowrecs_to_blocks.
 #' @param checkKeys passed to rowrecs_to_blocks.
 #' @param strict passed to rowrecs_to_blocks.
+#' @param allow_rqdatatable logical, if TRUE allow rqdatatable shortcutting on simple conversions.
 #' @return a record specification object
 #'
 #' @examples
@@ -577,19 +590,22 @@ layout_specification <- function(incoming_shape,
                                  outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
                                  checkNames = TRUE,
                                  checkKeys = TRUE,
-                                 strict = FALSE) {
+                                 strict = FALSE,
+                                 allow_rqdatatable = TRUE) {
   ca <- blocks_to_rowrecs_spec(incoming_shape,
                                controlTableKeys = incoming_controlTableKeys,
                                recordKeys = character(0),
                                checkNames = checkNames,
                                checkKeys = checkKeys,
-                               strict = strict)
+                               strict = strict,
+                               allow_rqdatatable = allow_rqdatatable)
   cb <- rowrecs_to_blocks_spec(outgoing_shape,
                                controlTableKeys = outgoing_controlTableKeys,
                                recordKeys = character(0),
                                checkNames = checkNames,
                                checkKeys = checkKeys,
-                               strict = strict)
+                               strict = strict,
+                               allow_rqdatatable = allow_rqdatatable)
   # check for some trivial cases
   if((nrow(outgoing_shape)==1) && (length(outgoing_controlTableKeys)==0)) {
     ra <- incoming_shape %.>% ca
@@ -599,7 +615,8 @@ layout_specification <- function(incoming_shape,
                                     recordKeys = recordKeys,
                                     checkNames = checkNames,
                                     checkKeys = checkKeys,
-                                    strict = strict))
+                                    strict = strict,
+                                    allow_rqdatatable = allow_rqdatatable))
     }
   }
   if((nrow(incoming_shape)==1) && (length(incoming_controlTableKeys)==0)) {
@@ -611,7 +628,8 @@ layout_specification <- function(incoming_shape,
                                     recordKeys = character(0),
                                     checkNames = checkNames,
                                     checkKeys = checkKeys,
-                                    strict = strict))
+                                    strict = strict,
+                                    allow_rqdatatable = allow_rqdatatable))
     }
   }
   # check transform makes sense
@@ -626,13 +644,15 @@ layout_specification <- function(incoming_shape,
                               recordKeys = recordKeys,
                               checkNames = checkNames,
                               checkKeys = checkKeys,
-                              strict = strict)
+                              strict = strict,
+                              allow_rqdatatable = allow_rqdatatable)
   b <- rowrecs_to_blocks_spec(outgoing_shape,
                               controlTableKeys = outgoing_controlTableKeys,
                               recordKeys = recordKeys,
                               checkNames = checkNames,
                               checkKeys = checkKeys,
-                              strict = strict)
+                              strict = strict,
+                              allow_rqdatatable = allow_rqdatatable)
   r <- list(
     blocks_to_rowrecs_spec = a,
     rowrecs_to_blocks_spec = b)
@@ -657,7 +677,8 @@ apply_right.cdata_general_transform_spec <- function(pipe_left_arg,
                              controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
                              checkNames = blocks_to_rowrecs_spec$checkNames,
                              checkKeys = blocks_to_rowrecs_spec$checkKeys,
-                             strict = blocks_to_rowrecs_spec$strict)
+                             strict = blocks_to_rowrecs_spec$strict,
+                             allow_rqdatatable = blocks_to_rowrecs_spec$allow_rqdatatable)
   rowrecs_to_blocks_spec <- transform_spec$rowrecs_to_blocks_spec
   rowrecs_to_blocks(wideTable = table,
                     controlTable = rowrecs_to_blocks_spec$controlTable,
@@ -665,7 +686,8 @@ apply_right.cdata_general_transform_spec <- function(pipe_left_arg,
                     columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
                     checkNames = rowrecs_to_blocks_spec$checkNames,
                     checkKeys = rowrecs_to_blocks_spec$checkKeys,
-                    strict = rowrecs_to_blocks_spec$strict)
+                    strict = rowrecs_to_blocks_spec$strict,
+                    allow_rqdatatable = rowrecs_to_blocks_spec$allow_rqdatatable)
 }
 
 #' @export
@@ -678,7 +700,8 @@ t.cdata_general_transform_spec <- function(x) {
                        outgoing_controlTableKeys = x$blocks_to_rowrecs_spec$controlTableKeys,
                        checkNames = x$rowrecs_to_blocks_spec$checkNames,
                        checkKeys = x$rowrecs_to_blocks_spec$checkKeys,
-                       strict = x$rowrecs_to_blocks_spec$strict)
+                       strict = x$rowrecs_to_blocks_spec$strict,
+                       allow_rqdatatable = x$rowrecs_to_blocks_spec$allow_rqdatatable)
 }
 
 
@@ -699,7 +722,8 @@ layout_by.cdata_general_transform_spec <- function(transform, table) {
                              controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
                              checkNames = blocks_to_rowrecs_spec$checkNames,
                              checkKeys = blocks_to_rowrecs_spec$checkKeys,
-                             strict = blocks_to_rowrecs_spec$strict)
+                             strict = blocks_to_rowrecs_spec$strict,
+                             allow_rqdatatable = blocks_to_rowrecs_spec$allow_rqdatatable)
   rowrecs_to_blocks_spec <- transform$rowrecs_to_blocks_spec
   rowrecs_to_blocks(wideTable = table,
                     controlTable = rowrecs_to_blocks_spec$controlTable,
@@ -707,7 +731,8 @@ layout_by.cdata_general_transform_spec <- function(transform, table) {
                     columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
                     checkNames = rowrecs_to_blocks_spec$checkNames,
                     checkKeys = rowrecs_to_blocks_spec$checkKeys,
-                    strict = rowrecs_to_blocks_spec$strict)
+                    strict = rowrecs_to_blocks_spec$strict,
+                    allow_rqdatatable = rowrecs_to_blocks_spec$allow_rqdatatable)
 }
 
 #' @export

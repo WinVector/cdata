@@ -95,24 +95,96 @@ test3 <- orderby(test3, qc(MARKERS, INDIVIDUALS, GENOTYPES))
 stopifnot(isTRUE(all.equal(test1, test3)))
 ```
 
-test 4: cdata::unpivot_to_blocks()
+test 4: cdata::unpivot_to_blocks() (with data.table)
 
-Also slow, not optimized for this many columns.
 
-```{r test_cdata_unpivot_to_blocks()}
-system.time(
-test4 <- unpivot_to_blocks(
-  data = data.test,
-  nameForNewKeyColumn = "INDIVIDUALS",
-  nameForNewValueColumn = "GENOTYPES",
-  columnsToTakeFrom = setdiff(colnames(data.test), 
-                              c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
-)
+```{r test_cdata_unpivot_to_blocks}
+system.time({
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn = "INDIVIDUALS",
+    nameForNewValueColumn = "GENOTYPES",
+    columnsToTakeFrom = setdiff(colnames(data.test), 
+                                c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS")
+  
+  print(layout$allow_rqdatatable)
+  
+  test4 <- layout_by(layout, data.test)
+})
 ```
 
 ```{r compare_1_4}
 test4 <- orderby(test4, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
 stopifnot(isTRUE(all.equal(test1, test4)))
 ```
+
+Slow.
+
+```{r cdata_back}
+system.time({
+  inv_layout <- t(layout)
+  
+  print(inv_layout$allow_rqdatatable)
+
+  back4 <- layout_by(inv_layout, test4)
+})
+```
+
+```{r compare_cdata_back}
+back4 <- orderby(back4, colnames(back4)) 
+data.test <- orderby(back4, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, back4)))
+```
+
+-----
+
+test 5: cdata::unpivot_to_blocks() (without data.table)
+
+Slow.
+
+```{r test_cdata_unpivot_to_blocks2}
+system.time({
+  cT <- build_unpivot_control(
+    nameForNewKeyColumn = "INDIVIDUALS",
+    nameForNewValueColumn = "GENOTYPES",
+    columnsToTakeFrom = setdiff(colnames(data.test), 
+                                c("MARKERS", "INDIVIDUALS", "GENOTYPES")))
+  layout <- rowrecs_to_blocks_spec(
+    cT,
+    recordKeys = "MARKERS",
+    allow_rqdatatable = FALSE)
+  
+  print(layout$allow_rqdatatable)
+  
+  test5 <- layout_by(layout, data.test)
+})
+```
+
+```{r compare_1_5}
+test5 <- orderby(test5, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
+stopifnot(isTRUE(all.equal(test1, test5)))
+```
+
+Slow.
+
+```{r cdata_back_5}
+system.time({
+  inv_layout <- t(layout)
+
+  print(inv_layout$allow_rqdatatable)
+    
+  back5 <- layout_by(inv_layout, test5)
+})
+```
+
+```{r compare_cdata_back_5}
+back5 <- orderby(back5, colnames(back5)) 
+data.test <- orderby(back5, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, back5)))
+```
+
+
 
 

@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 1.1.0
-Date: 2019-04-23
+Date: 2019-04-24
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -27,10 +27,10 @@ Imports:
   methods,
   stats
 Suggests: 
+    rqdatatable (>= 1.1.5),
     DBI,
     RSQLite,
     knitr,
-    rqdatatable (>= 1.1.4),
     RUnit
 VignetteBuilder: knitr
 ByteCompile: true
