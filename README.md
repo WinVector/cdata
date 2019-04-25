@@ -96,7 +96,7 @@ print(transform)
  #       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )
  #   block_keys <- c('iris_id', 'Species', 'flower_part')
  #  
- #   # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE)
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
  #  }
 
 # show the representation of the transform
@@ -116,10 +116,13 @@ unclass(transform)
  #  [1] TRUE
  #  
  #  $checkKeys
- #  [1] TRUE
+ #  [1] FALSE
  #  
  #  $strict
  #  [1] FALSE
+ #  
+ #  $allow_rqdatatable
+ #  [1] TRUE
 ```
 
 More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html). And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
@@ -202,7 +205,7 @@ print(transform)
  #       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
  #   block_keys <- c('iris_id', 'Species', 'v1', 'v2')
  #  
- #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE)
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
  #  }
 ```
 

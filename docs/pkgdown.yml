@@ -6,6 +6,7 @@ articles:
   cdata: cdata.html
   control_table_keys: control_table_keys.html
   design: design.html
+  exercises: exercises.html
   general_transform: general_transform.html
   operators: operators.html
 
