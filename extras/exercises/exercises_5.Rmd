@@ -5,7 +5,7 @@ date: "Thu Apr 25, 2019"
 output: github_document
 ---
 
-In [this note]() we are going to use some [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples, and use them to demonstrate how to use the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
+In [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) we are going to use some [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples, and use them to demonstrate how to use the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
 
 The idea is these are a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
@@ -346,6 +346,8 @@ To make your own solutions, we suggest just using one of these solutions as a te
 `cdata` also supplies a number of convenience functions for specifying common transforms, or one can build up transformations descriptions using code as shown in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
 We also note the value of being able to print and review the bulk of transform, as it documents expected incoming data columns and interior block record key values.
+
+The source-code for [this note](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.md) can be found [here](https://github.com/WinVector/cdata/blob/master/extras/exercises/exercises_5.Rmd).
 
 
 
