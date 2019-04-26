@@ -40,7 +40,7 @@ This may seem like a lot of steps, but it is only because we are taking the prob
 
 With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to alter, save, and re-use later.  The record layout transform also documents the expected columns and constants of the incoming data.
 
-We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).
+We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).  We have some notes on how to graphically solve exercise like this [here](https://winvector.github.io/cdata/articles/design.html) and [here](http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/), but let's dive into working the exercises.
 
 
 ## Example 1

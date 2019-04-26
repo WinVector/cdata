@@ -98,7 +98,7 @@
       <h1>cdata Exercises</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-25</h4>
+            <h4 class="date">2019-04-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd"><code>vignettes/exercises.Rmd</code></a></small>
       <div class="hidden name"><code>exercises.Rmd</code></div>
@@ -126,7 +126,7 @@
 </ul>
 <p>This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The thing to note is there is hopefully not a lot of additional problem solving to apply the <code>cdata</code> methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the layout transform is implemented. In <code>cdata</code> the user only specifies the data layout transform, and implementation is left to the <code>cdata</code> package. With <code>cdata</code> the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired data layout transform. The <code>cdata</code> solution pattern is always the same, which can help in mastering it.</p>
 <p>With <code>cdata</code> record layout transforms are simple <code>R</code> objects with detailed <code><a href="https://www.rdocumentation.org/packages/base/topics/print">print()</a></code> methods- so they are convenient to alter, save, and re-use later. The record layout transform also documents the expected columns and constants of the incoming data.</p>
-<p>We will work some examples with the hope that practice brings familiarity. The examples for this note are all of the demo-examples from <a href="https://github.com/tidyverse/tidyr/tree/master/demo">tidyr/demo/</a>.</p>
+<p>We will work some examples with the hope that practice brings familiarity. The examples for this note are all of the demo-examples from <a href="https://github.com/tidyverse/tidyr/tree/master/demo">tidyr/demo/</a>. We have some notes on how to graphically solve exercise like this <a href="https://winvector.github.io/cdata/articles/design.html">here</a> and <a href="http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/">here</a>, but let’s dive into working the exercises.</p>
 </div>
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
