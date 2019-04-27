@@ -25,6 +25,12 @@ data.test <- matrix(
 ```{r pkgs}
 library("cdata")
 library("rqdatatable")
+
+packageVersion("data.table")
+packageVersion("tidyr")
+packageVersion("dplyr")
+packageVersion("cdata")
+packageVersion("rqdatatable")
 ```
 
 ```{r convert_to_data_frame}
@@ -66,6 +72,18 @@ test2 <- tidyr::gather(
 ```{r compare_1_2}
 test2 <- orderby(test2, qc(MARKERS, INDIVIDUALS, GENOTYPES)) 
 stopifnot(isTRUE(all.equal(test1, test2)))
+```
+
+test 2b: reverse
+
+```{r test_tidyr_spread}
+system.time({
+  test2b <- tidyr::spread(test2, key = INDIVIDUALS, value = GENOTYPES)
+})
+
+test2b <- orderby(test2b, colnames(test2b)) 
+data.test <- orderby(test2b, colnames(data.test)) 
+stopifnot(isTRUE(all.equal(data.test, test2b)))
 ```
 
 
