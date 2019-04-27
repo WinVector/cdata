@@ -1,6 +1,6 @@
 ---
 title: "cdata Exercises"
-author: "John Mount, Win-Vector LLC"
+author: "John Mount, Nina Zumel; Win-Vector LLC"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,9 +17,8 @@ knitr::opts_chunk$set(
 ```
 
 
-In [this note](https://winvector.github.io/cdata/articles/exercises.html) we are going to use five [`tidyr`](https://CRAN.R-project.org/package=tidyr) data transform demonstration examples as exercises to master data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) data layout package.
-
-The idea is these are a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
+In [this note](https://winvector.github.io/cdata/articles/exercises.html) we will use five real life examples to 
+demonstrate data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) package.  The examples for this note are all demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
 For each of these examples we will show how to re-layout data using [`cdata`](https://github.com/WinVector/cdata).  
 
@@ -28,20 +27,25 @@ For each of these examples we will show how to re-layout data using [`cdata`](ht
 Each of these five problems will be solved using the same steps:
 
   * Get some example data.
-  * Look if either the incoming or outgoing data format is "all data for a record is in a single row" or not, this determines if you later use `rowrecs_to_blocks_spec()` (specifying data moving from single rows to arbitrary block records), `blocks_to_rowrecs_spec()` (specifying data moving from block records to single rows), or `layout_specification()` (a general block record to block record case).
-  * Identify which columns that tell us which sets of rows are records, which we call the "record keys."
+  * Check if either the incoming or outgoing data format is in "row-record" format: is all the data for a single record contained in one row? This determines which specification you will use:
+
+    + `rowrecs_to_blocks_spec()`: To specify data moving from single rows to arbitrary "block-shaped" records
+    + `blocks_to_rowrecs_spec()`: To specify data moving from block records to single rows
+    + `layout_specification()`: To specify data moving one shape of general block record to another block record.
+
+  * Identify which columns form the record ids, which we call the "record keys."
   * Draw the shape of the incoming record without the record keys.
   * Draw the shape of the outgoing record without the record keys.
-  * Combine the above information as a one of the above data layout transform specifications.
+  * Combine the above information as one of the above data layout transform specifications.
   * Print the layout transform to confirm it is what you want.
   * Apply the layout transform.
   
-This may seem like a lot of steps, but it is only because we are taking the problems very slowly.  The thing to note is there is hopefully not a lot of additional problem solving to apply the `cdata` methodology.  Usually when you need to transform data you are in the middle of some other more important task, so you want delegate the details of how the layout transform is implemented.  In `cdata` the user only specifies the data layout transform, and implementation is left to the `cdata` package.  With `cdata` the user is not asked to perform additional puzzle solving to guess sequence of operators that may implement the desired data layout transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
+This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The important point
+is that we want to minimize *additional* problem solving when applying the `cdata` methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want to delegate the details of how the layout transform is implemented. With `cdata` the user is not asked to perform additional puzzle solving to guess a sequence of operators that may implement the desired data layout transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
 
-With `cdata` record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to alter, save, and re-use later.  The record layout transform also documents the expected columns and constants of the incoming data.
+With `cdata`, record layout transforms are simple `R` objects with detailed `print()` methods- so they are convenient to alter, save, and re-use later.  The record layout transform also documents the expected columns and constants of the incoming data.
 
-We will work some examples with the hope that practice brings familiarity.  The examples for this note are all of the demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo).  We have some notes on how to graphically solve exercise like this [here](https://winvector.github.io/cdata/articles/design.html) and [here](http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/), but let's dive into working the exercises.
-
+We will work some examples with the hope that practice brings familiarity. We have some notes on how to graphically solve exercise like this [here](https://winvector.github.io/cdata/articles/design.html) and [here](http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/), but let's dive into working the exercises.
 
 ## Example 1
 
@@ -68,12 +72,19 @@ dadmomt <- wrapr::build_frame(
      3      , "m"     , "Pat" , 50000 )
 ```
 
-The `cdata` solution is given here, notice the incoming record is a single row so we don't have to specify it.
+Each record represents a family, and is designated by the record key `famid`. The data starts with each record in a single row (a row record):
+
+```{r echo=FALSE}
+knitr::kable(dadmomw[1, , drop=FALSE])
+```
+
+So we are going from a row record to a general block record: this means we want to use `rowrecs_to_blocks_spec()`, and
+we only have to describe the outgoing record shape.
 
 ```{r}
 library("cdata")
 
-# how to find records
+# identify the record key
 recordKeys <- "famid"
 
 # specify the outgoing record shape
@@ -81,7 +92,15 @@ outgoing_record <- wrapr::qchar_frame(
    "dadmom"  , "name", "inc" |
      "d"     , named , incd |
      "m"     , namem , incm )
+```
 
+Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes. In specifying the record with `wrapr::qchar_frame()`, we use the convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record.
+
+However, `outgoing_record` is just a data frame, you can create it however you like -- you don't need to use `qchar_frame()`.
+
+Now create the layout specification, and print it.
+
+```{r}
 # put it all together into a layout
 layout <- rowrecs_to_blocks_spec(
   outgoing_record,
@@ -90,18 +109,33 @@ layout <- rowrecs_to_blocks_spec(
 # confirm we have the right layout
 print(layout)
 
+```
+
+The `print()` method fully documents what columns are expected and the intent of the data layout transform. It uses
+the same quoted/unquoted convention that we used in specifying `outgoing_record` above. 
+
+The *block_keys* of the outgoing record shape specify the unique identifier of each row of the transformed data: that is,
+each row of `dadmomt` will be uniquely identified by the values of the columns `famid` and `dadmom` (which family, which parent).
+One of the block keys is always the record key; by default, `rowrecs_to_blocks_spec()` takes the other one from the first column of the `outgoing_record` shape. You can specify the block key (or keys) explicitly with the `controlTableKeys` argument:
+
+```{r eval=FALSE}
+# this is equivalent to the above call
+rowrecs_to_blocks_spec(
+  outgoing_record,
+  recordKeys = recordKeys,
+  controlTableKeys = 'dadmom')
+```
+
+Now apply the layout to get the new data shape:
+
+```{r}
 # apply the layout
 dadmomw %.>% 
   layout %.>%
   knitr::kable(.)
 ```
 
-Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes.
-
-Also notice the `print()` method fully documents what columns are expected and the intent of the data layout transform.  The `print()` method is using a convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record or "dot" for row-keys (keys that specify which sets of rows are in the same block record).
-
 (Note: the original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. As the `tidyr` does not have a data layout transform print method, we can't confirm if we have the correct data for the `tidyr` example.)
-
 
 ## Example 2
 
@@ -133,28 +167,43 @@ into a data set that separates the tests by column but converts the measurement 
 I have unsuccessfully tried to use reshape and melt. Existing posts address transforming to single column outcome.
 ```
 
-To solve this using `cdata`:
+First, notice that neither the ingoing nor outgoing forms are single-row records; a single record corresponds to a single
+ID and Year, and has three measurements (Fall, Spring, Winter) of two tests (1 and 2). So an example single row record 
+would look something like:
 
+```{r eval=FALSE, include=FALSE}
+# how we got the below row. can't run yet since we haven't defined anything
+grades %.>% blocks_to_rowrecs(., keyColumns= recordKeys, incoming_record)
+```
 
+```
+  ID Year Fall1 Fall2 Spring1 Spring2 Winter1 Winter2
+   1 2008    15    22      16      22      19      24
+
+```
+
+and the record key is formed from the ID and the Year (sometimes what the record keys are is not obvious, and is in fact domain knowledge).
+
+Since neither the ingoing nor outgoing shapes are row records, we use the general `layout_specification()`.
 
 ```{r}
 library("cdata")
 
-# how to find records
+# identify the record keys
 recordKeys <- c("ID", "Year")
 
 # specify the incoming record shape
 incoming_record <- wrapr::qchar_frame(
-  "Test"  , "Fall", "Spring", "Winter" |
-    "1"   , F1    , S1      , W1       |
-    "2"   , F2    , S2      , W2       )
+  "Test"  , "Fall"   , "Spring"     , "Winter" |
+    "1"   , Fall1    , Spring1      , Winter1  |
+    "2"   , Fall2    , Spring2      , Winter2  )
 
 # specify the outgoing record shape
 outgoing_record <- wrapr::qchar_frame(
-  "Semester" , "Test1", "Test2" |
-    "Fall"   , F1,      F2      |
-    "Spring" , S1,      S2      |
-    "Winter" , W1,      W2      )
+  "Time"     , "Test1" ,  "Test2"   |
+    "Fall"   , Fall1   ,   Fall2    |
+    "Spring" , Spring1 ,   Spring2  |
+    "Winter" , Winter1 ,   Winter2  )
 
 # put it all together into a layout
 layout <- layout_specification(
@@ -207,12 +256,20 @@ b <- wrapr::build_frame(
      "Ind2", 2       , 4     )
 ```
 
+In this case, a record corresponds to an individual, and the outgoing data is in row record form:
+
+```{r echo=FALSE}
+knitr::kable(b[1, , drop=FALSE])
+```
+
+That means we will use `blocks_to_rowrecs_spec()`.
+
 The `cdata` solution is as follows.
 
 ```{r}
 library("cdata")
 
-# how to find records
+# identify the record key
 recordKeys <- "Ind"
 
 # specify the incoming record shape
@@ -236,8 +293,11 @@ a %.>%
   knitr::kable(.)
 ```
 
-By now you should be able to see the `cdata` solution always follows a very similar path.  In fact we try not to let the nature of the data layout transform ("easy" versus "hard") dictate the solution method (in fact `cdata` delegates common data layout transforms to [`data.table`](https://github.com/Rdatatable/data.table/wiki), for [a substantial speedup](https://github.com/WinVector/cdata/blob/master/extras/timing/tm1.md)).  Always slow down and draw out the before and after before attempting to solve the problem.  An interesting trivial transform that was a pain to initially draw-out was converting a typical confusion matrix format (example [here](https://github.com/WinVector/cdata/blob/master/extras/table/table.md)).
+This particular transform, from a block consisting of a single column of values (and the rest of the columns being keys) to a row record, is the transform typically referred to as *spread*, *dcast*, or *pivot*. The `tidyr` package has a convenient call for this transform: `spread()`; `cdata` also has a similar convenience call: `pivot_to_rowrecs()`. 
 
+Don't worry if you didn't notice that this example is a spread; one of the values of `cdata` is that you shouldn't have to think about it. Most of the examples we show here are neither a simple spread/pivot nor a simple gather/unpivot.
+
+By now you should be able to see the `cdata` solution always follows a very similar path.  We try not to let the nature of the data layout transform ("easy" versus "hard") dictate the solution method. Always slow down and draw out the "before" and "after" shapes before attempting to solve the problem.  
 
 # Example 4
 
@@ -269,7 +329,15 @@ b <- wrapr::build_frame(
      "Mace" , 350   , 2.5     )
 ```
 
-The `cdata` solution is as before, but as we have a large number of columns we will us a helper function to specify the data layout transform.
+Here a record corresponds to a single observation (keyed by `Name`), and the incoming data is arranged in row records:
+
+```{r echo=FALSE}
+knitr::kable(a[1, , drop=FALSE])
+```
+
+This particular transformation, from a single row of values to a single column of values (with multiple key columns), is the transform commonly called *gather*, *melt*, or *unpivot*. This is a very common transformation---probably the most common one, by far. Again, `cdata` has a convenience function, `pivot_to_blocks()` (or its alias `unpivot_to_blocks()`). 
+
+Here, we will do the transform "the long way" with `rowrecs_to_blocks_spec()`. As we have a large number of columns we will use a helper function to specify the data layout transform.
 
 ```{r}
 library("cdata")
@@ -278,10 +346,11 @@ library("cdata")
 recordKeys <- "Name"
 
 # specify the outgoing record shape, using a helper function
-outgoing_record <- build_unpivot_control(
+# (and print it --  notice that it's a data frame)
+( outgoing_record <- build_unpivot_control(
   nameForNewKeyColumn = "Time",
   nameForNewValueColumn = "Score",
-  columnsToTakeFrom = setdiff(colnames(a), recordKeys))
+  columnsToTakeFrom = setdiff(colnames(a), recordKeys)) )
 
 # put it all together into a layout
 layout <- rowrecs_to_blocks_spec(
@@ -295,8 +364,9 @@ print(layout)
 a %.>% 
   layout %.>%
   transform(., Time = as.numeric(Time)) %.>%
+  # sort the data frame by Name and then Time
   .[order(.$Name, .$Time), , drop = FALSE] %.>%
-  knitr::kable(.)
+  knitr::kable(., row.names = FALSE)
 ```
 
 
@@ -320,17 +390,22 @@ b <- wrapr::build_frame(
      "x1.2", "tr" , "T2"  , 0.2348 , 0.1971, 0.5164, 0.7618  )
 ```
 
-We can see what cell corresponds in `a` corresponds to a given cell in `b` by comparing values.
+A record is an observation, keyed by `id` (plus `trt`, which is a function of `id`). 
 
-That `cdata` solution is, as always, just picking more informative names for these cells (though this can be automated, as we show [here](https://github.com/WinVector/cdata/blob/master/extras/solution_conversion/solution_conversion.md)).
+```{r echo=FALSE}
+knitr::kable(a[1, , drop=FALSE])
+```
+
+
+The incoming data is in row record format, so we can use `rowrecs_to_blocks_spec()`.
 
 ```{r}
 library("cdata")
 
-# how to find records
+# identify the record keys
 recordKeys <- c("id", "trt")
 
-# specify the outgoing record shape, using a helper function
+# specify the outgoing record shape
 outgoing_record <- wrapr::qchar_frame(
     "time"  , "work" , "play" , "talk" , "total"  |
     "T1"    , work.T1, play.T1, talk.T1, total.T1 |
@@ -347,13 +422,14 @@ print(layout)
 # apply the layout
 a %.>% 
   layout %.>%
-  .[wrapr::orderv(.[ , recordKeys, drop = FALSE]), , drop = FALSE] %.>%
-  knitr::kable(.)
+  # reorder the frame by the record keys plus time
+  .[wrapr::orderv(.[ , c(recordKeys, "time"), drop = FALSE]), , drop = FALSE] %.>%
+  knitr::kable(., row.names = FALSE)
 ```
 
-## Transform Direction
+## Reversing Transforms
 
-`cdata` transforms specifications are reversible or invertible.  So in solving any one of the above problems the user has complete freedom to try and solve "moving from a to b" or "moving form b to a" (and can pick whichever they find easier).
+`cdata` transform specifications are usually reversible or invertible (and this can be enforced).  So in solving any one of the above problems the user has complete freedom to try and solve "moving from a to b" or "moving from b to a" (and can pick whichever they find easier).
 
 For example continuing with example 5, we can reverse the data layout transform using the `t()` function.
 
@@ -368,34 +444,33 @@ b %.>%
   knitr::kable(.)
 ```
 
-(We may get a different column order or row order. In `cdata` row and column order are not considered essential properties of the data layout transform (as is also the the case with relational data systems).)
+In this case, the inverse transform recovered the original row and column order of `a`, but this is not guaranteed.
 
 ## Package entry points
 
 The main `cdata` interfaces are given by the following set of methods:
 
-  * [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), a convenience function for moving data from multi-row block records with one value per row to single row records.
-  * [`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), a convenience function for moving data from single-row records to possibly multi row block records with one row per value.
-  * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
-  * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+  * [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records map to general multi-row (or block) records.
+  * [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records map to single-row records.
+  * [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
   * [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
   * `t()` (transpose/adjoint) to invert or reverse layout specifications.
-  * [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
-  * [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
+
+Some convenience functions include:
+
+  * [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), for moving data from multi-row block records with one value per row (a single column of values) to single-row records [`spread` or `dcast`].
+  * [`pivot_to_blocks()`/`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) [`gather` or `melt`].
+  * [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper function for specifying record control table layout specifications.
+ * [`wrapr::build_frame()`](https://winvector.github.io/wrapr/reference/build_frame.html) a helper function for specifying data frames.
   
-The package vignettes can be found in the "Articles" tab [here](https://winvector.github.io/cdata/).
+The package vignettes can be found in the "Articles" tab of [the `cdata` documentation site](https://winvector.github.io/cdata/).
 
 ## Conclusion
 
-Notice how in all cases we can solve the record layout transform by insisting on examples of the incoming and outgoing records, knowing which columns specify records (`recordKeys`) and then copying column names from the incoming/outgoing records into cells of the outgoing/incoming records.  Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
+The key step in using `cdata` is to understand the record structure: what constitutes a record, what it would look like in a single row, and how the records are keyed. **This is not always easy.** However, once you understand the record structure of your data, the rest is relatively straightforward. Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
 
-To make your own solutions, we suggest just using one of these solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
-
-`cdata` also supplies a number of convenience functions for specifying common transforms, especially the fundamental cases of moving in out and our records that are exactly one row.
+To make your own solutions, we suggest trying one of the above example solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
 We also note the value of being able to print and review the bulk of data layout transform, as it documents expected incoming data columns and interior block record key values.
-
-The source-code for [this note](https://winvector.github.io/cdata/articles/exercises.html) can be found [here](https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd).
-
 
 
