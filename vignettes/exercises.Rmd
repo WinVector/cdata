@@ -466,7 +466,7 @@ The package vignettes can be found in the "Articles" tab of [the `cdata` documen
 
 ## Conclusion
 
-The key step in using `cdata` is to understand the record structure: what constitutes a record, what it would look like in a single row, and how the records are keyed. **This is not always easy.** However, once you understand the record structure of your data, the rest is relatively straightforward. Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
+The key step in using `cdata` is to understand the record structure: what constitutes a record, what it would look like in a single row, and how the records are keyed. **This is not always easy.** However, understanding your data record layout *is* worth the effort. Once you understand the record structure of your data, the rest is relatively straightforward. Really all one is doing when using `cdata` is formalizing the transform "ask" into a machine readable example. 
 
 To make your own solutions, we suggest trying one of the above example solutions as a template.  The idea of having the data layout transform be simple data (a `list` of a couple of `data.frame`s) means one can use the full power of `R` and other `R` packages to build the data layout transform specification (one isn't limited to some interface grammar specified by the data layout transform package).  The idea of using arbitrary code to build up a data layout transform was used to good end in the grid scatter-plot example [here](https://github.com/WinVector/cdata).
 
