@@ -98,7 +98,7 @@
       <h1>cdata Exercises</h1>
                         <h4 class="author">John Mount, Nina Zumel; Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-26</h4>
+            <h4 class="date">2019-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd"><code>vignettes/exercises.Rmd</code></a></small>
       <div class="hidden name"><code>exercises.Rmd</code></div>
@@ -114,9 +114,9 @@
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Each of these five problems will be solved using the same steps:</p>
 <ul>
-<li>Get some example data.</li>
+<li>Examine example input data and desired result data.</li>
 <li>
-<p>Check if either the incoming or outgoing data format is in “row-record” format: is all the data for a single record contained in one row? This determines which specification you will use:</p>
+<p>Check if either the incoming or outgoing data format is in “row-record” format: is all the data for a single record contained in one row? This determines which data layout transform specification you will use:</p>
 <ul>
 <li>
 <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code>: To specify data moving from single rows to arbitrary “block-shaped” records</li>
@@ -126,9 +126,9 @@
 <code><a href="../reference/layout_specification.html">layout_specification()</a></code>: To specify data moving one shape of general block record to another block record.</li>
 </ul>
 </li>
-<li>Identify which columns form the record ids, which we call the “record keys.”</li>
-<li>Draw the shape of the incoming record without the record keys.</li>
-<li>Draw the shape of the outgoing record without the record keys.</li>
+<li>Identify which columns form the record ids (group sets of rows into records), which we call the “record keys.”</li>
+<li>Draw the shape of the incoming record without the record key columns.</li>
+<li>Draw the shape of the outgoing record without the record key columns.</li>
 <li>Combine the above information as one of the above data layout transform specifications.</li>
 <li>Print the layout transform to confirm it is what you want.</li>
 <li><p>Apply the layout transform.</p></li>
@@ -141,7 +141,7 @@
 <h2 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example 1</h2>
 <p>(From: <a href="https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R" class="uri">https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R</a>.)</p>
-<p>Full data not available, as the link is dead. From <a href="https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/" class="uri">https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/</a> we can get the following similar data extract. From this source we can extract the question:</p>
+<p>From <a href="https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/" class="uri">https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/</a> we can get get a copy of the data and the question or “transform ask”:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert from this format</span>
 dadmomw &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"famid"</span>  , <span class="st">"named"</span>, <span class="st">"incd"</span>, <span class="st">"namem"</span>, <span class="st">"incm"</span> <span class="op">|</span>
@@ -158,7 +158,7 @@ dadmomt &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class
 <span class="st">     </span><span class="dv">2</span>      , <span class="st">"m"</span>     , <span class="st">"Amy"</span> , <span class="dv">18000</span> <span class="op">|</span>
 <span class="st">     </span><span class="dv">3</span>      , <span class="st">"d"</span>     , <span class="st">"Paul"</span>, <span class="dv">25000</span> <span class="op">|</span>
 <span class="st">     </span><span class="dv">3</span>      , <span class="st">"m"</span>     , <span class="st">"Pat"</span> , <span class="dv">50000</span> )</code></pre></div>
-<p>Each record represents a family, and is designated by the record key <code>famid</code>. The data starts with each record in a single row (a row record):</p>
+<p>Each incoming record represents a family, and is designated by the record key <code>famid</code>. The data starts with each record in a single row (a row record):</p>
 <table class="table">
 <thead><tr class="header">
 <th align="right">famid</th>
@@ -187,7 +187,7 @@ outgoing_record &lt;-<span class="st"> </span>wrapr<span class="op">::</span><sp
 <span class="st">     "d"</span>     , named , incd <span class="op">|</span>
 <span class="st">     "m"</span>     , namem , incm )</code></pre></div>
 <p>Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes. In specifying the record with <code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code>, we use the convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record.</p>
-<p>However, <code>outgoing_record</code> is just a data frame, you can create it however you like – you don’t need to use <code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame()</a></code>.</p>
+<p><code>outgoing_record</code> is just a <code>data.frame</code>, you can create it however you like – you don’t need to use <code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame()</a></code>.</p>
 <p>Now create the layout specification, and print it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># put it all together into a layout</span>
 layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
@@ -270,7 +270,6 @@ dadmomw <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<p>(Note: the original “<code>tidyr</code>” solution may have been on different data, or at least appears to not work on the above data. As the <code>tidyr</code> does not have a data layout transform print method, we can’t confirm if we have the correct data for the <code>tidyr</code> example.)</p>
 </div>
 <div id="example-2" class="section level2">
 <h2 class="hasAnchor">
@@ -298,12 +297,12 @@ into a data set that separates the tests by column but converts the measurement 
  ...
 
 I have unsuccessfully tried to use reshape and melt. Existing posts address transforming to single column outcome.</code></pre>
-<p>First, notice that neither the ingoing nor outgoing forms are single-row records; a single record corresponds to a single ID and Year, and has three measurements (Fall, Spring, Winter) of two tests (1 and 2). So an example single row record would look something like:</p>
+<p>First, notice that neither the incoming nor outgoing forms are single-row records; a single record corresponds to a single ID and Year, and has three measurements (Fall, Spring, Winter) of two tests (1 and 2). So an example single row record would look something like:</p>
 <pre><code>  ID Year Fall1 Fall2 Spring1 Spring2 Winter1 Winter2
    1 2008    15    22      16      22      19      24
 </code></pre>
 <p>and the record key is formed from the ID and the Year (sometimes what the record keys are is not obvious, and is in fact domain knowledge).</p>
-<p>Since neither the ingoing nor outgoing shapes are row records, we use the general <code><a href="../reference/layout_specification.html">layout_specification()</a></code>.</p>
+<p>Since neither the incoming nor outgoing shapes are row records, we use the general <code><a href="../reference/layout_specification.html">layout_specification()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
 
 <span class="co"># identify the record keys</span>

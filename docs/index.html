@@ -172,7 +172,7 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
+<p><img https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># show the transform</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
@@ -257,7 +257,7 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
+<p><img https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># show transform</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
@@ -294,26 +294,31 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <hr>
 <p>The <code>cdata</code> package develops the idea of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>.</p>
-<p>The current favored idiomatic interfaces to <code>cdata</code> are:</p>
+<p>The main <code>cdata</code> interfaces are given by the following set of methods:</p>
 <ul>
 <li>
-<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, a convenience function for moving data from multi-row block records with one value per row to single row records.</li>
+<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records map to general multi-row (or block) records.</li>
 <li>
-<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, a convenience function for moving data from single-row records to possibly multi row block records with one row per value.</li>
+<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records map to single-row records.</li>
 <li>
-<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
-<li>
-<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records relate to single-row records.</li>
+<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_by.html"><code><a href="reference/layout_by.html">layout_by()</a></code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
-<li>
-<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper in specifying record control table layout specifications.</li>
-<li>
-<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
 </ul>
-<p>The package vignettes can be found in the “Articles” tab <a href="https://winvector.github.io/cdata/">here</a>.</p>
+<p>Some convenience functions include:</p>
+<ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, for moving data from multi-row block records with one value per row (a single column of values) to single-row records [<code>spread</code> or <code>dcast</code>].</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="reference/unpivot_to_blocks.html">pivot_to_blocks()</a></code>/<code><a href="reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) [<code>gather</code> or <code>melt</code>].</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper function for specifying record control table layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/build_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">wrapr::build_frame()</a></code></a> a helper function for specifying data frames.</li>
+</ul>
+<p>The package vignettes can be found in the “Articles” tab of <a href="https://winvector.github.io/cdata/">the <code>cdata</code> documentation site</a>.</p>
 <p>The (older) recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>). These concepts were later adapted from <code>cdata</code> by the <code>tidyr</code> package.</p>
 <hr>
 <p>Install via CRAN:</p>

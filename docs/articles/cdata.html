@@ -98,7 +98,7 @@
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-25</h4>
+            <h4 class="date">2019-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -550,25 +550,31 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 ## $allow_rqdatatable
 ## [1] TRUE</code></pre>
 <p>Notice that almost all of the time and space in using cdata is spent in specifying how your data is structured and is to be structured.</p>
-<p>The current favored idiomatic interfaces to <code>cdata</code> are:</p>
+<p>The main <code>cdata</code> interfaces are given by the following set of methods:</p>
 <ul>
 <li>
-<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, a convenience function for moving data from multi-row block records with one value per row to single row records.</li>
+<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records map to general multi-row (or block) records.</li>
 <li>
-<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, a convenience function for moving data from single-row records to possibly multi row block records with one row per value.</li>
+<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records map to single-row records.</li>
 <li>
-<a href="https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html"><code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code></a>, for specifying how single row records relate to general multi-row (or block) records.</li>
-<li>
-<a href="https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html"><code><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code></a>, for specifying how multi-row block records relate to single-row records.</li>
+<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="../reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_by.html"><code><a href="../reference/layout_by.html">layout_by()</a></code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
 <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
-<li>
-<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper in specifying record control table layout specifications.</li>
-<li>
-<a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code><a href="../reference/layout_specification.html">layout_specification()</a></code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
 </ul>
+<p>Some convenience functions include:</p>
+<ul>
+<li>
+<a href="https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html"><code><a href="../reference/pivot_to_rowrecs.html">pivot_to_rowrecs()</a></code></a>, for moving data from multi-row block records with one value per row (a single column of values) to single-row records [<code>spread</code> or <code>dcast</code>].</li>
+<li>
+<a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="../reference/unpivot_to_blocks.html">pivot_to_blocks()</a></code>/<code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) [<code>gather</code> or <code>melt</code>].</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper function for specifying record control table layout specifications.</li>
+<li>
+<a href="https://winvector.github.io/wrapr/reference/build_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">wrapr::build_frame()</a></code></a> a helper function for specifying data frames.</li>
+</ul>
+<p>The package vignettes can be found in the “Articles” tab of <a href="https://winvector.github.io/cdata/">the <code>cdata</code> documentation site</a>.</p>
 <p>The (older) recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have an (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
   </div>
 

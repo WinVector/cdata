@@ -215,18 +215,22 @@ The above is now wrapped into a [one-line command in `WVPlots`](https://winvecto
 
 The `cdata` package develops the idea of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).
 
-The current favored idiomatic interfaces to `cdata` are:
+The main `cdata` interfaces are given by the following set of methods:
 
--   [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), a convenience function for moving data from multi-row block records with one value per row to single row records.
--   [`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), a convenience function for moving data from single-row records to possibly multi row block records with one row per value.
--   [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records relate to general multi-row (or block) records.
--   [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records relate to single-row records.
+-   [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records map to general multi-row (or block) records.
+-   [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records map to single-row records.
+-   [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
 -   [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
 -   `t()` (transpose/adjoint) to invert or reverse layout specifications.
--   [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper in specifying record control table layout specifications.
--   [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
 
-The package vignettes can be found in the "Articles" tab [here](https://winvector.github.io/cdata/).
+Some convenience functions include:
+
+-   [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), for moving data from multi-row block records with one value per row (a single column of values) to single-row records \[`spread` or `dcast`\].
+-   [`pivot_to_blocks()`/`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) \[`gather` or `melt`\].
+-   [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper function for specifying record control table layout specifications.
+-   [`wrapr::build_frame()`](https://winvector.github.io/wrapr/reference/build_frame.html) a helper function for specifying data frames.
+
+The package vignettes can be found in the "Articles" tab of [the `cdata` documentation site](https://winvector.github.io/cdata/).
 
 The (older) recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)). These concepts were later adapted from `cdata` by the `tidyr` package.
 

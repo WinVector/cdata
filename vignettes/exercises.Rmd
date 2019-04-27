@@ -26,19 +26,20 @@ For each of these examples we will show how to re-layout data using [`cdata`](ht
 
 Each of these five problems will be solved using the same steps:
 
-  * Get some example data.
-  * Check if either the incoming or outgoing data format is in "row-record" format: is all the data for a single record contained in one row? This determines which specification you will use:
+  * Examine example input data and desired result data.
+  * Check if either the incoming or outgoing data format is in "row-record" format: is all the data for a single record contained in one row? This determines which data layout transform specification you will use:
 
     + `rowrecs_to_blocks_spec()`: To specify data moving from single rows to arbitrary "block-shaped" records
     + `blocks_to_rowrecs_spec()`: To specify data moving from block records to single rows
     + `layout_specification()`: To specify data moving one shape of general block record to another block record.
 
-  * Identify which columns form the record ids, which we call the "record keys."
-  * Draw the shape of the incoming record without the record keys.
-  * Draw the shape of the outgoing record without the record keys.
+  * Identify which columns form the record ids (group sets of rows into records), which we call the "record keys."
+  * Draw the shape of the incoming record without the record key columns.
+  * Draw the shape of the outgoing record without the record key columns.
   * Combine the above information as one of the above data layout transform specifications.
   * Print the layout transform to confirm it is what you want.
   * Apply the layout transform.
+
   
 This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The important point
 is that we want to minimize *additional* problem solving when applying the `cdata` methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want to delegate the details of how the layout transform is implemented. With `cdata` the user is not asked to perform additional puzzle solving to guess a sequence of operators that may implement the desired data layout transform.  The `cdata` solution pattern is always the same, which can help in mastering it.
@@ -51,7 +52,7 @@ We will work some examples with the hope that practice brings familiarity. We ha
 
 (From: [https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R](https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R).)
 
-Full data not available, as the link is dead. From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get the following similar data extract.  From this source we can extract the question:
+From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get get a copy of the data and the question or "transform ask":
 
 ```{r}
 # convert from this format
@@ -72,7 +73,7 @@ dadmomt <- wrapr::build_frame(
      3      , "m"     , "Pat" , 50000 )
 ```
 
-Each record represents a family, and is designated by the record key `famid`. The data starts with each record in a single row (a row record):
+Each incoming record represents a family, and is designated by the record key `famid`. The data starts with each record in a single row (a row record):
 
 ```{r echo=FALSE}
 knitr::kable(dadmomw[1, , drop=FALSE])
@@ -96,7 +97,7 @@ outgoing_record <- wrapr::qchar_frame(
 
 Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes. In specifying the record with `wrapr::qchar_frame()`, we use the convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record.
 
-However, `outgoing_record` is just a data frame, you can create it however you like -- you don't need to use `qchar_frame()`.
+`outgoing_record` is just a `data.frame`, you can create it however you like -- you don't need to use `qchar_frame()`.
 
 Now create the layout specification, and print it.
 
@@ -135,8 +136,6 @@ dadmomw %.>%
   knitr::kable(.)
 ```
 
-(Note: the original "`tidyr`" solution may have been on different data, or at least appears to not work on the above data. As the `tidyr` does not have a data layout transform print method, we can't confirm if we have the correct data for the `tidyr` example.)
-
 ## Example 2
 
 (From: [http://stackoverflow.com/questions/15668870/](http://stackoverflow.com/questions/15668870/), [https://github.com/tidyverse/tidyr/blob/master/demo/so-15668870.R](http://stackoverflow.com/questions/15668870/).)
@@ -167,7 +166,7 @@ into a data set that separates the tests by column but converts the measurement 
 I have unsuccessfully tried to use reshape and melt. Existing posts address transforming to single column outcome.
 ```
 
-First, notice that neither the ingoing nor outgoing forms are single-row records; a single record corresponds to a single
+First, notice that neither the incoming nor outgoing forms are single-row records; a single record corresponds to a single
 ID and Year, and has three measurements (Fall, Spring, Winter) of two tests (1 and 2). So an example single row record 
 would look something like:
 
@@ -184,7 +183,7 @@ grades %.>% blocks_to_rowrecs(., keyColumns= recordKeys, incoming_record)
 
 and the record key is formed from the ID and the Year (sometimes what the record keys are is not obvious, and is in fact domain knowledge).
 
-Since neither the ingoing nor outgoing shapes are row records, we use the general `layout_specification()`.
+Since neither the incoming nor outgoing shapes are row records, we use the general `layout_specification()`.
 
 ```{r}
 library("cdata")
