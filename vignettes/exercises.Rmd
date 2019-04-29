@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 
 In [this note](https://winvector.github.io/cdata/articles/exercises.html) we will use five real life examples to 
-demonstrate data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) package.  The examples for this note are all demo-examples from [tidyr:demo/](https://github.com/tidyverse/tidyr/tree/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo) ([since removed](https://github.com/tidyverse/tidyr/commit/51b2b6ecbe91fcaf0ef3fbc0ef2d9465fbddd0c2)), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
+demonstrate data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) package.  The examples for this note are all demo-examples from [tidyr:demo/](https://github.com/tidyverse/tidyr/tree/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo) (current when we [shared this note on 2019-04-27](http://www.win-vector.com/blog/2019/04/data-layout-exercises/), [removed 2019-04-28](https://github.com/tidyverse/tidyr/commit/51b2b6ecbe91fcaf0ef3fbc0ef2d9465fbddd0c2)), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
 For each of these examples we will show how to re-layout data using [`cdata`](https://github.com/WinVector/cdata).  
 
