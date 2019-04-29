@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 
 In [this note](https://winvector.github.io/cdata/articles/exercises.html) we will use five real life examples to 
-demonstrate data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) package.  The examples for this note are all demo-examples from [tidyr/demo/](https://github.com/tidyverse/tidyr/tree/master/demo), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
+demonstrate data layout transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) [`R`](https://www.r-project.org) package.  The examples for this note are all demo-examples from [tidyr:demo/](https://github.com/tidyverse/tidyr/tree/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo) ([since removed](https://github.com/tidyverse/tidyr/commit/51b2b6ecbe91fcaf0ef3fbc0ef2d9465fbddd0c2)), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.
 
 For each of these examples we will show how to re-layout data using [`cdata`](https://github.com/WinVector/cdata).  
 
@@ -50,7 +50,7 @@ We will work some examples with the hope that practice brings familiarity. We ha
 
 ## Example 1
 
-(From: [https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R](https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R).)
+(From: [tidyr:demo/dadmom.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/dadmom.R).)
 
 From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get get a copy of the data and the question or "transform ask":
 
@@ -138,7 +138,7 @@ dadmomw %.>%
 
 ## Example 2
 
-(From: [http://stackoverflow.com/questions/15668870/](http://stackoverflow.com/questions/15668870/), [https://github.com/tidyverse/tidyr/blob/master/demo/so-15668870.R](http://stackoverflow.com/questions/15668870/).)
+(From: [tidyr:demo/so-15668870.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-15668870.R), [http://stackoverflow.com/questions/15668870/](http://stackoverflow.com/questions/15668870/), .)
 
 The original question was:
 
@@ -237,7 +237,7 @@ grades %.>%
 
 # Example 3
 
-(From: [https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R](https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R) , [http://stackoverflow.com/questions/16032858](http://stackoverflow.com/questions/16032858).)
+(From: [tidyr:demo/so-16032858.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-16032858.R) , [http://stackoverflow.com/questions/16032858](http://stackoverflow.com/questions/16032858).)
 
 Question: given data such as below how does one move treatment and control values for each individual into columns? Or how does one take `a` to `b`?
 
@@ -300,7 +300,7 @@ By now you should be able to see the `cdata` solution always follows a very simi
 
 # Example 4
 
-(From: [https://github.com/tidyverse/tidyr/blob/master/demo/so-17481212.R](https://github.com/tidyverse/tidyr/blob/master/demo/so-17481212.R) , [http://stackoverflow.com/questions/17481212](http://stackoverflow.com/questions/17481212).)
+(From: [tidyr:demo/so-17481212.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-17481212.R) , [http://stackoverflow.com/questions/17481212](http://stackoverflow.com/questions/17481212).)
 
 Convert data that has one different observation for each column to a data that has all observations in rows.  That is take `a` to `b` in the following.
 
@@ -371,7 +371,7 @@ a %.>%
 
 # Example 5
 
-(From: [https://github.com/tidyverse/tidyr/blob/master/demo/so-9684671.R](https://github.com/tidyverse/tidyr/blob/master/demo/so-9684671.R) , [http://stackoverflow.com/questions/9684671](http://stackoverflow.com/questions/9684671).)
+(From: [tidyr:demo/so-9684671.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-9684671.R) , [http://stackoverflow.com/questions/9684671](http://stackoverflow.com/questions/9684671).)
 
 Convert from `a` to `b`.
 

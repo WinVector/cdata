@@ -1,4 +1,8 @@
 
+# cdata 1.1.1 2019/04/29
+
+ * Fix some newly dead links https://github.com/tidyverse/tidyr/commit/51b2b6ecbe91fcaf0ef3fbc0ef2d9465fbddd0c2 .
+
 # cdata 1.1.0 2019/04/27
 
  * Switch to rqdatatable implementation.

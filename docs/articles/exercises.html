@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <h1>cdata Exercises</h1>
                         <h4 class="author">John Mount, Nina Zumel; Win-Vector LLC</h4>
             
-            <h4 class="date">2019-04-27</h4>
+            <h4 class="date">2019-04-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd"><code>vignettes/exercises.Rmd</code></a></small>
       <div class="hidden name"><code>exercises.Rmd</code></div>
@@ -107,7 +107,7 @@
 
     
     
-<p>In <a href="https://winvector.github.io/cdata/articles/exercises.html">this note</a> we will use five real life examples to demonstrate data layout transforms using the <a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> <a href="https://www.r-project.org"><code>R</code></a> package. The examples for this note are all demo-examples from <a href="https://github.com/tidyverse/tidyr/tree/master/demo">tidyr/demo/</a>, and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.</p>
+<p>In <a href="https://winvector.github.io/cdata/articles/exercises.html">this note</a> we will use five real life examples to demonstrate data layout transforms using the <a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> <a href="https://www.r-project.org"><code>R</code></a> package. The examples for this note are all demo-examples from <a href="https://github.com/tidyverse/tidyr/tree/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo">tidyr:demo/</a> (<a href="https://github.com/tidyverse/tidyr/commit/51b2b6ecbe91fcaf0ef3fbc0ef2d9465fbddd0c2">since removed</a>), and are mostly based on questions posted to StackOverflow. They represent a good cross-section of data layout problems, so they are a good set of examples or exercises to work through.</p>
 <p>For each of these examples we will show how to re-layout data using <a href="https://github.com/WinVector/cdata"><code>cdata</code></a>.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
@@ -140,7 +140,7 @@
 <div id="example-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example 1</h2>
-<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R" class="uri">https://github.com/tidyverse/tidyr/blob/master/demo/dadmom.R</a>.)</p>
+<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/dadmom.R">tidyr:demo/dadmom.R</a>.)</p>
 <p>From <a href="https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/" class="uri">https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/</a> we can get get a copy of the data and the question or “transform ask”:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># convert from this format</span>
 dadmomw &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
@@ -274,7 +274,7 @@ dadmomw <span class="op">%.&gt;%</span><span class="st"> </span>
 <div id="example-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-2" class="anchor"></a>Example 2</h2>
-<p>(From: <a href="http://stackoverflow.com/questions/15668870/" class="uri">http://stackoverflow.com/questions/15668870/</a>, <a href="http://stackoverflow.com/questions/15668870/">https://github.com/tidyverse/tidyr/blob/master/demo/so-15668870.R</a>.)</p>
+<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-15668870.R">tidyr:demo/so-15668870.R</a>, <a href="http://stackoverflow.com/questions/15668870/" class="uri">http://stackoverflow.com/questions/15668870/</a>, .)</p>
 <p>The original question was:</p>
 <pre><code>I want to reshape a wide format dataset that has multiple tests which are measured at 3 time points:
 
@@ -509,7 +509,7 @@ grades <span class="op">%.&gt;%</span><span class="st"> </span>
 <div id="example-3" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-3" class="anchor"></a>Example 3</h1>
-<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R" class="uri">https://github.com/tidyverse/tidyr/blob/master/demo/so-16032858.R</a> , <a href="http://stackoverflow.com/questions/16032858" class="uri">http://stackoverflow.com/questions/16032858</a>.)</p>
+<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-16032858.R">tidyr:demo/so-16032858.R</a> , <a href="http://stackoverflow.com/questions/16032858" class="uri">http://stackoverflow.com/questions/16032858</a>.)</p>
 <p>Question: given data such as below how does one move treatment and control values for each individual into columns? Or how does one take <code>a</code> to <code>b</code>?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"Ind"</span>   , <span class="st">"Treatment"</span>, <span class="st">"value"</span> <span class="op">|</span>
@@ -603,7 +603,7 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 <div id="example-4" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-4" class="anchor"></a>Example 4</h1>
-<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/master/demo/so-17481212.R" class="uri">https://github.com/tidyverse/tidyr/blob/master/demo/so-17481212.R</a> , <a href="http://stackoverflow.com/questions/17481212" class="uri">http://stackoverflow.com/questions/17481212</a>.)</p>
+<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-17481212.R">tidyr:demo/so-17481212.R</a> , <a href="http://stackoverflow.com/questions/17481212" class="uri">http://stackoverflow.com/questions/17481212</a>.)</p>
 <p>Convert data that has one different observation for each column to a data that has all observations in rows. That is take <code>a</code> to <code>b</code> in the following.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"Name"</span>   , <span class="st">"50"</span>, <span class="st">"100"</span>, <span class="st">"150"</span>, <span class="st">"200"</span>, <span class="st">"250"</span>, <span class="st">"300"</span>, <span class="st">"350"</span> <span class="op">|</span>
@@ -790,7 +790,7 @@ a <span class="op">%.&gt;%</span><span class="st"> </span>
 <div id="example-5" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-5" class="anchor"></a>Example 5</h1>
-<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/master/demo/so-9684671.R" class="uri">https://github.com/tidyverse/tidyr/blob/master/demo/so-9684671.R</a> , <a href="http://stackoverflow.com/questions/9684671" class="uri">http://stackoverflow.com/questions/9684671</a>.)</p>
+<p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-9684671.R">tidyr:demo/so-9684671.R</a> , <a href="http://stackoverflow.com/questions/9684671" class="uri">http://stackoverflow.com/questions/9684671</a>.)</p>
 <p>Convert from <code>a</code> to <code>b</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
    <span class="st">"id"</span>    , <span class="st">"trt"</span>, <span class="st">"work.T1"</span>, <span class="st">"play.T1"</span>, <span class="st">"talk.T1"</span>, <span class="st">"total.T1"</span>, <span class="st">"work.T2"</span>, <span class="st">"play.T2"</span>, <span class="st">"talk.T2"</span>, <span class="st">"total.T2"</span> <span class="op">|</span>
