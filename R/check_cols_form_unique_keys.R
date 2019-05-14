@@ -1,4 +1,7 @@
 
+#' @importFrom rqdatatable ex_data_table
+NULL
+
 #' Check columns form unique keys
 #'
 #' @param data data.frame to check
@@ -28,7 +31,7 @@ check_cols_form_unique_keys <- function(data, keyColNames) {
   if(length(keyColNames) <= 0) {
     return(FALSE)
   }
-  if(requireNamespace("rqdatatable", quietly = TRUE)) {
+  {
     . <- NULL
     cdata_one_column <- NULL # don't look unbound
     cops <- rquery::local_td(data) %.>%
@@ -44,5 +47,5 @@ check_cols_form_unique_keys <- function(data, keyColNames) {
     count <- ctab[, 1, drop = TRUE]
     return(count<=1)
   }
-  wrapr::checkColsFormUniqueKeys(data, keyColNames)
+  # wrapr::checkColsFormUniqueKeys(data, keyColNames)
 }
