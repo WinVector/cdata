@@ -10,7 +10,7 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
   checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
   temporary = FALSE, resultName = NULL, incoming_qualifiers = NULL,
-  outgoing_qualifiers = NULL)
+  outgoing_qualifiers = NULL, temp_qualifiers = NULL)
 }
 \arguments{
 \item{wideTable}{name of table containing data to be mapped (db/Spark data)}
@@ -44,6 +44,8 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
 \item{incoming_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 
 \item{outgoing_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{temp_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 long table built by mapping wideTable to one row per group

@@ -4,7 +4,8 @@
 \alias{map_fields_q}
 \title{Map field values from one column into new derived columns (query based, takes name of table).}
 \usage{
-map_fields_q(dname, cname, mname, my_db, rname)
+map_fields_q(dname, cname, mname, my_db, rname, ..., d_qualifiers = NULL,
+  m_qualifiers = NULL)
 }
 \arguments{
 \item{dname}{name of table to re-map.}
@@ -16,6 +17,12 @@ map_fields_q(dname, cname, mname, my_db, rname)
 \item{my_db}{database handle.}
 
 \item{rname}{name of result table.}
+
+\item{...}{force later arguments to be by name.}
+
+\item{d_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{m_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 re-mapped table

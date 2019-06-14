@@ -6,6 +6,9 @@
 #' @param mname name of table of data describing the mapping (cname column is source, derived columns are destinations).
 #' @param my_db database handle.
 #' @param rname name of result table.
+#' @param ... force later arguments to be by name.
+#' @param d_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
+#' @param m_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return re-mapped table
 #'
 #' @examples
@@ -43,7 +46,11 @@
 #'
 #' @export
 #'
-map_fields_q <- function(dname, cname, mname, my_db, rname) {
+map_fields_q <- function(dname, cname, mname, my_db, rname,
+                         ...,
+                         d_qualifiers = NULL,
+                         m_qualifiers = NULL) {
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::map_fields_q")
   dests <- vapply(setdiff(cols(my_db,mname), cname),
                   function(di) {
                     rquery::quote_identifier(my_db, di)
@@ -55,9 +62,9 @@ map_fields_q <- function(dname, cname, mname, my_db, rname) {
               " AS SELECT d.*, ",
               paste(qt, collapse = ", "),
               " FROM ",
-              rquery::quote_identifier(my_db, dname),
+              rquery::quote_table_name(my_db, dname, qualifiers = d_qualifiers),
               " d LEFT JOIN ",
-              rquery::quote_identifier(my_db, mname),
+              rquery::quote_table_name(my_db, mname, qualifiers = m_qualifiers),
               " m ON ",
               " d.", rquery::quote_identifier(my_db, cname),
               " = ",

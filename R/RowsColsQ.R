@@ -156,6 +156,7 @@ qlook <- function(my_db, tableName,
 #' @param resultName character, name for result table.
 #' @param incoming_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @param outgoing_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
+#' @param temp_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}},  \code{\link{rowrecs_to_blocks}}
@@ -199,7 +200,8 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 temporary = FALSE,
                                 resultName = NULL,
                                 incoming_qualifiers = NULL,
-                                outgoing_qualifiers = NULL) {
+                                outgoing_qualifiers = NULL,
+                                temp_qualifiers = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_q")
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
@@ -236,8 +238,9 @@ rowrecs_to_blocks_q <- function(wideTable,
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
   rquery::rq_copy_to(my_db,
-                      ctabName,
-                      controlTable)
+                     ctabName,
+                     controlTable,
+                     qualifiers = temp_qualifiers)
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -299,19 +302,19 @@ rowrecs_to_blocks_q <- function(wideTable,
                 ' FROM ',
                 rquery::quote_table_name(my_db, wideTable, qualifiers = incoming_qualifiers),
                 ' a CROSS JOIN ',
-                rquery::quote_identifier(my_db, ctabName),
+                rquery::quote_table_name(my_db, ctabName, qualifiers = temp_qualifiers),
                 ' b ')
   q <-  paste0("CREATE ",
                ifelse(temporary, "TEMPORARY", ""),
                " TABLE ",
-               rquery::quote_identifier(my_db, resName),
+               rquery::quote_table_name(my_db, resName, qualifiers = outgoing_qualifiers),
                " AS ",
                qs)
   if(showQuery) {
     print(q)
   }
   rquery::rq_execute(my_db, q)
-  rquery::rq_remove_table(my_db, ctabName)
+  rquery::rq_remove_table(my_db, ctabName, qualifiers = temp_qualifiers)
   resName
 }
 
