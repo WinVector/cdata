@@ -6,7 +6,7 @@
 \usage{
 build_pivot_control_q(tableName, columnToTakeKeysFrom,
   columnToTakeValuesFrom, my_db, ..., prefix = columnToTakeKeysFrom,
-  sep = NULL)
+  sep = NULL, qualifiers = NULL)
 }
 \arguments{
 \item{tableName}{Name of table to scan for new column names.}
@@ -22,6 +22,8 @@ build_pivot_control_q(tableName, columnToTakeKeysFrom,
 \item{prefix}{column name prefix (only used when sep is not NULL)}
 
 \item{sep}{separator to build complex column names.}
+
+\item{qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 control table

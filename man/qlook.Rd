@@ -4,16 +4,21 @@
 \alias{qlook}
 \title{Quick look at remote data}
 \usage{
-qlook(my_db, tableName, displayRows = 10, countRows = TRUE)
+qlook(my_db, tableName, ..., displayRows = 10, countRows = TRUE,
+  qualifiers = NULL)
 }
 \arguments{
 \item{my_db}{database handle}
 
 \item{tableName}{name of table to look at}
 
+\item{...}{force later arguments to be by name.}
+
 \item{displayRows}{number of rows to sample}
 
 \item{countRows}{logical, if TRUE return row count.}
+
+\item{qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 str view of data

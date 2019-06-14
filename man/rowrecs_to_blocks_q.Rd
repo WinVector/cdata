@@ -9,7 +9,8 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
   tempNameGenerator = mk_tmp_name_source("mvtrq"), strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
   checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
-  temporary = FALSE, resultName = NULL)
+  temporary = FALSE, resultName = NULL, incoming_qualifiers = NULL,
+  outgoing_qualifiers = NULL)
 }
 \arguments{
 \item{wideTable}{name of table containing data to be mapped (db/Spark data)}
@@ -39,6 +40,10 @@ rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
 \item{temporary}{logical, if TRUE make result temporary.}
 
 \item{resultName}{character, name for result table.}
+
+\item{incoming_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{outgoing_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 long table built by mapping wideTable to one row per group

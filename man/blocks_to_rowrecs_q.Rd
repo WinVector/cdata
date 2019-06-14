@@ -9,7 +9,8 @@ blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
   tempNameGenerator = mk_tmp_name_source("mvtcq"), strict = FALSE,
   controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
   checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
-  dropDups = TRUE, temporary = FALSE, resultName = NULL)
+  dropDups = TRUE, temporary = FALSE, resultName = NULL,
+  incoming_qualifiers = NULL, outgoing_qualifiers = NULL)
 }
 \arguments{
 \item{tallTable}{name of table containing data to be mapped (db/Spark data)}
@@ -43,6 +44,10 @@ blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
 \item{temporary}{logical, if TRUE make result temporary.}
 
 \item{resultName}{character, name for result table.}
+
+\item{incoming_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{outgoing_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group

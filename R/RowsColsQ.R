@@ -16,6 +16,8 @@
 #'
 #' @param my_db database connection
 #' @param tableName character name of table
+#' @param ... force later arguments to be by name.
+#' @param qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return list of column names
 #'
 #' @examples
@@ -42,16 +44,21 @@
 #' @noRd
 #' @keywords internal
 #'
-cols <- function(my_db, tableName) {
-  rquery::rq_colnames(my_db, tableName)
+cols <- function(my_db, tableName,
+                 ...,
+                 qualifiers = NULL) {
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::cols")
+  rquery::rq_colnames(my_db, tableName, qualifiers = qualifiers)
 }
 
 #' Quick look at remote data
 #'
 #' @param my_db database handle
 #' @param tableName name of table to look at
+#' @param ... force later arguments to be by name.
 #' @param displayRows number of rows to sample
 #' @param countRows logical, if TRUE return row count.
+#' @param qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return str view of data
 #'
 #' @examples
@@ -72,11 +79,15 @@ cols <- function(my_db, tableName) {
 #' @keywords internal
 #'
 qlook <- function(my_db, tableName,
+                  ...,
                   displayRows = 10,
-                  countRows = TRUE) {
+                  countRows = TRUE,
+                  qualifiers = NULL) {
+  wrapr::stop_if_dot_args(substitute(list(...)), "cdata::qlook")
+  q_tab_name <- rquery::quote_table_name(my_db, tableName, qualifiers = qualifiers)
   h <- rquery::rq_get_query(my_db,
                        paste0("SELECT * FROM ",
-                              rquery::quote_identifier(my_db, tableName),
+                              q_tab_name,
                               " LIMIT ", displayRows))
   cat(paste('table',
             rquery::quote_identifier(my_db, tableName),
@@ -85,7 +96,7 @@ qlook <- function(my_db, tableName,
   if(countRows) {
     nrow <- rquery::rq_get_query(my_db,
                             paste0("SELECT COUNT(1) FROM ",
-                                   rquery::quote_identifier(my_db, tableName)))[1,1, drop=TRUE]
+                                   q_tab_name))[1,1, drop=TRUE]
     nrow <- as.numeric(nrow) # defend against Rpostgres integer64
     cat(paste(" nrow:", nrow, '\n'))
     if(nrow>displayRows) {
@@ -143,6 +154,8 @@ qlook <- function(my_db, tableName,
 #' @param defaultValue if not NULL literal to use for non-match values.
 #' @param temporary logical, if TRUE make result temporary.
 #' @param resultName character, name for result table.
+#' @param incoming_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
+#' @param outgoing_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return long table built by mapping wideTable to one row per group
 #'
 #' @seealso \code{\link{build_unpivot_control}},  \code{\link{rowrecs_to_blocks}}
@@ -184,7 +197,9 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 showQuery = FALSE,
                                 defaultValue = NULL,
                                 temporary = FALSE,
-                                resultName = NULL) {
+                                resultName = NULL,
+                                incoming_qualifiers = NULL,
+                                outgoing_qualifiers = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_q")
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
@@ -203,7 +218,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   if(checkNames) {
     interiorCells <- unlist(controlTable[, controlTableValueColumns], use.names = FALSE)
     interiorCells <- interiorCells[!is.na(interiorCells)]
-    wideTableColnames <- cols(my_db, wideTable)
+    wideTableColnames <- cols(my_db, wideTable, qualifiers = incoming_qualifiers)
     badCells <- setdiff(interiorCells, wideTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::rowrecs_to_blocks_q: control table entries that are not wideTable column names:",
@@ -213,7 +228,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 
   # check more
   if(checkKeys) {
-    if(!rows_are_uniquely_keyed(rquery::db_td(my_db, wideTable), columnsToCopy, my_db)) {
+    if(!rows_are_uniquely_keyed(rquery::db_td(my_db, wideTable, qualifiers = incoming_qualifiers), columnsToCopy, my_db)) {
       stop("cdata::rowrecs_to_blocks_q columnsToCopy do not uniquely key the rows")
     }
   }
@@ -282,7 +297,7 @@ rowrecs_to_blocks_q <- function(wideTable,
   qs <-  paste0(" SELECT ",
                 paste(c(copystmts, groupstmts, casestmts), collapse = ', '),
                 ' FROM ',
-                rquery::quote_identifier(my_db, wideTable),
+                rquery::quote_table_name(my_db, wideTable, qualifiers = incoming_qualifiers),
                 ' a CROSS JOIN ',
                 rquery::quote_identifier(my_db, ctabName),
                 ' b ')
@@ -315,6 +330,7 @@ rowrecs_to_blocks_q <- function(wideTable,
 #' @param ... not used, force later args to be by name
 #' @param prefix column name prefix (only used when sep is not NULL)
 #' @param sep separator to build complex column names.
+#' @param qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return control table
 #'
 #' @seealso \code{\link{blocks_to_rowrecs_q}}, \code{\link{build_pivot_control}}
@@ -348,12 +364,13 @@ build_pivot_control_q <- function(tableName,
                                   my_db,
                                   ...,
                                   prefix = columnToTakeKeysFrom,
-                                  sep = NULL) {
+                                  sep = NULL,
+                                  qualifiers = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::build_pivot_control_q")
   q <- paste0("SELECT ",
               rquery::quote_identifier(my_db, columnToTakeKeysFrom),
               " FROM ",
-              rquery::quote_identifier(my_db, tableName),
+              rquery::quote_table_name(my_db, tableName, qualifiers = qualifiers),
               " GROUP BY ",
               rquery::quote_identifier(my_db, columnToTakeKeysFrom))
   controlTable <- rquery::rq_get_query(my_db, q)
@@ -415,6 +432,8 @@ build_pivot_control_q <- function(tableName,
 #' @param dropDups logical if TRUE suppress duplicate columns (duplicate determined by name, not content).
 #' @param temporary logical, if TRUE make result temporary.
 #' @param resultName character, name for result table.
+#' @param incoming_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
+#' @param outgoing_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
@@ -460,7 +479,9 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 defaultValue = NULL,
                                 dropDups = TRUE,
                                 temporary = FALSE,
-                                resultName = NULL) {
+                                resultName = NULL,
+                                incoming_qualifiers = NULL,
+                                outgoing_qualifiers = NULL) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_q")
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
@@ -482,7 +503,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   }
   controlTableValueColumns <- setdiff(colnames(controlTable), controlTableKeys)
   if(checkNames) {
-    tallTableColnames <- cols(my_db, tallTable)
+    tallTableColnames <- cols(my_db, tallTable, qualifiers = incoming_qualifiers)
     badCells <- setdiff(colnames(controlTable), tallTableColnames)
     if(length(badCells)>0) {
       stop(paste("cdata::blocks_to_rowrecs_q: control table column names that are not tallTable column names:",
@@ -492,7 +513,7 @@ blocks_to_rowrecs_q <- function(tallTable,
 
   # check more
   if(checkKeys) {
-    tallTable_db <- rquery::db_td(my_db, tallTable)
+    tallTable_db <- rquery::db_td(my_db, tallTable, qualifiers = incoming_qualifiers)
     # check keyColumns plus controltable keys key data
     if(!rows_are_uniquely_keyed(tallTable_db, c(controlTableKeys, keyColumns), my_db)) {
       stop(paste("cdata::blocks_to_rowrecs_q: controlTableKeys plus keyColumns do not unique index data"))
@@ -573,7 +594,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   qs <-  paste0(" SELECT ",
                 paste(c(groupstmts, copystmts, collectstmts), collapse = ', '),
                 ' FROM ',
-                rquery::quote_identifier(my_db, tallTable),
+                rquery::quote_table_name(my_db, tallTable, qualifiers = incoming_qualifiers),
                 ' a ')
   if(length(groupstmts)>0) {
     qs <- paste0(qs,
@@ -583,7 +604,7 @@ blocks_to_rowrecs_q <- function(tallTable,
   q <-  paste0("CREATE ",
                ifelse(temporary, "TEMPORARY", ""),
                " TABLE ",
-               rquery::quote_identifier(my_db, resName),
+               rquery::quote_table_name(my_db, resName, qualifiers = outgoing_qualifiers),
                " AS ",
                qs)
   if(showQuery) {
