@@ -1,5 +1,5 @@
 
-# cdata 1.1.1 2019/07/04
+# cdata 1.1.1 2019/07/09
 
  * Fix some newly dead links.
  * Make rqdatatable a dependency.
