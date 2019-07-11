@@ -1,9 +1,10 @@
 
-# cdata 1.1.1 2019/07/09
+# cdata 1.1.1 2019/07/11
 
  * Fix some newly dead links.
  * Make rqdatatable a dependency.
  * Start to schematize.
+ * Move to newer f_db signature.
 
 # cdata 1.1.0 2019/04/27
 

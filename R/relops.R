@@ -58,7 +58,9 @@ build_pivot_control.relop <- function(table,
   columns_produced <- c(columnToTakeKeysFrom, columnToTakeValuesFrom)
   f_db <- function(db,
                    incoming_table_name,
-                   outgoing_table_name) {
+                   outgoing_table_name,
+                   nd = NULL,
+                   ...) {
     pct <- build_pivot_control_q(tableName = incoming_table_name,
                                  columnToTakeKeysFrom = columnToTakeKeysFrom,
                                  columnToTakeValuesFrom = columnToTakeValuesFrom,
@@ -164,7 +166,9 @@ unpivot_to_blocks.relop <- function(data,
   columns_produced <- c(colsToCopy, nameForNewKeyColumn, nameForNewValueColumn, nameForNewClassColumn)
   f_db <- function(db,
                    incoming_table_name,
-                   outgoing_table_name) {
+                   outgoing_table_name,
+                   nd = NULL,
+                   ...) {
     rowrecs_to_blocks_q(wideTable = incoming_table_name,
                         controlTable = cT,
                         my_db = db,
@@ -289,7 +293,9 @@ blocks_to_rowrecs.relop <- function(tallTable,
                         unique(as.character(unlist(controlTable[, controlTableValueColumns]))))
   f_db <- function(db,
                    incoming_table_name,
-                   outgoing_table_name) {
+                   outgoing_table_name,
+                   nd = NULL,
+                   ...) {
     blocks_to_rowrecs_q(tallTable = incoming_table_name,
                         keyColumns = keyColumns,
                         controlTable = controlTable,
@@ -406,7 +412,9 @@ rowrecs_to_blocks.relop <- function(wideTable,
   columns_produced <- c(columnsToCopy, colnames(controlTable))
   f_db <- function(db,
                    incoming_table_name,
-                   outgoing_table_name) {
+                   outgoing_table_name,
+                   nd = NULL,
+                   ...) {
     rowrecs_to_blocks_q(wideTable = incoming_table_name,
                         controlTable = controlTable,
                         my_db = db,
