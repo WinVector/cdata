@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-27</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -110,18 +110,18 @@
 <p>One of the design goals of the <a href="https://github.com/WinVector/cdata"><code>cdata</code></a> <a href="https://www.r-project.org"><code>R</code></a> package is that data occurs in records, and records may be a pattern of cells in a groups of rows.</p>
 <p>The allows <code>cdata</code> to support very powerful and arbitrary record transforms in one or two steps. Using “row records” (that is records that are exactly one row) as an intermediate lets us take just about any record shape to just about any record shape: first convert to row-records, then re-block the data into arbitrary record shapes (please see <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a> and <a href="https://winvector.github.io/cdata/articles/design.html">here</a> for the concepts).</p>
 <p>But as with all general ideas, it is much easier to see what we mean by the above with a concrete example. Let’s consider the following artificial (but simple) example. Suppose we have the following data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
-
-data &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-   <span class="st">"record_id"</span>  , <span class="st">"row"</span> , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
-<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row1"</span>, <span class="dv">1</span>     , <span class="dv">2</span>     , <span class="dv">3</span>      <span class="op">|</span>
-<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row2"</span>, <span class="dv">4</span>     , <span class="dv">5</span>     , <span class="dv">6</span>      <span class="op">|</span>
-<span class="st">     </span><span class="dv">1</span>          , <span class="st">"row3"</span>, <span class="dv">7</span>     , <span class="dv">8</span>     , <span class="dv">9</span>      <span class="op">|</span>
-<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row1"</span>, <span class="dv">11</span>    , <span class="dv">12</span>    , <span class="dv">13</span>     <span class="op">|</span>
-<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row2"</span>, <span class="dv">14</span>    , <span class="dv">15</span>    , <span class="dv">16</span>     <span class="op">|</span>
-<span class="st">     </span><span class="dv">2</span>          , <span class="st">"row3"</span>, <span class="dv">17</span>    , <span class="dv">18</span>    , <span class="dv">19</span>     )
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(data)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">data &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">   <span class="st">"record_id"</span>  , <span class="st">"row"</span> , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">     </span><span class="dv">1</span>          , <span class="st">"row1"</span>, <span class="dv">1</span>     , <span class="dv">2</span>     , <span class="dv">3</span>      <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">     </span><span class="dv">1</span>          , <span class="st">"row2"</span>, <span class="dv">4</span>     , <span class="dv">5</span>     , <span class="dv">6</span>      <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">     </span><span class="dv">1</span>          , <span class="st">"row3"</span>, <span class="dv">7</span>     , <span class="dv">8</span>     , <span class="dv">9</span>      <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">     </span><span class="dv">2</span>          , <span class="st">"row1"</span>, <span class="dv">11</span>    , <span class="dv">12</span>    , <span class="dv">13</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="st">     </span><span class="dv">2</span>          , <span class="st">"row2"</span>, <span class="dv">14</span>    , <span class="dv">15</span>    , <span class="dv">16</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">     </span><span class="dv">2</span>          , <span class="st">"row3"</span>, <span class="dv">17</span>    , <span class="dv">18</span>    , <span class="dv">19</span>     )</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(data)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
@@ -177,49 +177,49 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </table>
 <p>In the above the records are the triples of rows with matching <code>record_id</code> and the different rows within the record are identified by the value in the <code>row</code> column. So The data items are named by the triplet <code>record_id</code>, <code>row</code> and renaming column name (<code>col1</code>, <code>col2</code>, or <code>col2</code>). This sort of naming of values is essentially <a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules">Codd’s “guaranteed access rule”</a>.</p>
 <p>Suppose we want to transpose each of the records- swapping the row and column notions. With <code>cdata</code> this is easy. First you design a transform to flatten each complex record into a single wide row (using the design steps taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). Essentially that is just specifying the following control variables. We define how to identify records (the key columns) and the structure of the records (giving the interior of the record arbitrary names we will re-use later).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recordKeys =<span class="st"> 'record_id'</span>
-
-incoming_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-   <span class="st">"row"</span>   , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span>
-<span class="st">     "row1"</span>, v11   , v12   , v13    <span class="op">|</span>
-<span class="st">     "row2"</span>, v21   , v22   , v23    <span class="op">|</span>
-<span class="st">     "row3"</span>, v31   , v32   , v33    )</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">recordKeys =<span class="st"> 'record_id'</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">incoming_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">   <span class="st">"row"</span>   , <span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">     "row1"</span>, v11   , v12   , v13    <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">     "row2"</span>, v21   , v22   , v23    <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">     "row3"</span>, v31   , v32   , v33    )</a></code></pre></div>
 <p>And we specify (using the same principles) the desired final record shape, re-using the interior names from the first step to show where values are to be mapped.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outgoing_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-   <span class="st">"column_label"</span>  , <span class="st">"c_row1"</span>, <span class="st">"c_row2"</span>, <span class="st">"c_row3"</span> <span class="op">|</span>
-<span class="st">     "rec_col1"</span>    , v11     , v21     , v31      <span class="op">|</span>
-<span class="st">     "rec_col2"</span>    , v12     , v22     , v32      <span class="op">|</span>
-<span class="st">     "rec_col3"</span>    , v13     , v23     , v33      )</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">outgoing_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">   <span class="st">"column_label"</span>  , <span class="st">"c_row1"</span>, <span class="st">"c_row2"</span>, <span class="st">"c_row3"</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">     "rec_col1"</span>    , v11     , v21     , v31      <span class="op">|</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">     "rec_col2"</span>    , v12     , v22     , v32      <span class="op">|</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">     "rec_col3"</span>    , v13     , v23     , v33      )</a></code></pre></div>
 <p>Once you have done this you specify the overall transform by building a layout specifying the incoming and outgoing record shapes.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_specification.html">layout_specification</a></span>(
-  <span class="dt">incoming_shape =</span> incoming_shape,
-  <span class="dt">outgoing_shape =</span> outgoing_shape,
-  <span class="dt">recordKeys =</span> recordKeys)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span>
-<span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span>
-<span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span>
-<span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span>
-<span class="co">#&gt;  in_keys &lt;- c('record_id', 'row')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # becomes</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span>
-<span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span>
-<span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span>
-<span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span>
-<span class="co">#&gt;  out_keys &lt;- c('record_id', 'column_label')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_specification.html">layout_specification</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">incoming_shape =</span> incoming_shape,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">outgoing_shape =</span> outgoing_shape,</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">recordKeys =</span> recordKeys)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; {</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  in_keys &lt;- c('record_id', 'row')</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  # becomes</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;  out_keys &lt;- c('record_id', 'column_label')</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; }</span></a></code></pre></div>
 <p>This layout specification or controller can then perform the transform.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data <span class="op">%.&gt;%</span>
-<span class="st">  </span>layout <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">data <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>layout <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
@@ -277,8 +277,8 @@ incoming_shape &lt;-<span class="st"> </span>wrapr<span class="op">::</span><spa
 <p>The principle is “draw a picture.” First we draw a picture of the block record structure we have, and then we draw a picture of the block record structure we want.</p>
 <p>As you have seen, we have complete freedom to re-name columns and record-piece labels (the labels that tell us which portion of a block-record each row fits into).</p>
 <p>If you don’t want to use pipe notation, you can use the method <code><a href="../reference/layout_by.html">layout_by()</a></code> (which takes a layout specification as an argument) or the method <code><a href="../reference/convert_records.html">convert_records()</a></code> (which takes the components of the transform specification as separate arguments).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_by.html">layout_by</a></span>(layout, data)
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(lr)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">lr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/layout_by.html">layout_by</a></span>(layout, data)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(lr)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
@@ -332,14 +332,14 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-cr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(
-  data,
-  <span class="dt">keyColumns =</span> recordKeys,
-  <span class="dt">incoming_shape =</span> incoming_shape,
-  <span class="dt">outgoing_shape =</span> outgoing_shape)
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(cr)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">cr &lt;-<span class="st"> </span><span class="kw"><a href="../reference/convert_records.html">convert_records</a></span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  data,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">keyColumns =</span> recordKeys,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="dt">incoming_shape =</span> incoming_shape,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="dt">outgoing_shape =</span> outgoing_shape)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(cr)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
@@ -394,33 +394,33 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <p>A nifty bonus is: if the transformation is “faithful” (preserves enough cells and labels), then it is invertible and in fact easy to invert (by the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> transpose/adjoint function).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span>
-<span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span>
-<span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span>
-<span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span>
-<span class="co">#&gt;  in_keys &lt;- c('record_id', 'column_label')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # becomes</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span>
-<span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span>
-<span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span>
-<span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span>
-<span class="co">#&gt;  out_keys &lt;- c('record_id', 'row')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span>
-
-data <span class="op">%.&gt;%</span>
-<span class="st">  </span>layout <span class="op">%.&gt;%</span>
-<span class="st">  </span>inv_layout <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; {</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;    "record_id"  , "column_label", "c_row1", "c_row2", "c_row3" |</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;      .          , "rec_col1"    , v11     , v21     , v31      |</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;      .          , "rec_col2"    , v12     , v22     , v32      |</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;      .          , "rec_col3"    , v13     , v23     , v33      )</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  in_keys &lt;- c('record_id', 'column_label')</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  # becomes</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  out_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;    "record_id"  , "row" , "col1", "col2", "col3" |</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;      .          , "row1", v11   , v12   , v13    |</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;      .          , "row2", v21   , v22   , v23    |</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;      .          , "row3", v31   , v32   , v33    )</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  out_keys &lt;- c('record_id', 'row')</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; }</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">data <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="st">  </span>layout <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="st">  </span>inv_layout <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">record_id</th>
@@ -475,53 +475,53 @@ data <span class="op">%.&gt;%</span>
 </tbody>
 </table>
 <p>Also these conversions can also be translated into <a href="https://github.com/WinVector/rquery"><code>rquery</code></a> operators, and therefore saved to be run either in memory or directly on a database.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">table_desciption &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/local_td">local_td</a></span>(data)
-ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</span>
-<span class="st">  </span>layout
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))
-<span class="co">#&gt; table(data; </span>
-<span class="co">#&gt;   record_id,</span>
-<span class="co">#&gt;   row,</span>
-<span class="co">#&gt;   col1,</span>
-<span class="co">#&gt;   col2,</span>
-<span class="co">#&gt;   col3) %.&gt;%</span>
-<span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%</span>
-<span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span>
-
-rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops) 
-<span class="co">#&gt; [1] "record_id"    "column_label" "c_row1"       "c_row2"      </span>
-<span class="co">#&gt; [5] "c_row3"</span>
-
-<span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
-<span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {
-  raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
-                                   <span class="st">":memory:"</span>)
-  RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)
-  db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(
-    <span class="dt">connection =</span> raw_connection,
-    <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,
-    <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))
-  
-  db_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"data"</span>, data)
-  
-  ops <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">    </span>db <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">    </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.) <span class="op">%.&gt;%</span>
-<span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(.)
-  
-  DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)
-}
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  record_id  column_label    c_row1   c_row2   c_row3</span>
-<span class="co">#&gt; ----------  -------------  -------  -------  -------</span>
-<span class="co">#&gt;          1  rec_col1             1        4        7</span>
-<span class="co">#&gt;          1  rec_col2             2        5        8</span>
-<span class="co">#&gt;          1  rec_col3             3        6        9</span>
-<span class="co">#&gt;          2  rec_col1            11       14       17</span>
-<span class="co">#&gt;          2  rec_col2            12       15       18</span>
-<span class="co">#&gt;          2  rec_col3            13       16       19</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">table_desciption &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/local_td">local_td</a></span>(data)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">ops &lt;-<span class="st"> </span>table_desciption <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>layout</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; table(data; </span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   record_id,</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;   row,</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   col1,</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;   col2,</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;   col3) %.&gt;%</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/column_names">column_names</a></span>(ops) </a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; [1] "record_id"    "column_label" "c_row1"       "c_row2"      </span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; [5] "c_row3"</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
+<a class="sourceLine" id="cb9-21" data-line-number="21">  raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), </a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">                                   <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">  RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)</a>
+<a class="sourceLine" id="cb9-24" data-line-number="24">  db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(</a>
+<a class="sourceLine" id="cb9-25" data-line-number="25">    <span class="dt">connection =</span> raw_connection,</a>
+<a class="sourceLine" id="cb9-26" data-line-number="26">    <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb9-27" data-line-number="27">    <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))</a>
+<a class="sourceLine" id="cb9-28" data-line-number="28">  </a>
+<a class="sourceLine" id="cb9-29" data-line-number="29">  db_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"data"</span>, data)</a>
+<a class="sourceLine" id="cb9-30" data-line-number="30">  </a>
+<a class="sourceLine" id="cb9-31" data-line-number="31">  ops <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-32" data-line-number="32"><span class="st">    </span>db <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="st">    </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.) <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(.)</a>
+<a class="sourceLine" id="cb9-35" data-line-number="35">  </a>
+<a class="sourceLine" id="cb9-36" data-line-number="36">  DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)</a>
+<a class="sourceLine" id="cb9-37" data-line-number="37">}</a>
+<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-40" data-line-number="40"><span class="co">#&gt;  record_id  column_label    c_row1   c_row2   c_row3</span></a>
+<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="co">#&gt; ----------  -------------  -------  -------  -------</span></a>
+<a class="sourceLine" id="cb9-42" data-line-number="42"><span class="co">#&gt;          1  rec_col1             1        4        7</span></a>
+<a class="sourceLine" id="cb9-43" data-line-number="43"><span class="co">#&gt;          1  rec_col2             2        5        8</span></a>
+<a class="sourceLine" id="cb9-44" data-line-number="44"><span class="co">#&gt;          1  rec_col3             3        6        9</span></a>
+<a class="sourceLine" id="cb9-45" data-line-number="45"><span class="co">#&gt;          2  rec_col1            11       14       17</span></a>
+<a class="sourceLine" id="cb9-46" data-line-number="46"><span class="co">#&gt;          2  rec_col2            12       15       18</span></a>
+<a class="sourceLine" id="cb9-47" data-line-number="47"><span class="co">#&gt;          2  rec_col3            13       16       19</span></a></code></pre></div>
 <p>And that is some of the generality of <code>cdata</code> transforms.</p>
   </div>
 

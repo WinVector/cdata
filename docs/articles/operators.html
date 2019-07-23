@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-04-27</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -110,15 +110,15 @@
 <p><code>cdata</code> recommends an operator idiom to apply data transforms.</p>
 <p>The idea is simple, yet powerful.</p>
 <p>First let’s start with some data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(
-   <span class="st">"model_id"</span>  , <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
-<span class="st">     </span><span class="dv">1</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span>
-<span class="st">     </span><span class="dv">1</span>         , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span>
-<span class="st">     </span><span class="dv">2</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span>
-<span class="st">     </span><span class="dv">2</span>         , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     )
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">   <span class="st">"model_id"</span>  , <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="st">     </span><span class="dv">1</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">     </span><span class="dv">1</span>         , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">     </span><span class="dv">2</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">     </span><span class="dv">2</span>         , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     )</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -149,35 +149,35 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>model_id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code> method we can capture a description of this record structure and transformation details.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
-
-transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-    <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
-<span class="st">    "AUC"</span>    , AUC     <span class="op">|</span>
-<span class="st">    "R2"</span>     , R2      ),
-  <span class="dt">recordKeys =</span> <span class="st">"model_id"</span>)
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "model_id"  , "AUC", "R2" |</span>
-<span class="co">#&gt;      .         , AUC  , R2   )</span>
-<span class="co">#&gt;  row_keys &lt;- c('model_id')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # becomes</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "model_id"  , "measure", "value" |</span>
-<span class="co">#&gt;      .         , "AUC"    , AUC     |</span>
-<span class="co">#&gt;      .         , "R2"     , R2      )</span>
-<span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
-<span class="co">#&gt; }</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">    "AUC"</span>    , AUC     <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">    "R2"</span>     , R2      ),</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">  <span class="dt">recordKeys =</span> <span class="st">"model_id"</span>)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; {</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;    "model_id"  , "AUC", "R2" |</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;      .         , AUC  , R2   )</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;  row_keys &lt;- c('model_id')</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;  # becomes</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;    "model_id"  , "measure", "value" |</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;      .         , "AUC"    , AUC     |</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;      .         , "R2"     , R2      )</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; }</span></a></code></pre></div>
 <p>Once we have this specification we can transform the data using operator notation.</p>
 <p>We can collect the record blocks into rows by a “factor-out” (or aggregation/projection) step.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -207,10 +207,10 @@ transform &lt;-<span class="st"> </span><span class="kw"><a href="../reference/r
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d2 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">d2 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -230,12 +230,12 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># (or using general pipe notation </span>
-<span class="co"># includng the .() "execute immediately")</span>
-d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># (or using general pipe notation </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># includng the .() "execute immediately")</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">d <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -256,7 +256,7 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tbody>
 </table>
 <p>We can expand record rows into blocks by a “multiplication” (or join) step.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d2)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -276,10 +276,10 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d3 &lt;-<span class="st"> </span>d2 <span class="op">%**%</span><span class="st"> </span>transform
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d3)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">d3 &lt;-<span class="st"> </span>d2 <span class="op">%**%</span><span class="st"> </span>transform</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d3)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -309,11 +309,11 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># (or using general pipe notation)</span>
-d2 <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># (or using general pipe notation)</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">d2 <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span>transform <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -345,7 +345,7 @@ d2 <span class="op">%.&gt;%</span><span class="st"> </span>
 </table>
 <p>(<code>%//%</code> and <code>%**%</code> being two operators introduced by the <code>cdata</code> package.)</p>
 <p>And the two specialized operators have an inverse/adjoint relation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -375,11 +375,11 @@ d2 <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># identity</span>
-d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform) <span class="op">%**%</span><span class="st"> </span>transform
-
-knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># identity</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">d4 &lt;-<span class="st"> </span>d <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform) <span class="op">%**%</span><span class="st"> </span>transform</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d4)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -410,12 +410,12 @@ knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentat
 </tbody>
 </table>
 <p>We can also pipe into the spec (and into its adjoint) using the <a href="https://github.com/WinVector/wrapr"><code>wrapr</code></a> <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html"><code>dot pipe operator</code></a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># reverse or adjoint/transpose operation specification</span>
-t_record_spec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
-
-d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>t_record_spec <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># reverse or adjoint/transpose operation specification</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">t_record_spec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">d <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span>t_record_spec <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -435,11 +435,11 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># using dot-pipe's bquote style .() execute immediate notation</span>
-d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># using dot-pipe's bquote style .() execute immediate notation</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">d <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -459,12 +459,12 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># identity</span>
-d <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>transform <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># identity</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">d <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span>transform <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -495,27 +495,27 @@ d <span class="op">%.&gt;%</span><span class="st"> </span>
 </tbody>
 </table>
 <p>And, of course, the exact same functionality for database tables.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">have_db &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span>
-<span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), 
-                                 <span class="st">":memory:"</span>)
-RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)
-db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(
-  <span class="dt">connection =</span> raw_connection,
-  <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,
-  <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))
-
-d_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"d"</span>, d)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ops &lt;-<span class="st"> </span>d_td <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))
-<span class="co">#&gt; table(`d`; </span>
-<span class="co">#&gt;   model_id,</span>
-<span class="co">#&gt;   measure,</span>
-<span class="co">#&gt;   value) %.&gt;%</span>
-<span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.))</span>
-
-rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, ops) <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">have_db &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ns-load">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), </a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">                                 <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(raw_connection)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rquery_db_info">rquery_db_info</a></span>(</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="dt">connection =</span> raw_connection,</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">  <span class="dt">connection_options =</span> rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_connection_tests">rq_connection_tests</a></span>(raw_connection))</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">d_td &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/rq_copy_to">rq_copy_to</a></span>(db, <span class="st">"d"</span>, d)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">ops &lt;-<span class="st"> </span>d_td <span class="op">%//%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; table(`d`; </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;   model_id,</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;   measure,</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt;   value) %.&gt;%</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.))</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9">rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, ops) <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -535,11 +535,11 @@ rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumenta
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-d_td <span class="op">%.&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span>
-<span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">d_td <span class="op">%.&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span>.(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(transform)) <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="st">  </span>rquery<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rquery/topics/execute">execute</a></span>(db, .) <span class="op">%.&gt;%</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -559,7 +559,7 @@ d_td <span class="op">%.&gt;%</span><span class="st"> </span>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(raw_connection)</a></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

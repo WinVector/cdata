@@ -12,7 +12,7 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Fluid Data Transformations">
 <meta property="og:description" content="Supplies higher-order coordinatized data specification and fluid transform operators that include pivot and anti-pivot as special cases. 
     The methodology is describe in 'Zumel', 2018, &quot;Fluid data reshaping with 'cdata'&quot;, &lt;http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html&gt; , doi:10.5281/zenodo.1173299 .
-    This package introduces the idea of control table specification of data transforms (later also adapted from 'cdata' by 'tidyr').
+    This package introduces the idea of explicit control table specification of data transforms.
     Works on in-memory data or on remote data using 'rquery' and 'SQL' database interfaces.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -113,9 +113,7 @@
 <p><a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules">Edgar F. Codd</a></p>
 </blockquote>
 <p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.</p>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png">
-</div>
+<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png"></p>
 <p>Briefly: <code>cdata</code> supplies data transform operators that:</p>
 <ul>
 <li>Work on local data or with any <code>DBI</code> data source.</li>
@@ -124,173 +122,172 @@
 <li>Work in-memory or with <code>SQL</code> databases.</li>
 </ul>
 <p>A quick example: plot iris petal and sepal dimensions in a faceted graph.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(iris)
-iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))
-
-<span class="co"># show the data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris)
- <span class="co">#    Sepal.Length Sepal.Width Petal.Length Petal.Width Species iris_id</span>
- <span class="co">#  1          5.1         3.5          1.4         0.2  setosa       1</span>
- <span class="co">#  2          4.9         3.0          1.4         0.2  setosa       2</span>
- <span class="co">#  3          4.7         3.2          1.3         0.2  setosa       3</span>
- <span class="co">#  4          4.6         3.1          1.5         0.2  setosa       4</span>
- <span class="co">#  5          5.0         3.6          1.4         0.2  setosa       5</span>
- <span class="co">#  6          5.4         3.9          1.7         0.4  setosa       6</span>
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)
- <span class="co">#  Warning: package 'ggplot2' was built under R version 3.5.2</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
-
-<span class="co">#</span>
-<span class="co"># build a control table with a "key column" flower_part</span>
-<span class="co"># and "value columns" Length and Width</span>
-<span class="co">#</span>
-controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(
-  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span>
-<span class="st">    "Petal"</span>    , Petal.Length , Petal.Width <span class="op">|</span>
-<span class="st">    "Sepal"</span>    , Sepal.Length , Sepal.Width )
-
-transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  controlTable,
-  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))
-
-<span class="co"># do the unpivot to convert the row records to block records</span>
-iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform
-
-<span class="co"># show the tranformed data</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris_aug)
- <span class="co">#    iris_id Species flower_part Length Width</span>
- <span class="co">#  1       1  setosa       Petal    1.4   0.2</span>
- <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span>
- <span class="co">#  3       2  setosa       Petal    1.4   0.2</span>
- <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span>
- <span class="co">#  5       3  setosa       Petal    1.3   0.2</span>
- <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span>
-
-<span class="co"># plot the graph</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</code></pre></div>
-<p><img https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># show the transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
- <span class="co">#  {</span>
- <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |</span>
- <span class="co">#       .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )</span>
- <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span>
- <span class="co">#  </span>
- <span class="co">#   # becomes</span>
- <span class="co">#  </span>
- <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
- <span class="co">#       .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
- <span class="co">#       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
- <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
- <span class="co">#  </span>
- <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
- <span class="co">#  }</span>
-
-<span class="co"># show the representation of the transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">unclass</a></span>(transform)
- <span class="co">#  $controlTable</span>
- <span class="co">#    flower_part       Length       Width</span>
- <span class="co">#  1       Petal Petal.Length Petal.Width</span>
- <span class="co">#  2       Sepal Sepal.Length Sepal.Width</span>
- <span class="co">#  </span>
- <span class="co">#  $recordKeys</span>
- <span class="co">#  [1] "iris_id" "Species"</span>
- <span class="co">#  </span>
- <span class="co">#  $controlTableKeys</span>
- <span class="co">#  [1] "flower_part"</span>
- <span class="co">#  </span>
- <span class="co">#  $checkNames</span>
- <span class="co">#  [1] TRUE</span>
- <span class="co">#  </span>
- <span class="co">#  $checkKeys</span>
- <span class="co">#  [1] FALSE</span>
- <span class="co">#  </span>
- <span class="co">#  $strict</span>
- <span class="co">#  [1] FALSE</span>
- <span class="co">#  </span>
- <span class="co">#  $allow_rqdatatable</span>
- <span class="co">#  [1] TRUE</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">iris &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(iris)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># show the data</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"> <span class="co">#    Sepal.Length Sepal.Width Petal.Length Petal.Width Species iris_id</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"> <span class="co">#  1          5.1         3.5          1.4         0.2  setosa       1</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"> <span class="co">#  2          4.9         3.0          1.4         0.2  setosa       2</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"> <span class="co">#  3          4.7         3.2          1.3         0.2  setosa       3</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"> <span class="co">#  4          4.6         3.1          1.5         0.2  setosa       4</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"> <span class="co">#  5          5.0         3.6          1.4         0.2  setosa       5</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"> <span class="co">#  6          5.4         3.9          1.7         0.4  setosa       6</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># build a control table with a "key column" flower_part</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># and "value columns" Length and Width</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="st">    "Petal"</span>    , Petal.Length , Petal.Width <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="st">    "Sepal"</span>    , Sepal.Length , Sepal.Width )</a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">  controlTable,</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co"># do the unpivot to convert the row records to block records</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co"># show the tranformed data</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(iris_aug)</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"> <span class="co">#    iris_id Species flower_part Length Width</span></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"> <span class="co">#  1       1  setosa       Petal    1.4   0.2</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37"> <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"> <span class="co">#  3       2  setosa       Petal    1.4   0.2</span></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"> <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"> <span class="co">#  5       3  setosa       Petal    1.3   0.2</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"> <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42"></a>
+<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="co"># plot the graph</span></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
+<p><img src="tools/README-ex0-1.png" width="700"></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># show the transform</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"> <span class="co">#  {</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"> <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"> <span class="co">#     "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"> <span class="co">#       .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"> <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"> <span class="co">#   # becomes</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"> <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"> <span class="co">#     "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"> <span class="co">#       .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"> <span class="co">#       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"> <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"> <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"> <span class="co">#  }</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co"># show the representation of the transform</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">unclass</a></span>(transform)</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"> <span class="co">#  $controlTable</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"> <span class="co">#    flower_part       Length       Width</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"> <span class="co">#  1       Petal Petal.Length Petal.Width</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"> <span class="co">#  2       Sepal Sepal.Length Sepal.Width</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"> <span class="co">#  $recordKeys</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"> <span class="co">#  [1] "iris_id" "Species"</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"> <span class="co">#  $controlTableKeys</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"> <span class="co">#  [1] "flower_part"</span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"> <span class="co">#  $checkNames</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"> <span class="co">#  [1] TRUE</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"> <span class="co">#  $checkKeys</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"> <span class="co">#  [1] FALSE</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"> <span class="co">#  $strict</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"> <span class="co">#  [1] FALSE</span></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43"> <span class="co">#  $allow_rqdatatable</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44"> <span class="co">#  [1] TRUE</span></a></code></pre></div>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>. And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
 <hr>
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-iris &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(iris)
-iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)
-
-<span class="co"># declare our columns of interest</span>
-meas_vars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)
-category_variable &lt;-<span class="st"> "Species"</span>
-
-<span class="co"># build a control with all pairs of variables as value columns</span>
-<span class="co"># and pair_key as the key column</span>
-controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expand.grid">expand.grid</a></span>(meas_vars, meas_vars, 
-                                       <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
-<span class="co"># one copy of columns is coordinate names second copy is values</span>
-controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(controlTable, controlTable)
-<span class="co"># name the value columns value1 and value2</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2, value1, value2)
-transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  controlTable,
-  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>),
-  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2),
-  <span class="dt">checkKeys =</span> <span class="ot">FALSE</span>)
-
-<span class="co"># do the unpivot to convert the row records to multiple block records</span>
-iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform
-<span class="co"># alternate notation: layout_by(transform, iris)</span>
-
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x=</span>value1, <span class="dt">y=</span>value2)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes_">aes_string</a></span>(<span class="dt">color=</span>category_variable, <span class="dt">shape=</span>category_variable)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_grid">facet_grid</a></span>(v2<span class="op">~</span>v1, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="ot">NULL</span>)</code></pre></div>
-<p><img https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># show transform</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)
- <span class="co">#  {</span>
- <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
- <span class="co">#       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
- <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span>
- <span class="co">#  </span>
- <span class="co">#   # becomes</span>
- <span class="co">#  </span>
- <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span>
- <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'v1', 'v2')</span>
- <span class="co">#  </span>
- <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
- <span class="co">#  }</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">iris &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(iris)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">iris<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(iris))</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"ggplot2"</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># declare our columns of interest</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">meas_vars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">category_variable &lt;-<span class="st"> "Species"</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co"># build a control with all pairs of variables as value columns</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co"># and pair_key as the key column</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expand.grid">expand.grid</a></span>(meas_vars, meas_vars, </a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">                                       <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co"># one copy of columns is coordinate names second copy is values</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(controlTable, controlTable)</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co"># name the value columns value1 and value2</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2, value1, value2)</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">  controlTable,</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>),</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qc">qc</a></span>(v1, v2),</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">  <span class="dt">checkKeys =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co"># do the unpivot to convert the row records to multiple block records</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27">iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform</a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co"># alternate notation: layout_by(transform, iris)</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>value1, <span class="dt">y=</span>value2)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span>(<span class="dt">color=</span>category_variable, <span class="dt">shape=</span>category_variable)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(v2<span class="op">~</span>v1, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>)</a></code></pre></div>
+<p><img src="tools/README-ex0_1-1.png" width="700"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># show transform</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"> <span class="co">#  {</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"> <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"> <span class="co">#     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"> <span class="co">#       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"> <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"> <span class="co">#   # becomes</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"> <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"> <span class="co">#     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"> <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"> <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"> <span class="co">#       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"> <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"> <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"> <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"> <span class="co">#       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"> <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"> <span class="co">#       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"> <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"> <span class="co">#       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"> <span class="co">#       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"> <span class="co">#       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"> <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"> <span class="co">#       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"> <span class="co">#       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"> <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'v1', 'v2')</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"> <span class="co">#  </span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"> <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"> <span class="co">#  }</span></a></code></pre></div>
 <p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
 <hr>
 <p>The <code>cdata</code> package develops the idea of the <a href="http://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="http://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>.</p>
@@ -322,7 +319,7 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <p>The (older) recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>). These concepts were later adapted from <code>cdata</code> by the <code>tidyr</code> package.</p>
 <hr>
 <p>Install via CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"cdata"</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"cdata"</span>)</a></code></pre></div>
 <hr>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
   </div>
@@ -342,7 +339,9 @@ iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li>
+<a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a> | <a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a>
+</li>
 </ul>
 </div>
 <div class="developers">

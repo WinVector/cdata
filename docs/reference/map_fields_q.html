@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -140,7 +140,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>map_fields_q</span>(<span class='no'>dname</span>, <span class='no'>cname</span>, <span class='no'>mname</span>, <span class='no'>my_db</span>, <span class='no'>rname</span>)</pre>
+    <pre class="usage"><span class='fu'>map_fields_q</span>(<span class='no'>dname</span>, <span class='no'>cname</span>, <span class='no'>mname</span>, <span class='no'>my_db</span>, <span class='no'>rname</span>, <span class='no'>...</span>, <span class='kw'>d_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>m_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,6 +165,18 @@
     <tr>
       <th>rname</th>
       <td><p>name of result table.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>force later arguments to be by name.</p></td>
+    </tr>
+    <tr>
+      <th>d_qualifiers</th>
+      <td><p>optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.</p></td>
+    </tr>
+    <tr>
+      <th>m_qualifiers</th>
+      <td><p>optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.</p></td>
     </tr>
     </table>
     

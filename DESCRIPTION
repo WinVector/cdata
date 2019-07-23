@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 1.1.1
-Date: 2019-07-11
+Date: 2019-07-23
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -15,7 +15,7 @@ Description: Supplies higher-order coordinatized data specification and fluid tr
     The methodology is describe in 'Zumel', 2018, "Fluid data reshaping with 'cdata'", <http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html> , doi:10.5281/zenodo.1173299 .
     This package introduces the idea of explicit control table specification of data transforms.
     Works on in-memory data or on remote data using 'rquery' and 'SQL' database interfaces.
-License: GPL-3
+License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
