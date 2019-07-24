@@ -1,29 +1,41 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data re-shaper that has the great virtue of adhering to Raymond's "Rule of Representation", and using Codd's "Guaranteed Access Rule".
+
+[`cdata`](https://CRAN.R-project.org/package=cdata) is a general data
+re-shaper that has the great virtue of adhering to Raymond’s “Rule of
+Representation”, and using Codd’s “Guaranteed Access Rule”.
 
 > Fold knowledge into data, so program logic can be stupid and robust.
->
-> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+> 
+> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley,
+> 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
 
 > Rule 2: The guaranteed access rule.
->
-> Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.
->
+> 
+> Each and every datum (atomic value) in a relational data base is
+> guaranteed to be logically accessible by resorting to a combination of
+> table name, primary key value and column name.
+> 
 > [Edgar F. Codd](https://en.wikipedia.org/wiki/Codd%27s_12_rules)
 
-The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
+The point being: it is much easier to reason about data than to try to
+reason about code, so using data to control your code is often a very
+good
+trade-off.
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
 Briefly: `cdata` supplies data transform operators that:
 
--   Work on local data or with any `DBI` data source.
--   Are powerful generalizations of the operations commonly called `pivot` and `un-pivot`.
--   Allow for example-driven graphical specification of data transforms or data layout control.
--   Work in-memory or with `SQL` databases.
+  - Work on local data or with any `DBI` data source.
+  - Are powerful generalizations of the operations commonly called
+    `pivot` and `un-pivot`.
+  - Allow for example-driven graphical specification of data transforms
+    or data layout control.
+  - Work in-memory or with `SQL` databases.
 
-A quick example: plot iris petal and sepal dimensions in a faceted graph.
+A quick example: plot iris petal and sepal dimensions in a faceted
+graph.
 
 ``` r
 iris <- data.frame(iris)
@@ -40,7 +52,6 @@ head(iris)
  #  6          5.4         3.9          1.7         0.4  setosa       6
 
 library("ggplot2")
- #  Warning: package 'ggplot2' was built under R version 3.5.2
 library("cdata")
 
 #
@@ -76,7 +87,7 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
   ggtitle("Iris dimensions") +  scale_color_brewer(palette = "Dark2")
 ```
 
-![](tools/README-ex0-1.png)
+![](tools/README-ex0-1.png)<!-- -->
 
 ``` r
 
@@ -125,11 +136,17 @@ unclass(transform)
  #  [1] TRUE
 ```
 
-More details on the above example can be found [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/). A tutorial on how to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html). And some discussion of the nature of records in `cdata` can be found [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+More details on the above example can be found
+[here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+A tutorial on how to design a `controlTable` can be found
+[here](https://winvector.github.io/cdata/articles/design.html). And some
+discussion of the nature of records in `cdata` can be found
+[here](https://winvector.github.io/cdata/articles/blocksrecs.html).
 
-------------------------------------------------------------------------
+-----
 
-We can also exhibit a larger example of using `cdata` to create a scatter-plot matrix, or pair plot:
+We can also exhibit a larger example of using `cdata` to create a
+scatter-plot matrix, or pair plot:
 
 ``` r
 
@@ -171,7 +188,7 @@ ggplot(iris_aug, aes(x=value1, y=value2)) +
   xlab(NULL)
 ```
 
-![](tools/README-ex0_1-1.png)
+![](tools/README-ex0_1-1.png)<!-- -->
 
 ``` r
 
@@ -209,32 +226,66 @@ print(transform)
  #  }
 ```
 
-The above is now wrapped into a [one-line command in `WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
+The above is now wrapped into a [one-line command in
+`WVPlots`](https://winvector.github.io/WVPlots/reference/PairPlot.html).
 
-------------------------------------------------------------------------
+-----
 
-The `cdata` package develops the idea of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).
+The `cdata` package develops the idea of the [“coordinatized data”
+theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and
+includes an implementation of the [“fluid data”
+methodology](http://winvector.github.io/FluidData/FluidData.html).
 
-The main `cdata` interfaces are given by the following set of methods:
+The main `cdata` interfaces are given by the following set of
+    methods:
 
--   [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), for specifying how single row records map to general multi-row (or block) records.
--   [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), for specifying how multi-row block records map to single-row records.
--   [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html), for specifying transforms from multi-row records to other multi-row records.
--   [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html) or the [wrapr dot arrow pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html) for applying a layout to re-arrange data.
--   `t()` (transpose/adjoint) to invert or reverse layout specifications.
+  - [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html),
+    for specifying how single row records map to general multi-row (or
+    block)
+    records.
+  - [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html),
+    for specifying how multi-row block records map to single-row
+    records.
+  - [`layout_specification()`](https://winvector.github.io/cdata/reference/layout_specification.html),
+    for specifying transforms from multi-row records to other multi-row
+    records.
+  - [`layout_by()`](https://winvector.github.io/cdata/reference/layout_by.html)
+    or the [wrapr dot arrow
+    pipe](https://winvector.github.io/wrapr/reference/dot_arrow.html)
+    for applying a layout to re-arrange data.
+  - `t()` (transpose/adjoint) to invert or reverse layout
+    specifications.
 
-Some convenience functions include:
+Some convenience functions
+    include:
 
--   [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html), for moving data from multi-row block records with one value per row (a single column of values) to single-row records \[`spread` or `dcast`\].
--   [`pivot_to_blocks()`/`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html), for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) \[`gather` or `melt`\].
--   [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html) a helper function for specifying record control table layout specifications.
--   [`wrapr::build_frame()`](https://winvector.github.io/wrapr/reference/build_frame.html) a helper function for specifying data frames.
+  - [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html),
+    for moving data from multi-row block records with one value per row
+    (a single column of values) to single-row records \[`spread` or
+    `dcast`\].
+  - [`pivot_to_blocks()`/`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html),
+    for moving data from single-row records to possibly multi row block
+    records with one row per value (a single column of values)
+    \[`gather` or
+    `melt`\].
+  - [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html)
+    a helper function for specifying record control table layout
+    specifications.
+  - [`wrapr::build_frame()`](https://winvector.github.io/wrapr/reference/build_frame.html)
+    a helper function for specifying data frames.
 
-The package vignettes can be found in the "Articles" tab of [the `cdata` documentation site](https://winvector.github.io/cdata/).
+The package vignettes can be found in the “Articles” tab of [the `cdata`
+documentation site](https://winvector.github.io/cdata/).
 
-The (older) recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have a (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)). These concepts were later adapted from `cdata` by the `tidyr` package.
+The (older) recommended tutorial is: [Fluid data reshaping with
+cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html).
+We also have a (older) [short free cdata
+screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be
+found
+[here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+These concepts were later adapted from `cdata` by the `tidyr` package.
 
-------------------------------------------------------------------------
+-----
 
 Install via CRAN:
 
@@ -242,6 +293,9 @@ Install via CRAN:
 install.packages("cdata")
 ```
 
-------------------------------------------------------------------------
+-----
 
-Note: `cdata` is targeted at data with "tame column names" (column names that are valid both in databases, and as `R` unquoted variable names) and basic types (column values that are simple `R` types such as `character`, `numeric`, `logical`, and so on).
+Note: `cdata` is targeted at data with “tame column names” (column names
+that are valid both in databases, and as `R` unquoted variable names)
+and basic types (column values that are simple `R` types such as
+`character`, `numeric`, `logical`, and so on).
