@@ -31,6 +31,7 @@ Suggests:
     DBI,
     RSQLite,
     knitr,
-    RUnit
+    RUnit,
+    yaml
 VignetteBuilder: knitr
 ByteCompile: true
