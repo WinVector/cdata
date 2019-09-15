@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
 <p>Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.</p>
 <p><a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules">Edgar F. Codd</a></p>
 </blockquote>
-<p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.</p>
+<p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off. <code>cdata</code> also has a <code>Python</code> implementation that it can inter-operate with in the <a href="https://github.com/WinVector/data_algebra"><code>data_algebra</code> package</a> (example <a href="https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/cdata.ipynb">here</a>).</p>
 <p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png"></p>
 <p>Briefly: <code>cdata</code> supplies data transform operators that:</p>
 <ul>
@@ -169,7 +169,7 @@
 <a class="sourceLine" id="cb1-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb1-47" data-line-number="47"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png" width="700"></p>
+<p><img src="tools/README-ex0-1.png" width="700"></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># show the transform</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)</a>
@@ -254,7 +254,7 @@
 <a class="sourceLine" id="cb3-35" data-line-number="35"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-36" data-line-number="36"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-37" data-line-number="37"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>)</a></code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png" width="700"></p>
+<p><img src="tools/README-ex0_1-1.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># show transform</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(transform)</a>
@@ -352,6 +352,7 @@
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
+
 
       </div>
 

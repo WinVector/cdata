@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-07-24</h4>
+            <h4 class="date">2019-09-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -480,12 +480,12 @@
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>layout</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/format">format</a></span>(ops))</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; table(data; </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   record_id,</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;   row,</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   col1,</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;   col2,</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;   col3) %.&gt;%</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; mk_td("data", c(</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   "record_id",</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;   "row",</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   "col1",</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;   "col2",</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;   "col3")) %.&gt;%</span></a>
 <a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%</span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;  non_sql_node(., rowrecs_to_blocks(.))</span></a>
 <a class="sourceLine" id="cb9-14" data-line-number="14"></a>
@@ -526,6 +526,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>

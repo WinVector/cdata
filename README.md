@@ -20,8 +20,10 @@ Representation”, and using Codd’s “Guaranteed Access Rule”.
 
 The point being: it is much easier to reason about data than to try to
 reason about code, so using data to control your code is often a very
-good
-trade-off.
+good trade-off. `cdata` also has a `Python` implementation that it can
+inter-operate with in the [`data_algebra`
+package](https://github.com/WinVector/data_algebra) (example
+[here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/cdata.ipynb)).
 
 ![](https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png)
 
