@@ -1,4 +1,8 @@
 
+# cdata 1.1.2 2019/09/15
+
+ * Add data_algebra interop.
+
 # cdata 1.1.1 2019/07/24
 
  * Fix some newly dead links.
