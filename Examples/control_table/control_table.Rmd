@@ -143,7 +143,7 @@ print(res)
 ```
 
 
-And even converted to `SQL` (either in `R` directly or in `Python` directly).
+We can even convert the transform to `SQL` (either in `R` directly or in `Python` directly).
 
 ```{python}
 # Python code
@@ -160,6 +160,8 @@ ops = TableDescription(
 sql_str = ops.to_sql(db_model, pretty=True)
 print(sql_str)
 ```
+
+The `SQL` code was generated from the transform specification. This was easy to implement as it is often simple to convert data to code (though it can be quite hard to translate code to data).
 
 And that is some of the power of using data to specify your data transforms.
 

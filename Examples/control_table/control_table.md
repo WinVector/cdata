@@ -258,8 +258,8 @@ print(res)
     ## 10    6.0                    accuracy    0.9656      0.8817
     ## 11    6.0  minus binary cross entropy   -0.1136     -0.3120
 
-And even converted to `SQL` (either in `R` directly or in `Python`
-directly).
+We can even convert the transform to `SQL` (either in `R` directly or in
+`Python` directly).
 
 ``` python
 # Python code
@@ -293,6 +293,10 @@ print(sql_str)
     ## CROSS JOIN ("cdata_temp_record") b
     ## ORDER BY a."epoch",
     ##          b."measure"
+
+The `SQL` code was generated from the transform specification. This was
+easy to implement as it is often simple to convert data to code (though
+it can be quite hard to translate code to data).
 
 And that is some of the power of using data to specify your data
 transforms.
