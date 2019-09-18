@@ -8,7 +8,7 @@ using [`R`](https://www.r-project.org).
 
 ![](Keras_plot.png)
 
-The issue was the data starts in the following format:
+The model performance data from `Keras` is in the following format:
 
 ``` r
 # R code
@@ -93,13 +93,13 @@ by writing down the shape your incoming data records are arranged in,
 and also the shape you wish your outgoing data records to be arranged
 in.
 
-This simple data transform is in fact not a single pivot/un-pivot as the
-result records spread data-values over multiple rows and multiple
+This simple data transform is in fact not a single pivot/un-pivot, as
+the result records spread data-values over multiple rows and multiple
 columns at the same time. We call the transform simple, because from a
 user point of view: it takes records of one form to another form (with
 the details left to the implementation).
 
-What I would like to comment on here is: some of the great advantages in
+In this note I would like to comment on some of the great advantages of
 using a data driven record transform specification.
 
 First, as we see above and in the
@@ -132,7 +132,8 @@ print(transform)
     ##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
     ## }
 
-The important point is: the transform is specified in data (not code):
+The important point is that the transform is specified in data (not
+code):
 
 ``` r
 # R code
@@ -192,7 +193,7 @@ We can then import this structure into `Python`.
 # R code
 
 library(reticulate)
-use_condaenv("aiAcademy") 
+use_condaenv("aiAcademy")  # our Python environment, yours will be different
 ```
 
 The transported operator can then be used in Python.
@@ -205,9 +206,9 @@ import pandas
 import data_algebra
 from data_algebra.cdata_impl import record_map_from_simple_obj
 
-transform = record_map_from_simple_obj(yaml.safe_load(r.yaml_str))
+record_map = record_map_from_simple_obj(yaml.safe_load(r.yaml_str))
 
-print(transform)
+print(record_map)
 ```
 
     ## Transform row records of the form:
@@ -239,7 +240,7 @@ print(r.df)
 ``` python
 # Python code
 
-res = r.df >> transform
+res = record_map.transform(r.df)
 
 print(res)
 ```
@@ -271,7 +272,7 @@ db_model = SQLiteModel()
 ops = TableDescription(
     'keras_frame', 
     ["val_loss", "val_acc", "loss", "acc", "epoch"]). \
-  convert_records(transform)
+  convert_records(record_map)
 
 sql_str = ops.to_sql(db_model, pretty=True)
 print(sql_str)
