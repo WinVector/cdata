@@ -268,8 +268,10 @@ from data_algebra.SQLite import SQLiteModel
 from data_algebra.data_ops import *
 
 db_model = SQLiteModel()
-ops = TableDescription('keras_frame', ["val_loss"  , "val_acc", "loss" , "acc" , "epoch"]). \
-  convert_records(transform)\
+ops = TableDescription(
+    'keras_frame', 
+    ["val_loss", "val_acc", "loss", "acc", "epoch"]). \
+  convert_records(transform)
 
 sql_str = ops.to_sql(db_model, pretty=True)
 print(sql_str)
@@ -291,6 +293,9 @@ print(sql_str)
     ## CROSS JOIN ("cdata_temp_record") b
     ## ORDER BY a."epoch",
     ##          b."measure"
+
+And that is some of the power of using data to specify your data
+transforms.
 
 More on cross-language data processing can be found
 [here](https://github.com/WinVector/rquery/blob/master/Examples/data_algebra/interop.md),
