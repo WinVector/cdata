@@ -7,6 +7,8 @@ Nina Zumel had [a really great article](http://winvector.github.io/FluidData/Flu
 
 ![](Keras_plot.png)
 
+I will use this example to show some of the advantages of [`cdata`](https://github.com/WinVector/cdata) record transform specifications.
+
 The model performance data from `Keras` is in the following format:
 
 
@@ -156,6 +158,11 @@ ops = TableDescription(
     'keras_frame', 
     ["val_loss", "val_acc", "loss", "acc", "epoch"]). \
   convert_records(record_map)
+print(ops.to_python(pretty=True))
+```
+
+```{python}
+# Python code
 
 sql_str = ops.to_sql(db_model, pretty=True)
 print(sql_str)

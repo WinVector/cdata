@@ -8,6 +8,10 @@ using [`R`](https://www.r-project.org).
 
 ![](Keras_plot.png)
 
+I will use this example to show some of the advantages of
+[`cdata`](https://github.com/WinVector/cdata) record transform
+specifications.
+
 The model performance data from `Keras` is in the following format:
 
 ``` r
@@ -273,6 +277,35 @@ ops = TableDescription(
     'keras_frame', 
     ["val_loss", "val_acc", "loss", "acc", "epoch"]). \
   convert_records(record_map)
+print(ops.to_python(pretty=True))
+```
+
+    ## TableDescription(
+    ##     table_name="keras_frame",
+    ##     column_names=["val_loss", "val_acc", "loss", "acc", "epoch"],
+    ## ).convert_record(
+    ##     data_algebra.cdata_impl.RecordMap(
+    ##         blocks_in=None,
+    ##         blocks_out=data_algebra.cdata.RecordSpecification(
+    ##             record_keys=["epoch"],
+    ##             control_table=pandas.DataFrame(
+    ##                 {
+    ##                     "measure": ["minus binary cross entropy", "accuracy"],
+    ##                     "training": ["loss", "acc"],
+    ##                     "validation": ["val_loss", "val_acc"],
+    ##                 }
+    ##             ),
+    ##             control_table_keys=["measure"],
+    ##         ),
+    ##     ),
+    ##     blocks_out_table=TableDescription(
+    ##         table_name="cdata_temp_record",
+    ##         column_names=["epoch", "measure", "training", "validation"],
+    ##     ),
+    ## )
+
+``` python
+# Python code
 
 sql_str = ops.to_sql(db_model, pretty=True)
 print(sql_str)
