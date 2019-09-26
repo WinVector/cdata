@@ -1,10 +1,11 @@
 ---
-title: "Inverse"
+title: "Transform and Inverse"
 output: github_document
 ---
 
-Quick `R` example of the [`Keras` record transform example](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html), for the `Python` version please see [here](https://github.com/WinVector/data_algebra/blob/master/Examples/Inverse/Inverse.md).
+This is a quick re-work of the [`Keras` record transform example](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html) in `R`. For a `Python` version please see [here](https://github.com/WinVector/data_algebra/blob/master/Examples/Inverse/Inverse.md).
 
+In the [original article](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html) we had `Keras` model performance data, which looked like the following.
 
 ```{r}
 library(wrapr)
@@ -18,28 +19,65 @@ df <- wrapr::build_frame(
     -0.2779   , 0.8899   , -0.1739, 0.9428, 4       |
     -0.2843   , 0.8861   , -0.1411, 0.9545, 5       |
     -0.312    , 0.8817   , -0.1136, 0.9656, 6       )
+knitr::kable(df)
+```
 
-print(df)
+But for plotting, it is more convenient to have the data in the following form:
 
-controlTable <- wrapr::build_frame(
+| epoch | measure                    | training | validation |
+| ----: | :------------------------- | -------: | ---------: |
+|     1 | minus binary cross entropy | \-0.5067 |   \-0.3770 |
+|     1 | accuracy                   |   0.7852 |     0.8722 |
+| ...                                                        |
+
+[The article](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html) uses ideas similar to [these](https://winvector.github.io/cdata/articles/design.html) to visualize the desired record structure and then write down this visualization as a concrete data record example.
+
+The principle is: if you have a visualization of the input and output, it is then trivial to marshal these into a graphical representation of the desired transform. And if you can't work out what the input and output look like, then you really are not quite ready to perform the transform.  Knowing what we want is the minimum requirement and with this methodology it is also all that is needed.
+
+```{r}
+shape <- wrapr::build_frame(
   "measure"                     , "training", "validation" |
     "minus binary cross entropy", "loss"    , "val_loss"   |
     "accuracy"                  , "acc"     , "val_acc"    )
+knitr::kable(shape)
+```
 
+This description of the desired record shape is easily transformed into a data transformation specification.
+
+```{r}
 xform <- rowrecs_to_blocks_spec(
-  controlTable = controlTable,
+  controlTable = shape,
   recordKeys = 'epoch') 
 
 print(xform)
+```
 
+(Please see [`help("rowrecs_to_blocks_spec")`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html), [`help("blocks_to_rowrecs_spec")`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html), and [`help("layout_specification")`](https://winvector.github.io/cdata/reference/layout_specification.html) for how to specify the various data transforms.)
+
+We can easily apply this transform to our data.
+
+```{r}
 res <- df %.>% xform
 
-print(res)
+knitr::kable(res)
+```
 
+And it is simple to build an inverse transform.
+
+```{r}
 inverse <- t(xform)
 
 print(inverse)
-
-res %.>% inverse
-
 ```
+
+And equally easy to apply this inverse transform to data.
+
+```{r}
+
+res %.>% 
+  inverse %.>% 
+  knitr::kable(.)
+```
+
+Notice how each step can be inspected and checked as we worked. I would definitely recommend re-reading [the original article](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html) with the new transform notation in mind. In any case, please check out the `cdata` [package](https://github.com/WinVector/cdata) and [documentation](https://winvector.github.io/cdata/).
+
