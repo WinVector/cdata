@@ -1,4 +1,8 @@
 
+# cdata 1.1.3 2019/09/21
+
+ * Decorate transform.
+
 # cdata 1.1.2 2019/09/15
 
  * Add data_algebra interop.
