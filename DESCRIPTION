@@ -1,8 +1,8 @@
 Package: cdata
 Type: Package
 Title: Fluid Data Transformations
-Version: 1.1.2
-Date: 2019-09-15
+Version: 1.1.3
+Date: 2019-10-23
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -22,9 +22,9 @@ RoxygenNote: 6.1.1
 Depends:
   R (>= 3.4.0)
 Imports:
-  wrapr (>= 1.8.8),
-  rquery (>= 1.3.6),
-  rqdatatable (>= 1.1.9),
+  wrapr (>= 1.9.2),
+  rquery (>= 1.3.9),
+  rqdatatable (>= 1.2.3),
   methods,
   stats
 Suggests: 
