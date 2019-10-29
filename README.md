@@ -97,8 +97,8 @@ ggplot(iris_aug, aes(x=Length, y=Width)) +
 print(transform)
  #  {
  #   row_record <- wrapr::qchar_frame(
- #     "iris_id"  , "Species", "Petal.Length", "Sepal.Length", "Petal.Width", "Sepal.Width" |
- #       .        , .        , Petal.Length  , Sepal.Length  , Petal.Width  , Sepal.Width   )
+ #     "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |
+ #       .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )
  #   row_keys <- c('iris_id', 'Species')
  #  
  #   # becomes

@@ -156,6 +156,7 @@ rowrecs_to_blocks.default <- function(wideTable,
   }
   # fill in values
   for(cn in controlTableValueColumns) {
+    res_cn <- res[[cn]]
     for(i in seq_len(n_rep)) {
       indxs <- i + n_rep*(0:(n_row_in-1))
       col <- controlTable[i, cn, drop = TRUE]
@@ -163,8 +164,9 @@ rowrecs_to_blocks.default <- function(wideTable,
       if(is.factor(wtni)) {
         wtni <- as.character(wtni)
       }
-      res[[cn]][indxs] <- wtni # TODO: speedup hotspot
+      res_cn[indxs] <- wtni # TODO: speedup hotspot
     }
+    res[[cn]] <- res_cn
   }
   rownames(res) <- NULL
   res
@@ -258,11 +260,11 @@ blocks_to_rowrecs.default <- function(tallTable,
                                              c(as.list(controlTable[, controlTableKeys, drop = FALSE]),
                                                list(sep = " CDATA_K_SEP ")))
   n_rep <- nrow(controlTable)
-  for(cn in controlTableValueColumns) {
-    for(i in seq_len(n_rep)) {
-      srccol <- controlTable$composite_meas_col[[i]]
+  for(i in seq_len(n_rep)) {
+    srccol <- controlTable$composite_meas_col[[i]]
+    indxs <- which(tallTable$composite_meas_col == srccol)  # TODO: speedup hotspot
+    for(cn in controlTableValueColumns) {
       destcol <- controlTable[[cn]][i]
-      indxs <- which(tallTable$composite_meas_col == srccol)  # TODO: speedup hotspot
       vals <- tallTable[[cn]][indxs]
       res[[destcol]] <- vals[[1]]
       res[[destcol]][seq_len(n_res)] <- NA
