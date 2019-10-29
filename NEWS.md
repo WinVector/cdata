@@ -1,7 +1,8 @@
 
-# cdata 1.1.3 2019/10/23
+# cdata 1.1.3 2019/10/29
 
  * Decorate transform.
+ * Tune transform speed a bit (control column visibility and lifetime).
 
 # cdata 1.1.2 2019/09/15
 
