@@ -5,13 +5,31 @@
 \alias{layout_to_rowrecs}
 \title{Map data records from block records that have one row per measurement value to row records.}
 \usage{
-pivot_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
+pivot_to_rowrecs(
+  data,
+  columnToTakeKeysFrom,
+  columnToTakeValuesFrom,
+  rowKeyColumns,
+  ...,
+  sep = NULL,
+  checkNames = TRUE,
+  checkKeys = TRUE,
+  strict = FALSE,
+  allow_rqdatatable = FALSE
+)
 
-layout_to_rowrecs(data, columnToTakeKeysFrom, columnToTakeValuesFrom,
-  rowKeyColumns, ..., sep = NULL, checkNames = TRUE,
-  checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
+layout_to_rowrecs(
+  data,
+  columnToTakeKeysFrom,
+  columnToTakeValuesFrom,
+  rowKeyColumns,
+  ...,
+  sep = NULL,
+  checkNames = TRUE,
+  checkKeys = TRUE,
+  strict = FALSE,
+  allow_rqdatatable = FALSE
+)
 }
 \arguments{
 \item{data}{data.frame to work with (must be local, for remote please try \code{moveValuesToColumns*}).}

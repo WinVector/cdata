@@ -4,8 +4,16 @@
 \alias{map_fields_q}
 \title{Map field values from one column into new derived columns (query based, takes name of table).}
 \usage{
-map_fields_q(dname, cname, mname, my_db, rname, ..., d_qualifiers = NULL,
-  m_qualifiers = NULL)
+map_fields_q(
+  dname,
+  cname,
+  mname,
+  my_db,
+  rname,
+  ...,
+  d_qualifiers = NULL,
+  m_qualifiers = NULL
+)
 }
 \arguments{
 \item{dname}{name of table to re-map.}

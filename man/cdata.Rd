@@ -3,7 +3,6 @@
 \docType{package}
 \name{cdata}
 \alias{cdata}
-\alias{cdata-package}
 \title{\code{cdata}: Fluid Data Transformations.}
 \description{
 Supplies implementations of higher order "fluid data" transforms.  These

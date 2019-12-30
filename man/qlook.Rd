@@ -4,8 +4,14 @@
 \alias{qlook}
 \title{Quick look at remote data}
 \usage{
-qlook(my_db, tableName, ..., displayRows = 10, countRows = TRUE,
-  qualifiers = NULL)
+qlook(
+  my_db,
+  tableName,
+  ...,
+  displayRows = 10,
+  countRows = TRUE,
+  qualifiers = NULL
+)
 }
 \arguments{
 \item{my_db}{database handle}

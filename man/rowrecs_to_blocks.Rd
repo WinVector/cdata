@@ -6,23 +6,47 @@
 \alias{rowrecs_to_blocks.relop}
 \title{Map a data records from row records to block records.}
 \usage{
-rowrecs_to_blocks(wideTable, controlTable, ..., checkNames = TRUE,
-  checkKeys = FALSE, strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
+rowrecs_to_blocks(
+  wideTable,
+  controlTable,
+  ...,
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
+  columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE,
+  allow_rqdatatable = TRUE
+)
 
-\method{rowrecs_to_blocks}{default}(wideTable, controlTable, ...,
-  checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
+\method{rowrecs_to_blocks}{default}(
+  wideTable,
+  controlTable,
+  ...,
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
+  columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE,
+  allow_rqdatatable = TRUE
+)
 
-\method{rowrecs_to_blocks}{relop}(wideTable, controlTable, ...,
-  checkNames = TRUE, checkKeys = FALSE, strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]], columnsToCopy = NULL,
+\method{rowrecs_to_blocks}{relop}(
+  wideTable,
+  controlTable,
+  ...,
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
+  columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
-  temporary = TRUE, allow_rqdatatable = TRUE)
+  temporary = TRUE,
+  allow_rqdatatable = TRUE
+)
 }
 \arguments{
 \item{wideTable}{data.frame containing data to be mapped (in-memory data.frame).}

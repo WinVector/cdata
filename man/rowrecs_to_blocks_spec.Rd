@@ -4,9 +4,16 @@
 \alias{rowrecs_to_blocks_spec}
 \title{Create a row records to block records transform specification.}
 \usage{
-rowrecs_to_blocks_spec(controlTable, ..., recordKeys = character(0),
-  controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
-  checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+rowrecs_to_blocks_spec(
+  controlTable,
+  ...,
+  recordKeys = character(0),
+  controlTableKeys = colnames(controlTable)[[1]],
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  strict = FALSE,
+  allow_rqdatatable = TRUE
+)
 }
 \arguments{
 \item{controlTable}{an all character data frame or cdata pivot control.}

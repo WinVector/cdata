@@ -4,13 +4,25 @@
 \alias{rowrecs_to_blocks_q}
 \title{Map a set of columns to rows (query based, take name of table).}
 \usage{
-rowrecs_to_blocks_q(wideTable, controlTable, my_db, ...,
+rowrecs_to_blocks_q(
+  wideTable,
+  controlTable,
+  my_db,
+  ...,
   columnsToCopy = NULL,
-  tempNameGenerator = mk_tmp_name_source("mvtrq"), strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
-  checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
-  temporary = FALSE, resultName = NULL, incoming_qualifiers = NULL,
-  outgoing_qualifiers = NULL, temp_qualifiers = NULL)
+  tempNameGenerator = mk_tmp_name_source("mvtrq"),
+  strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  showQuery = FALSE,
+  defaultValue = NULL,
+  temporary = FALSE,
+  resultName = NULL,
+  incoming_qualifiers = NULL,
+  outgoing_qualifiers = NULL,
+  temp_qualifiers = NULL
+)
 }
 \arguments{
 \item{wideTable}{name of table containing data to be mapped (db/Spark data)}

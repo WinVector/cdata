@@ -266,7 +266,11 @@ blocks_to_rowrecs.default <- function(tallTable,
     for(cn in controlTableValueColumns) {
       destcol <- controlTable[[cn]][i]
       vals <- tallTable[[cn]][indxs]
-      res[[destcol]] <- vals[[1]]
+      if(length(vals)>0) {
+        res[[destcol]] <- vals[[1]]
+      } else {
+        res[[destcol]] <- FALSE
+      }
       res[[destcol]][seq_len(n_res)] <- NA
       posns <- match(res$cdata_group_key_col,
                      tallTable$cdata_group_key_col[indxs])

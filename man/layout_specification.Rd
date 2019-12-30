@@ -4,12 +4,19 @@
 \alias{layout_specification}
 \title{Create a record to record spec.}
 \usage{
-layout_specification(incoming_shape, outgoing_shape, ...,
+layout_specification(
+  incoming_shape,
+  outgoing_shape,
+  ...,
   recordKeys = character(0),
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],
   outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
-  checkNames = TRUE, checkKeys = TRUE, strict = FALSE,
-  allow_rqdatatable_in = FALSE, allow_rqdatatable_out = TRUE)
+  checkNames = TRUE,
+  checkKeys = TRUE,
+  strict = FALSE,
+  allow_rqdatatable_in = FALSE,
+  allow_rqdatatable_out = TRUE
+)
 }
 \arguments{
 \item{incoming_shape}{data.frame, definition of incoming record shape.}

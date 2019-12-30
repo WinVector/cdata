@@ -4,8 +4,12 @@
 \alias{build_unpivot_control}
 \title{Build a rowrecs_to_blocks() control table that specifies a un-pivot (or "shred").}
 \usage{
-build_unpivot_control(nameForNewKeyColumn, nameForNewValueColumn,
-  columnsToTakeFrom, ...)
+build_unpivot_control(
+  nameForNewKeyColumn,
+  nameForNewValueColumn,
+  columnsToTakeFrom,
+  ...
+)
 }
 \arguments{
 \item{nameForNewKeyColumn}{character name of column to write new keys in.}

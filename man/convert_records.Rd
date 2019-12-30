@@ -4,14 +4,23 @@
 \alias{convert_records}
 \title{General transform from arbitrary record shape to arbitrary record shape.}
 \usage{
-convert_records(table, incoming_shape, outgoing_shape, ...,
-  keyColumns = NULL, columnsToCopy_in = NULL, checkNames = TRUE,
-  checkKeys = FALSE, strict = FALSE,
+convert_records(
+  table,
+  incoming_shape,
+  outgoing_shape,
+  ...,
+  keyColumns = NULL,
+  columnsToCopy_in = NULL,
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  strict = FALSE,
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],
   outgoing_controlTableKeys = colnames(outgoing_shape)[[1]],
   tmp_name_source = wrapr::mk_tmp_name_source("crec"),
-  temporary = TRUE, allow_rqdatatable_in = FALSE,
-  allow_rqdatatable_out = TRUE)
+  temporary = TRUE,
+  allow_rqdatatable_in = FALSE,
+  allow_rqdatatable_out = TRUE
+)
 }
 \arguments{
 \item{table}{data.frame or relop.}

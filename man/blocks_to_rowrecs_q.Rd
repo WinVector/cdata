@@ -4,13 +4,26 @@
 \alias{blocks_to_rowrecs_q}
 \title{Map sets rows to columns (query based, take name of table).}
 \usage{
-blocks_to_rowrecs_q(tallTable, keyColumns, controlTable, my_db, ...,
+blocks_to_rowrecs_q(
+  tallTable,
+  keyColumns,
+  controlTable,
+  my_db,
+  ...,
   columnsToCopy = NULL,
-  tempNameGenerator = mk_tmp_name_source("mvtcq"), strict = FALSE,
-  controlTableKeys = colnames(controlTable)[[1]], checkNames = TRUE,
-  checkKeys = FALSE, showQuery = FALSE, defaultValue = NULL,
-  dropDups = TRUE, temporary = FALSE, resultName = NULL,
-  incoming_qualifiers = NULL, outgoing_qualifiers = NULL)
+  tempNameGenerator = mk_tmp_name_source("mvtcq"),
+  strict = FALSE,
+  controlTableKeys = colnames(controlTable)[[1]],
+  checkNames = TRUE,
+  checkKeys = FALSE,
+  showQuery = FALSE,
+  defaultValue = NULL,
+  dropDups = TRUE,
+  temporary = FALSE,
+  resultName = NULL,
+  incoming_qualifiers = NULL,
+  outgoing_qualifiers = NULL
+)
 }
 \arguments{
 \item{tallTable}{name of table containing data to be mapped (db/Spark data)}
