@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>cdata • cdata</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="cdata">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -38,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,13 +93,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2019-09-15</h4>
+            <h4 class="date">2019-12-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -115,10 +117,10 @@
 <li>Can be specified by drawing an example.</li>
 </ul>
 <p>A quick example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"cdata"</span>)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"cdata"</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># first few rows of the iris data as an example</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">build_frame</a></span>(</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">d &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/build_frame.html">build_frame</a></span>(</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">   <span class="st">"Sepal.Length"</span>  , <span class="st">"Sepal.Width"</span>, <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span>, <span class="st">"Species"</span> <span class="op">|</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">     </span><span class="fl">5.1</span>           , <span class="fl">3.5</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">     </span><span class="fl">4.9</span>           , <span class="dv">3</span>            , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span></a>
@@ -126,9 +128,9 @@
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="st">     </span><span class="fl">4.6</span>           , <span class="fl">3.1</span>          , <span class="fl">1.5</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">     </span><span class="dv">5</span>             , <span class="fl">3.6</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">     </span><span class="fl">5.4</span>           , <span class="fl">3.9</span>          , <span class="fl">1.7</span>           , <span class="fl">0.4</span>          , <span class="st">"setosa"</span>  )</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">d<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(d))</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">d<span class="op">$</span>iris_id &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(d))</a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d)</a></code></pre></div>
+<a class="sourceLine" id="cb1-14" data-line-number="14">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(d)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Sepal.Length</th>
@@ -190,14 +192,14 @@
 </tbody>
 </table>
 <p>Now suppose we want to take the above “all facts about each iris are in a single row” representation and convert it into a per-iris record block with the following structure.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">record_example &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">qchar_frame</a></span>(</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">record_example &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">qchar_frame</a></span>(</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">   <span class="st">"plant_part"</span>  , <span class="st">"measurement"</span>, <span class="st">"value"</span>      <span class="op">|</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">     "sepal"</span>     , <span class="st">"width"</span>      , Sepal.Width  <span class="op">|</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">     "sepal"</span>     , <span class="st">"length"</span>     , Sepal.Length <span class="op">|</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">     "petal"</span>     , <span class="st">"width"</span>      , Petal.Width  <span class="op">|</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">     "petal"</span>     , <span class="st">"length"</span>     , Petal.Length )</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(record_example)</a></code></pre></div>
+<a class="sourceLine" id="cb2-8" data-line-number="8">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(record_example)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">plant_part</th>
@@ -231,10 +233,10 @@
 <p>To specify our transformation we combine the record example with information about how records are keyed (recordKeys showing which rows go together to form a record, and controlTableKeys specifying the internal structure of a data record).</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  record_example,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"plant_part"</span>, <span class="st">"measurement"</span>),</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"plant_part"</span>, <span class="st">"measurement"</span>),</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(layout)</a></code></pre></div>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(layout)</a></code></pre></div>
 <pre><code>## {
 ##  row_record &lt;- wrapr::qchar_frame(
 ##    "iris_id"  , "Species", "Sepal.Width", "Sepal.Length", "Petal.Width", "Petal.Length" |
@@ -258,7 +260,7 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">d_transformed &lt;-<span class="st"> </span>d <span class="op">%.&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span>layout</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(d_transformed)</a></code></pre></div>
+<a class="sourceLine" id="cb5-4" data-line-number="4">knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(d_transformed)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">iris_id</th>
@@ -438,10 +440,10 @@
 </tr>
 </tbody>
 </table>
-<p>And it is easy to invert these transforms using the <code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> transpose/adjoint notation.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/t">t</a></span>(layout)</a>
+<p>And it is easy to invert these transforms using the <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> transpose/adjoint notation.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">inv_layout &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/t.html">t</a></span>(layout)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(inv_layout)</a></code></pre></div>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(inv_layout)</a></code></pre></div>
 <pre><code>## {
 ##  block_record &lt;- wrapr::qchar_frame(
 ##    "iris_id"  , "Species", "plant_part", "measurement", "value"      |
@@ -462,7 +464,7 @@
 ## }</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">d_transformed <span class="op">%.&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>inv_layout <span class="op">%.&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(.)</a></code></pre></div>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(.)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">iris_id</th>
@@ -524,7 +526,7 @@
 </tbody>
 </table>
 <p>The layout specifications themselves are just simple lists with “pretty print methods” (the control table being simply and example record in the form of a data.frame).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">unclass</a></span>(layout)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/class.html">unclass</a></span>(layout)</a></code></pre></div>
 <pre><code>## $controlTable
 ##   plant_part measurement        value
 ## 1      sepal       width  Sepal.Width
@@ -561,7 +563,7 @@
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_by.html"><code><a href="../reference/layout_by.html">layout_by()</a></code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
-<code><a href="https://www.rdocumentation.org/packages/base/topics/t">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<code><a href="https://rdrr.io/r/base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
 </ul>
 <p>Some convenience functions include:</p>
 <ul>
@@ -570,9 +572,9 @@
 <li>
 <a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code><a href="../reference/unpivot_to_blocks.html">pivot_to_blocks()</a></code>/<code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code></a>, for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) [<code>gather</code> or <code>melt</code>].</li>
 <li>
-<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/qchar_frame">wrapr::qchar_frame()</a></code></a> a helper function for specifying record control table layout specifications.</li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">wrapr::qchar_frame()</a></code></a> a helper function for specifying record control table layout specifications.</li>
 <li>
-<a href="https://winvector.github.io/wrapr/reference/build_frame.html"><code><a href="https://www.rdocumentation.org/packages/wrapr/topics/build_frame">wrapr::build_frame()</a></code></a> a helper function for specifying data frames.</li>
+<a href="https://winvector.github.io/wrapr/reference/build_frame.html"><code><a href="https://rdrr.io/pkg/wrapr/man/build_frame.html">wrapr::build_frame()</a></code></a> a helper function for specifying data frames.</li>
 </ul>
 <p>The package vignettes can be found in the “Articles” tab of <a href="https://winvector.github.io/cdata/">the <code>cdata</code> documentation site</a>.</p>
 <p>The (older) recommended tutorial is: <a href="http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have an (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="http://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>).</p>
@@ -585,17 +587,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by John Mount, Nina Zumel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

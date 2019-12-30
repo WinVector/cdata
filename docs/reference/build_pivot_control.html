@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -144,22 +144,40 @@
     <p>Some discussion and examples can be found here: <a href='https://winvector.github.io/FluidData/FluidData.html'>https://winvector.github.io/FluidData/FluidData.html</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>, <span class='no'>columnToTakeValuesFrom</span>,
-  <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>build_pivot_control</span>(
+  <span class='no'>table</span>,
+  <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='no'>columnToTakeValuesFrom</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>,
-  <span class='no'>columnToTakeValuesFrom</span>, <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpcd"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>build_pivot_control</span>(
+  <span class='no'>table</span>,
+  <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='no'>columnToTakeValuesFrom</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpcd"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
 
 <span class='co'># S3 method for relop</span>
-<span class='fu'>build_pivot_control</span>(<span class='no'>table</span>, <span class='no'>columnToTakeKeysFrom</span>,
-  <span class='no'>columnToTakeValuesFrom</span>, <span class='no'>...</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
-  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>build_pivot_control</span>(
+  <span class='no'>table</span>,
+  <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='no'>columnToTakeValuesFrom</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='no'>columnToTakeKeysFrom</span>,
+  <span class='kw'>sep</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
+  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -237,8 +255,8 @@
 #&gt; 1:       wt measType_wt
 #&gt; 2:       ht measType_ht</div><div class='input'>
 <span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='no'>db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RSQLite/man/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbWriteTable.html'>dbWriteTable</a></span>(<span class='no'>db</span>,
+  <span class='no'>db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RSQLite/man/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(<span class='no'>db</span>,
                     <span class='st'>'d'</span>,
                     <span class='no'>d</span>,
                     <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -246,7 +264,7 @@
   <span class='no'>db</span> <span class='kw'>%.&gt;%</span>
     <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
     <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>.</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>db</span>)
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>db</span>)
 }</div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       ht measType_ht
 #&gt; 2       wt measType_wt</div><div class='input'>

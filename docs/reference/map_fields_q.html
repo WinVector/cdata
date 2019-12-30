@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
       </span>
     </div>
 
@@ -144,8 +144,16 @@
     <p>Map field values from one column into new derived columns (query based, takes name of table).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>map_fields_q</span>(<span class='no'>dname</span>, <span class='no'>cname</span>, <span class='no'>mname</span>, <span class='no'>my_db</span>, <span class='no'>rname</span>, <span class='no'>...</span>, <span class='kw'>d_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>m_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>map_fields_q</span>(
+  <span class='no'>dname</span>,
+  <span class='no'>cname</span>,
+  <span class='no'>mname</span>,
+  <span class='no'>my_db</span>,
+  <span class='no'>rname</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>d_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>m_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,9 +200,9 @@
     <pre class="examples"><div class='input'>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"DBI"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>&amp;&amp;</span>
   <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='no'>my_db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RSQLite/man/SQLite.html'>SQLite</a></span>(),
+  <span class='no'>my_db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/RSQLite/man/SQLite.html'>SQLite</a></span>(),
                           <span class='st'>":memory:"</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbWriteTable.html'>dbWriteTable</a></span>(
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(
     <span class='no'>my_db</span>,
     <span class='st'>'d'</span>,
     <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"acc"</span>, <span class='st'>"loss"</span>,
@@ -204,7 +212,7 @@
                <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
     <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbWriteTable.html'>dbWriteTable</a></span>(
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(
     <span class='no'>my_db</span>,
     <span class='st'>'m'</span>,
     <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"acc"</span>, <span class='st'>"loss"</span>,
@@ -218,7 +226,7 @@
 
   <span class='fu'>map_fields_q</span>(<span class='st'>'d'</span>, <span class='st'>'what'</span>, <span class='st'>'m'</span>, <span class='no'>my_db</span>, <span class='st'>"dm"</span>)
   <span class='kw pkg'>cdata</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/cdata/man/qlook.html'>qlook</a></span>(<span class='no'>my_db</span>, <span class='st'>'dm'</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/DBI/man/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>my_db</span>)
+  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>my_db</span>)
 }</div><div class='output co'>#&gt; table `dm` SQLiteConnection 
 #&gt;  nrow: 4 
 #&gt; 'data.frame':	4 obs. of  4 variables:
