@@ -16,22 +16,24 @@ test_not_seen_level <- function() {
   #     5   , "B" , "2003-11-09 00:00:00" |
   #     6   , "B" , "2004-01-09 00:00:00" )
   #
-  # d$rowid <- seq_len(nrow(d))
-  # d <- rquery::extend(d, rank %:=% row_number(), partitionby = "ID", orderby = "rowid")
+  # # get the time based ranking
+  # d <- rquery::extend(d,
+  #                     rank %:=% row_number(),
+  #                     partitionby = "ID", orderby = "DATE")
 
   # skip to the after rquery step
   d <- wrapr::build_frame(
-    "ID"  , "OP", "DATE"               , "rowid", "rank" |
-      1   , "A" , "2001-01-02 00:00:00",  1L    , 1      |
-      1   , "B" , "2015-04-25 00:00:00",  2L    , 2      |
-      2   , "A" , "2000-04-01 00:00:00",  3L    , 1      |
-      3   , "C" , "2014-04-07 00:00:00",  4L    , 1      |
-      4   , "C" , "2012-12-01 00:00:00",  5L    , 1      |
-      4   , "A" , "2005-06-16 00:00:00",  6L    , 2      |
-      4   , "D" , "2009-01-20 00:00:00",  7L    , 3      |
-      5   , "A" , "2010-10-10 00:00:00",  8L    , 1      |
-      5   , "B" , "2003-11-09 00:00:00",  9L    , 2      |
-      6   , "B" , "2004-01-09 00:00:00", 10L    , 1      )
+    "ID"  , "OP", "DATE"               , "rank" |
+      1   , "A" , "2001-01-02 00:00:00", 1      |
+      1   , "B" , "2015-04-25 00:00:00", 2      |
+      2   , "A" , "2000-04-01 00:00:00", 1      |
+      3   , "C" , "2014-04-07 00:00:00", 1      |
+      4   , "A" , "2005-06-16 00:00:00", 1      |
+      4   , "D" , "2009-01-20 00:00:00", 2      |
+      4   , "C" , "2012-12-01 00:00:00", 3      |
+      5   , "B" , "2003-11-09 00:00:00", 1      |
+      5   , "A" , "2010-10-10 00:00:00", 2      |
+      6   , "B" , "2004-01-09 00:00:00", 1      )
 
   diagram <- wrapr::build_frame(
     "rank", "DATE", "OP" |
@@ -49,8 +51,8 @@ test_not_seen_level <- function() {
       1   , "2001-01-02 00:00:00", "A"  , "2015-04-25 00:00:00", "B"          , NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
       2   , "2000-04-01 00:00:00", "A"  , NA_character_        , NA_character_, NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
       3   , "2014-04-07 00:00:00", "C"  , NA_character_        , NA_character_, NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
-      4   , "2012-12-01 00:00:00", "C"  , "2005-06-16 00:00:00", "A"          , "2009-01-20 00:00:00", "D"          , NA_character_, NA_character_, NA_character_, NA_character_ |
-      5   , "2010-10-10 00:00:00", "A"  , "2003-11-09 00:00:00", "B"          , NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
+      4   , "2005-06-16 00:00:00", "A"  , "2009-01-20 00:00:00", "D"          , "2012-12-01 00:00:00", "C"          , NA_character_, NA_character_, NA_character_, NA_character_ |
+      5   , "2003-11-09 00:00:00", "B"  , "2010-10-10 00:00:00", "A"          , NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
       6   , "2004-01-09 00:00:00", "B"  , NA_character_        , NA_character_, NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ )
 
   RUnit::checkTrue(wrapr::check_equiv_frames(res, expect))
