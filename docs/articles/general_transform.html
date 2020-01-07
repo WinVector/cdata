@@ -100,7 +100,7 @@
       <h1>General Data Transforms With cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2019-12-30</h4>
+            <h4 class="date">2020-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/general_transform.Rmd"><code>vignettes/general_transform.Rmd</code></a></small>
       <div class="hidden name"><code>general_transform.Rmd</code></div>
@@ -496,9 +496,9 @@
 <a class="sourceLine" id="cb9-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18"><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"DBI"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>) <span class="op">&amp;&amp;</span></a>
 <a class="sourceLine" id="cb9-19" data-line-number="19"><span class="st">   </span><span class="kw"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">  raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/SQLite.html">SQLite</a></span>(), </a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">  raw_connection &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>(), </a>
 <a class="sourceLine" id="cb9-21" data-line-number="21">                                   <span class="st">":memory:"</span>)</a>
-<a class="sourceLine" id="cb9-22" data-line-number="22">  RSQLite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RSQLite/man/initExtension.html">initExtension</a></span>(raw_connection)</a>
+<a class="sourceLine" id="cb9-22" data-line-number="22">  RSQLite<span class="op">::</span><span class="kw"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span>(raw_connection)</a>
 <a class="sourceLine" id="cb9-23" data-line-number="23">  db &lt;-<span class="st"> </span>rquery<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rquery/man/rquery_db_info.html">rquery_db_info</a></span>(</a>
 <a class="sourceLine" id="cb9-24" data-line-number="24">    <span class="dt">connection =</span> raw_connection,</a>
 <a class="sourceLine" id="cb9-25" data-line-number="25">    <span class="dt">is_dbi =</span> <span class="ot">TRUE</span>,</a>
