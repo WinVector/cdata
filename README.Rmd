@@ -2,6 +2,9 @@
 output: github_document
 ---
 
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/cdata)](https://cran.r-project.org/package=cdata)
+[![status](https://tinyverse.netlify.com/badge/cdata)](https://CRAN.R-project.org/package=cdata)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 

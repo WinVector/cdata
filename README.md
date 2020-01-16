@@ -1,4 +1,7 @@
 
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/cdata)](https://cran.r-project.org/package=cdata)
+[![status](https://tinyverse.netlify.com/badge/cdata)](https://CRAN.R-project.org/package=cdata)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [`cdata`](https://CRAN.R-project.org/package=cdata) is a general data
