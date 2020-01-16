@@ -21,7 +21,8 @@ rowrecs_to_blocks_q(
   resultName = NULL,
   incoming_qualifiers = NULL,
   outgoing_qualifiers = NULL,
-  temp_qualifiers = NULL
+  temp_qualifiers = NULL,
+  executeQuery = TRUE
 )
 }
 \arguments{
@@ -58,9 +59,11 @@ rowrecs_to_blocks_q(
 \item{outgoing_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 
 \item{temp_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{executeQuery}{logical, if TRUE execute the query and return result.}
 }
 \value{
-long table built by mapping wideTable to one row per group
+long table built by mapping wideTable to one row per group (or query if executeQuery is FALSE)
 }
 \description{
 Transform data facts from columns into additional rows using SQL

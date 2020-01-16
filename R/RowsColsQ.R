@@ -157,7 +157,8 @@ qlook <- function(my_db, tableName,
 #' @param incoming_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @param outgoing_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @param temp_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
-#' @return long table built by mapping wideTable to one row per group
+#' @param executeQuery logical, if TRUE execute the query and return result.
+#' @return long table built by mapping wideTable to one row per group (or query if executeQuery is FALSE)
 #'
 #' @seealso \code{\link{build_unpivot_control}},  \code{\link{rowrecs_to_blocks}}
 #'
@@ -201,7 +202,8 @@ rowrecs_to_blocks_q <- function(wideTable,
                                 resultName = NULL,
                                 incoming_qualifiers = NULL,
                                 outgoing_qualifiers = NULL,
-                                temp_qualifiers = NULL) {
+                                temp_qualifiers = NULL,
+                                executeQuery = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_q")
   if(length(columnsToCopy)>0) {
     if(!is.character(columnsToCopy)) {
@@ -237,10 +239,12 @@ rowrecs_to_blocks_q <- function(wideTable,
 
   ctabName <- tempNameGenerator()
   rownames(controlTable) <- NULL # just in case
-  rquery::rq_copy_to(my_db,
-                     ctabName,
-                     controlTable,
-                     qualifiers = temp_qualifiers)
+  if(executeQuery) {
+    rquery::rq_copy_to(my_db,
+                       ctabName,
+                       controlTable,
+                       qualifiers = temp_qualifiers)
+  }
   if(is.null(resultName)) {
     resName <- tempNameGenerator()
   } else {
@@ -267,9 +271,9 @@ rowrecs_to_blocks_q <- function(wideTable,
                                           match_stmts <- vapply(
                                             control_key_indices,
                                             function(j2) {
-                                              paste0('b.',
+                                              paste0('CAST(b.',
                                                      rquery::quote_identifier(my_db, colnames(controlTable)[j2]),
-                                                     ' = ',
+                                                     ' AS VARCHAR) = ',
                                                      rquery::quote_string(my_db, controlTable[i,j2,drop=TRUE]))
                                             }, character(1))
                                           paste0(' WHEN ',
@@ -312,6 +316,9 @@ rowrecs_to_blocks_q <- function(wideTable,
                qs)
   if(showQuery) {
     print(q)
+  }
+  if(!executeQuery) {
+    return(q)
   }
   rquery::rq_execute(my_db, q)
   rquery::rq_remove_table(my_db, ctabName, qualifiers = temp_qualifiers)
@@ -437,6 +444,7 @@ build_pivot_control_q <- function(tableName,
 #' @param resultName character, name for result table.
 #' @param incoming_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
 #' @param outgoing_qualifiers optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.
+#' @param executeQuery logical, if TRUE execute the query and return result.
 #' @return wide table built by mapping key-grouped tallTable rows to one row per group
 #'
 #' @seealso \code{\link{build_pivot_control_q}}, \code{\link{blocks_to_rowrecs}}
@@ -484,7 +492,8 @@ blocks_to_rowrecs_q <- function(tallTable,
                                 temporary = FALSE,
                                 resultName = NULL,
                                 incoming_qualifiers = NULL,
-                                outgoing_qualifiers = NULL) {
+                                outgoing_qualifiers = NULL,
+                                executeQuery = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::blocks_to_rowrecs_q")
   if(length(keyColumns)>0) {
     if(!is.character(keyColumns)) {
@@ -555,9 +564,9 @@ blocks_to_rowrecs_q <- function(tallTable,
         match_stmts <- vapply(
           control_key_indices,
           function(j2) {
-            paste0('a.',
+            paste0('CAST(a.',
                    rquery::quote_identifier(my_db, colnames(controlTable)[j2]),
-                   ' = ',
+                   ' AS VARCHAR) = ',
                    rquery::quote_string(my_db, controlTable[i,j2,drop=TRUE]))
           }, character(1))
         collectstmts[[collectN]] <- paste0("MAX( CASE WHEN ", # pseudo aggregator
@@ -612,6 +621,9 @@ blocks_to_rowrecs_q <- function(tallTable,
                qs)
   if(showQuery) {
     print(q)
+  }
+  if(!executeQuery) {
+    return(q)
   }
   rquery::rq_execute(my_db, q)
   resName

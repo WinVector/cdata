@@ -22,7 +22,8 @@ blocks_to_rowrecs_q(
   temporary = FALSE,
   resultName = NULL,
   incoming_qualifiers = NULL,
-  outgoing_qualifiers = NULL
+  outgoing_qualifiers = NULL,
+  executeQuery = TRUE
 )
 }
 \arguments{
@@ -61,6 +62,8 @@ blocks_to_rowrecs_q(
 \item{incoming_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
 
 \item{outgoing_qualifiers}{optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.}
+
+\item{executeQuery}{logical, if TRUE execute the query and return result.}
 }
 \value{
 wide table built by mapping key-grouped tallTable rows to one row per group
