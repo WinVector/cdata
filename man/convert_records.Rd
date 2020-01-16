@@ -6,8 +6,8 @@
 \usage{
 convert_records(
   table,
-  incoming_shape,
-  outgoing_shape,
+  incoming_shape = NULL,
+  outgoing_shape = NULL,
   ...,
   keyColumns = NULL,
   columnsToCopy_in = NULL,

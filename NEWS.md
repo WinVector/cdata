@@ -1,4 +1,8 @@
 
+# cdata 1.1.4 2020/01/16
+
+ * Allow more trivial cases.
+
 # cdata 1.1.4 2020/01/07
 
  * Tolerate nonexistent column value.

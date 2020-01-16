@@ -73,8 +73,8 @@
 #' @export
 #'
 convert_records <- function(table,
-                            incoming_shape,
-                            outgoing_shape,
+                            incoming_shape = NULL,
+                            outgoing_shape = NULL,
                             ...,
                             keyColumns = NULL,
                             columnsToCopy_in = NULL,
@@ -88,33 +88,42 @@ convert_records <- function(table,
                             allow_rqdatatable_in = FALSE,
                             allow_rqdatatable_out = TRUE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::convert_records")
-  if(!is.data.frame(incoming_shape)) {
-    stop("cdata::convert_records incoming_shape should be a data.frame")
+  if(!is.null(incoming_shape)) {
+    if(!is.data.frame(incoming_shape)) {
+      stop("cdata::convert_records incoming_shape should be a data.frame")
+    }
   }
-  if(!is.data.frame(outgoing_shape)) {
-    stop("cdata::convert_records outgoing_shape should be a data.frame")
+  if(!is.null(outgoing_shape)) {
+    if(!is.data.frame(outgoing_shape)) {
+      stop("cdata::convert_records outgoing_shape should be a data.frame")
+    }
   }
-  row_records <- blocks_to_rowrecs(
-    table,
-    keyColumns = keyColumns,
-    controlTable = incoming_shape,
-    columnsToCopy = columnsToCopy_in,
-    checkNames = checkNames,
-    strict = strict,
-    controlTableKeys = incoming_controlTableKeys,
-    tmp_name_source = tmp_name_source,
-    temporary = temporary,
-    allow_rqdatatable = allow_rqdatatable_in)
-  result <- rowrecs_to_blocks(
-    row_records,
-    controlTable = outgoing_shape,
-    checkNames = checkNames,
-    checkKeys = checkKeys,
-    strict = strict,
-    controlTableKeys = outgoing_controlTableKeys,
-    columnsToCopy = c(keyColumns, columnsToCopy_in),
-    tmp_name_source = tmp_name_source,
-    temporary = temporary,
-    allow_rqdatatable = allow_rqdatatable_out)
+  result <- table
+  if(!is.null(incoming_shape)) {
+    result <- blocks_to_rowrecs(
+      result,
+      keyColumns = keyColumns,
+      controlTable = incoming_shape,
+      columnsToCopy = columnsToCopy_in,
+      checkNames = checkNames,
+      strict = strict,
+      controlTableKeys = incoming_controlTableKeys,
+      tmp_name_source = tmp_name_source,
+      temporary = temporary,
+      allow_rqdatatable = allow_rqdatatable_in)
+  }
+  if(!is.null(outgoing_shape)) {
+    result <- rowrecs_to_blocks(
+      result,
+      controlTable = outgoing_shape,
+      checkNames = checkNames,
+      checkKeys = checkKeys,
+      strict = strict,
+      controlTableKeys = outgoing_controlTableKeys,
+      columnsToCopy = c(keyColumns, columnsToCopy_in),
+      tmp_name_source = tmp_name_source,
+      temporary = temporary,
+      allow_rqdatatable = allow_rqdatatable_out)
+  }
   result
 }

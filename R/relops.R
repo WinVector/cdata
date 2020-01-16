@@ -321,6 +321,22 @@ blocks_to_rowrecs.relop <- function(tallTable,
                               strict = strict,
                               controlTableKeys = controlTableKeys)
   }
+  df <- 'blocks_to_rowrecs(.)'
+  # df <- blocks_to_rowrecs_q(tallTable = "IN",
+  #                           keyColumns = keyColumns,
+  #                           controlTable = controlTable,
+  #                           my_db = rquery::rquery_default_db_info(),
+  #                           columnsToCopy = columnsToCopy,
+  #                           tempNameGenerator = tmp_name_source,
+  #                           strict = strict,
+  #                           controlTableKeys = controlTableKeys,
+  #                           checkNames = checkNames,
+  #                           checkKeys = checkKeys,
+  #                           showQuery = FALSE,
+  #                           defaultValue = NULL,
+  #                           dropDups = TRUE,
+  #                           temporary = temporary,
+  #                           resultName = "OUT")
   nd <- rquery::non_sql_node(tallTable,
                              f_db = f_db,
                              f_df = f_df,
@@ -328,7 +344,7 @@ blocks_to_rowrecs.relop <- function(tallTable,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
-                             display_form = paste0("blocks_to_rowrecs(.)"),
+                             display_form = df,
                              orig_columns = FALSE,
                              temporary = temporary)
   nd
@@ -437,6 +453,20 @@ rowrecs_to_blocks.relop <- function(wideTable,
                               controlTableKeys = controlTableKeys,
                               columnsToCopy = columnsToCopy)
   }
+  df <- "rowrecs_to_blocks(.)"
+  # df <- rowrecs_to_blocks_q(wideTable = "IN",
+  #                           controlTable = controlTable,
+  #                           my_db = rquery::rquery_default_db_info(),
+  #                           columnsToCopy = columnsToCopy,
+  #                           tempNameGenerator = tmp_name_source,
+  #                           strict = strict,
+  #                           controlTableKeys = controlTableKeys,
+  #                           checkNames = checkNames,
+  #                           checkKeys = checkKeys,
+  #                           showQuery = FALSE,
+  #                           defaultValue = NULL,
+  #                           temporary = temporary,
+  #                           resultName = "OUT")
   nd <- rquery::non_sql_node(wideTable,
                              f_db = f_db,
                              f_df = f_df,
@@ -444,7 +474,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
                              incoming_table_name = incoming_table_name,
                              outgoing_table_name = outgoing_table_name,
                              columns_produced = columns_produced,
-                             display_form = paste0("rowrecs_to_blocks(.)"),
+                             display_form = df,
                              orig_columns = FALSE,
                              temporary = temporary)
   nd

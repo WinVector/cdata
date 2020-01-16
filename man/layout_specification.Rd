@@ -5,8 +5,8 @@
 \title{Create a record to record spec.}
 \usage{
 layout_specification(
-  incoming_shape,
-  outgoing_shape,
+  incoming_shape = NULL,
+  outgoing_shape = NULL,
   ...,
   recordKeys = character(0),
   incoming_controlTableKeys = colnames(incoming_shape)[[1]],

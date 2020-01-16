@@ -583,8 +583,8 @@ apply_right.blocks_to_rowrecs_spec <- function(pipe_left_arg,
 #'
 #' @export
 #'
-layout_specification <- function(incoming_shape,
-                                 outgoing_shape,
+layout_specification <- function(incoming_shape = NULL,
+                                 outgoing_shape = NULL,
                                  ...,
                                  recordKeys = character(0),
                                  incoming_controlTableKeys = colnames(incoming_shape)[[1]],
@@ -594,6 +594,28 @@ layout_specification <- function(incoming_shape,
                                  strict = FALSE,
                                  allow_rqdatatable_in = FALSE,
                                  allow_rqdatatable_out = TRUE) {
+  # check for some trivial cases
+  if(is.null(incoming_shape)) {
+    if(is.null(outgoing_shape)) {
+      stop("at least one of incoming_shape or outgoing_shape must not be NULL")
+    }
+    return(rowrecs_to_blocks_spec(outgoing_shape,
+                                  controlTableKeys = outgoing_controlTableKeys,
+                                  recordKeys = character(0),
+                                  checkNames = checkNames,
+                                  checkKeys = checkKeys,
+                                  strict = strict,
+                                  allow_rqdatatable = allow_rqdatatable_out))
+  }
+  if(is.null(outgoing_shape)) {
+    return(blocks_to_rowrecs_spec(incoming_shape,
+                                  controlTableKeys = incoming_controlTableKeys,
+                                  recordKeys = recordKeys,
+                                  checkNames = checkNames,
+                                  checkKeys = checkKeys,
+                                  strict = strict,
+                                  allow_rqdatatable = allow_rqdatatable_in))
+  }
   ca <- blocks_to_rowrecs_spec(incoming_shape,
                                controlTableKeys = incoming_controlTableKeys,
                                recordKeys = character(0),
@@ -608,7 +630,6 @@ layout_specification <- function(incoming_shape,
                                checkKeys = checkKeys,
                                strict = strict,
                                allow_rqdatatable = allow_rqdatatable_out)
-  # check for some trivial cases
   if((nrow(outgoing_shape)==1) && (length(outgoing_controlTableKeys)==0)) {
     ra <- incoming_shape %.>% ca
     if(isTRUE(all.equal(sort(colnames(ra)), sort(colnames(outgoing_shape))))) {
@@ -673,23 +694,28 @@ apply_right.cdata_general_transform_spec <- function(pipe_left_arg,
   table <- pipe_left_arg
   transform_spec <- pipe_right_arg
   blocks_to_rowrecs_spec <- transform_spec$blocks_to_rowrecs_spec
-  table <- blocks_to_rowrecs(tallTable = table,
-                             keyColumns = blocks_to_rowrecs_spec$recordKeys,
-                             controlTable = blocks_to_rowrecs_spec$controlTable,
-                             controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
-                             checkNames = blocks_to_rowrecs_spec$checkNames,
-                             checkKeys = blocks_to_rowrecs_spec$checkKeys,
-                             strict = blocks_to_rowrecs_spec$strict,
-                             allow_rqdatatable = blocks_to_rowrecs_spec$allow_rqdatatable)
+  if(!is.null(blocks_to_rowrecs_spec)) {
+    table <- blocks_to_rowrecs(tallTable = table,
+                               keyColumns = blocks_to_rowrecs_spec$recordKeys,
+                               controlTable = blocks_to_rowrecs_spec$controlTable,
+                               controlTableKeys = blocks_to_rowrecs_spec$controlTableKeys,
+                               checkNames = blocks_to_rowrecs_spec$checkNames,
+                               checkKeys = blocks_to_rowrecs_spec$checkKeys,
+                               strict = blocks_to_rowrecs_spec$strict,
+                               allow_rqdatatable = blocks_to_rowrecs_spec$allow_rqdatatable)
+  }
   rowrecs_to_blocks_spec <- transform_spec$rowrecs_to_blocks_spec
-  rowrecs_to_blocks(wideTable = table,
-                    controlTable = rowrecs_to_blocks_spec$controlTable,
-                    controlTableKeys = rowrecs_to_blocks_spec$controlTableKeys,
-                    columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
-                    checkNames = rowrecs_to_blocks_spec$checkNames,
-                    checkKeys = rowrecs_to_blocks_spec$checkKeys,
-                    strict = rowrecs_to_blocks_spec$strict,
-                    allow_rqdatatable = rowrecs_to_blocks_spec$allow_rqdatatable)
+  if(!is.null(rowrecs_to_blocks_spec)) {
+    table <- rowrecs_to_blocks(wideTable = table,
+                               controlTable = rowrecs_to_blocks_spec$controlTable,
+                               controlTableKeys = rowrecs_to_blocks_spec$controlTableKeys,
+                               columnsToCopy = rowrecs_to_blocks_spec$recordKeys,
+                               checkNames = rowrecs_to_blocks_spec$checkNames,
+                               checkKeys = rowrecs_to_blocks_spec$checkKeys,
+                               strict = rowrecs_to_blocks_spec$strict,
+                               allow_rqdatatable = rowrecs_to_blocks_spec$allow_rqdatatable)
+  }
+  return(table)
 }
 
 #' @export
