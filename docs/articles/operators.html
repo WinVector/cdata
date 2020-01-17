@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2020-01-16</h4>
+            <h4 class="date">2020-01-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -514,7 +514,7 @@
 <a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;   "model_id",</span></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;   "measure",</span></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt;   "value")) %.&gt;%</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  non_sql_node(., blocks_to_rowrecs(.))</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."model_id" "model_id", MAX( CASE WHEN CAST(a."measure" AS VARCHAR) = 'AUC' THEN a."value" ELSE NULL </span><span class="re">END</span><span class="co"> ) "AUC", MAX( CASE WHEN CAST(a."measure" AS VARCHAR) = 'R2' THEN a."value" ELSE NULL </span><span class="re">END</span><span class="co"> ) "R2" FROM "IN" a GROUP BY a."model_id")</span></a>
 <a class="sourceLine" id="cb16-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb16-9" data-line-number="9">rquery<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rquery/man/execute.html">execute</a></span>(db, ops) <span class="op">%.&gt;%</span></a>
 <a class="sourceLine" id="cb16-10" data-line-number="10"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(.)</a></code></pre></div>

@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -146,8 +146,8 @@
 
     <pre class="usage"><span class='fu'>convert_records</span>(
   <span class='no'>table</span>,
-  <span class='no'>incoming_shape</span>,
-  <span class='no'>outgoing_shape</span>,
+  <span class='kw'>incoming_shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>outgoing_shape</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>,
   <span class='kw'>keyColumns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>columnsToCopy_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -288,8 +288,8 @@
 #&gt;   "col1",
 #&gt;   "col2",
 #&gt;   "col3")) %.&gt;%
-#&gt;  non_sql_node(., blocks_to_rowrecs(.)) %.&gt;%
-#&gt;  non_sql_node(., rowrecs_to_blocks(.))</div><div class='input'>
+#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."record_id" "record_id", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col1" ELSE NULL END ) "v11", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col2" ELSE NULL END ) "v12", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col3" ELSE NULL END ) "v13", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col1" ELSE NULL END ) "v21", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col2" ELSE NULL END ) "v22", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col3" ELSE NULL END ) "v23", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col1" ELSE NULL END ) "v31", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col2" ELSE NULL END ) "v32", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col3" ELSE NULL END ) "v33" FROM "IN" a GROUP BY a."record_id") %.&gt;%
+#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."record_id", b."column", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v11"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v12"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v13" ELSE NULL END AS "row1", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v21"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v22"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v23" ELSE NULL END AS "row2", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v31"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v32"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v33" ELSE NULL END AS "row3" FROM "IN" a CROSS JOIN "crec_31812209643026056975_0000000004" b )</div><div class='input'>
 <span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"rqdatatable"</span>)
   <span class='no'>data</span> <span class='kw'>%.&gt;%</span>

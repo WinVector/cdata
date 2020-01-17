@@ -1,7 +1,8 @@
 
-# cdata 1.1.4 2020/01/16
+# cdata 1.1.5 2020/01/17
 
- * Allow more trivial cases.
+ * Fix SQL path and improve queries tolerance to types.
+ * Allow more trivial cases in transform construction.
 
 # cdata 1.1.4 2020/01/07
 

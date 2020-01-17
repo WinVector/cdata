@@ -70,7 +70,7 @@ and controlTable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -164,7 +164,8 @@ and controlTable.</p>
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>resultName</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>incoming_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>outgoing_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>outgoing_qualifiers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>executeQuery</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -241,6 +242,10 @@ and controlTable.</p>
     <tr>
       <th>outgoing_qualifiers</th>
       <td><p>optional named ordered vector of strings carrying additional db hierarchy terms, such as schema.</p></td>
+    </tr>
+    <tr>
+      <th>executeQuery</th>
+      <td><p>logical, if TRUE execute the query and return result.</p></td>
     </tr>
     </table>
 

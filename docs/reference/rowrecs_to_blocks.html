@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -285,7 +285,7 @@ are issues with time columns with different time zones.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>ops</span>))</div><div class='output co'>#&gt; mk_td("d", c(
 #&gt;   "AUC",
 #&gt;   "R2")) %.&gt;%
-#&gt;  non_sql_node(., rowrecs_to_blocks(.))</div><div class='input'>
+#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT b."meas", CASE  WHEN CAST(b."meas" AS VARCHAR) = 'AUC' THEN a."AUC"  WHEN CAST(b."meas" AS VARCHAR) = 'R2' THEN a."R2" ELSE NULL END AS "val" FROM "IN" a CROSS JOIN "rrtbl_03154992351842149327_0000000002" b )</div><div class='input'>
 <span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"rqdatatable"</span>)
   <span class='no'>d</span> <span class='kw'>%.&gt;%</span>
