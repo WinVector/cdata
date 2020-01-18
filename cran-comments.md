@@ -5,11 +5,6 @@
 ### OSX
    
     R CMD check --as-cran cdata_1.1.5.tar.gz
-
-
-### Windows
-
-    rhub::check_for_cran()
     * using R version 3.6.0 (2019-04-26)
     * using platform: x86_64-apple-darwin15.6.0 (64-bit)
     * using session charset: UTF-8
@@ -21,6 +16,11 @@
     * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
     Maintainer: ‘John Mount <jmount@win-vector.com>’
     Status: OK
+
+### Windows
+
+    rhub::check_for_cran()
+
 
 ## Downstream dependencies
 
