@@ -1,5 +1,5 @@
 
-# cdata 1.1.5 2020/01/18
+# cdata 1.1.5 2020/01/20
 
  * Fix SQL path and improve queries tolerance to types.
  * Allow more trivial cases in transform construction.

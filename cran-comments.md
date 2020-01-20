@@ -21,6 +21,7 @@
 
     rhub::check_for_cran()
 
+    devtools::check_win_devel()
 
 ## Downstream dependencies
 
