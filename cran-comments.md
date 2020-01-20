@@ -22,6 +22,38 @@
     rhub::check_for_cran()
 
     devtools::check_win_devel()
+    
+### Linux
+
+    rhub::check_for_cran()
+    1416#> * using R version 3.6.1 (2019-07-05)
+    1417#> * using platform: x86_64-pc-linux-gnu (64-bit)
+    1418#> * using session charset: UTF-8
+    1419#> * using option ‘--as-cran’
+    1420#> * checking for file ‘cdata/DESCRIPTION’ ... OK
+    1421#> * checking extension type ... Package
+    1422#> * this is package ‘cdata’ version ‘1.1.5’
+    1423#> * package encoding: UTF-8
+    1424#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    1425#> Maintainer: ‘John Mount ’
+    1474#> OK
+    
+    rhub::check_for_cran()
+    1596#> * using R Under development (unstable) (2020-01-18 r77674)
+    1597#> * using platform: x86_64-pc-linux-gnu (64-bit)
+    1598#> * using session charset: UTF-8
+    1599#> * using option ‘--as-cran’
+    1600#> * checking for file ‘cdata/DESCRIPTION’ ... OK
+    1601#> * checking extension type ... Package
+    1602#> * this is package ‘cdata’ version ‘1.1.5’
+    1603#> * package encoding: UTF-8
+    1604#> * checking CRAN incoming feasibility ...NB: need Internet access to use CRAN incoming checks
+    1605#> NOTE
+    1606#> Maintainer: ‘John Mount ’
+    1607#> Possibly mis-spelled words in DESCRIPTION:
+    1608#> coordinatized (15:36)
+    1665#> Status: 1 NOTE
+    coordinatized is spelled correctly.
 
 ## Downstream dependencies
 
