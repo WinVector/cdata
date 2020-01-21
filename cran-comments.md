@@ -19,10 +19,18 @@
 
 ### Windows
 
-    rhub::check_for_cran()
-
     devtools::check_win_devel()
-    
+    * using R Under development (unstable) (2020-01-07 r77633)
+    * using platform: x86_64-w64-mingw32 (64-bit)
+    * using session charset: ISO8859-1
+    * checking for file 'cdata/DESCRIPTION' ... OK
+    * checking extension type ... Package
+    * this is package 'cdata' version '1.1.5'
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    Maintainer: 'John Mount <jmount@win-vector.com>'
+    Status: OK
+
 ### Linux
 
     rhub::check_for_cran()
