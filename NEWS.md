@@ -1,4 +1,8 @@
 
+# cdata 1.1.6 2020/01/23
+
+ * Add rmarkdown suggests.
+
 # cdata 1.1.5 2020/01/21
 
  * Fix SQL path and improve queries tolerance to types.
