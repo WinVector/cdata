@@ -1,6 +1,7 @@
 
 # cdata 1.1.6 2020/01/23
 
+ * fix noSuggests CRAN issue.
  * Add rmarkdown suggests.
 
 # cdata 1.1.5 2020/01/21
