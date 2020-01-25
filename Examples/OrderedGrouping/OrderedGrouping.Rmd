@@ -5,7 +5,7 @@ output: github_document
 
 ## Introduction
 
-I'd like to share an example of data-wrangling/data-reshaping and how to solve it using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/).
+I'd like to share an example of data-wrangling/data-reshaping and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/) (the `Python` version of this example can be foune [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
 
 In an RStudio Community note, user <code>hklovs</code> asked [how to re-organize some data](https://community.rstudio.com/t/tidying-data-reorganizing-tibble/48292).
 
@@ -121,10 +121,9 @@ knitr::kable(d2)
 
 In the above code we used the `project()` operator to combine rows with duplicates combined into vectors such as `c("B", "D")`.  Then we added a rank column.  This gets us much closer to a complete solution.   All we have to do now is re-arrange the data.
 
-
 First data re-arrangement we strongly encourage drawing out what one wants it terms of one input record and one output record.  With `cdata` doing so essentially solves the problem.
 
-So let's look at what happens only to the rows with `ID == 1'.  In this case we expect input rows that look like this:
+So let's look at what happens only to the rows with `ID == 1`.  In this case we expect input rows that look like this:
 
 ```{r, echo=FALSE}
 knitr::kable(d2[d2$ID==1, , drop=FALSE])

@@ -4,8 +4,10 @@ Ordered Grouping Example
 ## Introduction
 
 I’d like to share an example of data-wrangling/data-reshaping and how to
-solve it using
-[`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/).
+solve it in [`R`](https://www.r-project.org) using
+[`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/)
+(the `Python` version of this example can be foune
+[here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
 
 In an RStudio Community note, user <code>hklovs</code> asked [how to
 re-organize some
@@ -122,7 +124,7 @@ First data re-arrangement we strongly encourage drawing out what one
 wants it terms of one input record and one output record. With `cdata`
 doing so essentially solves the problem.
 
-So let’s look at what happens only to the rows with \`ID == 1’. In this
+So let’s look at what happens only to the rows with `ID == 1`. In this
 case we expect input rows that look like this:
 
 | ID | DATE                | OP | rank |
