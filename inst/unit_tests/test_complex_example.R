@@ -106,7 +106,7 @@ test_complex_example_list <- function() {
   # and then transform
   ops <- local_td(d) %.>%
     project(.,
-            OP %:=% list(sort(OP)),
+            OP %:=% list(sort(unique(OP))),
             groupby = c("ID", "DATE")) %.>%
     extend(.,
            rank %:=% row_number(),
