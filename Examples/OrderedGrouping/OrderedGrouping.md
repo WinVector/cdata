@@ -158,11 +158,12 @@ knitr::kable(diagram)
 | 2    | DATE2 | OP2 |
 | 3    | DATE3 | OP3 |
 
-The column-names `rank`, `DATE`, and `OP` are all column names of the
+The column names `rank`, `DATE`, and `OP` are all column names of the
 table we are starting with. The values `1`, `2`, and `3` are all values
 we expect to see in the `rank` column of the working data frame. And the
 symbols `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3` are all
-stand-in names for values we see in our data.
+stand-in names for values we see in our data. These symbols will be the
+column names of our new row-records.
 
 With this diagram in hand we can specify the data reshaping step.
 
@@ -314,7 +315,7 @@ knitr::kable(res_db)
 |  6 | 2004-01-09 00:00:00 | NA                  | NA                  | B   | NA  | NA  |
 
 Note: column order is not considered essential in `rquery` pipelines
-(though the `select_columns()` can specify it). Also the entire query
+(though the `select_columns()` can specify it). Also, the entire query
 *can* be run in a database with the correct user-specified aggregation
 function. We have a demonstration of this in our `Python` version of
 this example.
