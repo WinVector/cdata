@@ -1,67 +1,57 @@
 Ordered Grouping Example
 ================
 
-## Introduction
+Introduction
+------------
 
-I’d like to share an example of data-wrangling/data-reshaping and how to
-solve it in [`R`](https://www.r-project.org) using
-[`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/)
-(the `Python` version of this example can be foune
-[here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
+I'd like to share an example of data-wrangling/data-reshaping and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/) (the `Python` version of this example can be foune [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
 
-In an RStudio Community note, user <code>hklovs</code> asked [how to
-re-organize some
-data](https://community.rstudio.com/t/tidying-data-reorganizing-tibble/48292).
+In an RStudio Community note, user <code>hklovs</code> asked [how to re-organize some data](https://community.rstudio.com/t/tidying-data-reorganizing-tibble/48292).
 
 The solution is:
 
-  - Get a good definition of what is wanted
-  - Re-process the data so any advisory column you wished you had is
-    actually there
-  - And finish the problem.
+-   Get a good definition of what is wanted
+-   Re-process the data so any advisory column you wished you had is actually there
+-   And finish the problem.
 
-## The problem
+The problem
+-----------
 
 In this example the ask was equivalent to:
 
 How do I transform data from this format:
 
-| ID | OP | DATE                |
-| -: | :- | :------------------ |
-|  1 | A  | 2001-01-02 00:00:00 |
-|  1 | B  | 2015-04-25 00:00:00 |
-|  2 | A  | 2000-04-01 00:00:00 |
-|  3 | D  | 2014-04-07 00:00:00 |
-|  4 | C  | 2012-12-01 00:00:00 |
-|  4 | A  | 2005-06-16 00:00:00 |
-|  4 | D  | 2009-01-20 00:00:00 |
-|  4 | B  | 2009-01-20 00:00:00 |
-|  5 | A  | 2010-10-10 00:00:00 |
-|  5 | B  | 2003-11-09 00:00:00 |
-|  6 | B  | 2004-01-09 00:00:00 |
+|   ID| OP  | DATE                |
+|----:|:----|:--------------------|
+|    1| A   | 2001-01-02 00:00:00 |
+|    1| B   | 2015-04-25 00:00:00 |
+|    2| A   | 2000-04-01 00:00:00 |
+|    3| D   | 2014-04-07 00:00:00 |
+|    4| C   | 2012-12-01 00:00:00 |
+|    4| A   | 2005-06-16 00:00:00 |
+|    4| D   | 2009-01-20 00:00:00 |
+|    4| B   | 2009-01-20 00:00:00 |
+|    5| A   | 2010-10-10 00:00:00 |
+|    5| B   | 2003-11-09 00:00:00 |
+|    6| B   | 2004-01-09 00:00:00 |
 
-Into this
-format:
+Into this format:
 
-| ID | DATE1               | OP1 | DATE2               | OP2         | DATE3               | OP3 |
-| -: | :------------------ | :-- | :------------------ | :---------- | :------------------ | :-- |
-|  1 | 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B           | NA                  | NA  |
-|  2 | 2000-04-01 00:00:00 | A   | NA                  | NA          | NA                  | NA  |
-|  3 | 2014-04-07 00:00:00 | D   | NA                  | NA          | NA                  | NA  |
-|  4 | 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | c(“B”, “D”) | 2012-12-01 00:00:00 | C   |
-|  5 | 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A           | NA                  | NA  |
-|  6 | 2004-01-09 00:00:00 | B   | NA                  | NA          | NA                  | NA  |
+|   ID| DATE1               | OP1 | DATE2               | OP2  | DATE3               | OP3 |
+|----:|:--------------------|:----|:--------------------|:-----|:--------------------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B    | NA                  | NA  |
+|    2| 2000-04-01 00:00:00 | A   | NA                  | NA   | NA                  | NA  |
+|    3| 2014-04-07 00:00:00 | D   | NA                  | NA   | NA                  | NA  |
+|    4| 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B, D | 2012-12-01 00:00:00 | C   |
+|    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A    | NA                  | NA  |
+|    6| 2004-01-09 00:00:00 | B   | NA                  | NA   | NA                  | NA  |
 
-## The solution
+The solution
+------------
 
-What the ask translates to is: per `ID` pick the first three operations
-ordered by date, merging operations with the same timestamp. Then write
-these results into a single row for each `ID`.
+What the ask translates to is: per `ID` pick the first three operations ordered by date, merging operations with the same timestamp. Then write these results into a single row for each `ID`.
 
-The first step isn’t to worry about the data format, it is an
-inessential or solvable difficulty. Instead make any extra descriptions
-or controls you need explicit. In this case we need ranks. So let’s
-first add those.
+The first step isn't to worry about the data format, it is an inessential or solvable difficulty. Instead make any extra descriptions or controls you need explicit. In this case we need ranks. So let's first add those.
 
 ``` r
 # bring in all of our packages
@@ -85,10 +75,15 @@ d <- wrapr::build_frame(
     5   , "B" , "2003-11-09 00:00:00" |
     6   , "B" , "2004-01-09 00:00:00" )
 
+
+concat_values = function(v) {
+  paste(sort(unique(v)), collapse=", ")
+}
+
 # specify the first few data processing steps
 ops <- local_td(d) %.>%
   project(.,
-          OP := list(sort(unique(OP))),
+          OP := concat_values(OP),
           groupby = c("ID", "DATE")) %.>%
   extend(.,
          rank %:=% row_number(),
@@ -102,47 +97,37 @@ d2 <- d %.>% ops
 knitr::kable(d2)
 ```
 
-| ID | DATE                | OP          | rank |
-| -: | :------------------ | :---------- | ---: |
-|  1 | 2001-01-02 00:00:00 | A           |    1 |
-|  1 | 2015-04-25 00:00:00 | B           |    2 |
-|  2 | 2000-04-01 00:00:00 | A           |    1 |
-|  3 | 2014-04-07 00:00:00 | D           |    1 |
-|  4 | 2005-06-16 00:00:00 | A           |    1 |
-|  4 | 2009-01-20 00:00:00 | c(“B”, “D”) |    2 |
-|  4 | 2012-12-01 00:00:00 | C           |    3 |
-|  5 | 2003-11-09 00:00:00 | B           |    1 |
-|  5 | 2010-10-10 00:00:00 | A           |    2 |
-|  6 | 2004-01-09 00:00:00 | B           |    1 |
+|   ID| DATE                | OP   |  rank|
+|----:|:--------------------|:-----|-----:|
+|    1| 2001-01-02 00:00:00 | A    |     1|
+|    1| 2015-04-25 00:00:00 | B    |     2|
+|    2| 2000-04-01 00:00:00 | A    |     1|
+|    3| 2014-04-07 00:00:00 | D    |     1|
+|    4| 2005-06-16 00:00:00 | A    |     1|
+|    4| 2009-01-20 00:00:00 | B, D |     2|
+|    4| 2012-12-01 00:00:00 | C    |     3|
+|    5| 2003-11-09 00:00:00 | B    |     1|
+|    5| 2010-10-10 00:00:00 | A    |     2|
+|    6| 2004-01-09 00:00:00 | B    |     1|
 
-In the above code we used the `project()` operator to combine rows with
-duplicates combined into vectors such as `c("B", "D")`. Then we added a
-rank column. This gets us much closer to a complete solution. All we
-have to do now is re-arrange the data.
+In the above code we used the `project()` operator to combine rows with duplicates combined into vectors such as `c("B", "D")`. Then we added a rank column. This gets us much closer to a complete solution. All we have to do now is re-arrange the data.
 
-First data re-arrangement we strongly encourage drawing out what one
-wants it terms of one input record and one output record. With `cdata`
-doing so essentially solves the problem.
+First data re-arrangement we strongly encourage drawing out what one wants it terms of one input record and one output record. With `cdata` doing so essentially solves the problem.
 
-So let’s look at what happens only to the rows with `ID == 1`. In this
-case we expect input rows that look like this:
+So let's look at what happens only to the rows with `ID == 1`. In this case we expect input rows that look like this:
 
-| ID | DATE                | OP | rank |
-| -: | :------------------ | :- | ---: |
-|  1 | 2001-01-02 00:00:00 | A  |    1 |
-|  1 | 2015-04-25 00:00:00 | B  |    2 |
+|   ID| DATE                | OP  |  rank|
+|----:|:--------------------|:----|-----:|
+|    1| 2001-01-02 00:00:00 | A   |     1|
+|    1| 2015-04-25 00:00:00 | B   |     2|
 
-And we want this record transformed into
-this:
+And we want this record transformed into this:
 
-| ID | DATE1               | OP1 | DATE2               | OP2 | DATE3 | OP3 |
-| -: | :------------------ | :-- | :------------------ | :-- | :---- | :-- |
-|  1 | 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA    | NA  |
+|   ID| DATE1               | OP1 | DATE2               | OP2 | DATE3 | OP3 |
+|----:|:--------------------|:----|:--------------------|:----|:------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA    | NA  |
 
-The `cdata` data shaping rule is: draw a picture of any non-trivial
-(more than one row) data records in their full generality. In our case
-the interesting record is the following (with the record `ID` columns
-suppressed for conciseness).
+The `cdata` data shaping rule is: draw a picture of any non-trivial (more than one row) data records in their full generality. In our case the interesting record is the following (with the record `ID` columns suppressed for conciseness).
 
 ``` r
 # draw a picture of the record format
@@ -156,25 +141,14 @@ knitr::kable(diagram)
 ```
 
 | rank | DATE  | OP  |
-| :--- | :---- | :-- |
+|:-----|:------|:----|
 | 1    | DATE1 | OP1 |
 | 2    | DATE2 | OP2 |
 | 3    | DATE3 | OP3 |
 
-The column names `rank`, `DATE`, and `OP` are all column names of the
-table we are starting with. The values `1`, `2`, and `3` are all values
-we expect to see in the `rank` column of the working data frame. And the
-symbols `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3` are all
-stand-in names for values we see in our data. These symbols will be the
-column names of our new row-records.
+The column names `rank`, `DATE`, and `OP` are all column names of the table we are starting with. The values `1`, `2`, and `3` are all values we expect to see in the `rank` column of the working data frame. And the symbols `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3` are all stand-in names for values we see in our data. These symbols will be the column names of our new row-records.
 
-We have tutorials on how to build these diagrams
-[here](https://winvector.github.io/cdata/articles/design.html) and
-[here](https://winvector.github.io/cdata/articles/blocksrecs.html).
-Essentially we draw one record of the input and output and match column
-names to stand-in interior values of the other. The output record is a
-single row, so we don’t have to explicitly pass it in. However it looks
-like the following.
+We have tutorials on how to build these diagrams [here](https://winvector.github.io/cdata/articles/design.html) and [here](https://winvector.github.io/cdata/articles/blocksrecs.html). Essentially we draw one record of the input and output and match column names to stand-in interior values of the other. The output record is a single row, so we don't have to explicitly pass it in. However it looks like the following.
 
 ``` r
 row_record <- wrapr::qchar_frame(
@@ -185,14 +159,10 @@ knitr::kable(row_record)
 ```
 
 | DATE1 | OP1 | DATE2 | OP2 | DATE3 | OP3 |
-| :---- | :-- | :---- | :-- | :---- | :-- |
+|:------|:----|:------|:----|:------|:----|
 | DATE1 | OP1 | DATE2 | OP2 | DATE3 | OP3 |
 
-Notice the interior-data portions (the parts we wrote in the inputs as
-unquoted) of each table input are the cells that are matched from one
-record to the other. These are in fact just the earlier sample inputs
-and outputs with the values replaced with the placeholders `DATE1`,
-`DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
+Notice the interior-data portions (the parts we wrote in the inputs as unquoted) of each table input are the cells that are matched from one record to the other. These are in fact just the earlier sample inputs and outputs with the values replaced with the placeholders `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
 
 With the diagram in hand we can specify the data reshaping step.
 
@@ -202,9 +172,7 @@ transform <- blocks_to_rowrecs_spec(
   recordKeys = 'ID')
 ```
 
-The transform specifies that records are found in the format shown in
-diagram, and are to be converted to rows. We can confirm the intent by
-printing the transform.
+The transform specifies that records are found in the format shown in diagram, and are to be converted to rows. We can confirm the intent by printing the transform.
 
 ``` r
 print(transform)
@@ -228,14 +196,13 @@ print(transform)
     ##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
     ## }
 
-We are now ready to put all of our operations together into one
-composite pipeline
+We are now ready to put all of our operations together into one composite pipeline
 
 ``` r
 # specify the operations 
 ops <- local_td(d) %.>%
-  project(.,  # get a vector of ops for each ID, DATE pair
-          OP := list(sort(unique(OP))),
+  project(.,  # paste ops together for each ID, DATE pair
+          OP := concat_values(OP),
           groupby = c("ID", "DATE")) %.>%
   extend(.,  # add a per-ID rank by DATE column
          rank %:=% row_number(),
@@ -252,21 +219,21 @@ res <- d %.>% ops
 knitr::kable(res)
 ```
 
-| ID | DATE1               | OP1 | DATE2               | OP2         | DATE3               | OP3 |
-| -: | :------------------ | :-- | :------------------ | :---------- | :------------------ | :-- |
-|  1 | 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B           | NA                  | NA  |
-|  2 | 2000-04-01 00:00:00 | A   | NA                  | NA          | NA                  | NA  |
-|  3 | 2014-04-07 00:00:00 | D   | NA                  | NA          | NA                  | NA  |
-|  4 | 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | c(“B”, “D”) | 2012-12-01 00:00:00 | C   |
-|  5 | 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A           | NA                  | NA  |
-|  6 | 2004-01-09 00:00:00 | B   | NA                  | NA          | NA                  | NA  |
+|   ID| DATE1               | OP1 | DATE2               | OP2  | DATE3               | OP3 |
+|----:|:--------------------|:----|:--------------------|:-----|:--------------------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B    | NA                  | NA  |
+|    2| 2000-04-01 00:00:00 | A   | NA                  | NA   | NA                  | NA  |
+|    3| 2014-04-07 00:00:00 | D   | NA                  | NA   | NA                  | NA  |
+|    4| 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B, D | 2012-12-01 00:00:00 | C   |
+|    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A    | NA                  | NA  |
+|    6| 2004-01-09 00:00:00 | B   | NA                  | NA   | NA                  | NA  |
 
 And we are done.
 
-## A variation
+A variation
+-----------
 
-If the ask had not wanted same-timestamp `OP`s merged into a list the
-solution would have looked like this:
+If the ask had not wanted same-timestamp `OP`s merged into a list the solution would have looked like this:
 
 ``` r
 # specify the operations 
@@ -286,19 +253,16 @@ res <- d %.>% ops
 knitr::kable(res)
 ```
 
-| ID | DATE1               | OP1 | DATE2               | OP2 | DATE3               | OP3 |
-| -: | :------------------ | :-- | :------------------ | :-- | :------------------ | :-- |
-|  1 | 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA                  | NA  |
-|  2 | 2000-04-01 00:00:00 | A   | NA                  | NA  | NA                  | NA  |
-|  3 | 2014-04-07 00:00:00 | D   | NA                  | NA  | NA                  | NA  |
-|  4 | 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B   | 2009-01-20 00:00:00 | D   |
-|  5 | 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A   | NA                  | NA  |
-|  6 | 2004-01-09 00:00:00 | B   | NA                  | NA  | NA                  | NA  |
+|   ID| DATE1               | OP1 | DATE2               | OP2 | DATE3               | OP3 |
+|----:|:--------------------|:----|:--------------------|:----|:--------------------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA                  | NA  |
+|    2| 2000-04-01 00:00:00 | A   | NA                  | NA  | NA                  | NA  |
+|    3| 2014-04-07 00:00:00 | D   | NA                  | NA  | NA                  | NA  |
+|    4| 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B   | 2009-01-20 00:00:00 | D   |
+|    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A   | NA                  | NA  |
+|    6| 2004-01-09 00:00:00 | B   | NA                  | NA  | NA                  | NA  |
 
-Currently in `rquery`/`R` all of the steps except the
-`list(sort(unique()))` step are easy to translate into `SQL`. So this
-variation (which does not include the problematic aggregation step) is
-easy to translate into `SQL` for use in databases.
+Currently in `rquery`/`R` all of the steps except the `list(sort(unique()))` step are easy to translate into `SQL`. So this variation (which does not include the problematic aggregation step) is easy to translate into `SQL` for use in databases.
 
 ``` r
 # get an example database connection
@@ -334,17 +298,13 @@ DBI::dbDisconnect(raw_connection)
 knitr::kable(res_db)
 ```
 
-| ID | DATE1               | DATE2               | DATE3               | OP1 | OP2 | OP3 |
-| -: | :------------------ | :------------------ | :------------------ | :-- | :-- | :-- |
-|  1 | 2001-01-02 00:00:00 | 2015-04-25 00:00:00 | NA                  | A   | B   | NA  |
-|  2 | 2000-04-01 00:00:00 | NA                  | NA                  | A   | NA  | NA  |
-|  3 | 2014-04-07 00:00:00 | NA                  | NA                  | D   | NA  | NA  |
-|  4 | 2005-06-16 00:00:00 | 2009-01-20 00:00:00 | 2009-01-20 00:00:00 | A   | B   | D   |
-|  5 | 2003-11-09 00:00:00 | 2010-10-10 00:00:00 | NA                  | B   | A   | NA  |
-|  6 | 2004-01-09 00:00:00 | NA                  | NA                  | B   | NA  | NA  |
+|   ID| DATE1               | DATE2               | DATE3               | OP1 | OP2 | OP3 |
+|----:|:--------------------|:--------------------|:--------------------|:----|:----|:----|
+|    1| 2001-01-02 00:00:00 | 2015-04-25 00:00:00 | NA                  | A   | B   | NA  |
+|    2| 2000-04-01 00:00:00 | NA                  | NA                  | A   | NA  | NA  |
+|    3| 2014-04-07 00:00:00 | NA                  | NA                  | D   | NA  | NA  |
+|    4| 2005-06-16 00:00:00 | 2009-01-20 00:00:00 | 2009-01-20 00:00:00 | A   | B   | D   |
+|    5| 2003-11-09 00:00:00 | 2010-10-10 00:00:00 | NA                  | B   | A   | NA  |
+|    6| 2004-01-09 00:00:00 | NA                  | NA                  | B   | NA  | NA  |
 
-Note: column order is not considered essential in `rquery` pipelines
-(though the `select_columns()` can specify it). Also, the entire query
-*can* be run in a database with the correct user-specified aggregation
-function. We have a demonstration of this in our `Python` version of
-this example.
+Note: column order is not considered essential in `rquery` pipelines (though the `select_columns()` can specify it). Also, the entire query *can* be run in a database with the correct user-specified aggregation function. We have a demonstration of this in our `Python` version of this example.

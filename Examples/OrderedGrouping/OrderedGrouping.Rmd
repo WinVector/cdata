@@ -58,9 +58,13 @@ transform <- blocks_to_rowrecs_spec(
   controlTable = diagram,
   recordKeys = 'ID')
 
+concat_values = function(v) {
+  paste(sort(unique(v)), collapse=", ")
+}
+
 ops <- local_td(d) %.>%
   project(.,
-          OP := list(sort(unique(OP))),
+          OP := concat_values(OP),    
           groupby = c("ID", "DATE")) %.>%
   extend(.,
          rank %:=% row_number(),
@@ -96,18 +100,23 @@ d <- wrapr::build_frame(
     3   , "D" , "2014-04-07 00:00:00" |
     4   , "C" , "2012-12-01 00:00:00" |
     4   , "A" , "2005-06-16 00:00:00" |
-    4   , "D" , "2009-01-20 00:00:00" |
-    4   , "B" , "2009-01-20 00:00:00" |
+    4   , "D" , "2009-01-20 00:00:00" |  # this and the next row
+    4   , "B" , "2009-01-20 00:00:00" |  # are on the same date
     5   , "A" , "2010-10-10 00:00:00" |
     5   , "B" , "2003-11-09 00:00:00" |
     6   , "B" , "2004-01-09 00:00:00" )
 
+
+concat_values = function(v) {
+  paste(sort(unique(v)), collapse=", ")
+}
+
 # specify the first few data processing steps
 ops <- local_td(d) %.>%
-  project(.,
-          OP := list(sort(unique(OP))),
+  project(.,  # fuse all the ops on same date/id into one string
+          OP := concat_values(OP),  
           groupby = c("ID", "DATE")) %.>%
-  extend(.,
+  extend(.,   # rank each ID group in order of date
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = "DATE")
@@ -181,10 +190,10 @@ We are now ready to put all of our operations together into one composite pipeli
 ```{r}
 # specify the operations 
 ops <- local_td(d) %.>%
-  project(.,  # get a vector of ops for each ID, DATE pair
-          OP := list(sort(unique(OP))),
+  project(.,  # fuse all the ops on same date/id into one string
+          OP := concat_values(OP),
           groupby = c("ID", "DATE")) %.>%
-  extend(.,  # add a per-ID rank by DATE column
+  extend(.,  # rank each ID group in order of date
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = "DATE") %.>%
@@ -203,12 +212,12 @@ And we are done.
 
 ## A variation
 
-If the ask had not wanted same-timestamp `OP`s merged into a list the solution would have looked like this:
+If the ask had not wanted to merge ties, the solution would look like this:
 
 ```{r}
 # specify the operations 
 ops <- local_td(d) %.>%
-  extend(.,  # add a per-ID rank by DATE and OP columns
+  extend(., # now we have to order by Date AND op
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = c("DATE", "OP")) %.>%
@@ -223,7 +232,7 @@ res <- d %.>% ops
 knitr::kable(res)
 ```
 
-Currently in `rquery`/`R` all of the steps except the `list(sort(unique()))` step are easy to translate into `SQL`.  So this variation (which does not include the problematic aggregation step) is easy to translate into `SQL` for use in databases.
+Currently in `rquery`/`R` all of the steps except the `concat_values` step are easy to translate into `SQL`.  So this variation (which does not include the problematic aggregation step) is easy to translate into `SQL` for use in databases.
 
 ```{r}
 # get an example database connection
@@ -251,6 +260,14 @@ DBI::dbDisconnect(raw_connection)
 knitr::kable(res_db)
 ```
 
-Note: column order is not considered essential in `rquery` pipelines (though the `select_columns()` can specify it).  Also, the entire query *can* be run in a database with the correct user-specified aggregation function.  We have a demonstration of this in our `Python` version of this example.
+Note: column order is not considered essential in `rquery` pipelines (though it is easy to fix once you are in R). 
 
+```{r}
+res_db <- res_db[qc(ID, DATE1, OP1, DATE2, OP2, DATE3, OP3)]
+
+knitr::kable(res_db)
+
+```
+
+Also, the entire query *can* be run in a database with the correct user-specified aggregation function.  We have a demonstration of this in our `Python` version of this example.
 
