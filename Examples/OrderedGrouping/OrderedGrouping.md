@@ -141,7 +141,8 @@ this:
 
 The `cdata` data shaping rule is: draw a picture of any non-trivial
 (more than one row) data records in their full generality. In our case
-the interesting record is the following.
+the interesting record is the following (with the record `ID` columns
+suppressed for conciseness).
 
 ``` r
 # draw a picture of the record format
@@ -167,7 +168,33 @@ symbols `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3` are all
 stand-in names for values we see in our data. These symbols will be the
 column names of our new row-records.
 
-With this diagram in hand we can specify the data reshaping step.
+We have tutorials on how to build these diagrams
+[here](https://winvector.github.io/cdata/articles/design.html) and
+[here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+Essentially we draw one record of the input and output and match column
+names to stand-in interior values of the other. The output record is a
+single row, so we don’t have to explicitly pass it in. However it looks
+like the following.
+
+``` r
+row_record <- wrapr::qchar_frame(
+  "DATE1", "OP1", "DATE2", "OP2", "DATE3", "OP3" |
+   DATE1 ,  OP1 ,  DATE2 ,  OP2 ,  DATE3 ,  OP3  )
+
+knitr::kable(row_record)
+```
+
+| DATE1 | OP1 | DATE2 | OP2 | DATE3 | OP3 |
+| :---- | :-- | :---- | :-- | :---- | :-- |
+| DATE1 | OP1 | DATE2 | OP2 | DATE3 | OP3 |
+
+Notice the interior-data portions (the parts we wrote in the inputs as
+unquoted) of each table input are the cells that are matched from one
+record to the other. These are in fact just the earlier sample inputs
+and outputs with the values replaced with the placeholders `DATE1`,
+`DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
+
+With the diagram in hand we can specify the data reshaping step.
 
 ``` r
 transform <- blocks_to_rowrecs_spec(
