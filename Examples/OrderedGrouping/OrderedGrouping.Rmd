@@ -7,7 +7,7 @@ John Mount and Nina Zumel
 
 ## Introduction
 
-This is an example of an interesting data-wrangling/data-reshaping problem and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/). The `Python` version of this example can be found [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
+This is an example of an interesting data-wrangling/data-reshaping problem and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/). The `Python` version of this example can be found [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md).
 
 ## The problem
 
@@ -139,10 +139,14 @@ In the above code we used the `project()` operator to merge rows with duplicate 
 
 To reshape the data, we strongly encourage drawing out what one wants it terms of one input record and one output record.  With `cdata` doing so essentially solves the problem.
 
-So let's look at what happens only to the rows with `ID == 1`.  In this case we expect input rows that look like this:
+So let's look at what happens only to the rows with `ID == 1`.  In this case (after some column re-ordering, and row-padding) we expect an input block record of rows that look like this:
 
 ```{r, echo=FALSE}
-knitr::kable(d2[d2$ID==1, , drop=FALSE])
+r_example <- as.data.frame(d2[d2$ID==1, , drop=FALSE])
+r_example <- r_example[qc(ID, rank, DATE, OP)]
+r_example <- rbind(r_example,
+                   data.frame(ID = 1, rank = 3, DATE = NA, OP = NA))
+knitr::kable(r_example)
 ```
 
 And we want this record transformed into this:
@@ -184,6 +188,10 @@ knitr::kable(row_record)
 ```
 
 Notice the interior-data portions (the parts we wrote in the inputs as unquoted) of each table input are the cells that are matched from one record to the other.  These are in fact just the earlier sample inputs and outputs with the values replaced with the placeholders `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
+
+We have a one minute video of how to work out the placeholder labels and build the diagram [here](https://youtu.be/JzaZBjsLpUQ):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JzaZBjsLpUQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 With the diagram in hand we can specify the data reshaping step. Since we are moving the data from blocks to row records, we use the function `blocks_to_rowrecs_spec` to create the reshaping transform.
 

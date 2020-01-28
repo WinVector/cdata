@@ -9,7 +9,7 @@ This is an example of an interesting data-wrangling/data-reshaping
 problem and how to solve it in [`R`](https://www.r-project.org) using
 [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/).
 The `Python` version of this example can be found
-[here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
+[here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md).
 
 ## The problem
 
@@ -139,12 +139,14 @@ terms of one input record and one output record. With `cdata` doing so
 essentially solves the problem.
 
 So let’s look at what happens only to the rows with `ID == 1`. In this
-case we expect input rows that look like this:
+case (after some column re-ordering, and row-padding) we expect an input
+block record of rows that look like this:
 
-| ID | DATE                | OP | rank |
-| -: | :------------------ | :- | ---: |
-|  1 | 2001-01-02 00:00:00 | A  |    1 |
-|  1 | 2015-04-25 00:00:00 | B  |    2 |
+| ID | rank | DATE                | OP |
+| -: | ---: | :------------------ | :- |
+|  1 |    1 | 2001-01-02 00:00:00 | A  |
+|  1 |    2 | 2015-04-25 00:00:00 | B  |
+|  1 |    3 | NA                  | NA |
 
 And we want this record transformed into
 this:
@@ -221,6 +223,14 @@ unquoted) of each table input are the cells that are matched from one
 record to the other. These are in fact just the earlier sample inputs
 and outputs with the values replaced with the placeholders `DATE1`,
 `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
+
+We have a one minute video of how to work out the placeholder labels and
+build the diagram
+[here](https://youtu.be/JzaZBjsLpUQ):
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JzaZBjsLpUQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+
+</iframe>
 
 With the diagram in hand we can specify the data reshaping step. Since
 we are moving the data from blocks to row records, we use the function
