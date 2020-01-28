@@ -225,12 +225,7 @@ and outputs with the values replaced with the placeholders `DATE1`,
 `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
 
 We have a one minute video of how to work out the placeholder labels and
-build the diagram
-[here](https://youtu.be/JzaZBjsLpUQ).
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JzaZBjsLpUQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-
-</iframe>
+build the diagram [here](https://youtu.be/JzaZBjsLpUQ).
 
 With the diagram in hand we can specify the data reshaping step. Since
 we are moving the data from blocks to row records, we use the function
