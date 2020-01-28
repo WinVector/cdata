@@ -1,25 +1,17 @@
 Ordered Grouping Example
 ================
 
+John Mount and Nina Zumel
+
 Introduction
 ------------
 
-I'd like to share an example of data-wrangling/data-reshaping and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/) (the `Python` version of this example can be foune [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
-
-In an RStudio Community note, user <code>hklovs</code> asked [how to re-organize some data](https://community.rstudio.com/t/tidying-data-reorganizing-tibble/48292).
-
-The solution is:
-
--   Get a good definition of what is wanted
--   Re-process the data so any advisory column you wished you had is actually there
--   And finish the problem.
+This is an example of an interesting data-wrangling/data-reshaping problem and how to solve it in [`R`](https://www.r-project.org) using [`rqdatatable`](https://github.com/WinVector/rqdatatable/)/[`cdata`](https://github.com/WinVector/cdata/). The `Python` version of this example can be found [here](https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/ranking_pivot_example.md)).
 
 The problem
 -----------
 
-In this example the ask was equivalent to:
-
-How do I transform data from this format:
+In an RStudio Community note, user <code>hklovs</code> asked [how to re-organize some data](https://community.rstudio.com/t/tidying-data-reorganizing-tibble/48292). The ask was essentially to transform data from this format:
 
 |   ID| OP  | DATE                |
 |----:|:----|:--------------------|
@@ -46,12 +38,22 @@ Into this format:
 |    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A    | NA                  | NA  |
 |    6| 2004-01-09 00:00:00 | B   | NA                  | NA   | NA                  | NA  |
 
+That is: for each `ID` pick the first three operations ordered by date, merging operations with the same timestamp. Then write these results into a single row for each `ID`.
+
 The solution
 ------------
 
-What the ask translates to is: per `ID` pick the first three operations ordered by date, merging operations with the same timestamp. Then write these results into a single row for each `ID`.
+A good way to solve any data-wrangling problem is to:
 
-The first step isn't to worry about the data format, it is an inessential or solvable difficulty. Instead make any extra descriptions or controls you need explicit. In this case we need ranks. So let's first add those.
+-   Get a good definition of what is wanted
+-   Re-process the data so any advisory column you wished you had is actually there
+-   And finish the problem.
+
+Let's apply this process to our example problem.
+
+### Adding an advisory rank column
+
+The first step isn't to worry about the data format, as it is an inessential or solvable difficulty. Instead make any extra descriptions or controls you need explicit. In this case we need to date-rank and to merge the operations (per `ID`). So let's do that first.
 
 ``` r
 # bring in all of our packages
@@ -69,23 +71,25 @@ d <- wrapr::build_frame(
     3   , "D" , "2014-04-07 00:00:00" |
     4   , "C" , "2012-12-01 00:00:00" |
     4   , "A" , "2005-06-16 00:00:00" |
-    4   , "D" , "2009-01-20 00:00:00" |
-    4   , "B" , "2009-01-20 00:00:00" |
+    4   , "D" , "2009-01-20 00:00:00" |  # this and the next row
+    4   , "B" , "2009-01-20 00:00:00" |  # are on the same date
     5   , "A" , "2010-10-10 00:00:00" |
     5   , "B" , "2003-11-09 00:00:00" |
     6   , "B" , "2004-01-09 00:00:00" )
 
 
+# a function to paste a vector of strings together
 concat_values = function(v) {
   paste(sort(unique(v)), collapse=", ")
 }
 
-# specify the first few data processing steps
+# merge the operations to get one row per ID and DATE
+# then rank the rows for each ID by DATE
 ops <- local_td(d) %.>%
-  project(.,
-          OP := concat_values(OP),
+  project(.,  # fuse all the ops on same date/id into one string
+          OP := concat_values(OP),  
           groupby = c("ID", "DATE")) %.>%
-  extend(.,
+  extend(.,   # rank each ID group in order of date
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = "DATE")
@@ -110,9 +114,11 @@ knitr::kable(d2)
 |    5| 2010-10-10 00:00:00 | A    |     2|
 |    6| 2004-01-09 00:00:00 | B    |     1|
 
-In the above code we used the `project()` operator to combine rows with duplicates combined into vectors such as `c("B", "D")`. Then we added a rank column. This gets us much closer to a complete solution. All we have to do now is re-arrange the data.
+In the above code we used the `project()` operator to merge rows with duplicate `ID` and `DATE` into a single string listing all the operations that occurred, for example "B, D". Then we added a rank column. This gives us all the information we need for a complete solution to the original problem. Now all we have to do is re-arrange the data.
 
-First data re-arrangement we strongly encourage drawing out what one wants it terms of one input record and one output record. With `cdata` doing so essentially solves the problem.
+### Reshaping the data
+
+To reshape the data, we strongly encourage drawing out what one wants it terms of one input record and one output record. With `cdata` doing so essentially solves the problem.
 
 So let's look at what happens only to the rows with `ID == 1`. In this case we expect input rows that look like this:
 
@@ -127,7 +133,11 @@ And we want this record transformed into this:
 |----:|:--------------------|:----|:--------------------|:----|:------|:----|
 |    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA    | NA  |
 
-The `cdata` data shaping rule is: draw a picture of any non-trivial (more than one row) data records in their full generality. In our case the interesting record is the following (with the record `ID` columns suppressed for conciseness).
+We call the above record form a *row record*, because all the data for a given `ID` is in a single row. When the data for a given `ID` is not in a single row, we say it is in a *block*. In addition to having a per-record key (`ID` in our example), each row of a block is uniquely identified by an in-record structure key (in this case, `rank`).
+
+`cdata` moves records from row shaped to block shaped, and vice-versa (It can also move data from one block shape to another, by going through a row).
+
+To use `cdata`, draw a picture of any block record in its full generality. In our case the interesting record is the input shape, which looks like the following (with the record `ID` columns suppressed for conciseness).
 
 ``` r
 # draw a picture of the record format
@@ -148,6 +158,8 @@ knitr::kable(diagram)
 
 The column names `rank`, `DATE`, and `OP` are all column names of the table we are starting with. The values `1`, `2`, and `3` are all values we expect to see in the `rank` column of the working data frame. And the symbols `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3` are all stand-in names for values we see in our data. These symbols will be the column names of our new row-records.
 
+By default, the first column of a diagram is the in-record key (that is why we put `rank` first). However, any set of columns can be specified as the in-record keys through the package interfaces.
+
 We have tutorials on how to build these diagrams [here](https://winvector.github.io/cdata/articles/design.html) and [here](https://winvector.github.io/cdata/articles/blocksrecs.html). Essentially we draw one record of the input and output and match column names to stand-in interior values of the other. The output record is a single row, so we don't have to explicitly pass it in. However it looks like the following.
 
 ``` r
@@ -164,15 +176,15 @@ knitr::kable(row_record)
 
 Notice the interior-data portions (the parts we wrote in the inputs as unquoted) of each table input are the cells that are matched from one record to the other. These are in fact just the earlier sample inputs and outputs with the values replaced with the placeholders `DATE1`, `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
 
-With the diagram in hand we can specify the data reshaping step.
+With the diagram in hand we can specify the data reshaping step. Since we are moving the data from blocks to row records, we use the function `blocks_to_rowrecs_spec` to create the reshaping transform.
 
 ``` r
 transform <- blocks_to_rowrecs_spec(
-  controlTable = diagram,
+  controlTable = diagram, # data frame describing the block
   recordKeys = 'ID')
 ```
 
-The transform specifies that records are found in the format shown in diagram, and are to be converted to rows. We can confirm the intent by printing the transform.
+The transform specifies that records are found in the format shown in `diagram`, and are to be converted to rows. We can confirm the intent by printing the transform.
 
 ``` r
 print(transform)
@@ -196,15 +208,39 @@ print(transform)
     ##  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
     ## }
 
-We are now ready to put all of our operations together into one composite pipeline
+If we apply this transform to the intermediate table `d2`, we have the data in the format we need (except possibly for the order of `ID`).
+
+``` r
+d2 %.>% # this MUST be the wrapr dot-pipe
+  transform %.>%
+  knitr::kable(.)
+```
+
+|   ID| DATE1               | OP1 | DATE2               | OP2  | DATE3               | OP3 |
+|----:|:--------------------|:----|:--------------------|:-----|:--------------------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B    | NA                  | NA  |
+|    2| 2000-04-01 00:00:00 | A   | NA                  | NA   | NA                  | NA  |
+|    3| 2014-04-07 00:00:00 | D   | NA                  | NA   | NA                  | NA  |
+|    4| 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B, D | 2012-12-01 00:00:00 | C   |
+|    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A    | NA                  | NA  |
+|    6| 2004-01-09 00:00:00 | B   | NA                  | NA   | NA                  | NA  |
+
+``` r
+# if you prefer not to use a pipe:
+# layout_by(transform, d2)
+```
+
+### The full transformation
+
+We are now ready to put all of our operations together into one composite pipeline, starting from a specification of the original data `d`.
 
 ``` r
 # specify the operations 
 ops <- local_td(d) %.>%
-  project(.,  # paste ops together for each ID, DATE pair
+  project(.,  # fuse all the ops on same date/id into one string
           OP := concat_values(OP),
           groupby = c("ID", "DATE")) %.>%
-  extend(.,  # add a per-ID rank by DATE column
+  extend(.,  # rank each ID group in order of date
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = "DATE") %.>%
@@ -233,12 +269,12 @@ And we are done.
 A variation
 -----------
 
-If the ask had not wanted same-timestamp `OP`s merged into a list the solution would have looked like this:
+If we had not wanted to merge ties, the solution would look like this:
 
 ``` r
 # specify the operations 
 ops <- local_td(d) %.>%
-  extend(.,  # add a per-ID rank by DATE and OP columns
+  extend(., # now we have to order by Date AND op
          rank %:=% row_number(),
          partitionby = "ID",
          orderby = c("DATE", "OP")) %.>%
@@ -262,7 +298,7 @@ knitr::kable(res)
 |    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A   | NA                  | NA  |
 |    6| 2004-01-09 00:00:00 | B   | NA                  | NA  | NA                  | NA  |
 
-Currently in `rquery`/`R` all of the steps except the `list(sort(unique()))` step are easy to translate into `SQL`. So this variation (which does not include the problematic aggregation step) is easy to translate into `SQL` for use in databases.
+Currently in `rquery`/`R` all of the steps except the `concat_values` step are easy to translate into `SQL`. So this variation (which does not include the problematic aggregation step) is easy to translate into `SQL` for use in databases.
 
 ``` r
 # get an example database connection
@@ -307,4 +343,21 @@ knitr::kable(res_db)
 |    5| 2003-11-09 00:00:00 | 2010-10-10 00:00:00 | NA                  | B   | A   | NA  |
 |    6| 2004-01-09 00:00:00 | NA                  | NA                  | B   | NA  | NA  |
 
-Note: column order is not considered essential in `rquery` pipelines (though the `select_columns()` can specify it). Also, the entire query *can* be run in a database with the correct user-specified aggregation function. We have a demonstration of this in our `Python` version of this example.
+Note: column order is not considered essential in `rquery` pipelines (though it is easy to fix once you are in R).
+
+``` r
+res_db <- res_db[qc(ID, DATE1, OP1, DATE2, OP2, DATE3, OP3)]
+
+knitr::kable(res_db)
+```
+
+|   ID| DATE1               | OP1 | DATE2               | OP2 | DATE3               | OP3 |
+|----:|:--------------------|:----|:--------------------|:----|:--------------------|:----|
+|    1| 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B   | NA                  | NA  |
+|    2| 2000-04-01 00:00:00 | A   | NA                  | NA  | NA                  | NA  |
+|    3| 2014-04-07 00:00:00 | D   | NA                  | NA  | NA                  | NA  |
+|    4| 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | B   | 2009-01-20 00:00:00 | D   |
+|    5| 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A   | NA                  | NA  |
+|    6| 2004-01-09 00:00:00 | B   | NA                  | NA  | NA                  | NA  |
+
+Also, the entire query *can* be run in a database with the correct user-specified aggregation function. We have a demonstration of this in our `Python` version of this example.
