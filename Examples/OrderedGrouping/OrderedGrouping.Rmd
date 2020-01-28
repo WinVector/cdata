@@ -287,7 +287,7 @@ DBI::dbDisconnect(raw_connection)
 knitr::kable(res_db)
 ```
 
-Note: column order is not considered essential in `rquery` pipelines (though it is easy to fix once you are in R). 
+Note: column order is not considered essential in `rquery` pipelines (though it is easy to fix once you are in `R`). 
 
 ```{r}
 res_db <- res_db[qc(ID, DATE1, OP1, DATE2, OP2, DATE3, OP3)]

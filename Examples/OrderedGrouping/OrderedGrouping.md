@@ -399,7 +399,7 @@ knitr::kable(res_db)
 |  6 | 2004-01-09 00:00:00 | NA                  | NA                  | B   | NA  | NA  |
 
 Note: column order is not considered essential in `rquery` pipelines
-(though it is easy to fix once you are in R).
+(though it is easy to fix once you are in `R`).
 
 ``` r
 res_db <- res_db[qc(ID, DATE1, OP1, DATE2, OP2, DATE3, OP3)]
