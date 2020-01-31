@@ -322,6 +322,45 @@ knitr::kable(res)
 |  5 | 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A    | NA                  | NA  |
 |  6 | 2004-01-09 00:00:00 | B   | NA                  | NA   | NA                  | NA  |
 
+We could also try this with an alternate concatenation that builds lists
+(instead of concatenating strings).
+
+``` r
+# a function to collect values in a sorted list
+concat_values2 = function(v) {
+  list(sort(unique(v)))
+}
+
+
+# specify the operations 
+ops2 <- local_td(d) %.>%
+  project(.,  # fuse all the ops on same date/id into one string
+          OP := concat_values2(OP),
+          groupby = c("ID", "DATE")) %.>%
+  extend(.,  # rank each ID group in order of date
+         rank %:=% row_number(),
+         partitionby = "ID",
+         orderby = "DATE") %.>%
+  transform %.>%  # transform the record shape
+  orderby(.,  # ensure presentation is ordered by ID
+          'ID')
+
+# apply the operations to data
+res2 <- d %.>% ops2
+
+# present the results
+knitr::kable(res2)
+```
+
+| ID | DATE1               | OP1 | DATE2               | OP2         | DATE3               | OP3 |
+| -: | :------------------ | :-- | :------------------ | :---------- | :------------------ | :-- |
+|  1 | 2001-01-02 00:00:00 | A   | 2015-04-25 00:00:00 | B           | NA                  | NA  |
+|  2 | 2000-04-01 00:00:00 | A   | NA                  | NA          | NA                  | NA  |
+|  3 | 2014-04-07 00:00:00 | D   | NA                  | NA          | NA                  | NA  |
+|  4 | 2005-06-16 00:00:00 | A   | 2009-01-20 00:00:00 | c(“B”, “D”) | 2012-12-01 00:00:00 | C   |
+|  5 | 2003-11-09 00:00:00 | B   | 2010-10-10 00:00:00 | A           | NA                  | NA  |
+|  6 | 2004-01-09 00:00:00 | B   | NA                  | NA          | NA                  | NA  |
+
 And we are done.
 
 ## A variation

@@ -51,6 +51,7 @@ transform <- blocks_to_rowrecs_spec(
   controlTable = diagram,
   recordKeys = 'ID')
 
+# a function to paste a vector of strings together
 concat_values = function(v) {
   paste(sort(unique(v)), collapse=", ")
 }
@@ -239,6 +240,36 @@ res <- d %.>% ops
 
 # present the results
 knitr::kable(res)
+```
+
+We could also try this with an alternate concatenation that builds lists (instead of concatenating strings).
+
+```{r}
+
+# a function to collect values in a sorted list
+concat_values2 = function(v) {
+  list(sort(unique(v)))
+}
+
+
+# specify the operations 
+ops2 <- local_td(d) %.>%
+  project(.,  # fuse all the ops on same date/id into one string
+          OP := concat_values2(OP),
+          groupby = c("ID", "DATE")) %.>%
+  extend(.,  # rank each ID group in order of date
+         rank %:=% row_number(),
+         partitionby = "ID",
+         orderby = "DATE") %.>%
+  transform %.>%  # transform the record shape
+  orderby(.,  # ensure presentation is ordered by ID
+          'ID')
+
+# apply the operations to data
+res2 <- d %.>% ops2
+
+# present the results
+knitr::kable(res2)
 ```
 
 And we are done.
