@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
       </span>
     </div>
 
@@ -169,7 +169,7 @@
 <a class="sourceLine" id="cb1-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb1-47" data-line-number="47"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png"><!-- --></p>
+<p><img src="tools/README-ex0-1.png"><!-- --></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># show the transform</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(transform)</a>
@@ -225,7 +225,7 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"cdata"</span>)</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># declare our columns of interest</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">meas_vars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qc.html">qc</a></span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">meas_vars &lt;-<span class="st"> </span><span class="kw">qc</span>(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10">category_variable &lt;-<span class="st"> "Species"</span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co"># build a control with all pairs of variables as value columns</span></a>
@@ -235,11 +235,11 @@
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co"># one copy of columns is coordinate names second copy is values</span></a>
 <a class="sourceLine" id="cb3-17" data-line-number="17">controlTable &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(controlTable, controlTable)</a>
 <a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co"># name the value columns value1 and value2</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qc.html">qc</a></span>(v1, v2, value1, value2)</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(controlTable) &lt;-<span class="st"> </span><span class="kw">qc</span>(v1, v2, value1, value2)</a>
 <a class="sourceLine" id="cb3-20" data-line-number="20">transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
 <a class="sourceLine" id="cb3-21" data-line-number="21">  controlTable,</a>
 <a class="sourceLine" id="cb3-22" data-line-number="22">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>),</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">  <span class="dt">controlTableKeys =</span> <span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qc.html">qc</a></span>(v1, v2),</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">  <span class="dt">controlTableKeys =</span> <span class="kw">qc</span>(v1, v2),</a>
 <a class="sourceLine" id="cb3-24" data-line-number="24">  <span class="dt">checkKeys =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb3-25" data-line-number="25"></a>
 <a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co"># do the unpivot to convert the row records to multiple block records</span></a>
@@ -254,7 +254,7 @@
 <a class="sourceLine" id="cb3-35" data-line-number="35"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-36" data-line-number="36"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-37" data-line-number="37"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="ot">NULL</span>)</a></code></pre></div>
-<p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0_1-1.png"><!-- --></p>
+<p><img src="tools/README-ex0_1-1.png"><!-- --></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># show transform</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(transform)</a>

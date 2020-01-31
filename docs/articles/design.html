@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Designing Transforms for Data Reshaping with cdata</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2020-01-20</h4>
+            <h4 class="date">2020-01-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/design.Rmd"><code>vignettes/design.Rmd</code></a></small>
       <div class="hidden name"><code>design.Rmd</code></div>
@@ -192,33 +192,34 @@
 </table>
 <p>Specify the layout transform.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"cdata"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">qchar_frame</a></span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>    , <span class="st">"Width"</span>     <span class="op">|</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  "Petal"</span>      , Petal.Length, Petal.Width <span class="op">|</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  "Sepal"</span>      , Sepal.Length, Sepal.Width )</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  controlTable,</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(layout)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; {</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;  # becomes</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; }</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Loading required package: wrapr</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>    , <span class="st">"Width"</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  "Petal"</span>      , Petal.Length, Petal.Width <span class="op">|</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">  "Sepal"</span>      , Sepal.Length, Sepal.Width )</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">layout &lt;-<span class="st"> </span><span class="kw"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">  controlTable,</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(layout)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; {</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;  # becomes</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt; }</span></a></code></pre></div>
 <p>And we can now perform the transform.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">iris <span class="op">%.&gt;%</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(.)</a></code></pre></div>
