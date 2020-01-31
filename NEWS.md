@@ -1,7 +1,8 @@
 
-# cdata 1.1.6 2020/01/30
+# cdata 1.1.6 2020/01/31
 
  * fix noSuggests CRAN issue.
+ * Move wrapr to Depends.
  * Add rmarkdown suggests.
 
 # cdata 1.1.5 2020/01/21
