@@ -1,5 +1,5 @@
 
-# cdata 1.1.6 2020/01/31
+# cdata 1.1.6 2020/02/01
 
  * fix noSuggests CRAN issue.
  * Move wrapr to Depends.
