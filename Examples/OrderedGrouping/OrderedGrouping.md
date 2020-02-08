@@ -33,7 +33,9 @@ The ask was essentially to transform data from this format:
 |  6 | B  | 2004-01-09 00:00:00 |
 
 Into this
-format:
+    format:
+
+    ## No methods found in package 'wrapr' for request: 'ApplyTo' when loading 'rquery'
 
 | ID | DATE1               | OP1 | DATE2               | OP2  | DATE3               | OP3 |
 | -: | :------------------ | :-- | :------------------ | :--- | :------------------ | :-- |
@@ -224,8 +226,8 @@ record to the other. These are in fact just the earlier sample inputs
 and outputs with the values replaced with the placeholders `DATE1`,
 `DATE2`, `DATE3`, `OP1`, `OP2`, and `OP3`.
 
-We have a one minute video of how to work out the placeholder labels and
-build the diagram [here](https://youtu.be/JzaZBjsLpUQ).
+We have a two minute video of how to work out the placeholder labels and
+build the diagram [here](https://youtu.be/8TVoQdnvfqQ).
 
 With the diagram in hand we can specify the data reshaping step. Since
 we are moving the data from blocks to row records, we use the function
