@@ -58,6 +58,7 @@ head(iris)
 
 library("ggplot2")
 library("cdata")
+ #  Loading required package: wrapr
 
 #
 # build a control table with a "key column" flower_part
@@ -147,6 +148,11 @@ A tutorial on how to design a `controlTable` can be found
 [here](https://winvector.github.io/cdata/articles/design.html). And some
 discussion of the nature of records in `cdata` can be found
 [here](https://winvector.github.io/cdata/articles/blocksrecs.html).
+
+-----
+
+A more detailed video tutorial is available
+[here](https://github.com/WinVector/cdata/blob/master/Examples/OrderedGrouping/OrderedGrouping.md).
 
 -----
 

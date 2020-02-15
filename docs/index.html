@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
       </span>
     </div>
 
@@ -137,38 +137,39 @@
 <a class="sourceLine" id="cb1-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb1-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"ggplot2"</span>)</a>
 <a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"cdata"</span>)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># build a control table with a "key column" flower_part</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># and "value columns" Length and Width</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">qchar_frame</a></span>(</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22">  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="st">    "Petal"</span>    , Petal.Length , Petal.Width <span class="op">|</span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="st">    "Sepal"</span>    , Sepal.Length , Sepal.Width )</a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
-<a class="sourceLine" id="cb1-27" data-line-number="27">  controlTable,</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co"># do the unpivot to convert the row records to block records</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co"># show the tranformed data</span></a>
-<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(iris_aug)</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"> <span class="co">#    iris_id Species flower_part Length Width</span></a>
-<a class="sourceLine" id="cb1-36" data-line-number="36"> <span class="co">#  1       1  setosa       Petal    1.4   0.2</span></a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"> <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"> <span class="co">#  3       2  setosa       Petal    1.4   0.2</span></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39"> <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span></a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"> <span class="co">#  5       3  setosa       Petal    1.3   0.2</span></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"> <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span></a>
-<a class="sourceLine" id="cb1-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb1-43" data-line-number="43"><span class="co"># plot the graph</span></a>
-<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-16" data-line-number="16"> <span class="co">#  Loading required package: wrapr</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># build a control table with a "key column" flower_part</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># and "value columns" Length and Width</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">controlTable &lt;-<span class="st"> </span>wrapr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/wrapr/man/qchar_frame.html">qchar_frame</a></span>(</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="st">    "Petal"</span>    , Petal.Length , Petal.Width <span class="op">|</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="st">    "Sepal"</span>    , Sepal.Length , Sepal.Width )</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">transform &lt;-<span class="st"> </span><span class="kw"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">  controlTable,</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">  <span class="dt">recordKeys =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co"># do the unpivot to convert the row records to block records</span></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32">iris_aug &lt;-<span class="st"> </span>iris <span class="op">%.&gt;%</span><span class="st"> </span>transform</a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co"># show the tranformed data</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(iris_aug)</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"> <span class="co">#    iris_id Species flower_part Length Width</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37"> <span class="co">#  1       1  setosa       Petal    1.4   0.2</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"> <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"> <span class="co">#  3       2  setosa       Petal    1.4   0.2</span></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"> <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"> <span class="co">#  5       3  setosa       Petal    1.3   0.2</span></a>
+<a class="sourceLine" id="cb1-42" data-line-number="42"> <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span></a>
+<a class="sourceLine" id="cb1-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="co"># plot the graph</span></a>
+<a class="sourceLine" id="cb1-45" data-line-number="45"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(iris_aug, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x=</span>Length, <span class="dt">y=</span>Width)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">color=</span>Species, <span class="dt">shape=</span>Species)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>flower_part, <span class="dt">labeller =</span> label_both, <span class="dt">scale =</span> <span class="st">"free"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Iris dimensions"</span>) <span class="op">+</span><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
 <p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/README-ex0-1.png"><!-- --></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># show the transform</span></a>
@@ -215,6 +216,8 @@
 <a class="sourceLine" id="cb2-43" data-line-number="43"> <span class="co">#  $allow_rqdatatable</span></a>
 <a class="sourceLine" id="cb2-44" data-line-number="44"> <span class="co">#  [1] TRUE</span></a></code></pre></div>
 <p>More details on the above example can be found <a href="http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>. And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<hr>
+<p>A more detailed video tutorial is available <a href="https://github.com/WinVector/cdata/blob/master/Examples/OrderedGrouping/OrderedGrouping.md">here</a>.</p>
 <hr>
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>

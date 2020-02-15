@@ -1,4 +1,8 @@
 
+# cdata 1.1.7 2020/02/15
+
+ * Documentation improvements.
+
 # cdata 1.1.6 2020/02/01
 
  * fix noSuggests CRAN issue.

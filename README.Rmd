@@ -90,6 +90,10 @@ More details on the above example can be found [here](http://www.win-vector.com/
 
 ----
 
+A more detailed video tutorial is available [here](https://github.com/WinVector/cdata/blob/master/Examples/OrderedGrouping/OrderedGrouping.md).
+
+----
+
 We can also exhibit a larger example of using `cdata` to create a scatter-plot matrix, or pair plot:
 
 ```{r ex0_1}
