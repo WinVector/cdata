@@ -4,7 +4,7 @@ author: "John Mount, Nina Zumel"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Records}
+  %\VignetteIndexEntry{Block Records and Row Records}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -56,7 +56,7 @@ The current favored idiomatic interfaces to `cdata` are:
 Let's look at `cdata` with some specific data.
 
 For our example let's take the task of re-organizing the `iris` data for a faceted plot, as
-discussed [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+discussed [here](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/).
 
 ```{r}
 library(cdata)
@@ -132,16 +132,16 @@ knitr::kable(iris_back)
 
 This differs from `reshape2` where the `melt()` to "molten" (or thin [RDF-triple](https://en.wikipedia.org/wiki/Semantic_triple)-like) is used as the universal intermediate form that one then `dcast()`s into desired arrangements.
 
-As we have said, a tutorial on *how* to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html) and [here](http://www.win-vector.com/blog/2019/04/controlling-data-layout-with-cdata/).
+As we have said, a tutorial on *how* to design a `controlTable` can be found [here](https://winvector.github.io/cdata/articles/design.html) and [here](https://win-vector.com/2019/04/16/controlling-data-layout-with-cdata/).
 
 Some additional (older) tutorials on `cdata` data transforms can are given below:
 
-  * [The faceted plot example](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/)
-  * [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
+  * [The faceted plot example](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/)
+  * [Fluid data reshaping with cdata](https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
   * [short free cdata screencast](https://youtu.be/4cYbP3kbc0k)
-  * ["Coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) 
-  * [The "fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html)
-  * [another worked example](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
+  * ["Coordinatized data" theory](https://winvector.github.io/FluidData/RowsAndColumns.html) 
+  * [The "fluid data" methodology](https://winvector.github.io/FluidData/FluidData.html)
+  * [another worked example](https://winvector.github.io/FluidData/DataWranglingAtScale.html).
 
 # Appendix
 

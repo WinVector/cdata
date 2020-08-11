@@ -143,7 +143,7 @@ unclass(transform)
 ```
 
 More details on the above example can be found
-[here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+[here](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/).
 A tutorial on how to design a `controlTable` can be found
 [here](https://winvector.github.io/cdata/articles/design.html). And some
 discussion of the nature of records in `cdata` can be found
@@ -243,17 +243,15 @@ The above is now wrapped into a [one-line command in
 -----
 
 The `cdata` package develops the idea of the [“coordinatized data”
-theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and
+theory](https://winvector.github.io/FluidData/RowsAndColumns.html) and
 includes an implementation of the [“fluid data”
-methodology](http://winvector.github.io/FluidData/FluidData.html).
+methodology](https://winvector.github.io/FluidData/FluidData.html).
 
-The main `cdata` interfaces are given by the following set of
-    methods:
+The main `cdata` interfaces are given by the following set of methods:
 
   - [`rowrecs_to_blocks_spec()`](https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html),
     for specifying how single row records map to general multi-row (or
-    block)
-    records.
+    block) records.
   - [`blocks_to_rowrecs_spec()`](https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html),
     for specifying how multi-row block records map to single-row
     records.
@@ -267,18 +265,16 @@ The main `cdata` interfaces are given by the following set of
   - `t()` (transpose/adjoint) to invert or reverse layout
     specifications.
 
-Some convenience functions
-    include:
+Some convenience functions include:
 
   - [`pivot_to_rowrecs()`](https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html),
     for moving data from multi-row block records with one value per row
-    (a single column of values) to single-row records \[`spread` or
-    `dcast`\].
+    (a single column of values) to single-row records `spread` or
+    `dcast`.
   - [`pivot_to_blocks()`/`unpivot_to_blocks()`](https://winvector.github.io/cdata/reference/unpivot_to_blocks.html),
     for moving data from single-row records to possibly multi row block
-    records with one row per value (a single column of values)
-    \[`gather` or
-    `melt`\].
+    records with one row per value (a single column of values) `gather`
+    or `melt`.
   - [`wrapr::qchar_frame()`](https://winvector.github.io/wrapr/reference/qchar_frame.html)
     a helper function for specifying record control table layout
     specifications.
@@ -289,11 +285,11 @@ The package vignettes can be found in the “Articles” tab of [the `cdata`
 documentation site](https://winvector.github.io/cdata/).
 
 The (older) recommended tutorial is: [Fluid data reshaping with
-cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html).
+cdata](https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html).
 We also have a (older) [short free cdata
 screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be
 found
-[here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+[here](https://winvector.github.io/FluidData/DataWranglingAtScale.html)).
 These concepts were later adapted from `cdata` by the `tidyr` package.
 
 -----

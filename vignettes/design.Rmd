@@ -4,7 +4,7 @@ author: "John Mount, Nina Zumel"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Design}
+  %\VignetteIndexEntry{Designing Transforms for Data Reshaping with cdata}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,22 +16,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-This note is about the design of data transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) package.  The `cdata` packages demonstrates the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html) for general 
+This note is about the design of data transforms using the [`cdata`](https://CRAN.R-project.org/package=cdata) package.  The `cdata` packages demonstrates the ["coordinatized data" theory](https://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](https://winvector.github.io/FluidData/FluidData.html) for general 
 data re-shaping.
 
 [`cdata`](https://CRAN.R-project.org/package=cdata) adheres to the so-called "Rule of Representation":
 
 > Fold knowledge into data, so program logic can be stupid and robust.
 >
-> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley
-, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
+> [*The Art of Unix Programming*, Erick S. Raymond, Addison-Wesley, 2003](http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263)
 
 The design principle expressed by this rule is that it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.
 
-We showed in [this article](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/) how `cdata` takes a transform control table to specify how you want your data reshaped.
+We showed in [this article](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/) how `cdata` takes a transform control table to specify how you want your data reshaped.
 The question then becomes: how do you come up with the transform control table?
 
-Let's discuss that using the example from the article: ["plotting the `iris` data faceted"](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+Let's discuss that using the example from the article: ["plotting the `iris` data faceted"](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/).
 
 The goal is to produce the following graph with `ggplot2` 
 
@@ -134,7 +133,7 @@ iris_aug %.>%
 ```
   
   
-The data is now ready to plot using `ggplot2` as was shown  [here](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/).
+The data is now ready to plot using `ggplot2` as was shown [here](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/).
 
 Designing a `blocks_to_rowrecs` transform is just as easy, as the `controlTable` has the same
 shape as the incoming record block (assuming the record partial key controlling column is the first column).  All 
@@ -165,10 +164,10 @@ Some discussion of the nature of block records and row records in `cdata` can be
 
 Some additional tutorials on `cdata` data transforms can are given below:
 
-  * [The faceted plot example](http://www.win-vector.com/blog/2018/10/faceted-graphs-with-cdata-and-ggplot2/)
-  * [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
+  * [The faceted plot example](https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/)
+  * [Fluid data reshaping with cdata](https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html)
   * [short free cdata screencast](https://youtu.be/4cYbP3kbc0k)
-  * ["Coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) 
-  * [The "fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html)
-  * [another worked example](http://winvector.github.io/FluidData/DataWranglingAtScale.html).
+  * ["Coordinatized data" theory](https://winvector.github.io/FluidData/RowsAndColumns.html) 
+  * [The "fluid data" methodology](https://winvector.github.io/FluidData/FluidData.html)
+  * [another worked example](https://winvector.github.io/FluidData/DataWranglingAtScale.html).
 

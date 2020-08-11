@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The [`cdata`](https://github.com/WinVector/cdata) package is a demonstration of the ["coordinatized data" theory](http://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](http://winvector.github.io/FluidData/FluidData.html).   
+The [`cdata`](https://github.com/WinVector/cdata) package is a demonstration of the ["coordinatized data" theory](https://winvector.github.io/FluidData/RowsAndColumns.html) and includes an implementation of the ["fluid data" methodology](https://winvector.github.io/FluidData/FluidData.html).   
 
 Briefly `cdata` supplies data transform operators that:
 
@@ -110,5 +110,5 @@ Some convenience functions include:
   
 The package vignettes can be found in the "Articles" tab of [the `cdata` documentation site](https://winvector.github.io/cdata/).
 
-The (older) recommended tutorial is: [Fluid data reshaping with cdata](http://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have an (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](http://winvector.github.io/FluidData/DataWranglingAtScale.html)).
+The (older) recommended tutorial is: [Fluid data reshaping with cdata](https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html). We also have an (older) [short free cdata screencast](https://youtu.be/4cYbP3kbc0k) (and another example can be found [here](https://winvector.github.io/FluidData/DataWranglingAtScale.html)).
 
