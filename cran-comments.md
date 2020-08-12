@@ -42,7 +42,17 @@
     693#> Status: OK
  
     devtools::check_win_devel()
-    
+    * using R Under development (unstable) (2020-08-10 r79000)
+    * using platform: x86_64-w64-mingw32 (64-bit)
+    * using session charset: ISO8859-1
+    * checking for file 'cdata/DESCRIPTION' ... OK
+    * checking extension type ... Package
+    * this is package 'cdata' version '1.1.7'
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    Maintainer: 'John Mount <jmount@win-vector.com>'
+    Status: OK
+
 ## Downstream dependencies
 
     Checked all declared dependencies
