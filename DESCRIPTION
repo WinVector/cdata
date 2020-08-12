@@ -2,7 +2,7 @@ Package: cdata
 Type: Package
 Title: Fluid Data Transformations
 Version: 1.1.7
-Date: 2020-08-11
+Date: 2020-08-12
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -21,9 +21,9 @@ LazyData: true
 RoxygenNote: 7.1.1
 Depends:
   R (>= 3.4.0),
-  wrapr (>= 1.9.6)
+  wrapr (>= 2.0.0)
 Imports:
-  rquery (>= 1.4.3),
+  rquery (>= 1.4.4),
   rqdatatable (>= 1.2.7),
   methods,
   stats
