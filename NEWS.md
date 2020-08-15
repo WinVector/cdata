@@ -1,4 +1,8 @@
 
+# cdata 1.1.8 2020/08/15
+
+ * More links to https.
+
 # cdata 1.1.7 2020/08/12
 
  * Documentation improvements.
