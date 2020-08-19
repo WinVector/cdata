@@ -1,6 +1,7 @@
 
-# cdata 1.1.8 2020/08/15
+# cdata 1.1.8 2020/08/19
 
+ * Deal with data.table change in date type treatment.
  * More links to https.
 
 # cdata 1.1.7 2020/08/12

@@ -12,7 +12,7 @@ rowrecs_to_blocks_spec(
   checkNames = TRUE,
   checkKeys = FALSE,
   strict = FALSE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 }
 \arguments{

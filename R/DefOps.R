@@ -99,7 +99,7 @@ rowrecs_to_blocks <- function(wideTable,
                               columnsToCopy = NULL,
                               tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                               temporary = TRUE,
-                              allow_rqdatatable = TRUE) {
+                              allow_rqdatatable = FALSE) {
   UseMethod("rowrecs_to_blocks")
 }
 
@@ -220,7 +220,7 @@ unpivot_to_blocks <- function(data,
                               strict = FALSE,
                               tmp_name_source = wrapr::mk_tmp_name_source("upb"),
                               temporary = TRUE,
-                              allow_rqdatatable = TRUE) {
+                              allow_rqdatatable = FALSE) {
   UseMethod("unpivot_to_blocks")
 }
 

@@ -78,7 +78,7 @@ unpivot_to_blocks.wrapped_relop <-
            nameForNewClassColumn = NULL,
            tmp_name_source = wrapr::mk_tmp_name_source("upb"),
            temporary = TRUE,
-           allow_rqdatatable = TRUE) {
+           allow_rqdatatable = FALSE) {
     wrapr::stop_if_dot_args(substitute(list(...)),
                             "cdata::unpivot_to_blocks.wrapped_relop")
     underlying = unpivot_to_blocks(data,

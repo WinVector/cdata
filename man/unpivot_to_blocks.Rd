@@ -20,7 +20,7 @@ unpivot_to_blocks(
   strict = FALSE,
   tmp_name_source = wrapr::mk_tmp_name_source("upb"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 layout_to_blocks(
@@ -35,7 +35,7 @@ layout_to_blocks(
   strict = FALSE,
   tmp_name_source = wrapr::mk_tmp_name_source("upb"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 pivot_to_blocks(
@@ -50,7 +50,7 @@ pivot_to_blocks(
   strict = FALSE,
   tmp_name_source = wrapr::mk_tmp_name_source("upb"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 \method{unpivot_to_blocks}{default}(
@@ -63,7 +63,7 @@ pivot_to_blocks(
   checkNames = TRUE,
   checkKeys = FALSE,
   strict = FALSE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 \method{unpivot_to_blocks}{relop}(
@@ -78,7 +78,7 @@ pivot_to_blocks(
   nameForNewClassColumn = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("upb"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 }
 \arguments{

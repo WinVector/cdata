@@ -54,7 +54,7 @@ rowrecs_to_blocks_spec <- function(controlTable,
                                    checkNames = TRUE,
                                    checkKeys = FALSE,
                                    strict = FALSE,
-                                   allow_rqdatatable = TRUE) {
+                                   allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks_spec")
   controlTable <- as.data.frame(controlTable)
   rownames(controlTable) <- NULL
@@ -593,7 +593,7 @@ layout_specification <- function(incoming_shape = NULL,
                                  checkKeys = TRUE,
                                  strict = FALSE,
                                  allow_rqdatatable_in = FALSE,
-                                 allow_rqdatatable_out = TRUE) {
+                                 allow_rqdatatable_out = FALSE) {
   # check for some trivial cases
   if(is.null(incoming_shape)) {
     if(is.null(outgoing_shape)) {

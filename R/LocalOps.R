@@ -86,7 +86,7 @@ rowrecs_to_blocks.default <- function(wideTable,
                                       columnsToCopy = NULL,
                                       tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
                                       temporary = TRUE,
-                                      allow_rqdatatable = TRUE) {
+                                      allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!is.data.frame(wideTable)) {
     stop("cdata::rowrecs_to_blocks.default wideTable should be a data.frame")

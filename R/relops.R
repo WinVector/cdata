@@ -144,7 +144,7 @@ unpivot_to_blocks.relop <- function(data,
                                     nameForNewClassColumn = NULL,
                                     tmp_name_source = wrapr::mk_tmp_name_source("upb"),
                                     temporary = TRUE,
-                                    allow_rqdatatable = TRUE) {
+                                    allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::unpivot_to_blocks.relop")
   if(!("relop" %in% class(data))) {
     stop("cdata::unpivot_to_blocks.relop must be of class relop")
@@ -399,7 +399,7 @@ rowrecs_to_blocks.relop <- function(wideTable,
                                     columnsToCopy = NULL,
                                     tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
                                     temporary = TRUE,
-                                    allow_rqdatatable = TRUE) {
+                                    allow_rqdatatable = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::rowrecs_to_blocks")
   if(!("relop" %in% class(wideTable))) {
     stop("cdata::rowrecs_to_blocks.relop wideTable should be of class relop")

@@ -17,7 +17,7 @@ rowrecs_to_blocks(
   columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 \method{rowrecs_to_blocks}{default}(
@@ -31,7 +31,7 @@ rowrecs_to_blocks(
   columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtobd"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 
 \method{rowrecs_to_blocks}{relop}(
@@ -45,7 +45,7 @@ rowrecs_to_blocks(
   columnsToCopy = NULL,
   tmp_name_source = wrapr::mk_tmp_name_source("rrtbl"),
   temporary = TRUE,
-  allow_rqdatatable = TRUE
+  allow_rqdatatable = FALSE
 )
 }
 \arguments{

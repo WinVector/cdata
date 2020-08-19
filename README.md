@@ -113,7 +113,7 @@ print(transform)
  #       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )
  #   block_keys <- c('iris_id', 'Species', 'flower_part')
  #  
- #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
  #  }
 
 # show the representation of the transform
@@ -139,7 +139,7 @@ unclass(transform)
  #  [1] FALSE
  #  
  #  $allow_rqdatatable
- #  [1] TRUE
+ #  [1] FALSE
 ```
 
 More details on the above example can be found
@@ -233,7 +233,7 @@ print(transform)
  #       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )
  #   block_keys <- c('iris_id', 'Species', 'v1', 'v2')
  #  
- #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+ #   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
  #  }
 ```
 

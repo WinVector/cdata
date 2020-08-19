@@ -15,7 +15,7 @@ layout_specification(
   checkKeys = TRUE,
   strict = FALSE,
   allow_rqdatatable_in = FALSE,
-  allow_rqdatatable_out = TRUE
+  allow_rqdatatable_out = FALSE
 )
 }
 \arguments{

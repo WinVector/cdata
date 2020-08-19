@@ -19,7 +19,7 @@ convert_records(
   tmp_name_source = wrapr::mk_tmp_name_source("crec"),
   temporary = TRUE,
   allow_rqdatatable_in = FALSE,
-  allow_rqdatatable_out = TRUE
+  allow_rqdatatable_out = FALSE
 )
 }
 \arguments{
@@ -102,12 +102,6 @@ ops <- convert_records(
 
 cat(format(ops))
 
-if(requireNamespace("rqdatatable", quietly = TRUE)) {
-  library("rqdatatable")
-  data \%.>\%
-    ops \%.>\%
-    print(.)
-}
 
 
 }

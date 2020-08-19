@@ -16,7 +16,7 @@ unpivot_to_blocks.default <- function(data,
                                       checkNames = TRUE,
                                       checkKeys = FALSE,
                                       strict = FALSE,
-                                      allow_rqdatatable = TRUE) {
+                                      allow_rqdatatable = FALSE) {
   if(!is.data.frame(data)) {
     stop("cdata::unpivot_to_blocks.default data must be a local data.frame")
   }

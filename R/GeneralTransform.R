@@ -62,12 +62,6 @@
 #'
 #' cat(format(ops))
 #'
-#' if(requireNamespace("rqdatatable", quietly = TRUE)) {
-#'   library("rqdatatable")
-#'   data %.>%
-#'     ops %.>%
-#'     print(.)
-#' }
 #'
 #'
 #' @export
@@ -86,7 +80,7 @@ convert_records <- function(table,
                             tmp_name_source = wrapr::mk_tmp_name_source("crec"),
                             temporary = TRUE,
                             allow_rqdatatable_in = FALSE,
-                            allow_rqdatatable_out = TRUE) {
+                            allow_rqdatatable_out = FALSE) {
   wrapr::stop_if_dot_args(substitute(list(...)), "cdata::convert_records")
   if(!is.null(incoming_shape)) {
     if(!is.data.frame(incoming_shape)) {
