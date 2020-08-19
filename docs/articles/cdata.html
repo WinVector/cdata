@@ -100,7 +100,7 @@
       <h1 data-toc-skip>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2020-08-15</h4>
+            <h4 class="date">2020-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -253,7 +253,7 @@
 ##      .        , .        , "petal"     , "length"     , Petal.Length )
 ##  block_keys &lt;- c('iris_id', 'Species', 'plant_part', 'measurement')
 ## 
-##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
 ## }</code></pre>
 <p>In the above we have used the common useful data organizing trick of specifying a dependent column (Species being a function of iris_id) as an additional key.</p>
 <p>This layout then specifies and implements the data transform. We can transform the data by sending it to the layout.</p>
@@ -460,7 +460,7 @@
 ##      .        , .        , Sepal.Width  , Sepal.Length  , Petal.Width  , Petal.Length   )
 ##  row_keys &lt;- c('iris_id', 'Species')
 ## 
-##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
 ## }</code></pre>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">d_transformed</span> <span class="kw">%.&gt;%</span>
   <span class="no">inv_layout</span> <span class="kw">%.&gt;%</span>
@@ -550,7 +550,7 @@
 ## [1] FALSE
 ## 
 ## $allow_rqdatatable
-## [1] TRUE</code></pre>
+## [1] FALSE</code></pre>
 <p>Notice that almost all of the time and space in using cdata is spent in specifying how your data is structured and is to be structured.</p>
 <p>The main <code>cdata</code> interfaces are given by the following set of methods:</p>
 <ul>

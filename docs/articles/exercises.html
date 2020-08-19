@@ -100,7 +100,7 @@
       <h1 data-toc-skip>cdata Exercises</h1>
                         <h4 class="author">John Mount, Nina Zumel; Win-Vector LLC</h4>
             
-            <h4 class="date">2020-08-15</h4>
+            <h4 class="date">2020-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd"><code>vignettes/exercises.Rmd</code></a></small>
       <div class="hidden name"><code>exercises.Rmd</code></div>
@@ -213,7 +213,7 @@
 <span class="co">#&gt;      .      , "m"     , namem , incm  )</span>
 <span class="co">#&gt;  block_keys &lt;- c('famid', 'dadmom')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span></pre></body></html></div>
 <p>The <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method fully documents what columns are expected and the intent of the data layout transform. It uses the same quoted/unquoted convention that we used in specifying <code>outgoing_record</code> above.</p>
 <p>The <em>block_keys</em> of the outgoing record shape specify the unique identifier of each row of the transformed data: that is, each row of <code>dadmomt</code> will be uniquely identified by the values of the columns <code>famid</code> and <code>dadmom</code> (which family, which parent). One of the block keys is always the record key; by default, <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code> takes the other one from the first column of the <code>outgoing_record</code> shape. You can specify the block key (or keys) explicitly with the <code>controlTableKeys</code> argument:</p>
@@ -700,7 +700,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt;      .     , "350" , 350     )</span>
 <span class="co">#&gt;  block_keys &lt;- c('Name', 'Time')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the layout</span>
@@ -866,7 +866,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt;      .   , .    , "T2"  , work.T2, play.T2, talk.T2, total.T2 )</span>
 <span class="co">#&gt;  block_keys &lt;- c('id', 'trt', 'time')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the layout</span>
@@ -946,7 +946,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt;      .   , .    , work.T1  , play.T1  , talk.T1  , total.T1  , work.T2  , play.T2  , talk.T2  , total.T2   )</span>
 <span class="co">#&gt;  row_keys &lt;- c('id', 'trt')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the inverse layout</span>

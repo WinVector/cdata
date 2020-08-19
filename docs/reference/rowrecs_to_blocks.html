@@ -160,7 +160,7 @@
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
 <span class='co'># S3 method for default</span>
@@ -175,7 +175,7 @@
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtobd"</span>),
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
 <span class='co'># S3 method for relop</span>
@@ -190,7 +190,7 @@
   <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
   <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -272,7 +272,7 @@ are issues with time columns with different time zones.</p>
   <span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
                               <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
                               <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
-  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: id.vars and measure.vars are internally guessed when both are 'NULL'. All non-numeric/integer/logical type columns are considered id.vars, which in this case are columns []. Consider providing at least one of 'id' or 'measure' vars in future.</span></div><div class='output co'>#&gt;   meas val
+  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 
@@ -294,7 +294,7 @@ are issues with time columns with different time zones.</p>
   <span class='no'>d</span> <span class='kw'>%.&gt;%</span>
     <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
     <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>.</span>)
-}</div><div class='output co'>#&gt; <span class='warning'>Warning: id.vars and measure.vars are internally guessed when both are 'NULL'. All non-numeric/integer/logical type columns are considered id.vars, which in this case are columns []. Consider providing at least one of 'id' or 'measure' vars in future.</span></div><div class='output co'>#&gt;   meas val
+}</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 <span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {

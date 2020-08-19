@@ -157,7 +157,7 @@ extra row keys, and control table keys.</p>
   <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -229,13 +229,13 @@ extra row keys, and control table keys.</p>
 #&gt;      .   , "R2"     , R2      )
 #&gt;  block_keys &lt;- c('id', 'measure')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
 #&gt; }
 #&gt; </div><div class='input'>
 <span class='no'>d</span> <span class='kw'>%.&gt;%</span> <span class='no'>transform</span></div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
-#&gt; 2  2     AUC   0.8
-#&gt; 3  1      R2   0.4
+#&gt; 2  1      R2   0.4
+#&gt; 3  2     AUC   0.8
 #&gt; 4  2      R2   0.5</div><div class='input'>
 <span class='no'>inv_transform</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>transform</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>inv_transform</span>)</div><div class='output co'>#&gt; {
@@ -252,7 +252,7 @@ extra row keys, and control table keys.</p>
 #&gt;      .   , AUC  , R2   )
 #&gt;  row_keys &lt;- c('id')
 #&gt; 
-#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)
+#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
 #&gt; }
 #&gt; </div><div class='input'>
 <span class='co'># identity (in structure)</span>

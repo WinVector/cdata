@@ -100,7 +100,7 @@
       <h1 data-toc-skip>Block Records and Row Records</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2020-08-15</h4>
+            <h4 class="date">2020-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/blocksrecs.Rmd"><code>vignettes/blocksrecs.Rmd</code></a></small>
       <div class="hidden name"><code>blocksrecs.Rmd</code></div>
@@ -186,7 +186,7 @@
 <span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
 <span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span></pre></body></html></div>
 <p>And then applying it converts rows from our <code>iris</code> data into ready to plot 2-row blocks.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">iris</span> <span class="kw">%.&gt;%</span>
@@ -322,7 +322,7 @@
 <span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span>
 <span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 <span class="co"># demonstrate the reverse transform</span>

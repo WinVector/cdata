@@ -100,7 +100,7 @@
       <h1 data-toc-skip>Control Table Keys</h1>
                         <h4 class="author">John Mount</h4>
             
-            <h4 class="date">2020-08-15</h4>
+            <h4 class="date">2020-08-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/control_table_keys.Rmd"><code>vignettes/control_table_keys.Rmd</code></a></small>
       <div class="hidden name"><code>control_table_keys.Rmd</code></div>
@@ -262,7 +262,7 @@
 <span class="co">#&gt;      .   , .        , "Petal", "Width"  , Petal.Width  )</span>
 <span class="co">#&gt;  block_keys &lt;- c('id', 'Species', 'Part', 'Measure')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span></pre></body></html></div>
 <p>Notice we are specifying that the columns <code>Part</code> and <code>Measure</code> are the control table row-keys (identifying rows within the block record) and “id” and “Species” are record keys (specifying which rows are in the same record).</p>
 <p>We have designed our desired transform above (as taught <a href="https://winvector.github.io/cdata/articles/design.html">here</a>). We are introducing a new convention of putting the key values in quotes (even though <code>wrapr::qcar_frame()</code> does not need this). Notice the quoted fields are column-names of the original row-oriented data, and the quote is indicating that these are names standing in for values.</p>
@@ -357,7 +357,7 @@
 <span class="co">#&gt;      .   , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
 <span class="co">#&gt;  row_keys &lt;- c('id', 'Species')</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = TRUE)</span>
+<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
 <span class="co">#&gt; }</span>
 
 <span class="no">back</span> <span class="kw">&lt;-</span> <span class="no">res</span> <span class="kw">%.&gt;%</span> <span class="no">inv_layout</span>
