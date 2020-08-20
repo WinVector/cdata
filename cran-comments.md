@@ -16,30 +16,10 @@
     * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
     Maintainer: ‘John Mount <jmount@win-vector.com>’
     ...
-    Status: OK   
+    Status: OK
 
 ### Windows
 
-    rhub::check_for_cran()
-    482#> setting _R_CHECK_FORCE_SUGGESTS_ to false
-    483#> setting R_COMPILE_AND_INSTALL_PACKAGES to never
-    484#> setting _R_CHECK_THINGS_IN_CHECK_DIR_ to false
-    485#> setting R_REMOTES_STANDALONE to true
-    486#> setting R_REMOTES_NO_ERRORS_FROM_WARNINGS to true
-    487#> setting _R_CHECK_FORCE_SUGGESTS_ to true
-    488#> setting _R_CHECK_CRAN_INCOMING_USE_ASPELL_ to true
-    489#> * using log directory 'C:/Users/USERlBfAoPIKpZ/cdata.Rcheck'
-    490#> * using R Under development (unstable) (2020-07-05 r78784)
-    491#> * using platform: x86_64-w64-mingw32 (64-bit)
-    492#> * using session charset: ISO8859-1
-    493#> * using option '--as-cran'
-    494#> * checking for file 'cdata/DESCRIPTION' ... OK
-    495#> * checking extension type ... Package
-    496#> * this is package 'cdata' version '1.1.8'
-    497#> * package encoding: UTF-8
-    498#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
-    499#> Maintainer: 'John Mount '
-    554#> Status: OK
 
     devtools::check_win_devel()
     * using R Under development (unstable) (2020-08-18 r79041)
@@ -51,7 +31,31 @@
     * package encoding: UTF-8
     * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
     Maintainer: 'John Mount <jmount@win-vector.com>'
+    ...
     Status: OK
+    
+    rhub::check_for_cran()
+    482#> setting _R_CHECK_FORCE_SUGGESTS_ to false
+    483#> setting R_COMPILE_AND_INSTALL_PACKAGES to never
+    484#> setting _R_CHECK_THINGS_IN_CHECK_DIR_ to false
+    485#> setting R_REMOTES_STANDALONE to true
+    486#> setting R_REMOTES_NO_ERRORS_FROM_WARNINGS to true
+    487#> setting _R_CHECK_FORCE_SUGGESTS_ to true
+    488#> setting _R_CHECK_CRAN_INCOMING_USE_ASPELL_ to true
+    489#> * using log directory 'C:/Users/USERzbcYMKkNet/cdata.Rcheck'
+    490#> * using R Under development (unstable) (2020-07-05 r78784)
+    491#> * using platform: x86_64-w64-mingw32 (64-bit)
+    492#> * using session charset: ISO8859-1
+    493#> * using option '--as-cran'
+    494#> * checking for file 'cdata/DESCRIPTION' ... OK
+    495#> * checking extension type ... Package
+    496#> * this is package 'cdata' version '1.1.8'
+    497#> * package encoding: UTF-8
+    498#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    499#> Maintainer: 'John Mount '
+    ...
+    555#> Status: OK
+
 
 ## Downstream dependencies
 
