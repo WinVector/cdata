@@ -1,13 +1,15 @@
 
 test_dates <- function() {
 
+  # Note: can not mix time zones in combining columns!
+  # Also can not mix lt and ct types in joined columns
   d <- data.frame(row_id = 1:4)
   d$d1 <- as.Date("2019-03-11")
   d$d2 <- as.Date("2019-03-21")
-  d$t1 <- as.POSIXct(1472562988, origin = "2020-08-19", tz = "PDT")
+  d$t1 <- as.POSIXct(1472562988, origin = "2020-08-19", tz = "GMT")
   d$t2 <- as.POSIXct(1472562988, origin = "1960-01-01", tz = "GMT")
-  d$t3 <- as.POSIXlt(1472562988, origin = "1960-01-01", tz = "GMT")
-  d$t4 <- as.POSIXlt(1472562988, origin = "1960-01-01", tz = "GMT")
+  d$t3 <- as.POSIXlt(1472562988, origin = "2020-08-19", tz = "America/Los_Angeles")
+  d$t4 <- as.POSIXlt(1472562988, origin = "1960-01-01", tz = "America/Los_Angeles")
 
   layout <- rowrecs_to_blocks_spec(
     wrapr::qchar_frame(
@@ -31,16 +33,6 @@ test_dates <- function() {
   RUnit::checkTrue("POSIXct" %in% class(b$t2))
   RUnit::checkTrue("POSIXlt" %in% class(b$t3))
   RUnit::checkTrue("POSIXlt" %in% class(b$t4))
-
-  # for mixed time zones
-  # time and time zone will change on POSIXct, but POSIXlt get messed up.
-  d <- data.frame(row_id = 1:4)
-  d$d1 <- as.Date("2019-03-11")
-  d$d2 <- as.Date("2019-03-21")
-  d$t1 <- as.POSIXct(1472562988, origin = "2020-08-19", tz = "PDT")
-  d$t2 <- as.POSIXct(1472562988, origin = "1960-01-01", tz = "GMT")
-  d$t3 <- as.POSIXlt(1472562988, origin = "1960-01-01", tz = "GMT")
-  d$t4 <- as.POSIXlt(1472562988, origin = "1960-01-01", tz = "GMT")
 
   RUnit::checkTrue(wrapr::check_equiv_frames(d, b))
 

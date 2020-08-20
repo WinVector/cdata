@@ -42,11 +42,16 @@
     554#> Status: OK
 
     devtools::check_win_devel()
-    ...
-    Executing test function test_dates  ... Timing stopped at: 0.09 0 0.12
-        Error in RUnit::checkTrue(wrapr::check_equiv_frames(d, b)) : 
-    Test not TRUE
-    ...
+    * using R Under development (unstable) (2020-08-18 r79041)
+    * using platform: x86_64-w64-mingw32 (64-bit)
+    * using session charset: ISO8859-1
+    * checking for file 'cdata/DESCRIPTION' ... OK
+    * checking extension type ... Package
+    * this is package 'cdata' version '1.1.8'
+    * package encoding: UTF-8
+    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    Maintainer: 'John Mount <jmount@win-vector.com>'
+    Status: OK
 
 ## Downstream dependencies
 
