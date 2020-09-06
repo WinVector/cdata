@@ -150,47 +150,47 @@
     </div>
 
     <pre class="usage"><span class='fu'>rowrecs_to_blocks</span>(
-  <span class='no'>wideTable</span>,
-  <span class='no'>controlTable</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>wideTable</span>,
+  <span class='kw'>controlTable</span>,
+  <span class='kw'>...</span>,
+  checkNames = <span class='fl'>TRUE</span>,
+  checkKeys = <span class='fl'>FALSE</span>,
+  strict = <span class='fl'>FALSE</span>,
+  controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>controlTable</span>)[[<span class='fl'>1</span>]],
+  columnsToCopy = <span class='kw'>NULL</span>,
+  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
+  temporary = <span class='fl'>TRUE</span>,
+  allow_rqdatatable = <span class='fl'>FALSE</span>
 )
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>rowrecs_to_blocks</span>(
-  <span class='no'>wideTable</span>,
-  <span class='no'>controlTable</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtobd"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>wideTable</span>,
+  <span class='kw'>controlTable</span>,
+  <span class='kw'>...</span>,
+  checkNames = <span class='fl'>TRUE</span>,
+  checkKeys = <span class='fl'>FALSE</span>,
+  strict = <span class='fl'>FALSE</span>,
+  controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>controlTable</span>)[[<span class='fl'>1</span>]],
+  columnsToCopy = <span class='kw'>NULL</span>,
+  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtobd"</span>),
+  temporary = <span class='fl'>TRUE</span>,
+  allow_rqdatatable = <span class='fl'>FALSE</span>
 )
 
 <span class='co'># S3 method for relop</span>
 <span class='fu'>rowrecs_to_blocks</span>(
-  <span class='no'>wideTable</span>,
-  <span class='no'>controlTable</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>checkNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>checkKeys</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>controlTableKeys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>controlTable</span>)<span class='kw'>[[</span><span class='fl'>1</span>]],
-  <span class='kw'>columnsToCopy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tmp_name_source</span> <span class='kw'>=</span> <span class='kw pkg'>wrapr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/wrapr/man/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
-  <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>allow_rqdatatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>wideTable</span>,
+  <span class='kw'>controlTable</span>,
+  <span class='kw'>...</span>,
+  checkNames = <span class='fl'>TRUE</span>,
+  checkKeys = <span class='fl'>FALSE</span>,
+  strict = <span class='fl'>FALSE</span>,
+  controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>controlTable</span>)[[<span class='fl'>1</span>]],
+  columnsToCopy = <span class='kw'>NULL</span>,
+  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"rrtbl"</span>),
+  temporary = <span class='fl'>TRUE</span>,
+  allow_rqdatatable = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -268,47 +268,51 @@ are issues with time columns with different time zones.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
   <span class='co'># un-pivot example</span>
-  <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-  <span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(<span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
-                              <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-                              <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
-  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>d</span>, <span class='no'>cT</span>)</div><div class='output co'>#&gt;   meas val
+  <span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/data.frame.html'>data.frame</a></span>(AUC = <span class='fl'>0.6</span>, R2 = <span class='fl'>0.2</span>)
+  <span class='kw'>cT</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(nameForNewKeyColumn= <span class='st'>'meas'</span>,
+                              nameForNewValueColumn= <span class='st'>'val'</span>,
+                              columnsToTakeFrom= <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+  <span class='fu'>rowrecs_to_blocks</span>(<span class='kw'>d</span>, <span class='kw'>cT</span>)
+</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 
 
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>AUC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>R2</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-<span class='no'>cT</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(
-  <span class='kw'>nameForNewKeyColumn</span><span class='kw'>=</span> <span class='st'>'meas'</span>,
-  <span class='kw'>nameForNewValueColumn</span><span class='kw'>=</span> <span class='st'>'val'</span>,
-  <span class='kw'>columnsToTakeFrom</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
+<span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/data.frame.html'>data.frame</a></span>(AUC = <span class='fl'>0.6</span>, R2 = <span class='fl'>0.2</span>)
+<span class='kw'>cT</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(
+  nameForNewKeyColumn= <span class='st'>'meas'</span>,
+  nameForNewValueColumn= <span class='st'>'val'</span>,
+  columnsToTakeFrom= <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
 
-<span class='no'>ops</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>rquery</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/rquery/man/local_td.html'>local_td</a></span>(<span class='no'>d</span>) <span class='kw'>%.&gt;%</span>
-  <span class='fu'>rowrecs_to_blocks</span>(<span class='no'>.</span>, <span class='no'>cT</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>ops</span>))</div><div class='output co'>#&gt; mk_td("d", c(
+<span class='kw'>ops</span> <span class='op'>&lt;-</span> <span class='kw'>rquery</span>::<span class='fu'><a href='#rquery/local_td.html'>local_td</a></span>(<span class='kw'>d</span>) <span class='op'>%.&gt;%</span>
+  <span class='fu'>rowrecs_to_blocks</span>(<span class='kw'>.</span>, <span class='kw'>cT</span>)
+<span class='fu'><a href='#base/cat.html'>cat</a></span>(<span class='fu'><a href='#base/format.html'>format</a></span>(<span class='kw'>ops</span>))
+</div><div class='output co'>#&gt; mk_td("d", c(
 #&gt;   "AUC",
 #&gt;   "R2")) %.&gt;%
 #&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT b."meas", CASE  WHEN CAST(b."meas" AS VARCHAR) = 'AUC' THEN a."AUC"  WHEN CAST(b."meas" AS VARCHAR) = 'R2' THEN a."R2" ELSE NULL END AS "val" FROM "IN" a CROSS JOIN "rrtbl_03154992351842149327_0000000002" b )</div><div class='input'>
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"rqdatatable"</span>)
-  <span class='no'>d</span> <span class='kw'>%.&gt;%</span>
-    <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>.</span>)
-}</div><div class='output co'>#&gt;   meas val
+<span class='co'>if</span>(<span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, quietly = <span class='fl'>TRUE</span>)) {
+  <span class='fu'><a href='#base/library.html'>library</a></span>(<span class='st'><a href='https://github.com/WinVector/rqdatatable/'>"rqdatatable"</a></span>)
+  <span class='kw'>d</span> <span class='op'>%.&gt;%</span>
+    <span class='kw'>ops</span> <span class='op'>%.&gt;%</span>
+    <span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>.</span>)
+}
+</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-  <span class='no'>db</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw pkg'>RSQLite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(<span class='no'>db</span>,
+<span class='co'>if</span>(<span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, quietly = <span class='fl'>TRUE</span>)) {
+  <span class='kw'>db</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
+  <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(<span class='kw'>db</span>,
                     <span class='st'>'d'</span>,
-                    <span class='no'>d</span>,
-                    <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                    <span class='kw'>temporary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='no'>db</span> <span class='kw'>%.&gt;%</span>
-    <span class='no'>ops</span> <span class='kw'>%.&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>.</span>)
-  <span class='kw pkg'>DBI</span><span class='kw ns'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='no'>db</span>)
-}</div><div class='output co'>#&gt;   meas val
+                    <span class='kw'>d</span>,
+                    overwrite = <span class='fl'>TRUE</span>,
+                    temporary = <span class='fl'>TRUE</span>)
+  <span class='kw'>db</span> <span class='op'>%.&gt;%</span>
+    <span class='kw'>ops</span> <span class='op'>%.&gt;%</span>
+    <span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>.</span>)
+  <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>db</span>)
+}
+</div><div class='output co'>#&gt;   meas val
 #&gt; 1  AUC 0.6
 #&gt; 2   R2 0.2</div><div class='input'>
 </div></pre>
@@ -327,7 +331,7 @@ are issues with time columns with different time zones.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
