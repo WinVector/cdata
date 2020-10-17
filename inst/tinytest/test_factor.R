@@ -17,15 +17,17 @@ test_factor <- function() {
 
   rs <- ds %.>% layout
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(rf, rs))
+  expect_true(wrapr::check_equiv_frames(rf, rs))
 
   expect <-  wrapr::build_frame(
     "group"  , "meas" |
       "cola" , "a"    |
       "colb" , "b"    )
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(expect, rs))
-  RUnit::checkTrue(wrapr::check_equiv_frames(expect, rf))
+  expect_true(wrapr::check_equiv_frames(expect, rs))
+  expect_true(wrapr::check_equiv_frames(expect, rf))
 
   invisible(NULL)
 }
+
+test_factor()

@@ -47,12 +47,12 @@ test_there_and_back_db <- function() {
     2L  , "setosa" , "Petal.Length", 1.4     |
     2L  , "setosa" , "Petal.Width" , 0.2     )
 
-  RUnit::checkEquals(sort(colnames(expect)), sort(colnames(res)))
+  expect_equal(sort(colnames(expect)), sort(colnames(res)))
   res <- res[, colnames(expect), drop = FALSE]
 
   expect <- expect[wrapr::orderv(expect[, c("id", "Species", "Measure")]), , drop = FALSE]
   res <- res[wrapr::orderv(res[, c("id", "Species", "Measure")]), , drop = FALSE]
-  RUnit::checkEquals(expect, res)
+  expect_equal(expect, res)
 
   back_db <- blocks_to_rowrecs(res_db,
                             keyColumns = c("id", "Species"),
@@ -61,12 +61,16 @@ test_there_and_back_db <- function() {
   back_sql <- rquery::to_sql(back_db, db)
   back <- rquery::execute(db, back_t)
 
-  RUnit::checkEquals(sort(colnames(d)), sort(colnames(back)))
+  expect_equal(sort(colnames(d)), sort(colnames(back)))
   back <- back[, colnames(d), drop = FALSE]
 
   d <- d[wrapr::orderv(d), , drop = FALSE]
   back <- back[wrapr::orderv(back), , drop = FALSE]
-  RUnit::checkEquals(d, back)
+  expect_equal(d, back)
 
   DBI::dbDisconnect(raw_connection)
 }
+
+test_there_and_back_db()
+
+

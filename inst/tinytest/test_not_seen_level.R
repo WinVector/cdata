@@ -55,7 +55,10 @@ test_not_seen_level <- function() {
       5   , "2003-11-09 00:00:00", "B"  , "2010-10-10 00:00:00", "A"          , NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ |
       6   , "2004-01-09 00:00:00", "B"  , NA_character_        , NA_character_, NA_character_        , NA_character_, NA_character_, NA_character_, NA_character_, NA_character_ )
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(res, expect))
+  expect_true(wrapr::check_equiv_frames(res, expect))
 
   invisible(NULL)
 }
+
+test_not_seen_level()
+

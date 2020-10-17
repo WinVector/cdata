@@ -20,21 +20,24 @@ test_dates <- function() {
 
   r <- d %.>% layout
 
-  RUnit::checkTrue("Date" %in% class(r$d))
-  RUnit::checkTrue("POSIXct" %in% class(r$t))
-  RUnit::checkTrue("POSIXlt" %in% class(r$z))
+  expect_true("Date" %in% class(r$d))
+  expect_true("POSIXct" %in% class(r$t))
+  expect_true("POSIXlt" %in% class(r$z))
 
   inv <- t(layout)
   b <- r %.>% inv
 
-  RUnit::checkTrue("Date" %in% class(b$d1))
-  RUnit::checkTrue("Date" %in% class(b$d2))
-  RUnit::checkTrue("POSIXct" %in% class(b$t1))
-  RUnit::checkTrue("POSIXct" %in% class(b$t2))
-  RUnit::checkTrue("POSIXlt" %in% class(b$t3))
-  RUnit::checkTrue("POSIXlt" %in% class(b$t4))
+  expect_true("Date" %in% class(b$d1))
+  expect_true("Date" %in% class(b$d2))
+  expect_true("POSIXct" %in% class(b$t1))
+  expect_true("POSIXct" %in% class(b$t2))
+  expect_true("POSIXlt" %in% class(b$t3))
+  expect_true("POSIXlt" %in% class(b$t4))
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(d, b))
+  expect_true(wrapr::check_equiv_frames(d, b))
 
   invisible(NULL)
 }
+
+test_dates()
+

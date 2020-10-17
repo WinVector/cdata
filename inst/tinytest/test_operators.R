@@ -20,10 +20,10 @@ test_operators <- function() {
     recordKeys = "model_id")
 
   d %//% t(transform) -> r
-  RUnit::checkTrue(wrapr::check_equiv_frames(d2, r))
+  expect_true(wrapr::check_equiv_frames(d2, r))
 
   d %//% t(transform) %**% transform -> r
-  RUnit::checkTrue(wrapr::check_equiv_frames(d, r))
+  expect_true(wrapr::check_equiv_frames(d, r))
 
   r <- rowrecs_to_blocks(d2,
                          controlTable = transform$controlTable,
@@ -32,7 +32,7 @@ test_operators <- function() {
                          checkNames = TRUE,
                          strict = TRUE,
                          checkKeys = TRUE)
-  RUnit::checkTrue(wrapr::check_equiv_frames(d, r))
+  expect_true(wrapr::check_equiv_frames(d, r))
   r <- blocks_to_rowrecs(d,
                          keyColumns = transform$recordKeys,
                          controlTable = transform$controlTable,
@@ -40,7 +40,7 @@ test_operators <- function() {
                          checkNames = TRUE,
                          strict = TRUE,
                          checkKeys = TRUE)
-  RUnit::checkTrue(wrapr::check_equiv_frames(d2, r))
+  expect_true(wrapr::check_equiv_frames(d2, r))
 
   if(requireNamespace("DBI", quietly = TRUE) ||
      requireNamespace("RSQLite", quietly = TRUE)) {
@@ -53,13 +53,13 @@ test_operators <- function() {
                                temporary = TRUE, overwrite = TRUE)
 
     d_db %//% t(transform) %.>% rquery::execute(my_db, .) -> r
-    RUnit::checkTrue(wrapr::check_equiv_frames(d2, r))
+    expect_true(wrapr::check_equiv_frames(d2, r))
 
     d_db %//% t(transform) %**% transform %.>% rquery::execute(my_db, .) -> r
-    RUnit::checkTrue(wrapr::check_equiv_frames(d, r))
+    expect_true(wrapr::check_equiv_frames(d, r))
 
     d_db %.>% .(t(transform)) %.>% rquery::execute(my_db, .) -> r
-    RUnit::checkTrue(wrapr::check_equiv_frames(d2, r))
+    expect_true(wrapr::check_equiv_frames(d2, r))
 
     r <- rowrecs_to_blocks(d2_db,
                            controlTable = transform$controlTable,
@@ -68,7 +68,7 @@ test_operators <- function() {
                            checkNames = TRUE,
                            strict = TRUE,
                            checkKeys = TRUE) %.>% rquery::execute(my_db, .)
-    RUnit::checkTrue(wrapr::check_equiv_frames(d, r))
+    expect_true(wrapr::check_equiv_frames(d, r))
 
     r <- blocks_to_rowrecs(d_db,
                            keyColumns = transform$recordKeys,
@@ -77,9 +77,11 @@ test_operators <- function() {
                            checkNames = TRUE,
                            strict = TRUE,
                            checkKeys = TRUE) %.>% rquery::execute(my_db, .)
-    RUnit::checkTrue(wrapr::check_equiv_frames(d2, r))
+    expect_true(wrapr::check_equiv_frames(d2, r))
 
     DBI::dbDisconnect(my_db)
   }
   invisible(NULL)
 }
+
+test_operators()

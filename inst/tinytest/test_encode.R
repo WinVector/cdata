@@ -7,7 +7,7 @@ test_encode <- function() {
 
   d_simple <- cdata:::convert_data_frame_to_yaml(d)
   d_back1 <- cdata:::convert_yaml_to_data_frame(d_simple)
-  RUnit::checkEquals(d, d_back1)
+  expect_equal(d, d_back1)
 
   row_keys <- c('id', 'Species')
 
@@ -46,32 +46,35 @@ test_encode <- function() {
 
   brtrrs_simple <- convert_cdata_spec_to_yaml(brtrrs)
   brtrrs_back <- convert_yaml_to_cdata_spec(brtrrs_simple)
-  RUnit::checkEquals(format(brtrrs), format(brtrrs_back))
+  expect_equal(format(brtrrs), format(brtrrs_back))
 
   rrtbrs_simple <- convert_cdata_spec_to_yaml(rrtbrs)
   rrtbrs_back <- convert_yaml_to_cdata_spec(rrtbrs_simple)
-  RUnit::checkEquals(format(rrtbrs), format(rrtbrs_back))
+  expect_equal(format(rrtbrs), format(rrtbrs_back))
 
   brtbrts_simple <- convert_cdata_spec_to_yaml(brtbrts)
   brtbrts_back <- convert_yaml_to_cdata_spec(brtbrts_simple)
-  RUnit::checkEquals(format(brtbrts), format(brtbrts_back))
+  expect_equal(format(brtbrts), format(brtbrts_back))
 
   if(requireNamespace('yaml', quietly = TRUE)) {
     brtrrs_yaml <- yaml::as.yaml(brtrrs_simple)
     brtrrs_back_y <- convert_yaml_to_cdata_spec(yaml::read_yaml(text = brtrrs_yaml))
-    RUnit::checkEquals(format(brtrrs), format(brtrrs_back_y))
+    expect_equal(format(brtrrs), format(brtrrs_back_y))
 
     rrtbrs_yaml <- yaml::as.yaml(rrtbrs_simple)
     rrtbrs_back_y <- convert_yaml_to_cdata_spec(yaml::read_yaml(text = rrtbrs_yaml))
-    RUnit::checkEquals(format(rrtbrs), format(rrtbrs_back_y))
+    expect_equal(format(rrtbrs), format(rrtbrs_back_y))
 
     brtbrts_yaml <- yaml::as.yaml(brtbrts_simple)
     brtbrts_back_y <- convert_yaml_to_cdata_spec(yaml::read_yaml(text = brtbrts_yaml))
-    RUnit::checkEquals(format(brtbrts), format(brtbrts_back_y))
+    expect_equal(format(brtbrts), format(brtbrts_back_y))
   }
 
   invisible(NULL)
 }
+
+test_encode()
+
 
 test_read_from_data_algebra <- function() {
   text = '
@@ -102,6 +105,9 @@ blocks_out:
     - Sepal.Width
 '
   xform = convert_yaml_to_cdata_spec(yaml::read_yaml(text = text))
-  RUnit::checkTrue(is(xform, "rowrecs_to_blocks_spec"))
+  expect_true(is(xform, "rowrecs_to_blocks_spec"))
 }
+
+test_read_from_data_algebra()
+
 

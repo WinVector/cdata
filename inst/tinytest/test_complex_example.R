@@ -50,7 +50,7 @@ test_complex_example <- function() {
       5   , "2003-11-09 00:00:00", "B"  , "2010-10-10 00:00:00", "A"          , NA_character_        , NA_character_ |
       6   , "2004-01-09 00:00:00", "B"  , NA_character_        , NA_character_, NA_character_        , NA_character_ )
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(res, expect))
+  expect_true(wrapr::check_equiv_frames(res, expect))
 
   db_info <- rquery::rquery_default_db_info()
   sql <- to_sql(ops, db_info)
@@ -67,7 +67,7 @@ test_complex_example <- function() {
     rquery::materialize(db, ops, table_name = 'res')
     res_db <- DBI::dbReadTable(raw_connection, 'res')
     DBI::dbDisconnect(raw_connection)
-    RUnit::checkTrue(wrapr::check_equiv_frames(res_db, expect))
+    expect_true(wrapr::check_equiv_frames(res_db, expect))
   }
 
   invisible(NULL)
@@ -162,8 +162,10 @@ test_complex_example_list <- function() {
       class = "data.frame"
     )
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(res, expect))
+  expect_true(wrapr::check_equiv_frames(res, expect))
 
   invisible(NULL)
 }
+
+test_complex_example()
 

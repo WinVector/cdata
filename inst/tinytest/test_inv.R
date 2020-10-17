@@ -2,7 +2,7 @@
 test_inv <- function() {
 
   # get the data
-  dir <- system.file("unit_tests", package = "cdata", mustWork = TRUE)
+  dir <- system.file("tinytest", package = "cdata", mustWork = TRUE)
   iris <- readRDS(paste(dir, "iris.RDS", sep = "/"))
 
   # get into the form we want
@@ -34,7 +34,7 @@ test_inv <- function() {
   inv <- t(transform)
   iris_back <- iris_aug %.>% inv
 
-  RUnit::checkTrue(wrapr::check_equiv_frames(iris, iris_back))
+  expect_true(wrapr::check_equiv_frames(iris, iris_back))
 
   if(requireNamespace("DBI", quietly = TRUE) &&
      requireNamespace("RSQLite", quietly = TRUE)) {
@@ -50,17 +50,19 @@ test_inv <- function() {
     iris_aug_db_res <- iris_db %.>%
       transform %.>%
       rquery::execute(db, .)
-    RUnit::checkTrue(wrapr::check_equiv_frames(iris_aug, iris_aug_db_res))
+    expect_true(wrapr::check_equiv_frames(iris_aug, iris_aug_db_res))
 
     iris_aug_db <- rquery::rq_copy_to(db, "iris_aug", iris_aug,
                                       temporary = TRUE, overwrite = TRUE)
     iris_back_db_res <- iris_aug_db %.>%
       inv %.>%
       rquery::execute(db, .)
-    RUnit::checkTrue(wrapr::check_equiv_frames(iris_back, iris_back_db_res))
+    expect_true(wrapr::check_equiv_frames(iris_back, iris_back_db_res))
 
     DBI::dbDisconnect(db_connection)
   }
 
   invisible(NULL)
 }
+
+test_inv()

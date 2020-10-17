@@ -27,25 +27,28 @@ test_there_and_back <- function() {
     2L  , "setosa" , "Petal.Length", 1.4     |
     2L  , "setosa" , "Petal.Width" , 0.2     )
 
-  RUnit::checkEquals(sort(colnames(expect)), sort(colnames(res)))
+  expect_equal(sort(colnames(expect)), sort(colnames(res)))
   res <- res[, colnames(expect), drop = FALSE]
 
   expect <- expect[wrapr::orderv(expect[, c("id", "Species", "Measure")]), , drop = FALSE]
   rownames(expect) <- NULL
   res <- res[wrapr::orderv(res[, c("id", "Species", "Measure")]), , drop = FALSE]
   rownames(res) <- NULL
-  RUnit::checkEquals(expect, res)
+  expect_equal(expect, res)
 
   back <- blocks_to_rowrecs(res,
                             keyColumns = c("id", "Species"),
                             control_table)
 
-  RUnit::checkEquals(sort(colnames(d)), sort(colnames(back)))
+  expect_equal(sort(colnames(d)), sort(colnames(back)))
   back <- back[, colnames(d), drop = FALSE]
 
   d <- d[wrapr::orderv(d), , drop = FALSE]
   rownames(d) <- NULL
   back <- back[wrapr::orderv(back), , drop = FALSE]
   rownames(back) <- NULL
-  RUnit::checkEquals(d, back)
+  expect_equal(d, back)
 }
+
+test_there_and_back()
+

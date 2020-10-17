@@ -16,7 +16,7 @@ test_check <- function() {
   cT <- build_unpivot_control(nameForNewKeyColumn = "estimation_method",
                               nameForNewValueColumn = "sd_estimate",
                               columnsToTakeFrom = c("adj_sd", "naive_sd"))
-  RUnit::checkException(rp <- rowrecs_to_blocks(res,
+  expect_error(rp <- rowrecs_to_blocks(res,
                                                 controlTable = cT,
                                                 checkKeys = TRUE))
   d1 <- rowrecs_to_blocks(res,
@@ -28,3 +28,5 @@ test_check <- function() {
 
   invisible(NULL)
 }
+
+test_check()

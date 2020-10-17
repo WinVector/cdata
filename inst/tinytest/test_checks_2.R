@@ -15,7 +15,7 @@ test_checks_2 <- function() {
     "id", "AUC"   , "R2"     |
     1   , 0.7     , NA_real_ |
     2   , NA_real_, 0.3      )
-  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
+  expect_true(wrapr::check_equiv_frames(expect, r))
 
   # NA in id column works as a values
   d1 <- wrapr::build_frame(
@@ -32,7 +32,7 @@ test_checks_2 <- function() {
     "id"    , "AUC", "R2"     |
     1       , 0.7  , NA_real_ |
     NA_real_, 0.62 , 0.3      )
-  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
+  expect_true(wrapr::check_equiv_frames(expect, r))
 
   # NA in measure column not allowed
   d2 <- wrapr::build_frame(
@@ -41,14 +41,14 @@ test_checks_2 <- function() {
     1   , "R2"  , 0.6     |
     2   , NA    , 0.62    |
     2   , "R2"  , NA      )
-  RUnit::checkException({
+  expect_error({
   cdata::pivot_to_rowrecs(d2,
                           columnToTakeKeysFrom = 'meas',
                           columnToTakeValuesFrom = 'value',
                           rowKeyColumns = 'id')
   })
 
-  RUnit::checkException({
+  expect_error({
   # duplicates not allowed
   d3 <- wrapr::build_frame(
     "id", "meas", "value" |
@@ -78,7 +78,7 @@ test_checks_2 <- function() {
     1   , "R2"  , NA_real_ |
     2   , "AUC" , NA_real_ |
     2   , "R2"  , 0.3      )
-  RUnit::checkTrue(wrapr::check_equiv_frames(expect, r))
+  expect_true(wrapr::check_equiv_frames(expect, r))
 
   # don't allow duplicates
   z <- wrapr::build_frame(
@@ -86,7 +86,7 @@ test_checks_2 <- function() {
     1   , 0.7     , NA_real_ |
     1   , 0.7     , NA_real_ |
     2   , NA_real_, 0.3      )
-  RUnit::checkException({
+  expect_error({
   cdata::unpivot_to_blocks(z,
                            nameForNewKeyColumn = "meas",
                            nameForNewValueColumn = "value",
@@ -100,7 +100,7 @@ test_checks_2 <- function() {
     1   , "AUC" , 0.7     |
     1   , "R2"  , NA      |
     2   , "id" , 0.3      )
-  RUnit::checkException({
+  expect_error({
   cdata::pivot_to_rowrecs(d,
                           columnToTakeKeysFrom = 'meas',
                           columnToTakeValuesFrom = 'value',
@@ -112,7 +112,7 @@ test_checks_2 <- function() {
     "meas", "AUC"   , "R2"     |
       1   , 0.7     , NA_real_ |
       2   , 0.5     , 0.3      )
-  RUnit::checkException({
+  expect_error({
     cdata::unpivot_to_blocks(z,
                              nameForNewKeyColumn = "meas",
                              nameForNewValueColumn = "value",
@@ -122,7 +122,7 @@ test_checks_2 <- function() {
   cT <- cdata::build_unpivot_control(nameForNewKeyColumn = "meas",
                                      nameForNewValueColumn = "value",
                                      columnsToTakeFrom = c("AUC", "R2"))
-  RUnit::checkException({
+  expect_error({
   cdata::rowrecs_to_blocks(z,
                            controlTable = cT,
                            columnsToCopy = "meas",
@@ -131,3 +131,6 @@ test_checks_2 <- function() {
 
   invisible(NULL)
 }
+
+test_checks_2()
+

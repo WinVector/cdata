@@ -1,8 +1,8 @@
 Package: cdata
 Type: Package
 Title: Fluid Data Transformations
-Version: 1.1.8
-Date: 2020-08-24
+Version: 1.1.9
+Date: 2020-10-17
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -19,12 +19,12 @@ License: GPL-2 | GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Depends:
+Depends: 
   R (>= 3.4.0),
-  wrapr (>= 2.0.0)
-Imports:
-  rquery (>= 1.4.4),
-  rqdatatable (>= 1.2.7),
+  wrapr (>= 2.0.2)
+Imports: 
+  rquery (>= 1.4.5),
+  rqdatatable (>= 1.2.8),
   methods,
   stats
 Suggests: 
@@ -32,7 +32,7 @@ Suggests:
     RSQLite,
     knitr,
     rmarkdown,
-    RUnit,
-    yaml
+    yaml,
+    tinytest
 VignetteBuilder: knitr
 ByteCompile: true

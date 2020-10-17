@@ -1,4 +1,8 @@
 
+# cdata 1.1.9 2020/10/17
+
+ * Move to tinytest.
+
 # cdata 1.1.8 2020/08/24
 
  * Deal with data.table change in date type treatment.

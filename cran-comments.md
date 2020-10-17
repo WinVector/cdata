@@ -4,14 +4,16 @@
 
 ### OSX
    
-    R CMD check --as-cran cdata_1.1.8.tar.gz 
+
+    R CMD check --as-cran cdata_1.1.9.tar.gz 
+    * using log directory ‘/Users/johnmount/Documents/work/cdata.Rcheck’
     * using R version 4.0.2 (2020-06-22)
     * using platform: x86_64-apple-darwin17.0 (64-bit)
     * using session charset: UTF-8
     * using option ‘--as-cran’
     * checking for file ‘cdata/DESCRIPTION’ ... OK
     * checking extension type ... Package
-    * this is package ‘cdata’ version ‘1.1.8’
+    * this is package ‘cdata’ version ‘1.1.9’
     * package encoding: UTF-8
     * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
     Maintainer: ‘John Mount <jmount@win-vector.com>’
@@ -22,40 +24,29 @@
 
 
     devtools::check_win_devel()
-    * using R Under development (unstable) (2020-08-18 r79041)
-    * using platform: x86_64-w64-mingw32 (64-bit)
-    * using session charset: ISO8859-1
-    * checking for file 'cdata/DESCRIPTION' ... OK
-    * checking extension type ... Package
-    * this is package 'cdata' version '1.1.8'
-    * package encoding: UTF-8
-    * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
-    Maintainer: 'John Mount <jmount@win-vector.com>'
-    ...
-    Status: OK
+    Error in curl::curl_fetch_memory(url, handle = h) : 
+      Timeout was reached: [win-builder.r-project.org] FTP response timeout
     
     rhub::check_for_cran()
-    482#> setting _R_CHECK_FORCE_SUGGESTS_ to false
-    483#> setting R_COMPILE_AND_INSTALL_PACKAGES to never
-    484#> setting _R_CHECK_THINGS_IN_CHECK_DIR_ to false
-    485#> setting R_REMOTES_STANDALONE to true
-    486#> setting R_REMOTES_NO_ERRORS_FROM_WARNINGS to true
-    487#> setting _R_CHECK_FORCE_SUGGESTS_ to true
-    488#> setting _R_CHECK_CRAN_INCOMING_USE_ASPELL_ to true
-    489#> * using log directory 'C:/Users/USERzbcYMKkNet/cdata.Rcheck'
-    490#> * using R Under development (unstable) (2020-07-05 r78784)
-    491#> * using platform: x86_64-w64-mingw32 (64-bit)
-    492#> * using session charset: ISO8859-1
-    493#> * using option '--as-cran'
-    494#> * checking for file 'cdata/DESCRIPTION' ... OK
-    495#> * checking extension type ... Package
-    496#> * this is package 'cdata' version '1.1.8'
-    497#> * package encoding: UTF-8
-    498#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
-    499#> Maintainer: 'John Mount '
-    ...
-    555#> Status: OK
-
+    778#> setting _R_CHECK_FORCE_SUGGESTS_ to false
+    779#> setting R_COMPILE_AND_INSTALL_PACKAGES to never
+    780#> setting _R_CHECK_THINGS_IN_CHECK_DIR_ to false
+    781#> setting R_REMOTES_STANDALONE to true
+    782#> setting R_REMOTES_NO_ERRORS_FROM_WARNINGS to true
+    783#> setting _R_CHECK_FORCE_SUGGESTS_ to true
+    784#> setting _R_CHECK_CRAN_INCOMING_USE_ASPELL_ to true
+    785#> * using log directory 'C:/Users/USERiBvfkuWdNX/cdata.Rcheck'
+    786#> * using R Under development (unstable) (2020-10-09 r79317)
+    787#> * using platform: x86_64-w64-mingw32 (64-bit)
+    788#> * using session charset: ISO8859-1
+    789#> * using option '--as-cran'
+    790#> * checking for file 'cdata/DESCRIPTION' ... OK
+    791#> * checking extension type ... Package
+    792#> * this is package 'cdata' version '1.1.9'
+    793#> * package encoding: UTF-8
+    794#> * checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+    795#> Maintainer: 'John Mount '
+    851#> Status: OK
 
 ## Downstream dependencies
 
