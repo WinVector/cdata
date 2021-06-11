@@ -21,7 +21,6 @@
 
 ### Windows
 
-
     devtools::check_win_devel()
 
 #### Linux

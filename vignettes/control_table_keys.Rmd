@@ -101,10 +101,10 @@ Recle Etino Vibal ([who asked for this feature in an issue](https://github.com/W
 
 The `cdata` unit test include the following variations of the above example:
 
-  * [A simple "there and back example"](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_there_and_back.R).
-  * [The "there and back" example on a database](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_there_and_back_db.R).
-  * [A composite control keys example](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_composite_control_keys.R) (this demo).
-  * [The composite control keys example on a database](https://github.com/WinVector/cdata/blob/master/inst/unit_tests/test_composite_control_keys_db.R).
+  * [A simple "there and back example"](https://github.com/WinVector/cdata/blob/main/inst/tinytest/test_there_and_back.R).
+  * [The "there and back" example on a database](https://github.com/WinVector/cdata/blob/main/inst/tinytest/test_there_and_back_db.R).
+  * [A composite control keys example](https://github.com/WinVector/cdata/blob/main/inst/tinytest/test_composite_control_keys.R) (this demo).
+  * [The composite control keys example on a database](https://github.com/WinVector/cdata/blob/main/inst/tinytest/test_composite_control_keys_db.R).
   
 We think `cdata` (and the accompanying [fluid data methodology](https://winvector.github.io/FluidData/FluidData.html), plus [extensions](https://winvector.github.io/cdata/articles/general_transform.html)) is a very deep and powerful way of wrangling data.  Once you take the time to learn the methodology (which is "draw what you want to happen to one record, type that in as your control table, and you are done!") it is very easy to use.
 
