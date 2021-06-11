@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,13 +94,13 @@
 
       
 
-      </header><script src="operators_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="operators_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Operators</h1>
                         <h4 class="author">John Mount, Nina Zumel</h4>
             
-            <h4 class="date">2020-09-06</h4>
+            <h4 class="date">2021-06-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/operators.Rmd"><code>vignettes/operators.Rmd</code></a></small>
       <div class="hidden name"><code>operators.Rmd</code></div>
@@ -112,16 +112,16 @@
 <p><code>cdata</code> recommends an operator idiom to apply data transforms.</p>
 <p>The idea is simple, yet powerful.</p>
 <p>First let’s start with some data.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-
-<span class="kw">d</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"model_id"</span>  , <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
      <span class="fl">1</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.7</span>     <span class="op">|</span>
      <span class="fl">1</span>         , <span class="st">"R2"</span>     , <span class="fl">0.4</span>     <span class="op">|</span>
      <span class="fl">2</span>         , <span class="st">"AUC"</span>    , <span class="fl">0.8</span>     <span class="op">|</span>
-     <span class="fl">2</span>         , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     )
+     <span class="fl">2</span>         , <span class="st">"R2"</span>     , <span class="fl">0.5</span>     <span class="op">)</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -152,18 +152,18 @@
 </tbody>
 </table>
 <p>In the above data we have two measurements each for two individuals (individuals identified by the “<code>model_id</code>” column). Using <code>cdata</code>’s <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code> method we can capture a description of this record structure and transformation details.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: wrapr</span>
 
-<span class="kw">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
     <span class="st">"measure"</span>, <span class="st">"value"</span> <span class="op">|</span>
-    <span class="st">"AUC"</span>    , <span class="kw">AUC</span>     <span class="op">|</span>
-    <span class="st">"R2"</span>     , <span class="kw">R2</span>      ),
-  recordKeys = <span class="st">"model_id"</span>)
+    <span class="st">"AUC"</span>    , <span class="va">AUC</span>     <span class="op">|</span>
+    <span class="st">"R2"</span>     , <span class="va">R2</span>      <span class="op">)</span>,
+  recordKeys <span class="op">=</span> <span class="st">"model_id"</span><span class="op">)</span>
 
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">transform</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "model_id"  , "AUC", "R2" |</span>
@@ -179,11 +179,11 @@
 <span class="co">#&gt;  block_keys &lt;- c('model_id', 'measure')</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span></pre></div>
+<span class="co">#&gt; }</span></code></pre></div>
 <p>Once we have this specification we can transform the data using operator notation.</p>
 <p>We can collect the record blocks into rows by a “factor-out” (or aggregation/projection) step.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -213,11 +213,11 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">d2</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%//%</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
 
-<span class="kw">d2</span> <span class="op">&lt;-</span> <span class="kw">d</span> <span class="op">%//%</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)
-
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d2</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -237,13 +237,13 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># (or using general pipe notation </span>
 <span class="co"># includng the .() "execute immediately")</span>
-<span class="kw">d</span> <span class="op">%.&gt;%</span> 
-  <span class="fu">.</span>(<span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)) <span class="op">%.&gt;%</span> 
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">d</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span><span class="op">)</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -264,8 +264,8 @@
 </tbody>
 </table>
 <p>We can expand record rows into blocks by a “multiplication” (or join) step.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d2</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d2</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -285,11 +285,11 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb7"><pre class="downlit">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">d3</span> <span class="op">&lt;-</span> <span class="va">d2</span> <span class="op">%**%</span> <span class="va">transform</span>
 
-<span class="kw">d3</span> <span class="op">&lt;-</span> <span class="kw">d2</span> <span class="op">%**%</span> <span class="kw">transform</span>
-
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d3</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d3</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -319,12 +319,12 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># (or using general pipe notation)</span>
-<span class="kw">d2</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">transform</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">d2</span> <span class="op">%.&gt;%</span> 
+  <span class="va">transform</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -356,8 +356,8 @@
 </table>
 <p>(<code><a href="../reference/%//%.html">%//%</a></code> and <code><a href="../reference/%**%.html">%**%</a></code> being two operators introduced by the <code>cdata</code> package.)</p>
 <p>And the two specialized operators have an inverse/adjoint relation.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d</span>)</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -387,12 +387,12 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># identity</span>
-<span class="kw">d4</span> <span class="op">&lt;-</span> <span class="kw">d</span> <span class="op">%//%</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>) <span class="op">%**%</span> <span class="kw">transform</span>
+<span class="va">d4</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%//%</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span> <span class="op">%**%</span> <span class="va">transform</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d4</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d4</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -423,13 +423,13 @@
 </tbody>
 </table>
 <p>We can also pipe into the spec (and into its adjoint) using the <a href="https://github.com/WinVector/wrapr"><code>wrapr</code></a> <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html"><code>dot pipe operator</code></a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># reverse or adjoint/transpose operation specification</span>
-<span class="kw">t_record_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># reverse or adjoint/transpose operation specification</span>
+<span class="va">t_record_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
 
-<span class="kw">d</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">t_record_spec</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">d</span> <span class="op">%.&gt;%</span> 
+  <span class="va">t_record_spec</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -449,12 +449,12 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># using dot-pipe's bquote style .() execute immediate notation</span>
-<span class="kw">d</span> <span class="op">%.&gt;%</span> 
-  <span class="fu">.</span>(<span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)) <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">d</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span><span class="op">)</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -474,13 +474,13 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># identity</span>
-<span class="kw">d</span> <span class="op">%.&gt;%</span> 
-  <span class="fu">.</span>(<span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)) <span class="op">%.&gt;%</span> 
-  <span class="kw">transform</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">d</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span><span class="op">)</span> <span class="op">%.&gt;%</span> 
+  <span class="va">transform</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -511,30 +511,30 @@
 </tbody>
 </table>
 <p>And, of course, the exact same functionality for database tables.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">have_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/ns-load.html">requireNamespace</a></span>(<span class="st">"DBI"</span>, quietly = <span class="fl">TRUE</span>) <span class="op">&amp;&amp;</span>
-   <span class="fu"><a href="#base/ns-load.html">requireNamespace</a></span>(<span class="st">"RSQLite"</span>, quietly = <span class="fl">TRUE</span>)</pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="kw">raw_connection</span> <span class="op">&lt;-</span> <span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw">RSQLite</span>::<span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>(), 
-                                 <span class="st">":memory:"</span>)
-<span class="kw">RSQLite</span>::<span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span>(<span class="kw">raw_connection</span>)
-<span class="kw">db</span> <span class="op">&lt;-</span> <span class="kw">rquery</span>::<span class="fu"><a href="#rquery/rquery_db_info.html">rquery_db_info</a></span>(
-  connection = <span class="kw">raw_connection</span>,
-  is_dbi = <span class="fl">TRUE</span>,
-  connection_options = <span class="kw">rquery</span>::<span class="fu"><a href="#rquery/rq_connection_tests.html">rq_connection_tests</a></span>(<span class="kw">raw_connection</span>))
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">have_db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"DBI"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span>
+   <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"RSQLite"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">raw_connection</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, 
+                                 <span class="st">":memory:"</span><span class="op">)</span>
+<span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span><span class="op">(</span><span class="va">raw_connection</span><span class="op">)</span>
+<span class="va">db</span> <span class="op">&lt;-</span> <span class="fu">rquery</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/rquery/reference/rquery_db_info.html">rquery_db_info</a></span><span class="op">(</span>
+  connection <span class="op">=</span> <span class="va">raw_connection</span>,
+  is_dbi <span class="op">=</span> <span class="cn">TRUE</span>,
+  connection_options <span class="op">=</span> <span class="fu">rquery</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/rquery/reference/rq_connection_tests.html">rq_connection_tests</a></span><span class="op">(</span><span class="va">raw_connection</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">d_td</span> <span class="op">&lt;-</span> <span class="kw">rquery</span>::<span class="fu"><a href="#rquery/rq_copy_to.html">rq_copy_to</a></span>(<span class="kw">db</span>, <span class="st">"d"</span>, <span class="kw">d</span>)</pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">ops</span> <span class="op">&lt;-</span> <span class="kw">d_td</span> <span class="op">%//%</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)
-<span class="fu"><a href="#base/cat.html">cat</a></span>(<span class="fu"><a href="#base/format.html">format</a></span>(<span class="kw">ops</span>))
+<span class="va">d_td</span> <span class="op">&lt;-</span> <span class="fu">rquery</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/rquery/reference/rq_copy_to.html">rq_copy_to</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"d"</span>, <span class="va">d</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ops</span> <span class="op">&lt;-</span> <span class="va">d_td</span> <span class="op">%//%</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="va">ops</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; mk_td("d", c(</span>
 <span class="co">#&gt;   "model_id",</span>
 <span class="co">#&gt;   "measure",</span>
 <span class="co">#&gt;   "value")) %.&gt;%</span>
 <span class="co">#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."model_id" "model_id", MAX( CASE WHEN CAST(a."measure" AS VARCHAR) = 'AUC' THEN a."value" ELSE NULL END ) "AUC", MAX( CASE WHEN CAST(a."measure" AS VARCHAR) = 'R2' THEN a."value" ELSE NULL END ) "R2" FROM "IN" a GROUP BY a."model_id")</span>
 
-<span class="kw">rquery</span>::<span class="fu"><a href="#rquery/execute.html">execute</a></span>(<span class="kw">db</span>, <span class="kw">ops</span>) <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="fu">rquery</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/rquery/reference/execute.html">execute</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">ops</span><span class="op">)</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -554,12 +554,12 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-
-<span class="kw">d_td</span> <span class="op">%.&gt;%</span> 
-  <span class="fu">.</span>(<span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">transform</span>)) <span class="op">%.&gt;%</span>
-  <span class="kw">rquery</span>::<span class="fu"><a href="#rquery/execute.html">execute</a></span>(<span class="kw">db</span>, <span class="kw">.</span>) <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">d_td</span> <span class="op">%.&gt;%</span> 
+  <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span><span class="op">)</span> <span class="op">%.&gt;%</span>
+  <span class="fu">rquery</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/rquery/reference/execute.html">execute</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">.</span><span class="op">)</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">model_id</th>
@@ -579,8 +579,8 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="kw">DBI</span>::<span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="kw">raw_connection</span>)</pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span><span class="op">(</span><span class="va">raw_connection</span><span class="op">)</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -596,7 +596,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

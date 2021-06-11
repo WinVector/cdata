@@ -1,8 +1,8 @@
 Package: cdata
 Type: Package
 Title: Fluid Data Transformations
-Version: 1.1.9
-Date: 2020-10-17
+Version: 1.2.0
+Date: 2021-06-11
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -17,7 +17,6 @@ Description: Supplies higher-order coordinatized data specification and fluid tr
     Works on in-memory data or on remote data using 'rquery' and 'SQL' database interfaces.
 License: GPL-2 | GPL-3
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
 Depends: 
   R (>= 3.4.0),

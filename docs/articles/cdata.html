@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,13 +94,13 @@
 
       
 
-      </header><script src="cdata_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="cdata_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>cdata</h1>
                         <h4 class="author">John Mount, Win-Vector LLC</h4>
             
-            <h4 class="date">2020-09-06</h4>
+            <h4 class="date">2021-06-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/cdata.Rmd"><code>vignettes/cdata.Rmd</code></a></small>
       <div class="hidden name"><code>cdata.Rmd</code></div>
@@ -117,22 +117,22 @@
 <li>Can be specified by drawing an example.</li>
 </ul>
 <p>A quick example:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: wrapr</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># first few rows of the iris data as an example</span>
-<span class="kw">d</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># first few rows of the iris data as an example</span>
+<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"Sepal.Length"</span>  , <span class="st">"Sepal.Width"</span>, <span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span>, <span class="st">"Species"</span> <span class="op">|</span>
      <span class="fl">5.1</span>           , <span class="fl">3.5</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
      <span class="fl">4.9</span>           , <span class="fl">3</span>            , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
      <span class="fl">4.7</span>           , <span class="fl">3.2</span>          , <span class="fl">1.3</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
      <span class="fl">4.6</span>           , <span class="fl">3.1</span>          , <span class="fl">1.5</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
      <span class="fl">5</span>             , <span class="fl">3.6</span>          , <span class="fl">1.4</span>           , <span class="fl">0.2</span>          , <span class="st">"setosa"</span>  <span class="op">|</span>
-     <span class="fl">5.4</span>           , <span class="fl">3.9</span>          , <span class="fl">1.7</span>           , <span class="fl">0.4</span>          , <span class="st">"setosa"</span>  )
-<span class="kw">d</span><span class="op">$</span><span class="kw">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/seq.html">seq_len</a></span>(<span class="fu"><a href="#base/nrow.html">nrow</a></span>(<span class="kw">d</span>))
+     <span class="fl">5.4</span>           , <span class="fl">3.9</span>          , <span class="fl">1.7</span>           , <span class="fl">0.4</span>          , <span class="st">"setosa"</span>  <span class="op">)</span>
+<span class="va">d</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Sepal.Length</th>
@@ -194,15 +194,15 @@
 </tbody>
 </table>
 <p>Now suppose we want to take the above “all facts about each iris are in a single row” representation and convert it into a per-iris record block with the following structure.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">record_example</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">record_example</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
    <span class="st">"plant_part"</span>  , <span class="st">"measurement"</span>, <span class="st">"value"</span>      <span class="op">|</span>
-     <span class="st">"sepal"</span>     , <span class="st">"width"</span>      , <span class="kw">Sepal.Width</span>  <span class="op">|</span>
-     <span class="st">"sepal"</span>     , <span class="st">"length"</span>     , <span class="kw">Sepal.Length</span> <span class="op">|</span>
-     <span class="st">"petal"</span>     , <span class="st">"width"</span>      , <span class="kw">Petal.Width</span>  <span class="op">|</span>
-     <span class="st">"petal"</span>     , <span class="st">"length"</span>     , <span class="kw">Petal.Length</span> )
+     <span class="st">"sepal"</span>     , <span class="st">"width"</span>      , <span class="va">Sepal.Width</span>  <span class="op">|</span>
+     <span class="st">"sepal"</span>     , <span class="st">"length"</span>     , <span class="va">Sepal.Length</span> <span class="op">|</span>
+     <span class="st">"petal"</span>     , <span class="st">"width"</span>      , <span class="va">Petal.Width</span>  <span class="op">|</span>
+     <span class="st">"petal"</span>     , <span class="st">"length"</span>     , <span class="va">Petal.Length</span> <span class="op">)</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">record_example</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">record_example</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">plant_part</th>
@@ -234,13 +234,13 @@
 </table>
 <p>The above sort of transformation may seem exotic, but it is fairly common when we want to plot many aspects of a record at the same time.</p>
 <p>To specify our transformation we combine the record example with information about how records are keyed (recordKeys showing which rows go together to form a record, and controlTableKeys specifying the internal structure of a data record).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">record_example</span>,
-  controlTableKeys = <span class="fu"><a href="#base/c.html">c</a></span>(<span class="st">"plant_part"</span>, <span class="st">"measurement"</span>),
-  recordKeys = <span class="fu"><a href="#base/c.html">c</a></span>(<span class="st">"iris_id"</span>, <span class="st">"Species"</span>))
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="va">record_example</span>,
+  controlTableKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"plant_part"</span>, <span class="st">"measurement"</span><span class="op">)</span>,
+  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></code></pre></div>
 <pre><code>## {
 ##  row_record &lt;- wrapr::qchar_frame(
 ##    "iris_id"  , "Species", "Sepal.Width", "Sepal.Length", "Petal.Width", "Petal.Length" |
@@ -261,11 +261,11 @@
 ## }</code></pre>
 <p>In the above we have used the common useful data organizing trick of specifying a dependent column (Species being a function of iris_id) as an additional key.</p>
 <p>This layout then specifies and implements the data transform. We can transform the data by sending it to the layout.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">d_transformed</span> <span class="op">&lt;-</span> <span class="kw">d</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d_transformed</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">d_transformed</span>)</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">d_transformed</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">iris_id</th>
@@ -445,11 +445,11 @@
 </tr>
 </tbody>
 </table>
-<p>And it is easy to invert these transforms using the <code><a href="#base/t.html">t()</a></code> transpose/adjoint notation.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">layout</span>)
+<p>And it is easy to invert these transforms using the <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> transpose/adjoint notation.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">inv_layout</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">inv_layout</span><span class="op">)</span></code></pre></div>
 <pre><code>## {
 ##  block_record &lt;- wrapr::qchar_frame(
 ##    "iris_id"  , "Species", "plant_part", "measurement", "value"      |
@@ -468,10 +468,10 @@
 ## 
 ##  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)
 ## }</code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">d_transformed</span> <span class="op">%.&gt;%</span>
-  <span class="kw">inv_layout</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d_transformed</span> <span class="op">%.&gt;%</span>
+  <span class="va">inv_layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">iris_id</th>
@@ -533,8 +533,8 @@
 </tbody>
 </table>
 <p>The layout specifications themselves are just simple lists with “pretty print methods” (the control table being simply and example record in the form of a data.frame).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="#base/class.html">unclass</a></span>(<span class="kw">layout</span>)</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></code></pre></div>
 <pre><code>## $controlTable
 ##   plant_part measurement        value
 ## 1      sepal       width  Sepal.Width
@@ -571,7 +571,7 @@
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_by.html"><code>layout_by()</code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
-<code><a href="#base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<code><a href="https://rdrr.io/r/base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
 </ul>
 <p>Some convenience functions include:</p>
 <ul>
@@ -601,7 +601,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

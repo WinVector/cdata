@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -147,23 +147,23 @@
     <p>General transform from arbitrary record shape to arbitrary record shape.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>convert_records</span>(
-  <span class='kw'>table</span>,
-  incoming_shape = <span class='kw'>NULL</span>,
-  outgoing_shape = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>,
-  keyColumns = <span class='kw'>NULL</span>,
-  columnsToCopy_in = <span class='kw'>NULL</span>,
-  checkNames = <span class='fl'>TRUE</span>,
-  checkKeys = <span class='fl'>FALSE</span>,
-  strict = <span class='fl'>FALSE</span>,
-  incoming_controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>incoming_shape</span>)[[<span class='fl'>1</span>]],
-  outgoing_controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>outgoing_shape</span>)[[<span class='fl'>1</span>]],
-  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"crec"</span>),
-  temporary = <span class='fl'>TRUE</span>,
-  allow_rqdatatable_in = <span class='fl'>FALSE</span>,
-  allow_rqdatatable_out = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>convert_records</span><span class='op'>(</span>
+  <span class='va'>table</span>,
+  incoming_shape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  outgoing_shape <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>,
+  keyColumns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  columnsToCopy_in <span class='op'>=</span> <span class='cn'>NULL</span>,
+  checkNames <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  checkKeys <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  strict <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  incoming_controlTableKeys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>incoming_shape</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+  outgoing_controlTableKeys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>outgoing_shape</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+  tmp_name_source <span class='op'>=</span> <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span><span class='op'>(</span><span class='st'>"crec"</span><span class='op'>)</span>,
+  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  allow_rqdatatable_in <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  allow_rqdatatable_out <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -237,29 +237,29 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 
-<span class='kw'>incoming_shape</span> <span class='op'>&lt;-</span> <span class='fu'>qchar_frame</span>(
+<span class='va'>incoming_shape</span> <span class='op'>&lt;-</span> <span class='fu'>qchar_frame</span><span class='op'>(</span>
   <span class='st'>"row"</span>,  <span class='st'>"col1"</span>, <span class='st'>"col2"</span>, <span class='st'>"col3"</span> <span class='op'>|</span>
-  <span class='st'>"row1"</span>,   <span class='kw'>v11</span>,     <span class='kw'>v12</span>,  <span class='kw'>v13</span>   <span class='op'>|</span>
-  <span class='st'>"row2"</span>,   <span class='kw'>v21</span>,     <span class='kw'>v22</span>,  <span class='kw'>v23</span>   <span class='op'>|</span>
-  <span class='st'>"row3"</span>,   <span class='kw'>v31</span>,     <span class='kw'>v32</span>,  <span class='kw'>v33</span>   )
+  <span class='st'>"row1"</span>,   <span class='va'>v11</span>,     <span class='va'>v12</span>,  <span class='va'>v13</span>   <span class='op'>|</span>
+  <span class='st'>"row2"</span>,   <span class='va'>v21</span>,     <span class='va'>v22</span>,  <span class='va'>v23</span>   <span class='op'>|</span>
+  <span class='st'>"row3"</span>,   <span class='va'>v31</span>,     <span class='va'>v32</span>,  <span class='va'>v33</span>   <span class='op'>)</span>
 
 
-<span class='kw'>outgoing_shape</span> <span class='op'>&lt;-</span> <span class='fu'>qchar_frame</span>(
+<span class='va'>outgoing_shape</span> <span class='op'>&lt;-</span> <span class='fu'>qchar_frame</span><span class='op'>(</span>
   <span class='st'>"column"</span>, <span class='st'>"row1"</span>, <span class='st'>"row2"</span>, <span class='st'>"row3"</span> <span class='op'>|</span>
-  <span class='st'>"col1"</span>,      <span class='kw'>v11</span>,  <span class='kw'>v21</span>  ,  <span class='kw'>v31</span>   <span class='op'>|</span>
-  <span class='st'>"col2"</span>,      <span class='kw'>v12</span>,  <span class='kw'>v22</span>  ,  <span class='kw'>v32</span>   <span class='op'>|</span>
-  <span class='st'>"col3"</span>,      <span class='kw'>v13</span>,  <span class='kw'>v23</span>  ,  <span class='kw'>v33</span>   )
+  <span class='st'>"col1"</span>,      <span class='va'>v11</span>,  <span class='va'>v21</span>  ,  <span class='va'>v31</span>   <span class='op'>|</span>
+  <span class='st'>"col2"</span>,      <span class='va'>v12</span>,  <span class='va'>v22</span>  ,  <span class='va'>v32</span>   <span class='op'>|</span>
+  <span class='st'>"col3"</span>,      <span class='va'>v13</span>,  <span class='va'>v23</span>  ,  <span class='va'>v33</span>   <span class='op'>)</span>
 
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'>build_frame</span>(
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'>build_frame</span><span class='op'>(</span>
   <span class='st'>'record_id'</span>, <span class='st'>'row'</span>,  <span class='st'>'col1'</span>, <span class='st'>'col2'</span>, <span class='st'>'col3'</span>  <span class='op'>|</span>
   <span class='fl'>1</span>,           <span class='st'>'row1'</span>,  <span class='fl'>1</span>,      <span class='fl'>2</span>,      <span class='fl'>3</span>      <span class='op'>|</span>
   <span class='fl'>1</span>,           <span class='st'>'row2'</span>,  <span class='fl'>4</span>,      <span class='fl'>5</span>,      <span class='fl'>6</span>      <span class='op'>|</span>
   <span class='fl'>1</span>,           <span class='st'>'row3'</span>,  <span class='fl'>7</span>,      <span class='fl'>8</span>,      <span class='fl'>9</span>      <span class='op'>|</span>
   <span class='fl'>2</span>,           <span class='st'>'row1'</span>,  <span class='fl'>11</span>,     <span class='fl'>12</span>,     <span class='fl'>13</span>     <span class='op'>|</span>
   <span class='fl'>2</span>,           <span class='st'>'row2'</span>,  <span class='fl'>14</span>,     <span class='fl'>15</span>,     <span class='fl'>16</span>     <span class='op'>|</span>
-  <span class='fl'>2</span>,           <span class='st'>'row3'</span>,  <span class='fl'>17</span>,     <span class='fl'>18</span>,     <span class='fl'>19</span>     )
+  <span class='fl'>2</span>,           <span class='st'>'row3'</span>,  <span class='fl'>17</span>,     <span class='fl'>18</span>,     <span class='fl'>19</span>     <span class='op'>)</span>
 
-<span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>data</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   record_id  row col1 col2 col3
 #&gt; 1         1 row1    1    2    3
 #&gt; 2         1 row2    4    5    6
@@ -267,11 +267,11 @@
 #&gt; 4         2 row1   11   12   13
 #&gt; 5         2 row2   14   15   16
 #&gt; 6         2 row3   17   18   19</div><div class='input'>
-<span class='fu'>convert_records</span>(
-  <span class='kw'>data</span>,
-  keyColumns = <span class='st'>'record_id'</span>,
-  incoming_shape = <span class='kw'>incoming_shape</span>,
-  outgoing_shape = <span class='kw'>outgoing_shape</span>)
+<span class='fu'>convert_records</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  keyColumns <span class='op'>=</span> <span class='st'>'record_id'</span>,
+  incoming_shape <span class='op'>=</span> <span class='va'>incoming_shape</span>,
+  outgoing_shape <span class='op'>=</span> <span class='va'>outgoing_shape</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   record_id column row1 row2 row3
 #&gt; 1         1   col1    1    4    7
 #&gt; 2         1   col2    2    5    8
@@ -279,15 +279,15 @@
 #&gt; 4         2   col1   11   14   17
 #&gt; 5         2   col2   12   15   18
 #&gt; 6         2   col3   13   16   19</div><div class='input'>
-<span class='kw'>td</span> <span class='op'>&lt;-</span> <span class='kw'>rquery</span>::<span class='fu'><a href='#rquery/local_td.html'>local_td</a></span>(<span class='kw'>data</span>)
+<span class='va'>td</span> <span class='op'>&lt;-</span> <span class='fu'>rquery</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/rquery/reference/local_td.html'>local_td</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
 
-<span class='kw'>ops</span> <span class='op'>&lt;-</span> <span class='fu'>convert_records</span>(
-  <span class='kw'>td</span>,
-  keyColumns = <span class='st'>'record_id'</span>,
-  incoming_shape = <span class='kw'>incoming_shape</span>,
-  outgoing_shape = <span class='kw'>outgoing_shape</span>)
+<span class='va'>ops</span> <span class='op'>&lt;-</span> <span class='fu'>convert_records</span><span class='op'>(</span>
+  <span class='va'>td</span>,
+  keyColumns <span class='op'>=</span> <span class='st'>'record_id'</span>,
+  incoming_shape <span class='op'>=</span> <span class='va'>incoming_shape</span>,
+  outgoing_shape <span class='op'>=</span> <span class='va'>outgoing_shape</span><span class='op'>)</span>
 
-<span class='fu'><a href='#base/cat.html'>cat</a></span>(<span class='fu'><a href='#base/format.html'>format</a></span>(<span class='kw'>ops</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>ops</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; mk_td("data", c(
 #&gt;   "record_id",
 #&gt;   "row",
@@ -295,7 +295,7 @@
 #&gt;   "col2",
 #&gt;   "col3")) %.&gt;%
 #&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."record_id" "record_id", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col1" ELSE NULL END ) "v11", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col2" ELSE NULL END ) "v12", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row1' THEN a."col3" ELSE NULL END ) "v13", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col1" ELSE NULL END ) "v21", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col2" ELSE NULL END ) "v22", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row2' THEN a."col3" ELSE NULL END ) "v23", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col1" ELSE NULL END ) "v31", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col2" ELSE NULL END ) "v32", MAX( CASE WHEN CAST(a."row" AS VARCHAR) = 'row3' THEN a."col3" ELSE NULL END ) "v33" FROM "IN" a GROUP BY a."record_id") %.&gt;%
-#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."record_id", b."column", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v11"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v12"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v13" ELSE NULL END AS "row1", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v21"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v22"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v23" ELSE NULL END AS "row2", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v31"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v32"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v33" ELSE NULL END AS "row3" FROM "IN" a CROSS JOIN "crec_31812209643026056975_0000000004" b )</div><div class='input'>
+#&gt;  non_sql_node(., CREATE TEMPORARY TABLE "OUT" AS  SELECT a."record_id", b."column", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v11"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v12"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v13" ELSE NULL END AS "row1", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v21"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v22"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v23" ELSE NULL END AS "row2", CASE  WHEN CAST(b."column" AS VARCHAR) = 'col1' THEN a."v31"  WHEN CAST(b."column" AS VARCHAR) = 'col2' THEN a."v32"  WHEN CAST(b."column" AS VARCHAR) = 'col3' THEN a."v33" ELSE NULL END AS "row3" FROM "IN" a CROSS JOIN "crec_63088935191991423144_0000000004" b )</div><div class='input'>
 
 
 </div></pre>
@@ -314,7 +314,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

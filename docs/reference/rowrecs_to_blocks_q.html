@@ -73,7 +73,7 @@ and controlTable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ and controlTable." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -149,26 +149,26 @@ and controlTable." />
 and controlTable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rowrecs_to_blocks_q</span>(
-  <span class='kw'>wideTable</span>,
-  <span class='kw'>controlTable</span>,
-  <span class='kw'>my_db</span>,
-  <span class='kw'>...</span>,
-  columnsToCopy = <span class='kw'>NULL</span>,
-  tempNameGenerator = <span class='fu'>mk_tmp_name_source</span>(<span class='st'>"mvtrq"</span>),
-  strict = <span class='fl'>FALSE</span>,
-  controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>controlTable</span>)[[<span class='fl'>1</span>]],
-  checkNames = <span class='fl'>TRUE</span>,
-  checkKeys = <span class='fl'>FALSE</span>,
-  showQuery = <span class='fl'>FALSE</span>,
-  defaultValue = <span class='kw'>NULL</span>,
-  temporary = <span class='fl'>FALSE</span>,
-  resultName = <span class='kw'>NULL</span>,
-  incoming_qualifiers = <span class='kw'>NULL</span>,
-  outgoing_qualifiers = <span class='kw'>NULL</span>,
-  temp_qualifiers = <span class='kw'>NULL</span>,
-  executeQuery = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>rowrecs_to_blocks_q</span><span class='op'>(</span>
+  <span class='va'>wideTable</span>,
+  <span class='va'>controlTable</span>,
+  <span class='va'>my_db</span>,
+  <span class='va'>...</span>,
+  columnsToCopy <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tempNameGenerator <span class='op'>=</span> <span class='fu'>mk_tmp_name_source</span><span class='op'>(</span><span class='st'>"mvtrq"</span><span class='op'>)</span>,
+  strict <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  controlTableKeys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>controlTable</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+  checkNames <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  checkKeys <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  showQuery <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  defaultValue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  temporary <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  resultName <span class='op'>=</span> <span class='cn'>NULL</span>,
+  incoming_qualifiers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  outgoing_qualifiers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  temp_qualifiers <span class='op'>=</span> <span class='cn'>NULL</span>,
+  executeQuery <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -278,25 +278,25 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'>if</span> (<span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"DBI"</span>, quietly = <span class='fl'>TRUE</span>) <span class='op'>&amp;&amp;</span>
-  <span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='kw'>my_db</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"DBI"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>&amp;&amp;</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"RSQLite"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>my_db</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>":memory:"</span><span class='op'>)</span>
 
   <span class='co'># un-pivot example</span>
-  <span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/data.frame.html'>data.frame</a></span>(AUC = <span class='fl'>0.6</span>, R2 = <span class='fl'>0.2</span>)
-  <span class='kw'>rquery</span>::<span class='fu'><a href='#rquery/rq_copy_to.html'>rq_copy_to</a></span>(<span class='kw'>my_db</span>,
+  <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>AUC <span class='op'>=</span> <span class='fl'>0.6</span>, R2 <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span>
+  <span class='fu'>rquery</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/rquery/reference/rq_copy_to.html'>rq_copy_to</a></span><span class='op'>(</span><span class='va'>my_db</span>,
                     <span class='st'>'d'</span>,
-                    <span class='kw'>d</span>,
-                    overwrite = <span class='fl'>TRUE</span>,
-                    temporary = <span class='fl'>TRUE</span>)
-  <span class='kw'>cT</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span>(nameForNewKeyColumn= <span class='st'>'meas'</span>,
-                              nameForNewValueColumn= <span class='st'>'val'</span>,
-                              columnsToTakeFrom= <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='st'>'AUC'</span>, <span class='st'>'R2'</span>))
-  <span class='kw'>tab</span> <span class='op'>&lt;-</span> <span class='fu'>rowrecs_to_blocks_q</span>(<span class='st'>'d'</span>, <span class='kw'>cT</span>, my_db = <span class='kw'>my_db</span>)
-  <span class='fu'><a href='qlook.html'>qlook</a></span>(<span class='kw'>my_db</span>, <span class='kw'>tab</span>)
-  <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>my_db</span>)
-}
-</div><div class='output co'>#&gt; table `mvtrq_35762727716190491880_0000000001` SQLiteConnection 
+                    <span class='va'>d</span>,
+                    overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                    temporary <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='va'>cT</span> <span class='op'>&lt;-</span> <span class='fu'><a href='build_unpivot_control.html'>build_unpivot_control</a></span><span class='op'>(</span>nameForNewKeyColumn<span class='op'>=</span> <span class='st'>'meas'</span>,
+                              nameForNewValueColumn<span class='op'>=</span> <span class='st'>'val'</span>,
+                              columnsToTakeFrom<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'AUC'</span>, <span class='st'>'R2'</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>tab</span> <span class='op'>&lt;-</span> <span class='fu'>rowrecs_to_blocks_q</span><span class='op'>(</span><span class='st'>'d'</span>, <span class='va'>cT</span>, my_db <span class='op'>=</span> <span class='va'>my_db</span><span class='op'>)</span>
+  <span class='fu'><a href='qlook.html'>qlook</a></span><span class='op'>(</span><span class='va'>my_db</span>, <span class='va'>tab</span><span class='op'>)</span>
+  <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>my_db</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; table `mvtrq_88012909446674514404_0000000001` SQLiteConnection 
 #&gt;  nrow: 2 
 #&gt; 'data.frame':	2 obs. of  2 variables:
 #&gt;  $ meas: chr  "AUC" "R2"
@@ -317,7 +317,7 @@ here <a href='https://github.com/WinVector/cdata'>https://github.com/WinVector/c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

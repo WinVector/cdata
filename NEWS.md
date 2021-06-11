@@ -1,4 +1,8 @@
 
+# cdata 1.2.0 2021/06/11
+
+ * Remove LazyData decl.
+
 # cdata 1.1.9 2020/10/17
 
  * Move to tinytest.

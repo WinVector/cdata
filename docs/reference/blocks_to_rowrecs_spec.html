@@ -73,7 +73,7 @@ extra row keys, and control table keys." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ extra row keys, and control table keys." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -149,16 +149,16 @@ extra row keys, and control table keys." />
 extra row keys, and control table keys.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blocks_to_rowrecs_spec</span>(
-  <span class='kw'>controlTable</span>,
-  <span class='kw'>...</span>,
-  recordKeys = <span class='fu'><a href='#base/character.html'>character</a></span>(<span class='fl'>0</span>),
-  controlTableKeys = <span class='fu'><a href='#base/colnames.html'>colnames</a></span>(<span class='kw'>controlTable</span>)[[<span class='fl'>1</span>]],
-  checkNames = <span class='fl'>TRUE</span>,
-  checkKeys = <span class='fl'>TRUE</span>,
-  strict = <span class='fl'>FALSE</span>,
-  allow_rqdatatable = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>blocks_to_rowrecs_spec</span><span class='op'>(</span>
+  <span class='va'>controlTable</span>,
+  <span class='va'>...</span>,
+  recordKeys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>,
+  controlTableKeys <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>controlTable</span><span class='op'>)</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
+  checkNames <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  checkKeys <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  strict <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  allow_rqdatatable <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,21 +203,21 @@ extra row keys, and control table keys.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/build_frame.html'>build_frame</a></span>(
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/build_frame.html'>build_frame</a></span><span class='op'>(</span>
   <span class='st'>"id"</span>, <span class='st'>"measure"</span>, <span class='st'>"value"</span> <span class='op'>|</span>
   <span class='fl'>1</span>   , <span class='st'>"AUC"</span>    , <span class='fl'>0.7</span>     <span class='op'>|</span>
   <span class='fl'>1</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.4</span>     <span class='op'>|</span>
   <span class='fl'>2</span>   , <span class='st'>"AUC"</span>    , <span class='fl'>0.8</span>     <span class='op'>|</span>
-  <span class='fl'>2</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.5</span>     )
+  <span class='fl'>2</span>   , <span class='st'>"R2"</span>     , <span class='fl'>0.5</span>     <span class='op'>)</span>
 
-<span class='kw'>transform</span> <span class='op'>&lt;-</span> <span class='fu'>blocks_to_rowrecs_spec</span>(
-  <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/qchar_frame.html'>qchar_frame</a></span>(
+<span class='va'>transform</span> <span class='op'>&lt;-</span> <span class='fu'>blocks_to_rowrecs_spec</span><span class='op'>(</span>
+  <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/qchar_frame.html'>qchar_frame</a></span><span class='op'>(</span>
     <span class='st'>"measure"</span>, <span class='st'>"value"</span> <span class='op'>|</span>
-    <span class='st'>"AUC"</span>    , <span class='kw'>AUC</span>     <span class='op'>|</span>
-    <span class='st'>"R2"</span>     , <span class='kw'>R2</span>      ),
-  recordKeys = <span class='st'>"id"</span>)
+    <span class='st'>"AUC"</span>    , <span class='va'>AUC</span>     <span class='op'>|</span>
+    <span class='st'>"R2"</span>     , <span class='va'>R2</span>      <span class='op'>)</span>,
+  recordKeys <span class='op'>=</span> <span class='st'>"id"</span><span class='op'>)</span>
 
-<span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>transform</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>transform</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; {
 #&gt;  block_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "measure", "value" |
@@ -235,12 +235,12 @@ extra row keys, and control table keys.</p>
 #&gt;  # args: c(checkNames = TRUE, checkKeys = TRUE, strict = FALSE, allow_rqdatatable = FALSE)
 #&gt; }
 #&gt; </div><div class='input'>
-<span class='kw'>d</span> <span class='op'>%.&gt;%</span> <span class='kw'>transform</span>
+<span class='va'>d</span> <span class='op'>%.&gt;%</span> <span class='va'>transform</span>
 </div><div class='output co'>#&gt;   id AUC  R2
 #&gt; 1  1 0.7 0.4
 #&gt; 2  2 0.8 0.5</div><div class='input'>
-<span class='kw'>inv_transform</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/t.html'>t</a></span>(<span class='kw'>transform</span>)
-<span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>inv_transform</span>)
+<span class='va'>inv_transform</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>transform</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>inv_transform</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; {
 #&gt;  row_record &lt;- wrapr::qchar_frame(
 #&gt;    "id"  , "AUC", "R2" |
@@ -259,14 +259,14 @@ extra row keys, and control table keys.</p>
 #&gt; }
 #&gt; </div><div class='input'>
 <span class='co'># identity (in structure)</span>
-<span class='kw'>d</span> <span class='op'>%.&gt;%</span> <span class='kw'>transform</span> <span class='op'>%.&gt;%</span> <span class='kw'>inv_transform</span>
+<span class='va'>d</span> <span class='op'>%.&gt;%</span> <span class='va'>transform</span> <span class='op'>%.&gt;%</span> <span class='va'>inv_transform</span>
 </div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
 #&gt; 2  1      R2   0.4
 #&gt; 3  2     AUC   0.8
 #&gt; 4  2      R2   0.5</div><div class='input'>
 <span class='co'># identity again (using .() "immediate" notation)</span>
-<span class='kw'>d</span> <span class='op'>%.&gt;%</span> <span class='kw'>transform</span> <span class='op'>%.&gt;%</span> <span class='fu'>.</span>(<span class='fu'><a href='#base/t.html'>t</a></span>(<span class='kw'>transform</span>))
+<span class='va'>d</span> <span class='op'>%.&gt;%</span> <span class='va'>transform</span> <span class='op'>%.&gt;%</span> <span class='fu'>.</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>transform</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   id measure value
 #&gt; 1  1     AUC   0.7
 #&gt; 2  1      R2   0.4
@@ -289,7 +289,7 @@ extra row keys, and control table keys.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

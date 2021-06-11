@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,13 +94,13 @@
 
       
 
-      </header><script src="exercises_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="exercises_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>cdata Exercises</h1>
                         <h4 class="author">John Mount, Nina Zumel; Win-Vector LLC</h4>
             
-            <h4 class="date">2020-09-06</h4>
+            <h4 class="date">2021-06-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/exercises.Rmd"><code>vignettes/exercises.Rmd</code></a></small>
       <div class="hidden name"><code>exercises.Rmd</code></div>
@@ -136,7 +136,7 @@
 <li><p>Apply the layout transform.</p></li>
 </ul>
 <p>This may seem like a lot of steps, but it is only because we are taking the problems very slowly. The important point is that we want to minimize <em>additional</em> problem solving when applying the <code>cdata</code> methodology. Usually when you need to transform data you are in the middle of some other more important task, so you want to delegate the details of how the layout transform is implemented. With <code>cdata</code> the user is not asked to perform additional puzzle solving to guess a sequence of operators that may implement the desired data layout transform. The <code>cdata</code> solution pattern is always the same, which can help in mastering it.</p>
-<p>With <code>cdata</code>, record layout transforms are simple <code>R</code> objects with detailed <code><a href="#base/print.html">print()</a></code> methods- so they are convenient to alter, save, and re-use later. The record layout transform also documents the expected columns and constants of the incoming data.</p>
+<p>With <code>cdata</code>, record layout transforms are simple <code>R</code> objects with detailed <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> methods- so they are convenient to alter, save, and re-use later. The record layout transform also documents the expected columns and constants of the incoming data.</p>
 <p>We will work some examples with the hope that practice brings familiarity. We have some notes on how to graphically solve exercise like this <a href="https://winvector.github.io/cdata/articles/design.html">here</a> and <a href="https://win-vector.com/2019/04/16/controlling-data-layout-with-cdata/">here</a>, but let’s dive into working the exercises.</p>
 </div>
 <div id="example-1" class="section level2">
@@ -144,23 +144,23 @@
 <a href="#example-1" class="anchor"></a>Example 1</h2>
 <p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/dadmom.R">tidyr:demo/dadmom.R</a>.)</p>
 <p>From <a href="https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/">https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/</a> we can get get a copy of the data and the question or “transform ask”:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># convert from this format</span>
-<span class="kw">dadmomw</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># convert from this format</span>
+<span class="va">dadmomw</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"famid"</span>  , <span class="st">"named"</span>, <span class="st">"incd"</span>, <span class="st">"namem"</span>, <span class="st">"incm"</span> <span class="op">|</span>
      <span class="fl">1</span>      , <span class="st">"Bill"</span> , <span class="fl">30000</span> , <span class="st">"Bess"</span> , <span class="fl">15000</span>  <span class="op">|</span>
      <span class="fl">2</span>      , <span class="st">"Art"</span>  , <span class="fl">22000</span> , <span class="st">"Amy"</span>  , <span class="fl">18000</span>  <span class="op">|</span>
-     <span class="fl">3</span>      , <span class="st">"Paul"</span> , <span class="fl">25000</span> , <span class="st">"Pat"</span>  , <span class="fl">50000</span>  )
+     <span class="fl">3</span>      , <span class="st">"Paul"</span> , <span class="fl">25000</span> , <span class="st">"Pat"</span>  , <span class="fl">50000</span>  <span class="op">)</span>
 
 <span class="co"># to this format</span>
-<span class="kw">dadmomt</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<span class="va">dadmomt</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"famid"</span>  , <span class="st">"dadmom"</span>, <span class="st">"name"</span>, <span class="st">"inc"</span> <span class="op">|</span>
      <span class="fl">1</span>      , <span class="st">"d"</span>     , <span class="st">"Bill"</span>, <span class="fl">30000</span> <span class="op">|</span>
      <span class="fl">1</span>      , <span class="st">"m"</span>     , <span class="st">"Bess"</span>, <span class="fl">15000</span> <span class="op">|</span>
      <span class="fl">2</span>      , <span class="st">"d"</span>     , <span class="st">"Art"</span> , <span class="fl">22000</span> <span class="op">|</span>
      <span class="fl">2</span>      , <span class="st">"m"</span>     , <span class="st">"Amy"</span> , <span class="fl">18000</span> <span class="op">|</span>
      <span class="fl">3</span>      , <span class="st">"d"</span>     , <span class="st">"Paul"</span>, <span class="fl">25000</span> <span class="op">|</span>
-     <span class="fl">3</span>      , <span class="st">"m"</span>     , <span class="st">"Pat"</span> , <span class="fl">50000</span> )</pre></div>
+     <span class="fl">3</span>      , <span class="st">"m"</span>     , <span class="st">"Pat"</span> , <span class="fl">50000</span> <span class="op">)</span></code></pre></div>
 <p>Each incoming record represents a family, and is designated by the record key <code>famid</code>. The data starts with each record in a single row (a row record):</p>
 <table class="table">
 <thead><tr class="header">
@@ -179,29 +179,29 @@
 </tr></tbody>
 </table>
 <p>So we are going from a row record to a general block record: this means we want to use <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code>, and we only have to describe the outgoing record shape.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: wrapr</span>
 
 <span class="co"># identify the record key</span>
-<span class="kw">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"famid"</span>
+<span class="va">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"famid"</span>
 
 <span class="co"># specify the outgoing record shape</span>
-<span class="kw">outgoing_record</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">outgoing_record</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
    <span class="st">"dadmom"</span>  , <span class="st">"name"</span>, <span class="st">"inc"</span> <span class="op">|</span>
-     <span class="st">"d"</span>     , <span class="kw">named</span> , <span class="kw">incd</span> <span class="op">|</span>
-     <span class="st">"m"</span>     , <span class="kw">namem</span> , <span class="kw">incm</span> )</pre></div>
+     <span class="st">"d"</span>     , <span class="va">named</span> , <span class="va">incd</span> <span class="op">|</span>
+     <span class="st">"m"</span>     , <span class="va">namem</span> , <span class="va">incm</span> <span class="op">)</span></code></pre></div>
 <p>Notice we take the column names from the incoming row-record and use them as cell-names in the outgoing record; this is how we show where the data goes. In specifying the record with <code><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">wrapr::qchar_frame()</a></code>, we use the convention that quoted entities are values we know (values that specify column names, or keys that describe the interior of the block record structure), and un-quoted entities are values we expect to be in the record.</p>
 <p><code>outgoing_record</code> is just a <code>data.frame</code>, you can create it however you like – you don’t need to use <code>qchar_frame()</code>.</p>
 <p>Now create the layout specification, and print it.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># put it all together into a layout</span>
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">outgoing_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># put it all together into a layout</span>
+<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="va">outgoing_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span><span class="op">)</span>
 
 <span class="co"># confirm we have the right layout</span>
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "famid"  , "named", "incd", "namem", "incm" |</span>
@@ -217,21 +217,21 @@
 <span class="co">#&gt;  block_keys &lt;- c('famid', 'dadmom')</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span></pre></div>
-<p>The <code><a href="#base/print.html">print()</a></code> method fully documents what columns are expected and the intent of the data layout transform. It uses the same quoted/unquoted convention that we used in specifying <code>outgoing_record</code> above.</p>
+<span class="co">#&gt; }</span></code></pre></div>
+<p>The <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> method fully documents what columns are expected and the intent of the data layout transform. It uses the same quoted/unquoted convention that we used in specifying <code>outgoing_record</code> above.</p>
 <p>The <em>block_keys</em> of the outgoing record shape specify the unique identifier of each row of the transformed data: that is, each row of <code>dadmomt</code> will be uniquely identified by the values of the columns <code>famid</code> and <code>dadmom</code> (which family, which parent). One of the block keys is always the record key; by default, <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code> takes the other one from the first column of the <code>outgoing_record</code> shape. You can specify the block key (or keys) explicitly with the <code>controlTableKeys</code> argument:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># this is equivalent to the above call</span>
-<span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">outgoing_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>,
-  controlTableKeys = <span class="st">'dadmom'</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># this is equivalent to the above call</span>
+<span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="va">outgoing_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span>,
+  controlTableKeys <span class="op">=</span> <span class="st">'dadmom'</span><span class="op">)</span></code></pre></div>
 <p>Now apply the layout to get the new data shape:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># apply the layout</span>
-<span class="kw">dadmomw</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># apply the layout</span>
+<span class="va">dadmomw</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">famid</th>
@@ -311,33 +311,33 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 </code></pre>
 <p>and the record key is formed from the ID and the Year (sometimes what the record keys are is not obvious, and is in fact domain knowledge).</p>
 <p>Since neither the incoming nor outgoing shapes are row records, we use the general <code><a href="../reference/layout_specification.html">layout_specification()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 
 <span class="co"># identify the record keys</span>
-<span class="kw">recordKeys</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/c.html">c</a></span>(<span class="st">"ID"</span>, <span class="st">"Year"</span>)
+<span class="va">recordKeys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"Year"</span><span class="op">)</span>
 
 <span class="co"># specify the incoming record shape</span>
-<span class="kw">incoming_record</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">incoming_record</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
   <span class="st">"Test"</span>  , <span class="st">"Fall"</span>   , <span class="st">"Spring"</span>     , <span class="st">"Winter"</span> <span class="op">|</span>
-    <span class="st">"1"</span>   , <span class="kw">Fall1</span>    , <span class="kw">Spring1</span>      , <span class="kw">Winter1</span>  <span class="op">|</span>
-    <span class="st">"2"</span>   , <span class="kw">Fall2</span>    , <span class="kw">Spring2</span>      , <span class="kw">Winter2</span>  )
+    <span class="st">"1"</span>   , <span class="va">Fall1</span>    , <span class="va">Spring1</span>      , <span class="va">Winter1</span>  <span class="op">|</span>
+    <span class="st">"2"</span>   , <span class="va">Fall2</span>    , <span class="va">Spring2</span>      , <span class="va">Winter2</span>  <span class="op">)</span>
 
 <span class="co"># specify the outgoing record shape</span>
-<span class="kw">outgoing_record</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">outgoing_record</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
   <span class="st">"Time"</span>     , <span class="st">"Test1"</span> ,  <span class="st">"Test2"</span>   <span class="op">|</span>
-    <span class="st">"Fall"</span>   , <span class="kw">Fall1</span>   ,   <span class="kw">Fall2</span>    <span class="op">|</span>
-    <span class="st">"Spring"</span> , <span class="kw">Spring1</span> ,   <span class="kw">Spring2</span>  <span class="op">|</span>
-    <span class="st">"Winter"</span> , <span class="kw">Winter1</span> ,   <span class="kw">Winter2</span>  )
+    <span class="st">"Fall"</span>   , <span class="va">Fall1</span>   ,   <span class="va">Fall2</span>    <span class="op">|</span>
+    <span class="st">"Spring"</span> , <span class="va">Spring1</span> ,   <span class="va">Spring2</span>  <span class="op">|</span>
+    <span class="st">"Winter"</span> , <span class="va">Winter1</span> ,   <span class="va">Winter2</span>  <span class="op">)</span>
 
 <span class="co"># put it all together into a layout</span>
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/layout_specification.html">layout_specification</a></span>(
-  incoming_shape = <span class="kw">incoming_record</span>,
-  outgoing_shape = <span class="kw">outgoing_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>)
+<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/layout_specification.html">layout_specification</a></span><span class="op">(</span>
+  incoming_shape <span class="op">=</span> <span class="va">incoming_record</span>,
+  outgoing_shape <span class="op">=</span> <span class="va">outgoing_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span><span class="op">)</span>
 
 <span class="co"># confirm we have the right layout</span>
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  in_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "ID"  , "Year", "Test", "Fall", "Spring", "Winter" |</span>
@@ -358,7 +358,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; }</span>
 
 <span class="co"># example data</span>
-<span class="kw">grades</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<span class="va">grades</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"ID"</span>  , <span class="st">"Test"</span>, <span class="st">"Year"</span>, <span class="st">"Fall"</span>, <span class="st">"Spring"</span>, <span class="st">"Winter"</span> <span class="op">|</span>
      <span class="fl">1</span>   , <span class="fl">1</span>     , <span class="fl">2008</span>  , <span class="fl">15</span>    , <span class="fl">16</span>      , <span class="fl">19</span>       <span class="op">|</span>
      <span class="fl">1</span>   , <span class="fl">1</span>     , <span class="fl">2009</span>  , <span class="fl">12</span>    , <span class="fl">13</span>      , <span class="fl">27</span>       <span class="op">|</span>
@@ -371,12 +371,12 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
      <span class="fl">3</span>   , <span class="fl">1</span>     , <span class="fl">2008</span>  , <span class="fl">11</span>    , <span class="fl">12</span>      , <span class="fl">22</span>       <span class="op">|</span>
      <span class="fl">3</span>   , <span class="fl">1</span>     , <span class="fl">2009</span>  , <span class="fl">13</span>    , <span class="fl">11</span>      , <span class="fl">27</span>       <span class="op">|</span>
      <span class="fl">3</span>   , <span class="fl">2</span>     , <span class="fl">2008</span>  , <span class="fl">17</span>    , <span class="fl">12</span>      , <span class="fl">23</span>       <span class="op">|</span>
-     <span class="fl">3</span>   , <span class="fl">2</span>     , <span class="fl">2009</span>  , <span class="fl">14</span>    ,  <span class="fl">9</span>      , <span class="fl">31</span>       )
+     <span class="fl">3</span>   , <span class="fl">2</span>     , <span class="fl">2009</span>  , <span class="fl">14</span>    ,  <span class="fl">9</span>      , <span class="fl">31</span>       <span class="op">)</span>
 
 <span class="co"># apply the layout</span>
-<span class="kw">grades</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">grades</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">ID</th>
@@ -520,18 +520,18 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <a href="#example-3" class="anchor"></a>Example 3</h1>
 <p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-16032858.R">tidyr:demo/so-16032858.R</a> , <a href="https://stackoverflow.com/questions/16032858/reshape-data-from-long-to-a-short-format-by-a-variable-and-rename-columns">https://stackoverflow.com/questions/16032858/reshape-data-from-long-to-a-short-format-by-a-variable-and-rename-columns</a>.)</p>
 <p>Question: given data such as below how does one move treatment and control values for each individual into columns? Or how does one take <code>a</code> to <code>b</code>?</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">a</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"Ind"</span>   , <span class="st">"Treatment"</span>, <span class="st">"value"</span> <span class="op">|</span>
      <span class="st">"Ind1"</span>, <span class="st">"Treat"</span>    , <span class="fl">1</span>       <span class="op">|</span>
      <span class="st">"Ind2"</span>, <span class="st">"Treat"</span>    , <span class="fl">2</span>       <span class="op">|</span>
      <span class="st">"Ind1"</span>, <span class="st">"Cont"</span>     , <span class="fl">3</span>       <span class="op">|</span>
-     <span class="st">"Ind2"</span>, <span class="st">"Cont"</span>     , <span class="fl">4</span>       )
+     <span class="st">"Ind2"</span>, <span class="st">"Cont"</span>     , <span class="fl">4</span>       <span class="op">)</span>
 
-<span class="kw">b</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"Ind"</span>   , <span class="st">"Treat"</span> , <span class="st">"Cont"</span><span class="op">|</span>
      <span class="st">"Ind1"</span>, <span class="fl">1</span>       , <span class="fl">3</span>     <span class="op">|</span>
-     <span class="st">"Ind2"</span>, <span class="fl">2</span>       , <span class="fl">4</span>     )</pre></div>
+     <span class="st">"Ind2"</span>, <span class="fl">2</span>       , <span class="fl">4</span>     <span class="op">)</span></code></pre></div>
 <p>In this case, a record corresponds to an individual, and the outgoing data is in row record form:</p>
 <table class="table">
 <thead><tr class="header">
@@ -547,26 +547,26 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 </table>
 <p>That means we will use <code><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec()</a></code>.</p>
 <p>The <code>cdata</code> solution is as follows.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 
 <span class="co"># identify the record key</span>
-<span class="kw">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"Ind"</span>
+<span class="va">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"Ind"</span>
 
 <span class="co"># specify the incoming record shape</span>
-<span class="kw">incoming_record</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">incoming_record</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
    <span class="st">"Treatment"</span>  , <span class="st">"value"</span> <span class="op">|</span>
-    <span class="st">"Treat"</span>     , <span class="kw">Treat</span>   <span class="op">|</span>
-    <span class="st">"Cont"</span>      , <span class="kw">Cont</span>    )
+    <span class="st">"Treat"</span>     , <span class="va">Treat</span>   <span class="op">|</span>
+    <span class="st">"Cont"</span>      , <span class="va">Cont</span>    <span class="op">)</span>
 
 
 <span class="co"># put it all together into a layout</span>
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec</a></span>(
-  <span class="kw">incoming_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>)
+<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocks_to_rowrecs_spec.html">blocks_to_rowrecs_spec</a></span><span class="op">(</span>
+  <span class="va">incoming_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span><span class="op">)</span>
 
 <span class="co"># confirm we have the right layout</span>
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "Ind"  , "Treatment", "value" |</span>
@@ -585,9 +585,9 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the layout</span>
-<span class="kw">a</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">a</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Ind</th>
@@ -616,13 +616,13 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <a href="#example-4" class="anchor"></a>Example 4</h1>
 <p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-17481212.R">tidyr:demo/so-17481212.R</a> , <a href="https://stackoverflow.com/questions/17481212/rearranging-data-frame-in-r">https://stackoverflow.com/questions/17481212/rearranging-data-frame-in-r</a>.)</p>
 <p>Convert data that has one different observation for each column to a data that has all observations in rows. That is take <code>a</code> to <code>b</code> in the following.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">a</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"Name"</span>   , <span class="st">"50"</span>, <span class="st">"100"</span>, <span class="st">"150"</span>, <span class="st">"200"</span>, <span class="st">"250"</span>, <span class="st">"300"</span>, <span class="st">"350"</span> <span class="op">|</span>
      <span class="st">"Carla"</span>, <span class="fl">1.2</span> , <span class="fl">1.8</span>  , <span class="fl">2.2</span>  , <span class="fl">2.3</span>  , <span class="fl">3</span>    , <span class="fl">2.5</span>  , <span class="fl">1.8</span>   <span class="op">|</span>
-     <span class="st">"Mace"</span> , <span class="fl">1.5</span> , <span class="fl">1.1</span>  , <span class="fl">1.9</span>  , <span class="fl">2</span>    , <span class="fl">3.6</span>  , <span class="fl">3</span>    , <span class="fl">2.5</span>   )
+     <span class="st">"Mace"</span> , <span class="fl">1.5</span> , <span class="fl">1.1</span>  , <span class="fl">1.9</span>  , <span class="fl">2</span>    , <span class="fl">3.6</span>  , <span class="fl">3</span>    , <span class="fl">2.5</span>   <span class="op">)</span>
 
-<span class="kw">b</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"Name"</span>   , <span class="st">"Time"</span>, <span class="st">"Score"</span> <span class="op">|</span>
      <span class="st">"Carla"</span>, <span class="fl">50</span>    , <span class="fl">1.2</span>     <span class="op">|</span>
      <span class="st">"Carla"</span>, <span class="fl">100</span>   , <span class="fl">1.8</span>     <span class="op">|</span>
@@ -637,7 +637,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
      <span class="st">"Mace"</span> , <span class="fl">200</span>   , <span class="fl">2</span>       <span class="op">|</span>
      <span class="st">"Mace"</span> , <span class="fl">250</span>   , <span class="fl">3.6</span>     <span class="op">|</span>
      <span class="st">"Mace"</span> , <span class="fl">300</span>   , <span class="fl">3</span>       <span class="op">|</span>
-     <span class="st">"Mace"</span> , <span class="fl">350</span>   , <span class="fl">2.5</span>     )</pre></div>
+     <span class="st">"Mace"</span> , <span class="fl">350</span>   , <span class="fl">2.5</span>     <span class="op">)</span></code></pre></div>
 <p>Here a record corresponds to a single observation (keyed by <code>Name</code>), and the incoming data is arranged in row records:</p>
 <table class="table">
 <thead><tr class="header">
@@ -663,18 +663,18 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 </table>
 <p>This particular transformation, from a single row of values to a single column of values (with multiple key columns), is the transform commonly called <em>gather</em>, <em>melt</em>, or <em>unpivot</em>. This is a very common transformation—probably the most common one, by far. Again, <code>cdata</code> has a convenience function, <code><a href="../reference/unpivot_to_blocks.html">pivot_to_blocks()</a></code> (or its alias <code><a href="../reference/unpivot_to_blocks.html">unpivot_to_blocks()</a></code>).</p>
 <p>Here, we will do the transform “the long way” with <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code>. As we have a large number of columns we will use a helper function to specify the data layout transform.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 
 <span class="co"># how to find records</span>
-<span class="kw">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"Name"</span>
+<span class="va">recordKeys</span> <span class="op">&lt;-</span> <span class="st">"Name"</span>
 
 <span class="co"># specify the outgoing record shape, using a helper function</span>
 <span class="co"># (and print it --  notice that it's a data frame)</span>
-( <span class="kw">outgoing_record</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_unpivot_control.html">build_unpivot_control</a></span>(
-  nameForNewKeyColumn = <span class="st">"Time"</span>,
-  nameForNewValueColumn = <span class="st">"Score"</span>,
-  columnsToTakeFrom = <span class="fu"><a href="#base/sets.html">setdiff</a></span>(<span class="fu"><a href="#base/colnames.html">colnames</a></span>(<span class="kw">a</span>), <span class="kw">recordKeys</span>)) )
+<span class="op">(</span> <span class="va">outgoing_record</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_unpivot_control.html">build_unpivot_control</a></span><span class="op">(</span>
+  nameForNewKeyColumn <span class="op">=</span> <span class="st">"Time"</span>,
+  nameForNewValueColumn <span class="op">=</span> <span class="st">"Score"</span>,
+  columnsToTakeFrom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>, <span class="va">recordKeys</span><span class="op">)</span><span class="op">)</span> <span class="op">)</span>
 <span class="co">#&gt;   Time Score</span>
 <span class="co">#&gt; 1   50    50</span>
 <span class="co">#&gt; 2  100   100</span>
@@ -685,12 +685,12 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; 7  350   350</span>
 
 <span class="co"># put it all together into a layout</span>
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">outgoing_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>)
+<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="va">outgoing_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span><span class="op">)</span>
 
 <span class="co"># confirm we have the right layout</span>
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "Name"  , "50", "100", "150", "200", "250", "300", "350" |</span>
@@ -714,12 +714,12 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the layout</span>
-<span class="kw">a</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span> <span class="op">%.&gt;%</span>
-  <span class="fu"><a href="#base/transform.html">transform</a></span>(<span class="kw">.</span>, Time = <span class="fu"><a href="#base/numeric.html">as.numeric</a></span>(<span class="kw">Time</span>)) <span class="op">%.&gt;%</span>
+<span class="va">a</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span><span class="op">(</span><span class="va">.</span>, Time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">Time</span><span class="op">)</span><span class="op">)</span> <span class="op">%.&gt;%</span>
   <span class="co"># sort the data frame by Name and then Time</span>
-  <span class="kw">.</span>[<span class="fu"><a href="#base/order.html">order</a></span>(<span class="kw">.</span><span class="op">$</span><span class="kw">Name</span>, <span class="kw">.</span><span class="op">$</span><span class="kw">Time</span>), , drop = <span class="fl">FALSE</span>] <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>, row.names = <span class="fl">FALSE</span>)</pre></div>
+  <span class="va">.</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">.</span><span class="op">$</span><span class="va">Name</span>, <span class="va">.</span><span class="op">$</span><span class="va">Time</span><span class="op">)</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Name</th>
@@ -805,18 +805,18 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <a href="#example-5" class="anchor"></a>Example 5</h1>
 <p>(From: <a href="https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/so-9684671.R">tidyr:demo/so-9684671.R</a> , <a href="https://stackoverflow.com/questions/9684671/wide-to-long-multiple-measures-each-time">https://stackoverflow.com/questions/9684671/wide-to-long-multiple-measures-each-time</a>.)</p>
 <p>Convert from <code>a</code> to <code>b</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">a</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"id"</span>    , <span class="st">"trt"</span>, <span class="st">"work.T1"</span>, <span class="st">"play.T1"</span>, <span class="st">"talk.T1"</span>, <span class="st">"total.T1"</span>, <span class="st">"work.T2"</span>, <span class="st">"play.T2"</span>, <span class="st">"talk.T2"</span>, <span class="st">"total.T2"</span> <span class="op">|</span>
      <span class="st">"x1.1"</span>, <span class="st">"cnt"</span>, <span class="fl">0.3443</span>   , <span class="fl">0.7842</span>   , <span class="fl">0.1079</span>   , <span class="fl">0.888</span>     , <span class="fl">0.6484</span>   , <span class="fl">0.8795</span>   , <span class="fl">0.7234</span>   , <span class="fl">0.5631</span>     <span class="op">|</span>
-     <span class="st">"x1.2"</span>, <span class="st">"tr"</span> , <span class="fl">0.06132</span>  , <span class="fl">0.8427</span>   , <span class="fl">0.3339</span>   , <span class="fl">0.04686</span>   , <span class="fl">0.2348</span>   , <span class="fl">0.1971</span>   , <span class="fl">0.5164</span>   , <span class="fl">0.7618</span>     )
+     <span class="st">"x1.2"</span>, <span class="st">"tr"</span> , <span class="fl">0.06132</span>  , <span class="fl">0.8427</span>   , <span class="fl">0.3339</span>   , <span class="fl">0.04686</span>   , <span class="fl">0.2348</span>   , <span class="fl">0.1971</span>   , <span class="fl">0.5164</span>   , <span class="fl">0.7618</span>     <span class="op">)</span>
 
-<span class="kw">b</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span>(
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/build_frame.html">build_frame</a></span><span class="op">(</span>
    <span class="st">"id"</span>    , <span class="st">"trt"</span>, <span class="st">"time"</span>, <span class="st">"work"</span> , <span class="st">"play"</span>, <span class="st">"talk"</span>, <span class="st">"total"</span> <span class="op">|</span>
      <span class="st">"x1.1"</span>, <span class="st">"cnt"</span>, <span class="st">"T1"</span>  , <span class="fl">0.3443</span> , <span class="fl">0.7842</span>, <span class="fl">0.1079</span>, <span class="fl">0.888</span>   <span class="op">|</span>
      <span class="st">"x1.1"</span>, <span class="st">"cnt"</span>, <span class="st">"T2"</span>  , <span class="fl">0.6484</span> , <span class="fl">0.8795</span>, <span class="fl">0.7234</span>, <span class="fl">0.5631</span>  <span class="op">|</span>
      <span class="st">"x1.2"</span>, <span class="st">"tr"</span> , <span class="st">"T1"</span>  , <span class="fl">0.06132</span>, <span class="fl">0.8427</span>, <span class="fl">0.3339</span>, <span class="fl">0.04686</span> <span class="op">|</span>
-     <span class="st">"x1.2"</span>, <span class="st">"tr"</span> , <span class="st">"T2"</span>  , <span class="fl">0.2348</span> , <span class="fl">0.1971</span>, <span class="fl">0.5164</span>, <span class="fl">0.7618</span>  )</pre></div>
+     <span class="st">"x1.2"</span>, <span class="st">"tr"</span> , <span class="st">"T2"</span>  , <span class="fl">0.2348</span> , <span class="fl">0.1971</span>, <span class="fl">0.5164</span>, <span class="fl">0.7618</span>  <span class="op">)</span></code></pre></div>
 <p>A record is an observation, keyed by <code>id</code> (plus <code>trt</code>, which is a function of <code>id</code>).</p>
 <table class="table">
 <thead><tr class="header">
@@ -845,25 +845,25 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 </tr></tbody>
 </table>
 <p>The incoming data is in row record format, so we can use <code><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec()</a></code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="#base/library.html">library</a></span>(<span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span>)
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
 
 <span class="co"># identify the record keys</span>
-<span class="kw">recordKeys</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/c.html">c</a></span>(<span class="st">"id"</span>, <span class="st">"trt"</span>)
+<span class="va">recordKeys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"trt"</span><span class="op">)</span>
 
 <span class="co"># specify the outgoing record shape</span>
-<span class="kw">outgoing_record</span> <span class="op">&lt;-</span> <span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span>(
+<span class="va">outgoing_record</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
     <span class="st">"time"</span>  , <span class="st">"work"</span> , <span class="st">"play"</span> , <span class="st">"talk"</span> , <span class="st">"total"</span>  <span class="op">|</span>
-    <span class="st">"T1"</span>    , <span class="kw">work.T1</span>, <span class="kw">play.T1</span>, <span class="kw">talk.T1</span>, <span class="kw">total.T1</span> <span class="op">|</span>
-    <span class="st">"T2"</span>    , <span class="kw">work.T2</span>, <span class="kw">play.T2</span>, <span class="kw">talk.T2</span>, <span class="kw">total.T2</span> )
+    <span class="st">"T1"</span>    , <span class="va">work.T1</span>, <span class="va">play.T1</span>, <span class="va">talk.T1</span>, <span class="va">total.T1</span> <span class="op">|</span>
+    <span class="st">"T2"</span>    , <span class="va">work.T2</span>, <span class="va">play.T2</span>, <span class="va">talk.T2</span>, <span class="va">total.T2</span> <span class="op">)</span>
 
 <span class="co"># put it all together into a layout</span>
-<span class="kw">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span>(
-  <span class="kw">outgoing_record</span>,
-  recordKeys = <span class="kw">recordKeys</span>)
+<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
+  <span class="va">outgoing_record</span>,
+  recordKeys <span class="op">=</span> <span class="va">recordKeys</span><span class="op">)</span>
 
 <span class="co"># confirm we have the right layout</span>
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "id"  , "trt", "work.T1", "play.T1", "talk.T1", "total.T1", "work.T2", "play.T2", "talk.T2", "total.T2" |</span>
@@ -882,11 +882,11 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the layout</span>
-<span class="kw">a</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">layout</span> <span class="op">%.&gt;%</span>
+<span class="va">a</span> <span class="op">%.&gt;%</span> 
+  <span class="va">layout</span> <span class="op">%.&gt;%</span>
   <span class="co"># reorder the frame by the record keys plus time</span>
-  <span class="kw">.</span>[<span class="kw">wrapr</span>::<span class="fu"><a href="https://winvector.github.io/wrapr//reference/orderv.html">orderv</a></span>(<span class="kw">.</span>[ , <span class="fu"><a href="#base/c.html">c</a></span>(<span class="kw">recordKeys</span>, <span class="st">"time"</span>), drop = <span class="fl">FALSE</span>]), , drop = <span class="fl">FALSE</span>] <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>, row.names = <span class="fl">FALSE</span>)</pre></div>
+  <span class="va">.</span><span class="op">[</span><span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/orderv.html">orderv</a></span><span class="op">(</span><span class="va">.</span><span class="op">[</span> , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">recordKeys</span>, <span class="st">"time"</span><span class="op">)</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">id</th>
@@ -940,11 +940,11 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <h2 class="hasAnchor">
 <a href="#reversing-transforms" class="anchor"></a>Reversing Transforms</h2>
 <p><code>cdata</code> transform specifications are usually reversible or invertible (and this can be enforced). So in solving any one of the above problems the user has complete freedom to try and solve “moving from a to b” or “moving from b to a” (and can pick whichever they find easier).</p>
-<p>For example continuing with example 5, we can reverse the data layout transform using the <code><a href="#base/t.html">t()</a></code> function.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="kw">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="#base/t.html">t</a></span>(<span class="kw">layout</span>)
+<p>For example continuing with example 5, we can reverse the data layout transform using the <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> function.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
 
-<span class="fu"><a href="#base/print.html">print</a></span>(<span class="kw">inv_layout</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">inv_layout</span><span class="op">)</span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
 <span class="co">#&gt;    "id"  , "trt", "time", "work" , "play" , "talk" , "total"  |</span>
@@ -963,9 +963,9 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <span class="co">#&gt; }</span>
 
 <span class="co"># apply the inverse layout</span>
-<span class="kw">b</span> <span class="op">%.&gt;%</span> 
-  <span class="kw">inv_layout</span> <span class="op">%.&gt;%</span>
-  <span class="kw">knitr</span>::<span class="fu"><a href="#knitr/kable.html">kable</a></span>(<span class="kw">.</span>)</pre></div>
+<span class="va">b</span> <span class="op">%.&gt;%</span> 
+  <span class="va">inv_layout</span> <span class="op">%.&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">id</th>
@@ -1022,7 +1022,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_by.html"><code>layout_by()</code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
-<code><a href="#base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<code><a href="https://rdrr.io/r/base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
 </ul>
 <p>Some convenience functions include:</p>
 <ul>
@@ -1062,7 +1062,7 @@ I have unsuccessfully tried to use reshape and melt. Existing posts address tran
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

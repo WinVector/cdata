@@ -1,8 +1,15 @@
-pandoc: 2.7.3
-pkgdown: 1.5.1.9000
-pkgdown_sha: c6b35532515a7ae433eff4b547d77eeae4278664
-articles: []
-last_built: 2020-09-06T20:31Z
+pandoc: 2.11.4
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  blocksrecs: blocksrecs.html
+  cdata: cdata.html
+  control_table_keys: control_table_keys.html
+  design: design.html
+  exercises: exercises.html
+  general_transform: general_transform.html
+  operators: operators.html
+last_built: 2021-06-11T22:31Z
 urls:
   reference: https://winvector.github.io/cdata//reference
   article: https://winvector.github.io/cdata//articles

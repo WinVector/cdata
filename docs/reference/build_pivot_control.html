@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -147,40 +147,40 @@
     <p>Some discussion and examples can be found here: <a href='https://winvector.github.io/FluidData/FluidData.html'>https://winvector.github.io/FluidData/FluidData.html</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>build_pivot_control</span>(
-  <span class='kw'>table</span>,
-  <span class='kw'>columnToTakeKeysFrom</span>,
-  <span class='kw'>columnToTakeValuesFrom</span>,
-  <span class='kw'>...</span>,
-  prefix = <span class='kw'>columnToTakeKeysFrom</span>,
-  sep = <span class='kw'>NULL</span>,
-  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
-  temporary = <span class='fl'>FALSE</span>
-)
+    <pre class="usage"><span class='fu'>build_pivot_control</span><span class='op'>(</span>
+  <span class='va'>table</span>,
+  <span class='va'>columnToTakeKeysFrom</span>,
+  <span class='va'>columnToTakeValuesFrom</span>,
+  <span class='va'>...</span>,
+  prefix <span class='op'>=</span> <span class='va'>columnToTakeKeysFrom</span>,
+  sep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tmp_name_source <span class='op'>=</span> <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span><span class='op'>(</span><span class='st'>"bpc"</span><span class='op'>)</span>,
+  temporary <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>build_pivot_control</span>(
-  <span class='kw'>table</span>,
-  <span class='kw'>columnToTakeKeysFrom</span>,
-  <span class='kw'>columnToTakeValuesFrom</span>,
-  <span class='kw'>...</span>,
-  prefix = <span class='kw'>columnToTakeKeysFrom</span>,
-  sep = <span class='kw'>NULL</span>,
-  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpcd"</span>),
-  temporary = <span class='fl'>TRUE</span>
-)
+<span class='fu'>build_pivot_control</span><span class='op'>(</span>
+  <span class='va'>table</span>,
+  <span class='va'>columnToTakeKeysFrom</span>,
+  <span class='va'>columnToTakeValuesFrom</span>,
+  <span class='va'>...</span>,
+  prefix <span class='op'>=</span> <span class='va'>columnToTakeKeysFrom</span>,
+  sep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tmp_name_source <span class='op'>=</span> <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span><span class='op'>(</span><span class='st'>"bpcd"</span><span class='op'>)</span>,
+  temporary <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for relop</span>
-<span class='fu'>build_pivot_control</span>(
-  <span class='kw'>table</span>,
-  <span class='kw'>columnToTakeKeysFrom</span>,
-  <span class='kw'>columnToTakeValuesFrom</span>,
-  <span class='kw'>...</span>,
-  prefix = <span class='kw'>columnToTakeKeysFrom</span>,
-  sep = <span class='kw'>NULL</span>,
-  tmp_name_source = <span class='kw'>wrapr</span>::<span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span>(<span class='st'>"bpc"</span>),
-  temporary = <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>build_pivot_control</span><span class='op'>(</span>
+  <span class='va'>table</span>,
+  <span class='va'>columnToTakeKeysFrom</span>,
+  <span class='va'>columnToTakeValuesFrom</span>,
+  <span class='va'>...</span>,
+  prefix <span class='op'>=</span> <span class='va'>columnToTakeKeysFrom</span>,
+  sep <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tmp_name_source <span class='op'>=</span> <span class='fu'>wrapr</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/wrapr//reference/mk_tmp_name_source.html'>mk_tmp_name_source</a></span><span class='op'>(</span><span class='st'>"bpc"</span><span class='op'>)</span>,
+  temporary <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,50 +228,50 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-  <span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/data.frame.html'>data.frame</a></span>(measType = <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
-                  measValue = <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
-                  stringsAsFactors = <span class='fl'>FALSE</span>)
-  <span class='fu'>build_pivot_control</span>(<span class='kw'>d</span>,
+  <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>measType <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"ht"</span><span class='op'>)</span>,
+                  measValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>150</span>, <span class='fl'>6</span><span class='op'>)</span>,
+                  stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+  <span class='fu'>build_pivot_control</span><span class='op'>(</span><span class='va'>d</span>,
                       <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
-                      sep = <span class='st'>'_'</span>)
+                      sep <span class='op'>=</span> <span class='st'>'_'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       wt measType_wt
 #&gt; 2       ht measType_ht</div><div class='input'>
 
-<span class='kw'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='#base/data.frame.html'>data.frame</a></span>(measType = <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='st'>"wt"</span>, <span class='st'>"ht"</span>),
-                measValue = <span class='fu'><a href='#base/c.html'>c</a></span>(<span class='fl'>150</span>, <span class='fl'>6</span>),
-                stringsAsFactors = <span class='fl'>FALSE</span>)
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>measType <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"wt"</span>, <span class='st'>"ht"</span><span class='op'>)</span>,
+                measValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>150</span>, <span class='fl'>6</span><span class='op'>)</span>,
+                stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='kw'>ops</span> <span class='op'>&lt;-</span> <span class='kw'>rquery</span>::<span class='fu'><a href='#rquery/local_td.html'>local_td</a></span>(<span class='kw'>d</span>) <span class='op'>%.&gt;%</span>
-  <span class='fu'>build_pivot_control</span>(<span class='kw'>.</span>,
+<span class='va'>ops</span> <span class='op'>&lt;-</span> <span class='fu'>rquery</span><span class='fu'>::</span><span class='fu'><a href='https://winvector.github.io/rquery/reference/local_td.html'>local_td</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>)</span> <span class='op'>%.&gt;%</span>
+  <span class='fu'>build_pivot_control</span><span class='op'>(</span><span class='va'>.</span>,
                       <span class='st'>'measType'</span>, <span class='st'>'measValue'</span>,
-                      sep = <span class='st'>'_'</span>)
-<span class='fu'><a href='#base/cat.html'>cat</a></span>(<span class='fu'><a href='#base/format.html'>format</a></span>(<span class='kw'>ops</span>))
+                      sep <span class='op'>=</span> <span class='st'>'_'</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='va'>ops</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; mk_td("d", c(
 #&gt;   "measType",
 #&gt;   "measValue")) %.&gt;%
 #&gt;  non_sql_node(., build_pivot_control(., columnToTakeKeysFrom="measType", columnToTakeValuesFrom="measValue"))</div><div class='input'>
-<span class='co'>if</span>(<span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"rqdatatable"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='fu'><a href='#base/library.html'>library</a></span>(<span class='st'><a href='https://github.com/WinVector/rqdatatable/'>"rqdatatable"</a></span>)
-  <span class='kw'>d</span> <span class='op'>%.&gt;%</span>
-    <span class='kw'>ops</span> <span class='op'>%.&gt;%</span>
-    <span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>.</span>)
-}
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"rqdatatable"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/WinVector/rqdatatable/'>"rqdatatable"</a></span><span class='op'>)</span>
+  <span class='va'>d</span> <span class='op'>%.&gt;%</span>
+    <span class='va'>ops</span> <span class='op'>%.&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       wt measType_wt
 #&gt; 2       ht measType_ht</div><div class='input'>
-<span class='co'>if</span>(<span class='fu'><a href='#base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"RSQLite"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='kw'>db</span> <span class='op'>&lt;-</span> <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span>(<span class='kw'>RSQLite</span>::<span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span>(), <span class='st'>":memory:"</span>)
-  <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span>(<span class='kw'>db</span>,
+<span class='kw'>if</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"RSQLite"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>db</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>":memory:"</span><span class='op'>)</span>
+  <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbWriteTable.html'>dbWriteTable</a></span><span class='op'>(</span><span class='va'>db</span>,
                     <span class='st'>'d'</span>,
-                    <span class='kw'>d</span>,
-                    overwrite = <span class='fl'>TRUE</span>,
-                    temporary = <span class='fl'>TRUE</span>)
-  <span class='kw'>db</span> <span class='op'>%.&gt;%</span>
-    <span class='kw'>ops</span> <span class='op'>%.&gt;%</span>
-    <span class='fu'><a href='#base/print.html'>print</a></span>(<span class='kw'>.</span>)
-  <span class='kw'>DBI</span>::<span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span>(<span class='kw'>db</span>)
-}
+                    <span class='va'>d</span>,
+                    overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+                    temporary <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='va'>db</span> <span class='op'>%.&gt;%</span>
+    <span class='va'>ops</span> <span class='op'>%.&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span>
+  <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbDisconnect.html'>dbDisconnect</a></span><span class='op'>(</span><span class='va'>db</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div><div class='output co'>#&gt;   measType   measValue
 #&gt; 1       ht measType_ht
 #&gt; 2       wt measType_wt</div><div class='input'>
@@ -291,7 +291,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
