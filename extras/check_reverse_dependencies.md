@@ -14,7 +14,7 @@ packageVersion(package)
 date()
 ```
 
-    ## [1] "Fri Jun 11 15:40:02 2021"
+    ## [1] "Fri Jun 11 16:07:35 2021"
 
 ``` r
 parallelCluster <- NULL
@@ -33,7 +33,7 @@ setwd(td)
 print(td)
 ```
 
-    ## [1] "/var/folders/7f/sdjycp_d08n8wwytsbgwqgsw0000gn/T//Rtmph5ZHwc"
+    ## [1] "/var/folders/7f/sdjycp_d08n8wwytsbgwqgsw0000gn/T//Rtmp6BAJph"
 
 ``` r
 options(repos = c(CRAN="https://cloud.r-project.org"))
@@ -59,8 +59,8 @@ if(!is.null(parallelCluster)) {
 ```
 
     ## ## Reverse depends check of cdata 1.2.0 
-    ## rmoo_0.1.6 started at 2021-06-11 15:40:04 failure at 2021-06-11 15:40:08 (0/0/1) 
-    ## WVPlots_1.3.2 started at 2021-06-11 15:40:08 success at 2021-06-11 15:41:04 (1/0/1)
+    ## rmoo_0.1.6 started at 2021-06-11 16:07:37 success at 2021-06-11 16:08:14 (1/0/0) 
+    ## WVPlots_1.3.2 started at 2021-06-11 16:08:14 success at 2021-06-11 16:09:08 (2/0/0)
 
     ## [1] id     title  status
     ## <0 rows> (or 0-length row.names)
@@ -69,11 +69,11 @@ if(!is.null(parallelCluster)) {
 summariseQueue(package=package, directory=td)
 ```
 
-    ## Test of cdata 1.2.0 had 1 successes, 1 failures, and 0 skipped packages. 
-    ## Ran from 2021-06-11 15:40:04 to 2021-06-11 15:41:04 for 1 mins 
-    ## Average of 30 secs relative to 30.001 secs using 1 runners
+    ## Test of cdata 1.2.0 had 2 successes, 0 failures, and 0 skipped packages. 
+    ## Ran from 2021-06-11 16:07:37 to 2021-06-11 16:09:08 for 1.517 mins 
+    ## Average of 45.5 secs relative to 45.378 secs using 1 runners
     ## 
-    ## Failed packages:  rmoo 
+    ## Failed packages:   
     ## 
     ## Skipped packages:   
     ## 
