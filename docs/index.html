@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,18 +36,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/cdata.html">Get started</a>
 </li>
@@ -53,7 +49,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,7 +81,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://win-vector.com/">Sponsor: Win-Vector LLC</a>
+  <a href="https://win-vector.com/" class="external-link">Sponsor: Win-Vector LLC</a>
 </li>
       </ul>
 </div>
@@ -102,17 +98,17 @@
 
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<p><a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> is a general data re-shaper that has the great virtue of adhering to Raymond’s “Rule of Representation”, and using Codd’s “Guaranteed Access Rule”.</p>
+<p><a href="https://CRAN.R-project.org/package=cdata" class="external-link"><code>cdata</code></a> is a general data re-shaper that has the great virtue of adhering to Raymond’s “Rule of Representation”, and using Codd’s “Guaranteed Access Rule”.</p>
 <blockquote>
 <p>Fold knowledge into data, so program logic can be stupid and robust.</p>
-<p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263"><em>The Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley, 2003</a></p>
+<p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263" class="external-link"><em>The Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley, 2003</a></p>
 </blockquote>
 <blockquote>
 <p>Rule 2: The guaranteed access rule.</p>
 <p>Each and every datum (atomic value) in a relational data base is guaranteed to be logically accessible by resorting to a combination of table name, primary key value and column name.</p>
-<p><a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules">Edgar F. Codd</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Codd%27s_12_rules" class="external-link">Edgar F. Codd</a></p>
 </blockquote>
-<p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off. <code>cdata</code> also has a <code>Python</code> implementation that it can inter-operate with in the <a href="https://github.com/WinVector/data_algebra"><code>data_algebra</code> package</a> (example <a href="https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/cdata.ipynb">here</a>).</p>
+<p>The point being: it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off. <code>cdata</code> also has a <code>Python</code> implementation that it can inter-operate with in the <a href="https://github.com/WinVector/data_algebra" class="external-link"><code>data_algebra</code> package</a> (example <a href="https://github.com/WinVector/data_algebra/blob/master/Examples/cdata/cdata.ipynb" class="external-link">here</a>).</p>
 <p><img src="https://raw.githubusercontent.com/WinVector/cdata/master/tools/cdata.png"></p>
 <p>Briefly: <code>cdata</code> supplies data transform operators that:</p>
 <ul>
@@ -123,178 +119,178 @@
 </ul>
 <p>A quick example: plot iris petal and sepal dimensions in a faceted graph.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># show the data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
- <span class="co">#    Sepal.Length Sepal.Width Petal.Length Petal.Width Species iris_id</span>
- <span class="co">#  1          5.1         3.5          1.4         0.2  setosa       1</span>
- <span class="co">#  2          4.9         3.0          1.4         0.2  setosa       2</span>
- <span class="co">#  3          4.7         3.2          1.3         0.2  setosa       3</span>
- <span class="co">#  4          4.6         3.1          1.5         0.2  setosa       4</span>
- <span class="co">#  5          5.0         3.6          1.4         0.2  setosa       5</span>
- <span class="co">#  6          5.4         3.9          1.7         0.4  setosa       6</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
- <span class="co">#  Loading required package: wrapr</span>
-
-<span class="co">#</span>
-<span class="co"># build a control table with a "key column" flower_part</span>
-<span class="co"># and "value columns" Length and Width</span>
-<span class="co">#</span>
-<span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
-  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span>
-    <span class="st">"Petal"</span>    , <span class="va">Petal.Length</span> , <span class="va">Petal.Width</span> <span class="op">|</span>
-    <span class="st">"Sepal"</span>    , <span class="va">Sepal.Length</span> , <span class="va">Sepal.Width</span> <span class="op">)</span>
-
-<span class="va">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
-  <span class="va">controlTable</span>,
-  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># do the unpivot to convert the row records to block records</span>
-<span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%.&gt;%</span> <span class="va">transform</span>
-
-<span class="co"># show the tranformed data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris_aug</span><span class="op">)</span>
- <span class="co">#    iris_id Species flower_part Length Width</span>
- <span class="co">#  1       1  setosa       Petal    1.4   0.2</span>
- <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span>
- <span class="co">#  3       2  setosa       Petal    1.4   0.2</span>
- <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span>
- <span class="co">#  5       3  setosa       Petal    1.3   0.2</span>
- <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span>
-
-<span class="co"># plot the graph</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris_aug</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Length</span>, y<span class="op">=</span><span class="va">Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">Species</span>, shape<span class="op">=</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">flower_part</span>, labeller <span class="op">=</span> <span class="va">label_both</span>, scale <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Iris dimensions"</span><span class="op">)</span> <span class="op">+</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="https://github.com/WinVector/cdata/raw/main/tools/README-ex0-1.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># show the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span> <span class="co">#    Sepal.Length Sepal.Width Petal.Length Petal.Width Species iris_id</span></span>
+<span> <span class="co">#  1          5.1         3.5          1.4         0.2  setosa       1</span></span>
+<span> <span class="co">#  2          4.9         3.0          1.4         0.2  setosa       2</span></span>
+<span> <span class="co">#  3          4.7         3.2          1.3         0.2  setosa       3</span></span>
+<span> <span class="co">#  4          4.6         3.1          1.5         0.2  setosa       4</span></span>
+<span> <span class="co">#  5          5.0         3.6          1.4         0.2  setosa       5</span></span>
+<span> <span class="co">#  6          5.4         3.9          1.7         0.4  setosa       6</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/" class="external-link">"cdata"</a></span><span class="op">)</span></span>
+<span> <span class="co">#  Loading required package: wrapr</span></span>
+<span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># build a control table with a "key column" flower_part</span></span>
+<span><span class="co"># and "value columns" Length and Width</span></span>
+<span><span class="co">#</span></span>
+<span><span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html" class="external-link">qchar_frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>     , <span class="st">"Width"</span>     <span class="op">|</span></span>
+<span>    <span class="st">"Petal"</span>    , <span class="va">Petal.Length</span> , <span class="va">Petal.Width</span> <span class="op">|</span></span>
+<span>    <span class="st">"Sepal"</span>    , <span class="va">Sepal.Length</span> , <span class="va">Sepal.Width</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span></span>
+<span>  <span class="va">controlTable</span>,</span>
+<span>  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># do the unpivot to convert the row records to block records</span></span>
+<span><span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span> <span class="va">transform</span></span>
+<span></span>
+<span><span class="co"># show the tranformed data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris_aug</span><span class="op">)</span></span>
+<span> <span class="co">#    iris_id Species flower_part Length Width</span></span>
+<span> <span class="co">#  1       1  setosa       Petal    1.4   0.2</span></span>
+<span> <span class="co">#  2       1  setosa       Sepal    5.1   3.5</span></span>
+<span> <span class="co">#  3       2  setosa       Petal    1.4   0.2</span></span>
+<span> <span class="co">#  4       2  setosa       Sepal    4.9   3.0</span></span>
+<span> <span class="co">#  5       3  setosa       Petal    1.3   0.2</span></span>
+<span> <span class="co">#  6       3  setosa       Sepal    4.7   3.2</span></span>
+<span></span>
+<span><span class="co"># plot the graph</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">iris_aug</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Length</span>, y<span class="op">=</span><span class="va">Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">Species</span>, shape<span class="op">=</span><span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">flower_part</span>, labeller <span class="op">=</span> <span class="va">label_both</span>, scale <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Iris dimensions"</span><span class="op">)</span> <span class="op">+</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="tools/README-ex0-1.png"><!-- --></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># show the transform</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
- <span class="co">#  {</span>
- <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span>
- <span class="co">#       .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span>
- <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span>
- <span class="co">#  </span>
- <span class="co">#   # becomes</span>
- <span class="co">#  </span>
- <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
- <span class="co">#       .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
- <span class="co">#       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
- <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
- <span class="co">#  </span>
- <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
- <span class="co">#  }</span>
-
-<span class="co"># show the representation of the transform</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">unclass</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
- <span class="co">#  $controlTable</span>
- <span class="co">#    flower_part       Length       Width</span>
- <span class="co">#  1       Petal Petal.Length Petal.Width</span>
- <span class="co">#  2       Sepal Sepal.Length Sepal.Width</span>
- <span class="co">#  </span>
- <span class="co">#  $recordKeys</span>
- <span class="co">#  [1] "iris_id" "Species"</span>
- <span class="co">#  </span>
- <span class="co">#  $controlTableKeys</span>
- <span class="co">#  [1] "flower_part"</span>
- <span class="co">#  </span>
- <span class="co">#  $checkNames</span>
- <span class="co">#  [1] TRUE</span>
- <span class="co">#  </span>
- <span class="co">#  $checkKeys</span>
- <span class="co">#  [1] FALSE</span>
- <span class="co">#  </span>
- <span class="co">#  $strict</span>
- <span class="co">#  [1] FALSE</span>
- <span class="co">#  </span>
- <span class="co">#  $allow_rqdatatable</span>
- <span class="co">#  [1] FALSE</span></code></pre></div>
-<p>More details on the above example can be found <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>. And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<code class="sourceCode R"><span><span class="co"># show the transform</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span></span>
+<span> <span class="co">#  {</span></span>
+<span> <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span></span>
+<span> <span class="co">#     "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span></span>
+<span> <span class="co">#       .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span></span>
+<span> <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   # becomes</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span></span>
+<span> <span class="co">#     "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></span>
+<span> <span class="co">#       .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></span>
+<span> <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span></span>
+<span> <span class="co">#  }</span></span>
+<span></span>
+<span><span class="co"># show the representation of the transform</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">unclass</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span></span>
+<span> <span class="co">#  $controlTable</span></span>
+<span> <span class="co">#    flower_part       Length       Width</span></span>
+<span> <span class="co">#  1       Petal Petal.Length Petal.Width</span></span>
+<span> <span class="co">#  2       Sepal Sepal.Length Sepal.Width</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $recordKeys</span></span>
+<span> <span class="co">#  [1] "iris_id" "Species"</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $controlTableKeys</span></span>
+<span> <span class="co">#  [1] "flower_part"</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $checkNames</span></span>
+<span> <span class="co">#  [1] TRUE</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $checkKeys</span></span>
+<span> <span class="co">#  [1] FALSE</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $strict</span></span>
+<span> <span class="co">#  [1] FALSE</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#  $allow_rqdatatable</span></span>
+<span> <span class="co">#  [1] FALSE</span></span></code></pre></div>
+<p>More details on the above example can be found <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/" class="external-link">here</a>. A tutorial on how to design a <code>controlTable</code> can be found <a href="https://winvector.github.io/cdata/articles/design.html">here</a>. And some discussion of the nature of records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
 <hr>
-<p>A more detailed video tutorial is available <a href="https://github.com/WinVector/cdata/blob/master/Examples/OrderedGrouping/OrderedGrouping.md">here</a>.</p>
+<p>A more detailed video tutorial is available <a href="https://github.com/WinVector/cdata/blob/master/Examples/OrderedGrouping/OrderedGrouping.md" class="external-link">here</a>.</p>
 <hr>
 <p>We can also exhibit a larger example of using <code>cdata</code> to create a scatter-plot matrix, or pair plot:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
-
-<span class="co"># declare our columns of interest</span>
-<span class="va">meas_vars</span> <span class="op">&lt;-</span> <span class="fu">qc</span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Length</span>, <span class="va">Petal.Width</span><span class="op">)</span>
-<span class="va">category_variable</span> <span class="op">&lt;-</span> <span class="st">"Species"</span>
-
-<span class="co"># build a control with all pairs of variables as value columns</span>
-<span class="co"># and pair_key as the key column</span>
-<span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span><span class="va">meas_vars</span>, <span class="va">meas_vars</span>, 
-                                       stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># one copy of columns is coordinate names second copy is values</span>
-<span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">controlTable</span>, <span class="va">controlTable</span><span class="op">)</span>
-<span class="co"># name the value columns value1 and value2</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">controlTable</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">qc</span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span>, <span class="va">value1</span>, <span class="va">value2</span><span class="op">)</span>
-<span class="va">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
-  <span class="va">controlTable</span>,
-  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span>,
-  controlTableKeys <span class="op">=</span> <span class="fu">qc</span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span>,
-  checkKeys <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># do the unpivot to convert the row records to multiple block records</span>
-<span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%.&gt;%</span> <span class="va">transform</span>
-<span class="co"># alternate notation: layout_by(transform, iris)</span>
-
-
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">iris_aug</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">value1</span>, y<span class="op">=</span><span class="va">value2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html">aes_string</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">category_variable</span>, shape<span class="op">=</span><span class="va">category_variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span><span class="op">(</span><span class="va">v2</span><span class="op">~</span><span class="va">v1</span>, labeller <span class="op">=</span> <span class="va">label_both</span>, scale <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Iris dimensions"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
-<p><img src="https://github.com/WinVector/cdata/raw/main/tools/README-ex0_1-1.png"><!-- --></p>
+<code class="sourceCode R"><span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/" class="external-link">"cdata"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># declare our columns of interest</span></span>
+<span><span class="va">meas_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://winvector.github.io/wrapr//reference/qc.html" class="external-link">qc</a></span><span class="op">(</span><span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span>, <span class="va">Petal.Length</span>, <span class="va">Petal.Width</span><span class="op">)</span></span>
+<span><span class="va">category_variable</span> <span class="op">&lt;-</span> <span class="st">"Species"</span></span>
+<span></span>
+<span><span class="co"># build a control with all pairs of variables as value columns</span></span>
+<span><span class="co"># and pair_key as the key column</span></span>
+<span><span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span><span class="va">meas_vars</span>, <span class="va">meas_vars</span>, </span>
+<span>                                       stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># one copy of columns is coordinate names second copy is values</span></span>
+<span><span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">controlTable</span>, <span class="va">controlTable</span><span class="op">)</span></span>
+<span><span class="co"># name the value columns value1 and value2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">controlTable</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://winvector.github.io/wrapr//reference/qc.html" class="external-link">qc</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span>, <span class="va">value1</span>, <span class="va">value2</span><span class="op">)</span></span>
+<span><span class="va">transform</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span></span>
+<span>  <span class="va">controlTable</span>,</span>
+<span>  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span>,</span>
+<span>  controlTableKeys <span class="op">=</span> <span class="fu"><a href="https://winvector.github.io/wrapr//reference/qc.html" class="external-link">qc</a></span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span>,</span>
+<span>  checkKeys <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># do the unpivot to convert the row records to multiple block records</span></span>
+<span><span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span> <span class="va">transform</span></span>
+<span><span class="co"># alternate notation: layout_by(transform, iris)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">iris_aug</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">value1</span>, y<span class="op">=</span><span class="va">value2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_.html" class="external-link">aes_string</a></span><span class="op">(</span>color<span class="op">=</span><span class="va">category_variable</span>, shape<span class="op">=</span><span class="va">category_variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">v2</span><span class="op">~</span><span class="va">v1</span>, labeller <span class="op">=</span> <span class="va">label_both</span>, scale <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Iris dimensions"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<p><img src="tools/README-ex0_1-1.png"><!-- --></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># show transform</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span>
- <span class="co">#  {</span>
- <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span>
- <span class="co">#       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span>
- <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span>
- <span class="co">#  </span>
- <span class="co">#   # becomes</span>
- <span class="co">#  </span>
- <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span>
- <span class="co">#     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span>
- <span class="co">#       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span>
- <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span>
- <span class="co">#       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span>
- <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'v1', 'v2')</span>
- <span class="co">#  </span>
- <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
- <span class="co">#  }</span></code></pre></div>
-<p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html">one-line command in <code>WVPlots</code></a>.</p>
+<code class="sourceCode R"><span><span class="co"># show transform</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">transform</span><span class="op">)</span></span>
+<span> <span class="co">#  {</span></span>
+<span> <span class="co">#   row_record &lt;- wrapr::qchar_frame(</span></span>
+<span> <span class="co">#     "iris_id"  , "Species", "Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width" |</span></span>
+<span> <span class="co">#       .        , .        , Sepal.Length  , Sepal.Width  , Petal.Length  , Petal.Width   )</span></span>
+<span> <span class="co">#   row_keys &lt;- c('iris_id', 'Species')</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   # becomes</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   block_record &lt;- wrapr::qchar_frame(</span></span>
+<span> <span class="co">#     "iris_id"  , "Species", "v1"          , "v2"          , "value1"    , "value2"     |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Length", Sepal.Length, Sepal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Length", Sepal.Width , Sepal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Length", "Sepal.Length", Petal.Length, Sepal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Length", Petal.Width , Sepal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Length", "Sepal.Width" , Sepal.Length, Sepal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Width" , "Sepal.Width" , Sepal.Width , Sepal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Length", "Sepal.Width" , Petal.Length, Sepal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Width" , "Sepal.Width" , Petal.Width , Sepal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Length", "Petal.Length", Sepal.Length, Petal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Length", Sepal.Width , Petal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Length", "Petal.Length", Petal.Length, Petal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Width" , "Petal.Length", Petal.Width , Petal.Length |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Length", "Petal.Width" , Sepal.Length, Petal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Sepal.Width" , "Petal.Width" , Sepal.Width , Petal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Length", "Petal.Width" , Petal.Length, Petal.Width  |</span></span>
+<span> <span class="co">#       .        , .        , "Petal.Width" , "Petal.Width" , Petal.Width , Petal.Width  )</span></span>
+<span> <span class="co">#   block_keys &lt;- c('iris_id', 'Species', 'v1', 'v2')</span></span>
+<span> <span class="co">#  </span></span>
+<span> <span class="co">#   # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span></span>
+<span> <span class="co">#  }</span></span></code></pre></div>
+<p>The above is now wrapped into a <a href="https://winvector.github.io/WVPlots/reference/PairPlot.html" class="external-link">one-line command in <code>WVPlots</code></a>.</p>
 <hr>
-<p>The <code>cdata</code> package develops the idea of the <a href="https://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="https://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a>.</p>
+<p>The <code>cdata</code> package develops the idea of the <a href="https://winvector.github.io/FluidData/RowsAndColumns.html" class="external-link">“coordinatized data” theory</a> and includes an implementation of the <a href="https://winvector.github.io/FluidData/FluidData.html" class="external-link">“fluid data” methodology</a>.</p>
 <p>The main <code>cdata</code> interfaces are given by the following set of methods:</p>
 <ul>
 <li>
@@ -304,9 +300,9 @@
 <li>
 <a href="https://winvector.github.io/cdata/reference/layout_specification.html"><code>layout_specification()</code></a>, for specifying transforms from multi-row records to other multi-row records.</li>
 <li>
-<a href="https://winvector.github.io/cdata/reference/layout_by.html"><code>layout_by()</code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
+<a href="https://winvector.github.io/cdata/reference/layout_by.html"><code>layout_by()</code></a> or the <a href="https://winvector.github.io/wrapr/reference/dot_arrow.html" class="external-link">wrapr dot arrow pipe</a> for applying a layout to re-arrange data.</li>
 <li>
-<code><a href="https://rdrr.io/r/base/t.html">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
+<code><a href="https://rdrr.io/r/base/t.html" class="external-link">t()</a></code> (transpose/adjoint) to invert or reverse layout specifications.</li>
 </ul>
 <p>Some convenience functions include:</p>
 <ul>
@@ -315,16 +311,16 @@
 <li>
 <a href="https://winvector.github.io/cdata/reference/unpivot_to_blocks.html"><code>pivot_to_blocks()</code>/<code>unpivot_to_blocks()</code></a>, for moving data from single-row records to possibly multi row block records with one row per value (a single column of values) <code>gather</code> or <code>melt</code>.</li>
 <li>
-<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html"><code>wrapr::qchar_frame()</code></a> a helper function for specifying record control table layout specifications.</li>
+<a href="https://winvector.github.io/wrapr/reference/qchar_frame.html" class="external-link"><code>wrapr::qchar_frame()</code></a> a helper function for specifying record control table layout specifications.</li>
 <li>
-<a href="https://winvector.github.io/wrapr/reference/build_frame.html"><code>wrapr::build_frame()</code></a> a helper function for specifying data frames.</li>
+<a href="https://winvector.github.io/wrapr/reference/build_frame.html" class="external-link"><code>wrapr::build_frame()</code></a> a helper function for specifying data frames.</li>
 </ul>
 <p>The package vignettes can be found in the “Articles” tab of <a href="https://winvector.github.io/cdata/">the <code>cdata</code> documentation site</a>.</p>
-<p>The (older) recommended tutorial is: <a href="https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a>. We also have a (older) <a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a> (and another example can be found <a href="https://winvector.github.io/FluidData/DataWranglingAtScale.html">here</a>). These concepts were later adapted from <code>cdata</code> by the <code>tidyr</code> package.</p>
+<p>The (older) recommended tutorial is: <a href="https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html" class="external-link">Fluid data reshaping with cdata</a>. We also have a (older) <a href="https://youtu.be/4cYbP3kbc0k" class="external-link">short free cdata screencast</a> (and another example can be found <a href="https://winvector.github.io/FluidData/DataWranglingAtScale.html" class="external-link">here</a>). These concepts were later adapted from <code>cdata</code> by the <code>tidyr</code> package.</p>
 <hr>
 <p>Install via CRAN:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cdata"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cdata"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 <p>Note: <code>cdata</code> is targeted at data with “tame column names” (column names that are valid both in databases, and as <code>R</code> unquoted variable names) and basic types (column values that are simple <code>R</code> types such as <code>character</code>, <code>numeric</code>, <code>logical</code>, and so on).</p>
 
@@ -332,50 +328,60 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=cdata">https://​cloud.r-project.org/​package=cdata</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/WinVector/cdata/">https://​github.com/​WinVector/​cdata/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/WinVector/cdata/issues">https://​github.com/​WinVector/​cdata/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a> | <a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a>
-</li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>John Mount <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Nina Zumel <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=cdata" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/WinVector/cdata/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/WinVector/cdata/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=cdata"><img src="https://www.r-pkg.org/badges/version/cdata" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://CRAN.R-project.org/package=cdata"><img src="https://tinyverse.netlify.com/badge/cdata" alt="status"></a></li>
+<li>
+<a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a> | <a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a>
+</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing cdata</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>John Mount <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Nina Zumel <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=cdata" class="external-link"><img src="https://www.r-pkg.org/badges/version/cdata" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://CRAN.R-project.org/package=cdata" class="external-link"><img src="https://tinyverse.netlify.com/badge/cdata" alt="status"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by John Mount, Nina Zumel.</p>
+  <p></p>
+<p>Developed by John Mount, Nina Zumel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -383,6 +389,8 @@
 
   
 
+
+  
 
   </body>
 </html>

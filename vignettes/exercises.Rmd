@@ -52,7 +52,7 @@ We will work some examples with the hope that practice brings familiarity. We ha
 
 (From: [tidyr:demo/dadmom.R](https://github.com/tidyverse/tidyr/blob/0d633f79e85a87a686b2f43de20e2ae74f5c122c/demo/dadmom.R).)
 
-From [https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.idre.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get get a copy of the data and the question or "transform ask":
+From [https://stats.oarc.ucla.edu/stata/modules/reshaping-data-wide-to-long/](https://stats.oarc.ucla.edu/stata/modules/reshaping-data-wide-to-long/) we can get get a copy of the data and the question or "transform ask":
 
 ```{r}
 # convert from this format

@@ -1,4 +1,8 @@
 
+# cdata 1.2.1 2022/08/119
+
+ * Work around https://github.com/r-lib/roxygen2/issues/1491
+
 # cdata 1.2.0 2021/06/11
 
  * Remove LazyData decl.

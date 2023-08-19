@@ -1,5 +1,5 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1
+pandoc: 3.1.1
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   blocksrecs: blocksrecs.html
@@ -9,8 +9,8 @@ articles:
   exercises: exercises.html
   general_transform: general_transform.html
   operators: operators.html
-last_built: 2021-06-11T23:26Z
+last_built: 2023-08-19T23:33Z
 urls:
-  reference: https://winvector.github.io/cdata//reference
-  article: https://winvector.github.io/cdata//articles
+  reference: https://winvector.github.io/cdata/reference
+  article: https://winvector.github.io/cdata/articles
 

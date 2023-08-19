@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cdata</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/cdata.html">Get started</a>
 </li>
@@ -50,7 +46,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -82,7 +78,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://win-vector.com/">Sponsor: Win-Vector LLC</a>
+  <a href="https://win-vector.com/" class="external-link">Sponsor: Win-Vector LLC</a>
 </li>
       </ul>
 </div>
@@ -94,68 +90,125 @@
 
       
 
-      </header><script src="design_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Designing Transforms for Data Reshaping with cdata</h1>
-                        <h4 class="author">John Mount, Nina Zumel</h4>
+      <h1 data-toc-skip>Designing Transforms for Data Reshaping with
+cdata</h1>
+                        <h4 data-toc-skip class="author">John Mount,
+Nina Zumel</h4>
             
-            <h4 class="date">2021-06-11</h4>
+            <h4 data-toc-skip class="date">2023-08-19</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/master/vignettes/design.Rmd"><code>vignettes/design.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/WinVector/cdata/blob/HEAD/vignettes/design.Rmd" class="external-link"><code>vignettes/design.Rmd</code></a></small>
       <div class="hidden name"><code>design.Rmd</code></div>
 
     </div>
 
     
     
-<p>This note is about the design of data transforms using the <a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> package. The <code>cdata</code> packages demonstrates the <a href="https://winvector.github.io/FluidData/RowsAndColumns.html">“coordinatized data” theory</a> and includes an implementation of the <a href="https://winvector.github.io/FluidData/FluidData.html">“fluid data” methodology</a> for general data re-shaping.</p>
-<p><a href="https://CRAN.R-project.org/package=cdata"><code>cdata</code></a> adheres to the so-called “Rule of Representation”:</p>
+<p>This note is about the design of data transforms using the <a href="https://CRAN.R-project.org/package=cdata" class="external-link"><code>cdata</code></a>
+package. The <code>cdata</code> packages demonstrates the <a href="https://winvector.github.io/FluidData/RowsAndColumns.html" class="external-link">“coordinatized
+data” theory</a> and includes an implementation of the <a href="https://winvector.github.io/FluidData/FluidData.html" class="external-link">“fluid data”
+methodology</a> for general data re-shaping.</p>
+<p><a href="https://CRAN.R-project.org/package=cdata" class="external-link"><code>cdata</code></a>
+adheres to the so-called “Rule of Representation”:</p>
 <blockquote>
-<p>Fold knowledge into data, so program logic can be stupid and robust.</p>
-<p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263"><em>The Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley, 2003</a></p>
+<p>Fold knowledge into data, so program logic can be stupid and
+robust.</p>
+<p><a href="http://www.catb.org/esr/writings/taoup/html/ch01s06.html#id2878263" class="external-link"><em>The
+Art of Unix Programming</em>, Erick S. Raymond, Addison-Wesley,
+2003</a></p>
 </blockquote>
-<p>The design principle expressed by this rule is that it is much easier to reason about data than to try to reason about code, so using data to control your code is often a very good trade-off.</p>
-<p>We showed in <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/">this article</a> how <code>cdata</code> takes a transform control table to specify how you want your data reshaped. The question then becomes: how do you come up with the transform control table?</p>
-<p>Let’s discuss that using the example from the article: <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/">“plotting the <code>iris</code> data faceted”</a>.</p>
-<p>The goal is to produce the following graph with <code>ggplot2</code></p>
+<p>The design principle expressed by this rule is that it is much easier
+to reason about data than to try to reason about code, so using data to
+control your code is often a very good trade-off.</p>
+<p>We showed in <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/" class="external-link">this
+article</a> how <code>cdata</code> takes a transform control table to
+specify how you want your data reshaped. The question then becomes: how
+do you come up with the transform control table?</p>
+<p>Let’s discuss that using the example from the article: <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/" class="external-link">“plotting
+the <code>iris</code> data faceted”</a>.</p>
+<p>The goal is to produce the following graph with
+<code>ggplot2</code></p>
 <p><img src="iris_plot.png"></p>
-<p>In order to do this, one wants data that looks like the following:</p>
+<p>In order to do this, one wants data that looks like the
+following:</p>
 <p><img src="design_2.png" width="600"></p>
-<p>Notice <code>Species</code> is in a column so we can use it to choose colors. Also, <code>flower_part</code> is in a column so we can use it to facet.</p>
+<p>Notice <code>Species</code> is in a column so we can use it to choose
+colors. Also, <code>flower_part</code> is in a column so we can use it
+to facet.</p>
 <p>However, <code>iris</code> data starts in the following format.</p>
 <p><img src="design_1.png" width="600"></p>
-<p>We call this form a <em>row record</em> because all the information about a single entity (a “record”) lies in a single row. When the information about an entity is distributed across several rows (in whatever shape), we call that a <em>block record</em>. So the goal is to transform the row records in <code>iris</code> into the desired block records before plotting.</p>
+<p>We call this form a <em>row record</em> because all the information
+about a single entity (a “record”) lies in a single row. When the
+information about an entity is distributed across several rows (in
+whatever shape), we call that a <em>block record</em>. So the goal is to
+transform the row records in <code>iris</code> into the desired block
+records before plotting.</p>
 <p><img src="design_3.png" width="600"></p>
-<p>This new block record is partially keyed by the <code>flower_part</code> column, which tells us which piece of a record a row corresponds to (the petal information, or the sepal information). We could also add an <code>iris_id</code> as a per-record key; this we are not adding, as we do not need it for our graphing task. However, adding a per-record id makes the transform invertible, as is shown <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
-<p>There are a great number of ways to achieve the above transform. We are going to concentrate on the <code>cdata</code> methodology. We want to move data from an “all of the record is in one row” format to “the meaningful record unit is a block across several rows” format. In <code>cdata</code> this means we want to perform a <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> transform. To do this we start by labeling the roles of different portion of the block oriented data example. In particular we identify:</p>
+<p>This new block record is partially keyed by the
+<code>flower_part</code> column, which tells us which piece of a record
+a row corresponds to (the petal information, or the sepal information).
+We could also add an <code>iris_id</code> as a per-record key; this we
+are not adding, as we do not need it for our graphing task. However,
+adding a per-record id makes the transform invertible, as is shown <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<p>There are a great number of ways to achieve the above transform. We
+are going to concentrate on the <code>cdata</code> methodology. We want
+to move data from an “all of the record is in one row” format to “the
+meaningful record unit is a block across several rows” format. In
+<code>cdata</code> this means we want to perform a
+<code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> transform. To do this we start by
+labeling the roles of different portion of the block oriented data
+example. In particular we identify:</p>
 <ul>
-<li>Columns we want copied as additional row information (in this case <code>Species</code>, but often a per-record index or key).</li>
-<li>The additional key that identifies parts of each multi-row record (in this case <code>flower_part</code>).</li>
-<li>Levels we expect in the new record portion key column (<code>Petal</code> and <code>Sepal</code>).</li>
-<li>New column names for the new <code>data.frame</code>. These will go where values are currently in the block record data.</li>
+<li>Columns we want copied as additional row information (in this case
+<code>Species</code>, but often a per-record index or key).</li>
+<li>The additional key that identifies parts of each multi-row record
+(in this case <code>flower_part</code>).</li>
+<li>Levels we expect in the new record portion key column
+(<code>Petal</code> and <code>Sepal</code>).</li>
+<li>New column names for the new <code>data.frame</code>. These will go
+where values are currently in the block record data.</li>
 </ul>
 <p>We show this labeling below.</p>
 <p><img src="design_4.png" width="600"></p>
-<p>Notice we have marked the measurements <code>1.4, 0.2, 5.1, 3.5</code> as “column names”, not values. That is because we must show which columns in the original data frame these values are coming from.</p>
-<p>This annotated example record is the guide for building what we call the transform control table. We build up the transform control table following these rules:</p>
+<p>Notice we have marked the measurements
+<code>1.4, 0.2, 5.1, 3.5</code> as “column names”, not values. That is
+because we must show which columns in the original data frame these
+values are coming from.</p>
+<p>This annotated example record is the guide for building what we call
+the transform control table. We build up the transform control table
+following these rules:</p>
 <ul>
 <li>The key column is the first column of the control table.</li>
 <li>The key levels we wish to track are values in the key column.</li>
-<li>The column names of the control table are the new column names we will produce in our result.</li>
-<li>The block of values seen in our example record are replaced by the names of the columns that these values were taken from in the original data.</li>
-<li>Any other columns we want copied are specified in the <code>columnsToCopy</code> argument.</li>
+<li>The column names of the control table are the new column names we
+will produce in our result.</li>
+<li>The block of values seen in our example record are replaced by the
+names of the columns that these values were taken from in the original
+data.</li>
+<li>Any other columns we want copied are specified in the
+<code>columnsToCopy</code> argument.</li>
 </ul>
 <p><img src="design_5.png" width="600"></p>
 <p>The <code>R</code> version of the above is specified as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get a small sample of irises</span>
-<span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="co"># add a record id to iris</span>
-<span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># get a small sample of irises</span></span>
+<span><span class="va">iris</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># add a record id to iris</span></span>
+<span><span class="va">iris</span><span class="op">$</span><span class="va">iris_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="19%">
+<col width="18%">
+<col width="19%">
+<col width="18%">
+<col width="12%">
+<col width="12%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">Sepal.Length</th>
 <th align="right">Sepal.Width</th>
@@ -193,40 +246,48 @@
 </table>
 <p>Specify the layout transform.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/">"cdata"</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: wrapr</span>
-
-<span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html">qchar_frame</a></span><span class="op">(</span>
-  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>    , <span class="st">"Width"</span>     <span class="op">|</span>
-  <span class="st">"Petal"</span>      , <span class="va">Petal.Length</span>, <span class="va">Petal.Width</span> <span class="op">|</span>
-  <span class="st">"Sepal"</span>      , <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span> <span class="op">)</span>
-
-<span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span>
-  <span class="va">controlTable</span>,
-  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span>
-<span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span>
-<span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # becomes</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
-<span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
-<span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
-<span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/WinVector/cdata/" class="external-link">"cdata"</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: wrapr</span></span>
+<span></span>
+<span><span class="va">controlTable</span> <span class="op">&lt;-</span> <span class="fu">wrapr</span><span class="fu">::</span><span class="fu"><a href="https://winvector.github.io/wrapr//reference/qchar_frame.html" class="external-link">qchar_frame</a></span><span class="op">(</span></span>
+<span>  <span class="st">"flower_part"</span>, <span class="st">"Length"</span>    , <span class="st">"Width"</span>     <span class="op">|</span></span>
+<span>  <span class="st">"Petal"</span>      , <span class="va">Petal.Length</span>, <span class="va">Petal.Width</span> <span class="op">|</span></span>
+<span>  <span class="st">"Sepal"</span>      , <span class="va">Sepal.Length</span>, <span class="va">Sepal.Width</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rowrecs_to_blocks_spec.html">rowrecs_to_blocks_spec</a></span><span class="op">(</span></span>
+<span>  <span class="va">controlTable</span>,</span>
+<span>  recordKeys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iris_id"</span>, <span class="st">"Species"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span></span>
+<span><span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span></span>
+<span><span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span></span>
+<span><span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  # becomes</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span></span>
+<span><span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></span>
+<span><span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></span>
+<span><span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></span>
+<span><span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
 <p>And we can now perform the transform.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">iris</span> <span class="op">%.&gt;%</span>
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">iris</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="19%">
+<col width="18%">
+<col width="19%">
+<col width="18%">
+<col width="12%">
+<col width="12%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">Sepal.Length</th>
 <th align="right">Sepal.Width</th>
@@ -263,12 +324,12 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">  
-<span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op">%.&gt;%</span> 
-  <span class="va">layout</span>
-
-<span class="va">iris_aug</span> <span class="op">%.&gt;%</span>
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span>  </span>
+<span><span class="va">iris_aug</span> <span class="op">&lt;-</span> <span class="va">iris</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span> </span>
+<span>  <span class="va">layout</span></span>
+<span></span>
+<span><span class="va">iris_aug</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">iris_id</th>
@@ -322,34 +383,47 @@
 </tr>
 </tbody>
 </table>
-<p>The data is now ready to plot using <code>ggplot2</code> as was shown <a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/">here</a>.</p>
-<p>Designing a <code>blocks_to_rowrecs</code> transform is just as easy, as the <code>controlTable</code> has the same shape as the incoming record block (assuming the record partial key controlling column is the first column). All one has to is get the reverse specification using <code><a href="https://rdrr.io/r/base/t.html">t()</a></code>.</p>
+<p>The data is now ready to plot using <code>ggplot2</code> as was shown
+<a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/" class="external-link">here</a>.</p>
+<p>Designing a <code>blocks_to_rowrecs</code> transform is just as easy,
+as the <code>controlTable</code> has the same shape as the incoming
+record block (assuming the record partial key controlling column is the
+first column). All one has to is get the reverse specification using
+<code><a href="https://rdrr.io/r/base/t.html" class="external-link">t()</a></code>.</p>
 <p>For example:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">inv_layout</span><span class="op">)</span>
-<span class="co">#&gt; {</span>
-<span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span>
-<span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span>
-<span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span>
-<span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # becomes</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span>
-<span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span>
-<span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span>
-<span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span>
-<span class="co">#&gt; }</span>
-
-<span class="va">iris_aug</span> <span class="op">%.&gt;%</span>
-  <span class="va">inv_layout</span> <span class="op">%.&gt;%</span>
-  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">inv_layout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">layout</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">inv_layout</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;  block_record &lt;- wrapr::qchar_frame(</span></span>
+<span><span class="co">#&gt;    "iris_id"  , "Species", "flower_part", "Length"    , "Width"     |</span></span>
+<span><span class="co">#&gt;      .        , .        , "Petal"      , Petal.Length, Petal.Width |</span></span>
+<span><span class="co">#&gt;      .        , .        , "Sepal"      , Sepal.Length, Sepal.Width )</span></span>
+<span><span class="co">#&gt;  block_keys &lt;- c('iris_id', 'Species', 'flower_part')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  # becomes</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  row_record &lt;- wrapr::qchar_frame(</span></span>
+<span><span class="co">#&gt;    "iris_id"  , "Species", "Petal.Length", "Petal.Width", "Sepal.Length", "Sepal.Width" |</span></span>
+<span><span class="co">#&gt;      .        , .        , Petal.Length  , Petal.Width  , Sepal.Length  , Sepal.Width   )</span></span>
+<span><span class="co">#&gt;  row_keys &lt;- c('iris_id', 'Species')</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  # args: c(checkNames = TRUE, checkKeys = FALSE, strict = FALSE, allow_rqdatatable = FALSE)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span></span>
+<span><span class="va">iris_aug</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span></span>
+<span>  <span class="va">inv_layout</span> <span class="op"><a href="https://winvector.github.io/wrapr//reference/dot_arrow.html" class="external-link">%.&gt;%</a></span></span>
+<span>  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="12%">
+<col width="12%">
+<col width="19%">
+<col width="18%">
+<col width="19%">
+<col width="18%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">iris_id</th>
 <th align="left">Species</th>
@@ -385,22 +459,41 @@
 </tr>
 </tbody>
 </table>
-<p>Notice in both cases that having examples of the before and after form of the transform is the guide to building the transform specification, that is, the transform control table. In practice: we <em>highly</em> recommend looking at your data, writing down what a single record on each side of the transform would look like, and then using that to fill out the control table on paper.</p>
-<p>The exercise of designing a control table really opens your eyes to how data is moving in such transforms and exposes a lot of structure of data transforms. For example:</p>
+<p>Notice in both cases that having examples of the before and after
+form of the transform is the guide to building the transform
+specification, that is, the transform control table. In practice: we
+<em>highly</em> recommend looking at your data, writing down what a
+single record on each side of the transform would look like, and then
+using that to fill out the control table on paper.</p>
+<p>The exercise of designing a control table really opens your eyes to
+how data is moving in such transforms and exposes a lot of structure of
+data transforms. For example:</p>
 <ul>
-<li>If the control table has two columns (one key column, one value column) then the operation could be implemented as a single <code>tidyr</code> <code>gather()</code> or <code>spread()</code>.</li>
-<li>If the control table has <code>k</code> rows then the <code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> direction could be implemented as <code>k-1</code> <code><a href="https://rdrr.io/r/base/cbind.html">rbind()</a></code>s.</li>
+<li>If the control table has two columns (one key column, one value
+column) then the operation could be implemented as a single
+<code>tidyr</code> <code>gather()</code> or <code>spread()</code>.</li>
+<li>If the control table has <code>k</code> rows then the
+<code><a href="../reference/rowrecs_to_blocks.html">rowrecs_to_blocks()</a></code> direction could be implemented as
+<code>k-1</code> <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>s.</li>
 </ul>
-<p>Some discussion of the nature of block records and row records in <code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
-<p>Some additional tutorials on <code>cdata</code> data transforms can are given below:</p>
+<p>Some discussion of the nature of block records and row records in
+<code>cdata</code> can be found <a href="https://winvector.github.io/cdata/articles/blocksrecs.html">here</a>.</p>
+<p>Some additional tutorials on <code>cdata</code> data transforms can
+are given below:</p>
 <ul>
-<li><a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/">The faceted plot example</a></li>
-<li><a href="https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html">Fluid data reshaping with cdata</a></li>
-<li><a href="https://youtu.be/4cYbP3kbc0k">short free cdata screencast</a></li>
-<li><a href="https://winvector.github.io/FluidData/RowsAndColumns.html">“Coordinatized data” theory</a></li>
-<li><a href="https://winvector.github.io/FluidData/FluidData.html">The “fluid data” methodology</a></li>
+<li><a href="https://win-vector.com/2018/10/21/faceted-graphs-with-cdata-and-ggplot2/" class="external-link">The
+faceted plot example</a></li>
+<li><a href="https://winvector.github.io/FluidData/FluidDataReshapingWithCdata.html" class="external-link">Fluid
+data reshaping with cdata</a></li>
+<li><a href="https://youtu.be/4cYbP3kbc0k" class="external-link">short free cdata
+screencast</a></li>
+<li><a href="https://winvector.github.io/FluidData/RowsAndColumns.html" class="external-link">“Coordinatized
+data” theory</a></li>
+<li><a href="https://winvector.github.io/FluidData/FluidData.html" class="external-link">The
+“fluid data” methodology</a></li>
 <li>
-<a href="https://winvector.github.io/FluidData/DataWranglingAtScale.html">another worked example</a>.</li>
+<a href="https://winvector.github.io/FluidData/DataWranglingAtScale.html" class="external-link">another
+worked example</a>.</li>
 </ul>
 </div>
 
@@ -413,11 +506,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by John Mount, Nina Zumel.</p>
+  <p></p>
+<p>Developed by John Mount, Nina Zumel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -425,6 +520,8 @@
 
   
 
+
+  
 
   </body>
 </html>

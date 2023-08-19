@@ -1,3 +1,4 @@
+
 #' \code{cdata}: Fluid Data Transformations.
 #'
 #' Supplies implementations of higher order "fluid data" transforms.  These
@@ -12,9 +13,7 @@
 #' \url{https://github.com/WinVector/cdata} and \url{https://winvector.github.io/FluidData/FluidData.html}.
 #'
 #'
-#' @docType package
-#' @name cdata
-NULL
+"_PACKAGE"
 
 # make sure dot doesn't look like an unbound ref
 . <- NULL

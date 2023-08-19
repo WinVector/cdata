@@ -1,111 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://winvector.github.io/cdata//index.html</loc>
+    <loc>https://winvector.github.io/cdata/404.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/blocks_to_rowrecs.html</loc>
+    <loc>https://winvector.github.io/cdata/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/blocks_to_rowrecs_q.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/blocksrecs.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/blocks_to_rowrecs_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/cdata.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/build_pivot_control.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/control_table_keys.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/build_pivot_control_q.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/design.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/build_unpivot_control.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/exercises.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/cdata.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/general_transform.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/check_cols_form_unique_keys.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/convert_cdata_spec_to_yaml.html</loc>
+    <loc>https://winvector.github.io/cdata/articles/operators.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/convert_records.html</loc>
+    <loc>https://winvector.github.io/cdata/authors.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/convert_yaml_to_cdata_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/index.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/get_transform_details.html</loc>
+    <loc>https://winvector.github.io/cdata/news/index.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/grapes-slash-slash-grapes.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/blocks_to_rowrecs.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/grapes-times-times-grapes.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/blocks_to_rowrecs_q.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/layout_by.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/blocks_to_rowrecs_spec.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/layout_by.blocks_to_rowrecs_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/build_pivot_control.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/layout_by.cdata_general_transform_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/build_pivot_control_q.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/layout_by.rowrecs_to_blocks_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/build_unpivot_control.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/layout_specification.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/cdata-package.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/map_fields.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/cdata.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/map_fields_q.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/checkColsFormUniqueKeys.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/pivot_to_rowrecs.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/check_cols_form_unique_keys.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/qlook.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/check_equiv_frames.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/rowrecs_to_blocks.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/convert_cdata_spec_to_yaml.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/rowrecs_to_blocks_q.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/convert_records.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/rowrecs_to_blocks_spec.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/convert_yaml_to_cdata_spec.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/rows_are_uniquely_keyed.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/get_transform_details.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//reference/unpivot_to_blocks.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/grapes-pivot-grapes.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/blocksrecs.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/grapes-slash-slash-grapes.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/cdata.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/grapes-times-times-grapes.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/control_table_keys.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/design.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/layout_by.blocks_to_rowrecs_spec.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/exercises.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/layout_by.cdata_general_transform_spec.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/general_transform.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/layout_by.html</loc>
   </url>
   <url>
-    <loc>https://winvector.github.io/cdata//articles/operators.html</loc>
+    <loc>https://winvector.github.io/cdata/reference/layout_by.rowrecs_to_blocks_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/layout_specification.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/map_fields.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/map_fields_q.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/new_record_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/pivot_to_rowrecs.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/qlook.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/rowrecs_to_blocks.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/rowrecs_to_blocks_q.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/rowrecs_to_blocks_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/rows_are_uniquely_keyed.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/run_cdata_tests.html</loc>
+  </url>
+  <url>
+    <loc>https://winvector.github.io/cdata/reference/unpivot_to_blocks.html</loc>
   </url>
 </urlset>
