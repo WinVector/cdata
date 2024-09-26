@@ -45,7 +45,7 @@ checkControlTable <- function(controlTable, controlTableKeys, strict) {
     return("control table key values must not be NA")
   }
   if(!check_cols_form_unique_keys(controlTable, controlTableKeys)) {
-    return("controlTable rows must be uniquely keyed by controlTableKeys key columns")
+    return("controlTable rows must be uniquely keyed by declared controlTableKeys key columns (controlTableKeys defaults to first column)")
   }
   toCheck <- list(
     "column names" = colnames(controlTable),
